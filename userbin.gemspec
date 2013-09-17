@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'userbin'
-  s.version     = '0.1.3'
+  s.version     = '0.1.4'
   s.date        = '2013-09-17'
   s.summary     = "Userbin"
   s.description = "Plug n’ play user accounts. The simplest way to integrate a full authentication and user management stack into your web application."
