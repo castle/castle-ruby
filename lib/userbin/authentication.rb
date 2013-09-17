@@ -109,11 +109,12 @@ module Userbin
     def generate_response(env, signature, data)
       status, headers, response = @app.call(env)
       if headers['Content-Type'] && headers['Content-Type']['text/html']
-        body = response.each.map do |chunk|
+        body = response.body if response.respond_to?(:body)
+        body = body.each.map do |chunk|
           inject_tags(chunk)
         end
 
-        if response.class.name.end_with?('::Response')
+        if response.respond_to?(:body)
           response.body = body
         else
           response = body
