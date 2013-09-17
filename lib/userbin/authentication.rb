@@ -56,14 +56,14 @@ module Userbin
 
     def link_tags(login_path)
       <<-LINK_TAGS
-<link rel="userbin:root" href="/">
-<link rel="userbin:login" href="#{login_path}">
+<link rel="userbin:root" href="/" />
+<link rel="userbin:login" href="#{login_path}" />
       LINK_TAGS
     end
 
     def meta_tag
       <<-META_TAG
-<meta property="userbin:events" content="/userbin">
+<meta property="userbin:events" content="/userbin" />
       META_TAG
     end
 
