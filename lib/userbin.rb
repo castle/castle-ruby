@@ -6,6 +6,8 @@ require 'net/http'
 require "userbin/userbin"
 require "userbin/basic_auth"
 
+require "userbin/railtie" if defined?(Rails::Railtie)
+
 api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
   "https://userbin.com/api/v0"
 }
