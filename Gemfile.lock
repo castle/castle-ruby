@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    userbin (0.1.2)
+    userbin (0.2.0)
       her (~> 0.6.8)
       multi_json (~> 1.0)
 

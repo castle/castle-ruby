@@ -51,7 +51,7 @@ module Userbin
     end
 
     def restrict
-      Userbin.restricted_path || @restricted_path
+      Userbin.config.restricted_path || @restricted_path
     end
 
     def link_tags(login_path)

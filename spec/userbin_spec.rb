@@ -3,8 +3,10 @@ require 'cgi'
 
 describe Userbin do
   before do
-    Userbin.app_id = '1000'
-    Userbin.api_secret = '1234'
+    Userbin.configure do |config|
+      config.app_id = '1000'
+      config.api_secret = '1234'
+    end
   end
 
   let (:args) do

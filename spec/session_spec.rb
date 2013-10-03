@@ -3,8 +3,10 @@ require 'multi_json'
 
 describe 'Userbin::Session' do
   before do
-    Userbin.app_id = '100000000000000'
-    Userbin.api_secret = 'test'
+    Userbin.configure do |config|
+      config.app_id = '100000000000000'
+      config.api_secret = 'test'
+    end
   end
 
   before do
