@@ -21,6 +21,7 @@ api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
 end
 
 require "userbin/configuration"
+require "userbin/events"
 require "userbin/current"
 require "userbin/session"
 require "userbin/authentication"

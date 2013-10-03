@@ -18,7 +18,7 @@ module Userbin
           signature, data = Userbin.authenticate_events!(request)
 
           MultiJson.decode(data)['events'].each do |event|
-            Userbin.trigger(event)
+            Userbin::Events.trigger(event)
           end
 
           [ 200, { 'Content-Type' => 'text/html',
@@ -72,7 +72,7 @@ module Userbin
         "https://userbin.com/js/v0"
       }
       str = <<-SCRIPT_TAG
-<script src="#{script_url}?#{Userbin.app_id}"></script>
+<script src="#{script_url}?#{Userbin.config.app_id}"></script>
       SCRIPT_TAG
     end
 
