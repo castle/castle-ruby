@@ -96,6 +96,7 @@ module Userbin
     end
 
     def inject_tags(body, login_path = restrict)
+      return body unless Userbin.config.auto_include_tags
       if body[CLOSING_HEAD_TAG]
         body = body.gsub(CLOSING_HEAD_TAG, link_tags(login_path) + '\\0')
         body = body.gsub(CLOSING_HEAD_TAG, meta_tag + '\\0')
