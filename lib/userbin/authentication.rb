@@ -12,7 +12,7 @@ module Userbin
       request = Rack::Request.new(env)
 
       begin
-        if env["REQUEST_PATH"] == "/userbin" &&
+        if env["PATH_INFO"] == "/userbin" &&
            env["REQUEST_METHOD"] == "POST"
           signature, data = Userbin.authenticate_events!(request)
 
@@ -25,7 +25,7 @@ module Userbin
         else
           signature, data = Userbin.authenticate!(request)
 
-          if restrict && env["REQUEST_PATH"].start_with?(restrict) &&
+          if restrict && env["PATH_INFO"].start_with?(restrict) &&
              !Userbin.authenticated?
             return render_gateway(env["REQUEST_PATH"])
           end
