@@ -6,7 +6,6 @@ module Userbin
 
     def initialize(app, options = {})
       @app = app
-      @restricted_path = options[:restricted_path]
     end
 
     def call(env)
@@ -51,7 +50,7 @@ module Userbin
     end
 
     def restrict
-      Userbin.config.restricted_path || @restricted_path
+      Userbin.config.restricted_path
     end
 
     def link_tags(login_path)
@@ -82,7 +81,7 @@ module Userbin
 <head>
   <title>Log in</title>
 </head>
-<body style="background-color: #DBDBDB;">
+<body>
   <a class="ub-login-form"></a>
 </body>
 </html>
@@ -96,7 +95,6 @@ module Userbin
     end
 
     def inject_tags(body, login_path = restrict)
-      return body unless Userbin.config.auto_include_tags
       if body[CLOSING_HEAD_TAG]
         body = body.gsub(CLOSING_HEAD_TAG, link_tags(login_path) + '\\0')
         body = body.gsub(CLOSING_HEAD_TAG, meta_tag + '\\0')
@@ -116,8 +114,10 @@ module Userbin
           body = response
         end
 
-        body = body.each.map do |chunk|
-          inject_tags(chunk)
+        unless Userbin.config.auto_include_tags
+          body = body.each.map do |chunk|
+            inject_tags(chunk)
+          end
         end
 
         if response.respond_to?(:body)
