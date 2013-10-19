@@ -87,7 +87,7 @@ module Userbin
 </html>
       LOGIN_PAGE
       login_page = inject_tags(login_page, current_path)
-      [ 200,
+      [ 403,
         { 'Content-Type' => 'text/html',
           'Content-Length' => login_page.length.to_s },
         [login_page]
