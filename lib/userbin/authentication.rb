@@ -125,8 +125,6 @@ module Userbin
         else
           response = body
         end
-
-        headers['Content-Length'] = body.join.length.to_s
       end
 
       if signature && data
