@@ -1,7 +1,7 @@
 module Userbin
   def self.authenticate_events!(request, now = Time.now)
     signature, data =
-      request.params.values_at('userbin_signature', 'userbin_data')
+      request.params.values_at('signature', 'data')
 
     valid_signature?(signature, data)
 
@@ -12,7 +12,7 @@ module Userbin
   #
   def self.authenticate!(request, now = Time.now)
     signature, data =
-      request.cookies.values_at('userbin_signature', 'userbin_data')
+      request.cookies.values_at('signature', 'data')
 
     if signature && data && valid_signature?(signature, data)
 
@@ -34,7 +34,7 @@ module Userbin
   end
 
   def self.refresh_session(user_id)
-    api_endpoint = ENV["USERBIN_API_ENDPOINT"] || 'https://userbin.com/api/v0'
+    api_endpoint = ENV["USERBIN_API_ENDPOINT"] || 'https://api.userbin.com'
     uri = URI("#{api_endpoint}/users/#{user_id}/sessions")
     net = Net::HTTP.post_form(uri, {})
     uri.user = config.app_id

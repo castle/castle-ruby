@@ -9,7 +9,7 @@ require "userbin/basic_auth"
 require "userbin/railtie" if defined?(Rails::Railtie)
 
 api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
-  "https://userbin.com/api/v0"
+  "https://api.userbin.com"
 }
 
 @api = Her::API.setup url: api_endpoint do |c|

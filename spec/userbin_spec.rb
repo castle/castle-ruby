@@ -11,7 +11,7 @@ describe Userbin do
 
   let (:args) do
     {
-      "HTTP_COOKIE" => "userbin_signature=abcd; userbin_data=#{CGI.escape(MultiJson.encode(session))} "
+      "HTTP_COOKIE" => "_ubs=abcd; _ubd=#{CGI.escape(MultiJson.encode(session))} "
     }
   end
 

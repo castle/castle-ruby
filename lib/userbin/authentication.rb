@@ -41,9 +41,9 @@ module Userbin
         }
 
         Rack::Utils.delete_cookie_header!(
-          headers, 'userbin_signature', value = {})
+          headers, '_ubs', value = {})
         Rack::Utils.delete_cookie_header!(
-          headers, 'userbin_data', value = {})
+          headers, '_ubd', value = {})
 
         [ 400, headers, [message] ]
       end
@@ -68,7 +68,7 @@ module Userbin
 
     def script_tag
       script_url = ENV.fetch('USERBIN_SCRIPT_URL') {
-        "https://userbin.com/js/v0"
+        "https://js.userbin.com"
       }
       str = <<-SCRIPT_TAG
 <script src="#{script_url}?#{Userbin.config.app_id}"></script>
@@ -129,14 +129,14 @@ module Userbin
 
       if signature && data
         Rack::Utils.set_cookie_header!(
-          headers, 'userbin_signature', value: signature, path: '/')
+          headers, '_ubs', value: signature, path: '/')
         Rack::Utils.set_cookie_header!(
-          headers, 'userbin_data', value: data, path: '/')
+          headers, '_ubd', value: data, path: '/')
       else
         Rack::Utils.delete_cookie_header!(
-          headers, 'userbin_signature', value = {})
+          headers, '_ubs', value = {})
         Rack::Utils.delete_cookie_header!(
-          headers, 'userbin_data', value = {})
+          headers, '_ubd', value = {})
       end
 
       [status, headers, response]
