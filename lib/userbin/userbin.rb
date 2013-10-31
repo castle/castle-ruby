@@ -12,7 +12,7 @@ module Userbin
   #
   def self.authenticate!(request, now = Time.now)
     signature, data =
-      request.cookies.values_at('signature', 'data')
+      request.cookies.values_at('_ubs', '_ubd')
 
     if signature && data && valid_signature?(signature, data)
 
