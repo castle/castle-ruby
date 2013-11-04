@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Userbin::VERSION
   s.date        = '2013-09-17'
   s.summary     = "Userbin"
-  s.description = "Plug n’ play user accounts. The simplest way to integrate a full authentication and user management stack into your web application."
+  s.description = "Plug n' play user accounts. The simplest way to integrate a full authentication and user management stack into your web application."
   s.authors     = ["Johan"]
   s.email       = 'johan@userbin.com'
   s.homepage    = 'https://userbin.com'

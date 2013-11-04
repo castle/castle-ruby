@@ -1,15 +1,11 @@
 module Userbin
   module AuthHelpers
-    def userbin_current_user
-      local_id = Userbin.current_user.local_id
-
-      if local_id
-        user_klass = if Userbin.config.user_model
-          Userbin.config.user_model.call
-        else
-          User
-        end
-        @current_user ||= user_klass.find(local_id)
+    def current_user
+      return unless Userbin.authenticated?
+      if Userbin.config.current_user
+        @current_user ||= Userbin.config.current_user.call(Userbin.current_user)
+      else
+        raise "Userbin: No method configured for returning 'current_user'"
       end
     end
   end

@@ -60,12 +60,6 @@ module Userbin
       LINK_TAGS
     end
 
-    def meta_tag
-      <<-META_TAG
-<meta property="userbin:events" content="/userbin" />
-      META_TAG
-    end
-
     def script_tag
       script_url = ENV.fetch('USERBIN_SCRIPT_URL') {
         "https://js.userbin.com"
@@ -97,7 +91,6 @@ module Userbin
     def inject_tags(body, login_path = restrict)
       if body[CLOSING_HEAD_TAG]
         body = body.gsub(CLOSING_HEAD_TAG, link_tags(login_path) + '\\0')
-        body = body.gsub(CLOSING_HEAD_TAG, meta_tag + '\\0')
       end
       if body[CLOSING_BODY_TAG]
         body = body.gsub(CLOSING_BODY_TAG, script_tag + '\\0')

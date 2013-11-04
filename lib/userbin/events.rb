@@ -26,10 +26,6 @@ module Userbin
             event.object
           end
           model = event.instance_exec object, &callback.block
-
-          if event.type =~ /user\.created/ && model.respond_to?(:id)
-            object.update_local_id(model.id)
-          end
         end
       end
     end

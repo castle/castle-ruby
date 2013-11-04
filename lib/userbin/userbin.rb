@@ -19,7 +19,6 @@ module Userbin
       current = Userbin::Session.new(MultiJson.decode(data))
 
       if current.authenticated?
-        # FIXME: NoMethodError (undefined method `/' for nil:NilClass):
         if now > Time.at(current.expires_at / 1000)
           signature, data = refresh_session(current.user.id)
         end

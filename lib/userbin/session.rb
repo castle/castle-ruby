@@ -5,12 +5,7 @@ module Userbin
     include Her::Model
   end
 
-  class User < Model
-    def update_local_id(local_id)
-      self.local_id = local_id
-      save
-    end
-  end
+  class User < Model; end
 
   class Session < Model
     has_one :user
