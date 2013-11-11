@@ -62,7 +62,7 @@ module Userbin
 
     def script_tag
       script_url = ENV.fetch('USERBIN_SCRIPT_URL') {
-        "https://js.userbin.com"
+        "//js.userbin.com"
       }
       str = <<-SCRIPT_TAG
 <script src="#{script_url}?#{Userbin.config.app_id}"></script>
