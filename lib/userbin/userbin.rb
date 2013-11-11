@@ -20,7 +20,7 @@ module Userbin
 
       if current.authenticated?
         if now > Time.at(current.expires_at / 1000)
-          signature, data = refresh_session(current.user.id)
+          signature, data = refresh_session(current.id)
         end
       end
     end
@@ -32,12 +32,12 @@ module Userbin
     [signature, data]
   end
 
-  def self.refresh_session(user_id)
+  def self.refresh_session(session_id)
     api_endpoint = ENV["USERBIN_API_ENDPOINT"] || 'https://api.userbin.com'
-    uri = URI("#{api_endpoint}/users/#{user_id}/sessions")
-    net = Net::HTTP.post_form(uri, {})
+    uri = URI("#{api_endpoint}/sessions/#{session_id}/refresh")
     uri.user = config.app_id
     uri.password = config.api_secret
+    net = Net::HTTP.post_form(uri, {})
     [net['X-Userbin-Signature'], net.body]
   end
 
