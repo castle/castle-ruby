@@ -1,9 +1,6 @@
 module Userbin
   class Authentication
 
-    CLOSING_HEAD_TAG = %r{</head>}
-    CLOSING_BODY_TAG = %r{</body>}
-
     def initialize(app, options = {})
       @app = app
     end
@@ -25,9 +22,10 @@ module Userbin
         else
           signature, data = Userbin.authenticate!(request)
 
-          if restrict && env["PATH_INFO"].start_with?(restrict) &&
-             !Userbin.authenticated?
-            return render_gateway(env["REQUEST_PATH"])
+          if !Userbin.authenticated? && Userbin.config.restricted_path &&
+            env["PATH_INFO"].start_with?(Userbin.config.restricted_path)
+
+            return render_gateway(env["PATH_INFO"])
           end
 
           generate_response(env, signature, data)
@@ -49,76 +47,32 @@ module Userbin
       end
     end
 
-    def restrict
-      Userbin.config.restricted_path
-    end
-
-    def link_tags(login_path)
-      <<-LINK_TAGS
-<link rel="userbin:root" href="/" />
-<link rel="userbin:login" href="#{login_path}" />
-      LINK_TAGS
-    end
-
-    def script_tag
-      script_url = ENV.fetch('USERBIN_SCRIPT_URL') {
-        "//js.userbin.com"
-      }
-      str = <<-SCRIPT_TAG
-<script src="#{script_url}?#{Userbin.config.app_id}"></script>
-      SCRIPT_TAG
-    end
-
     def render_gateway(current_path)
+      script_url = ENV["USERBIN_SCRIPT_URL"] || '//js.userbin.com'
+
       login_page = <<-LOGIN_PAGE
+<!DOCTYPE html>
 <html>
 <head>
   <title>Log in</title>
 </head>
 <body>
   <a class="ub-login-form"></a>
+  <script src="#{script_url}"></script>
 </body>
 </html>
       LOGIN_PAGE
-      login_page = inject_tags(login_page, current_path)
-      [ 403,
-        { 'Content-Type' => 'text/html',
-          'Content-Length' => login_page.length.to_s },
-        [login_page]
-      ]
-    end
 
-    def inject_tags(body, login_path = restrict)
-      if body[CLOSING_HEAD_TAG]
-        body = body.gsub(CLOSING_HEAD_TAG, link_tags(login_path) + '\\0')
-      end
-      if body[CLOSING_BODY_TAG]
-        body = body.gsub(CLOSING_BODY_TAG, script_tag + '\\0')
-      end
-      body
+      headers = { 'Content-Type' => 'text/html' }
+
+      Rack::Utils.set_cookie_header!(
+        headers, '_ubc_lu', value: current_path, path: '/')
+
+      [403, headers, [login_page]]
     end
 
     def generate_response(env, signature, data)
       status, headers, response = @app.call(env)
-      if headers['Content-Type'] && headers['Content-Type']['text/html']
-        if response.respond_to?(:body)
-          body = [*response.body]
-        else
-          body = response
-        end
-
-        if Userbin.config.auto_include_tags
-          body = body.each.map do |chunk|
-            inject_tags(chunk)
-          end
-        end
-
-        if response.respond_to?(:body)
-          response.body = body
-        else
-          response = body
-        end
-      end
 
       if signature && data
         Rack::Utils.set_cookie_header!(
@@ -130,6 +84,17 @@ module Userbin
           headers, '_ubs', value = {})
         Rack::Utils.delete_cookie_header!(
           headers, '_ubd', value = {})
+      end
+
+      if headers['Content-Type'] && headers['Content-Type']['text/html']
+        login_path = Userbin.config.restricted_path || env["PATH_INFO"]
+
+        Rack::Utils.set_cookie_header!(
+          headers, '_ubc_id', value: Userbin.config.app_id, path: '/')
+        Rack::Utils.set_cookie_header!(
+          headers, '_ubc_ru', value: Userbin.config.root_path, path: '/')
+        Rack::Utils.set_cookie_header!(
+          headers, '_ubc_lu', value: login_path, path: '/')
       end
 
       [status, headers, response]

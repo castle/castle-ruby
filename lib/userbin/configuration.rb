@@ -3,14 +3,14 @@ module Userbin
     attr_accessor :app_id
     attr_accessor :api_secret
     attr_accessor :current_user
-    attr_accessor :auto_include_tags
     attr_accessor :restricted_path
+    attr_accessor :root_path
 
     def initialize
       self.app_id = ENV["USERBIN_APP_ID"]
       self.api_secret = ENV["USERBIN_API_SECRET"]
 
-      self.auto_include_tags = true
+      self.root_path = '/'
     end
   end
 end

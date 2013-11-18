@@ -18,10 +18,8 @@ module Userbin
 
       current = Userbin::Session.new(MultiJson.decode(data))
 
-      if current.authenticated?
-        if now > Time.at(current.expires_at / 1000)
-          signature, data = refresh_session(current.id)
-        end
+      if now > Time.at(current.expires_at / 1000)
+        signature, data = refresh_session(current.id)
       end
     end
 
