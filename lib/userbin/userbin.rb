@@ -51,8 +51,32 @@ module Userbin
     current.authenticated? rescue false
   end
 
-  def self.current_user
+  def self.user_logged_in?
+    authenticated?
+  end
+
+  def self.user_signed_in?
+    authenticated?
+  end
+
+  def self._current_user
     current.user if current
+  end
+
+  def self.current_user
+    if Userbin.config.find_user
+      u = Userbin.config.find_user.call(_current_user.id)
+      return u if u
+      if Userbin.config.create_user
+        u = Userbin.config.create_user.call(_current_user)
+        return u if u
+        _current_user
+      else
+        raise UnimplementedError, "You need to implement create_user"
+      end
+    else
+      _current_user
+    end
   end
 
   def self.user

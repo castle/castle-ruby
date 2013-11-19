@@ -8,7 +8,7 @@ require "userbin/basic_auth"
 
 require "userbin/railtie" if defined?(Rails::Railtie)
 
-api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
+api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {3
   "https://api.userbin.com"
 }
 
@@ -28,6 +28,7 @@ require "userbin/authentication"
 
 class Userbin::Error < Exception; end
 class Userbin::SecurityError < Userbin::Error; end
+class Userbin::UnimplementedError < Userbin::Error; end
 
 module Userbin
   class << self
