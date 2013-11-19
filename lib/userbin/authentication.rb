@@ -114,7 +114,9 @@ module Userbin
        else
          response = body
        end
-        headers['Content-Length'] = body.flatten[0].length.to_s
+        unless body.empty?
+          headers['Content-Length'] = body.flatten[0].length.to_s
+        end
       end
 
       if signature && data
