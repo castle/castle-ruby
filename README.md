@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/userbin/userbin-ruby.png)](https://travis-ci.org/userbin/userbin-ruby)
+
 Userbin for Ruby
 ================
 
