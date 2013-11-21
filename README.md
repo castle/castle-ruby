@@ -134,12 +134,12 @@ You'll need to migrate your users and add a reference to the Userbin profile:
 rails g migration AddUserbinIdToUsers userbin_id:integer:index
 ```
 
-### auto_include_tags
+### skip_script_injection
 
-By default, the Userbin middleware will automatically insert a `<script>` tag before the closing `</body>` in your HTML files in order to handle forms, sessions and user tracking. This script loads everything asynchronously, so it won't affect your page load speed. However if you want to have control of this procedure, set `auto_include_tags` to false and initialize the library yourself. To do that, checkout the [Userbin.js configuration guide](https://userbin.com/docs/javascript#configuration).
+By default, the Userbin middleware will automatically insert a `<script>` tag before the closing `</body>` in your HTML files in order to handle forms, sessions and user tracking. This script loads everything asynchronously, so it won't affect your page load speed. However if you want to have control of this procedure, set `skip_script_injection` to true and initialize the library yourself. To do that, checkout the [Userbin.js configuration guide](https://userbin.com/docs/javascript#configuration).
 
 ```ruby
-config.auto_include_tags = false
+config.skip_script_injection = true
 ```
 
 

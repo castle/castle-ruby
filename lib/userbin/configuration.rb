@@ -2,7 +2,7 @@ module Userbin
   class Configuration
     attr_accessor :app_id
     attr_accessor :api_secret
-    attr_accessor :auto_include_tags
+    attr_accessor :skip_script_injection
     attr_accessor :create_user
     attr_accessor :find_user
     attr_accessor :protected_path
@@ -16,7 +16,7 @@ module Userbin
       self.app_id = ENV["USERBIN_APP_ID"]
       self.api_secret = ENV["USERBIN_API_SECRET"]
 
-      self.auto_include_tags = true
+      self.skip_script_injection = false
     end
   end
 end

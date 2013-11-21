@@ -104,7 +104,7 @@ module Userbin
        else
          body = response
        end
-       if Userbin.config.auto_include_tags
+       if !Userbin.config.skip_script_injection
          body = body.each.map do |chunk|
            inject_tags(chunk)
          end
