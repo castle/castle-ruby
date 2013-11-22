@@ -115,7 +115,7 @@ module Userbin
          response = body
        end
         unless body.empty?
-          headers['Content-Length'] = body.flatten[0].length.to_s
+          headers['Content-Length'] = Rack::Utils.bytesize(body.flatten[0]).to_s
         end
       end
 
