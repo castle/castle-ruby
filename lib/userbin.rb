@@ -8,16 +8,17 @@ require "userbin/basic_auth"
 
 require "userbin/railtie" if defined?(Rails::Railtie)
 
-api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {3
+api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
   "https://api.userbin.com"
 }
 
 @api = Her::API.setup url: api_endpoint do |c|
   c.use Userbin::BasicAuth
   c.use Faraday::Request::UrlEncoded
-  c.use Userbin::ParseSignedJSON
+  c.use Her::Middleware::DefaultParseJSON
+  #c.use Userbin::ParseSignedJSON
   c.use Faraday::Adapter::NetHttp
-  c.use Userbin::VerifySignature
+  #c.use Userbin::VerifySignature
 end
 
 require "userbin/configuration"
@@ -28,7 +29,7 @@ require "userbin/authentication"
 
 class Userbin::Error < Exception; end
 class Userbin::SecurityError < Userbin::Error; end
-class Userbin::UnimplementedError < Userbin::Error; end
+class Userbin::ConfigurationError < Userbin::Error; end
 
 module Userbin
   class << self

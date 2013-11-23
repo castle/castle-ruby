@@ -64,18 +64,27 @@ module Userbin
   end
 
   def self.current_user
-    if Userbin.config.find_user
-      u = Userbin.config.find_user.call(_current_user.id)
-      return u if u
-      if Userbin.config.create_user
-        u = Userbin.config.create_user.call(_current_user)
+    if _current_user
+      if Userbin.config.find_user
+        u = Userbin.config.find_user.call(_current_user.id)
         return u if u
-        _current_user
+        if Userbin.config.create_user
+
+          # Fetch a full profile from the API. This way we can get more
+          # sensitive details than those stored in the cookie. It also checks
+          # that the user still exists in Userbin.
+          profile = User.find(_current_user.id)
+
+          u = Userbin.config.create_user.call(profile)
+          return u if u
+
+          _current_user
+        else
+          raise ConfigurationError, "You need to implement create_user"
+        end
       else
-        raise UnimplementedError, "You need to implement create_user"
+        _current_user
       end
-    else
-      _current_user
     end
   end
 
