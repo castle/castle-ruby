@@ -8,6 +8,10 @@ module Userbin
     end
 
     def call(env)
+      if !Userbin.config.app_id || !Userbin.config.api_secret
+        raise ConfigurationError, "app_id and api_secret must be present"
+      end
+
       request = Rack::Request.new(env)
 
       begin
