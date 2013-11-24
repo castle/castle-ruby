@@ -2,6 +2,7 @@ module Userbin
   class Configuration
     attr_accessor :create_user
     attr_accessor :find_user
+    attr_accessor :lock_file
     attr_accessor :protected_path
     attr_accessor :root_path
     attr_accessor :skip_script_injection
