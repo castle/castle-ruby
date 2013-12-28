@@ -15,38 +15,24 @@ module Userbin
       request = Rack::Request.new(env)
 
       begin
-        if env["PATH_INFO"] == "/userbin" &&
-           env["REQUEST_METHOD"] == "POST"
-          signature, data = Userbin.authenticate_events!(request)
+        jwt = Userbin.authenticate!(request)
 
-          MultiJson.decode(data)['events'].each do |event|
-            Userbin::Events.trigger(event)
-          end
+        if !Userbin.authenticated? && Userbin.config.protected_path &&
+          env["PATH_INFO"].start_with?(Userbin.config.protected_path)
 
-          [ 200, { 'Content-Type' => 'text/html',
-            'Content-Length' => '2' }, ['OK'] ]
-        else
-          signature, data = Userbin.authenticate!(request)
-
-          if !Userbin.authenticated? && Userbin.config.protected_path &&
-            env["PATH_INFO"].start_with?(Userbin.config.protected_path)
-
-            return render_gateway(env["PATH_INFO"])
-          end
-
-          generate_response(env, signature, data)
+          return render_gateway(env["PATH_INFO"])
         end
+
+        generate_response(env, jwt)
       rescue Userbin::SecurityError
         message =
-          'Userbin::SecurityError: Invalid signature. Refresh to try again.'
+          'Userbin::SecurityError: Invalid session. Refresh to try again.'
         headers = {
           'Content-Type' => 'text/text'
         }
 
         Rack::Utils.delete_cookie_header!(
-          headers, '_ubs', value = {})
-        Rack::Utils.delete_cookie_header!(
-          headers, '_ubd', value = {})
+          headers, '_ubt', value = {})
 
         [ 400, headers, [message] ]
       end
@@ -99,7 +85,7 @@ module Userbin
       [403, headers, [login_page]]
     end
 
-    def generate_response(env, signature, data)
+    def generate_response(env, jwt)
       status, headers, response = @app.call(env)
 
       if headers['Content-Type'] && headers['Content-Type']['text/html']
@@ -123,16 +109,12 @@ module Userbin
         end
       end
 
-      if signature && data
+      if jwt
         Rack::Utils.set_cookie_header!(
-          headers, '_ubs', value: signature, path: '/')
-        Rack::Utils.set_cookie_header!(
-          headers, '_ubd', value: data, path: '/')
+          headers, '_ubt', value: jwt, path: '/')
       else
         Rack::Utils.delete_cookie_header!(
-          headers, '_ubs', value = {})
-        Rack::Utils.delete_cookie_header!(
-          headers, '_ubd', value = {})
+          headers, '_ubt', value = {})
       end
 
       [status, headers, response]

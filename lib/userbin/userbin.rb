@@ -1,42 +1,34 @@
 module Userbin
-  def self.authenticate_events!(request, now = Time.now)
-    signature, data =
-      request.params.values_at('signature', 'data')
-
-    valid_signature?(signature, data)
-
-    [signature, data]
+  def self.decode_jwt(jwt)
+    JWT.decode(jwt, Userbin.config.api_secret)
   end
 
-  # Provide either a Rack::Request or a Hash containing :signature and :data.
-  #
-  def self.authenticate!(request, now = Time.now)
-    signature, data =
-      request.cookies.values_at('_ubs', '_ubd')
+  def self.authenticate!(request)
+    jwt = request.cookies['_ubt']
+    decoded = Userbin.decode_jwt(jwt)
 
-    if signature && data && valid_signature?(signature, data)
+    if Time.now > Time.at(decoded['expires_at'] / 1000)
+      jwt = refresh_session(decoded['id'])
 
-      current = Userbin::Session.new(MultiJson.decode(data))
+      decoded = Userbin.decode_jwt(jwt)
 
-      if now > Time.at(current.expires_at / 1000)
-        signature, data = refresh_session(current.id)
+      if Time.now > Time.at(decoded['expires_at'] / 1000)
+        raise Userbin::SecurityError
       end
     end
 
-    tmp = MultiJson.decode(data) if data
+    self.current = Userbin::Session.new(decoded)
 
-    self.current = Userbin::Session.new(tmp)
-
-    [signature, data]
+    return jwt
   end
 
   def self.refresh_session(session_id)
     api_endpoint = ENV["USERBIN_API_ENDPOINT"] || 'https://api.userbin.com'
-    uri = URI("#{api_endpoint}/sessions/#{session_id}/refresh")
+    uri = URI("#{api_endpoint}/sessions/#{session_id}/refresh.jwt")
     uri.user = config.app_id
     uri.password = config.api_secret
     net = Net::HTTP.post_form(uri, {})
-    [net['X-Userbin-Signature'], net.body]
+    net.body
   end
 
   def self.current
@@ -106,16 +98,5 @@ module Userbin
 
   def self.user
     current_user
-  end
-
-  private
-
-  # Checks signature against secret and returns boolean
-  #
-  def self.valid_signature?(signature, data)
-    digest = OpenSSL::Digest::SHA256.new
-    valid = signature == OpenSSL::HMAC.hexdigest(digest, config.api_secret, data)
-    raise SecurityError, "Invalid signature" unless valid
-    valid
   end
 end

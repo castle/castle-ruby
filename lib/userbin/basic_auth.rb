@@ -11,9 +11,7 @@ module Userbin
   class VerifySignature < Faraday::Response::Middleware
     def call(env)
       @app.call(env).on_complete do
-        signature = env[:response_headers]['x-userbin-signature']
-        data = env[:body]
-        Userbin.valid_signature?(signature, data)
+        Userbin.decode_jwt(env[:body])
       end
     end
   end

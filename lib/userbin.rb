@@ -16,9 +16,7 @@ api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
   c.use Userbin::BasicAuth
   c.use Faraday::Request::UrlEncoded
   c.use Her::Middleware::DefaultParseJSON
-  #c.use Userbin::ParseSignedJSON
   c.use Faraday::Adapter::NetHttp
-  #c.use Userbin::VerifySignature
 end
 
 require "userbin/configuration"
