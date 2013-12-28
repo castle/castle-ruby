@@ -5,10 +5,13 @@ module Userbin
 
   def self.authenticate!(request)
     jwt = request.cookies['_ubt']
+    return unless jwt
+
     decoded = Userbin.decode_jwt(jwt)
 
     if Time.now > Time.at(decoded['expires_at'] / 1000)
       jwt = refresh_session(decoded['id'])
+      return unless jwt
 
       decoded = Userbin.decode_jwt(jwt)
 
