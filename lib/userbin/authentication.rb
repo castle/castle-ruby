@@ -12,7 +12,7 @@ module Userbin
         raise ConfigurationError, "app_id and api_secret must be present"
       end
 
-      Thread.current[:userbin] = {}
+      Thread.current[:userbin] = nil
 
       request = Rack::Request.new(env)
 
