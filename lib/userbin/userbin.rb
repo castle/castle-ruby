@@ -1,3 +1,5 @@
+require 'jwt'
+
 module Userbin
   def self.decode_jwt(jwt)
     JWT.decode(jwt, Userbin.config.api_secret)
