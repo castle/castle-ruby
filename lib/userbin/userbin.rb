@@ -61,44 +61,33 @@ module Userbin
   end
 
   def self.current_user
-    if Userbin.config.lock_file
-      file = File.open(Userbin.config.lock_file, "a+")
-      file.flock(File::LOCK_EX)
-    end
-
-    begin
-      if _current_user
-        if Userbin.config.find_user
-          u = Userbin.config.find_user.call(_current_user.id)
-          if u
-            u
-          else
-            if Userbin.config.create_user
-
-              # Fetch a full profile from the API. This way we can get more
-              # sensitive details than those stored in the cookie. It also checks
-              # that the user still exists in Userbin.
-              profile = User.find(_current_user.id)
-
-              u = Userbin.config.create_user.call(profile)
-              if u
-                u
-              else
-                _current_user
-              end
-            else
-              raise ConfigurationError, "You need to implement create_user"
-            end
-          end
+    if _current_user
+      if Userbin.config.find_user
+        u = Userbin.config.find_user.call(_current_user.id)
+        if u
+          u
         else
-          _current_user
+          if Userbin.config.create_user
+
+            # Fetch a full profile from the API. This way we can get more
+            # sensitive details than those stored in the cookie. It also checks
+            # that the user still exists in Userbin.
+            profile = User.find(_current_user.id)
+
+            u = Userbin.config.create_user.call(profile)
+            if u
+              u
+            else
+              _current_user
+            end
+          else
+            raise ConfigurationError, "You need to implement create_user"
+          end
         end
+      else
+        _current_user
       end
-
-    ensure
-      file.flock(File::LOCK_UN) if Userbin.config.lock_file
     end
-
   end
 
   def self.user
