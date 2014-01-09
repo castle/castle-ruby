@@ -13,6 +13,7 @@ module Userbin
       end
 
       Thread.current[:userbin] = nil
+      env['userbin.unauthenticated'] = false
 
       request = Rack::Request.new(env)
 
@@ -92,6 +93,9 @@ module Userbin
 
     def generate_response(env, jwt)
       status, headers, response = @app.call(env)
+
+      # application stack is responsible for setting userbin.authenticated
+      return render_gateway(env["PATH_INFO"]) if env['userbin.unauthenticated']
 
       if headers['Content-Type'] && headers['Content-Type']['text/html']
        if response.respond_to?(:body)

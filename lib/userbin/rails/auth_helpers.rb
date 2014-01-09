@@ -1,5 +1,12 @@
 module Userbin
   module AuthHelpers
+    def authenticate_user!
+      unless user_logged_in?
+        env['userbin.unauthenticated'] = true
+        render nothing: true
+      end
+    end
+
     def current_user
       Userbin.current_user
     end
