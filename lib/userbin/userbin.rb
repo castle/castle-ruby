@@ -48,6 +48,10 @@ module Userbin
     current.authenticated? rescue false
   end
 
+  def self.logged_in?
+    authenticated?
+  end
+
   def self.user_logged_in?
     authenticated?
   end
@@ -58,6 +62,10 @@ module Userbin
 
   def self._current_user
     current.user if current
+  end
+
+  def self.current_profile
+    _current_user
   end
 
   def self.current_user
