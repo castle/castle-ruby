@@ -2,163 +2,175 @@
 [![Gem Version](https://badge.fury.io/rb/userbin.png)](http://badge.fury.io/rb/userbin)
 [![Dependency Status](https://gemnasium.com/userbin/userbin-ruby.png)](https://gemnasium.com/userbin/userbin-ruby)
 
-Userbin for Ruby
-================
+# Rails SDK for Userbin
 
-Userbin for Ruby adds user authentication, login flows and user management to your **Rails**, **Sinatra** or **Rack** app.
 
-[Userbin](https://userbin.com) provides a set of login, signup, and password reset forms that drop right into your application without any need of styling or writing markup. Connect your users via traditional logins or third party social networks. We take care of linking accounts across networks, resetting passwords, and keeping everything safe and secure.
+[Userbin](https://userbin.com) is the easiest way to setup, use and maintain a secure user authentication system for both your web and mobile apps, while keeping the users in your own database.
+
+Userbin provides a set of login, signup, and password reset forms that drop right into your application without any need of styling or writing markup. Connect your users via traditional logins or third party social networks. We take care of linking accounts across networks, resetting passwords and sending out necessary emails, while keeping everything safe and secure.
 
 [Create a free account](https://userbin.com) at Userbin to start accepting users in your application.
 
-Installation
-------------
-
-1. Add the `userbin` gem to your `Gemfile`
-
-    ```ruby
-    gem "userbin"
-    ```
-
-1.  Install the gem
-
-    ```shell
-    bundle install
-    ```
-
-2.  Configure the Userbin module with the credentials you got from signing up.
-
-    In a Rails app, put the following code into a new file at `config/initializers/userbin.rb`, and in Sinatra put it in your main application file and add `require "userbin"`.
-
-    ```ruby
-    Userbin.configure do |config|
-      config.app_id = "YOUR_APP_ID"
-      config.api_secret = "YOUR_API_SECRET"
-    end
-    ```
-
-    If you don't configure the `app_id` and `api_secret`, the Userbin module will read the `USERBIN_APP_ID` and `USERBIN_API_SECRET` environment variables. This may come in handy on Heroku.
-
-3.  **Rack/Sinatra apps only**: Activate the Userbin Rack middleware
-
-    ```ruby
-    use Userbin::Authentication
-    ```
 
 
-Usage
------
+## Installation and configuration
 
-### Forms
-
-An easy way to integrate Userbin is via the [Widget](https://userbin.com/docs/javascript#widget), which will take care of building forms, validating input and provides a drop-in design that adapts nicely to all devices.
-
-The Widget is fairly high level, so remember that you can still use Userbin with your [own forms](https://userbin.com) if it doesn't fit your use-case.
-
-The following links will open up the Widget with the login or the signup form respectively.
-
-```html
-<a class="ub-login">Log in</a>
-```
-
-```html
-<a class="ub-signup">Sign up</a>
-```
-
-The logout link will clear the session and redirect the user back to your root path:
-
-```html
-<a class="ub-logout">Log out</a>
-```
-
-### The current user
-
-Userbin keeps track of the currently logged in user which can be accessed through the `current_user` property. This automatically taps into libraries such as the authorization solution [CanCan](https://github.com/ryanb/cancan).
-
-```erb
-Welcome to your account, <%= current_user.email %>
-```
-
-To check if a user is logged in, use `user_logged_in?` (or its alias `user_signed_in?` if you prefer Devise conventions)
-
-```erb
-<% if user_logged_in? %>
-  You are logged in!
-<% end %>
-```
-
-**Rack/Sinatra apps only**: Since above helpers aren't available outside Rails, instead use `Userbin.current_user` and `Userbin.user_logged_in?`.
-
-Configuration
--------------
-
-The `Userbin.configure` block supports a range of options additional to the Userbin credentials. None of the following options are mandatory.
-
-### protected_path
-
-By default, Userbin reloads the current page on a successful login. If you set the `protected_path` option, users will be redirected to this path instead.
-
-Once set, this path and any sub-path of it will be protected from unauthenticated users by instead rendering a login form.
+Add the `userbin` gem to your `Gemfile`
 
 ```ruby
-config.protected_path = '/dashboard'
+gem "userbin"
 ```
 
-### root_path
+Install the gem
 
-By default, Userbin reloads the current page on a successful logout. If you set the `root_path` option, users will be redirected to this path instead.
-
-```ruby
-config.root_path = '/login'
+```bash
+bundle install
 ```
 
-### create_user and find_user
-
-By default, `current_user` will reference a *limited* Userbin profile, enabling you to work without a database. If you override the functions `create_user` and `find_user`, the current user will instead reference one of your models. The `profile` object is an *extended* Userbin profile. For more information about the available attributes in the profile see the [Userbin profile](https://userbin.com/docs/concepts) documentation.
+Create `config/initializers/userbin.rb` and configure your credentials.
 
 ```ruby
-config.create_user = Proc.new { |profile|
+Userbin.configure do |config|
+  config.app_id = "YOUR_APP_ID"
+  config.api_secret = "YOUR_API_SECRET"
+end
+```
+
+> If you don't configure the `app_id` and `api_secret`, the Userbin module will read the `USERBIN_APP_ID` and `USERBIN_API_SECRET` environment variables.
+
+Implement getter and setter for your user model. For more information about the available attributes in the profile see the [Userbin profile](https://userbin.com/docs/profile) documentation.
+
+```ruby
+config.find_user = -> (userbin_id) do
+  User.find_by_userbin_id(userbin_id)
+end
+
+# will be called when a user signs up
+config.create_user = -> (profile) do
   User.create! do |user|
     user.userbin_id = profile.id
     user.email      = profile.email
     user.photo      = profile.image
   end
-}
-
-config.find_user = Proc.new { |userbin_id|
-  User.find_by_userbin_id(userbin_id)
-}
+end
 ```
 
-You'll need to migrate your users and add a reference to the Userbin profile:
+Migrate your users to include a reference to the Userbin profile:
+
+```bash
+rails g migration AddUserbinIdToUsers userbin_id:integer:index
+rake db:migrate
+```
+
+
+## Authenticating users
+
+  Userbin keeps track of the currently logged in user which can be accessed through `current_user` in controllers, views, and helpers. This automatically taps into libraries such as the authorization library [CanCan](https://github.com/ryanb/cancan).
+
+```erb
+<% if current_user %>
+  <%= current_user.email %>
+<% else %>
+  Not logged in
+<% end %>
+```
+
+To set up a controller with user authentication, just add this `before_filter`:
 
 ```ruby
-rails g migration AddUserbinIdToUsers userbin_id:integer:index
+class ArticlesController < ApplicationController
+  before_filter :authorize!
+
+  def index
+    current_user.articles
+  end
+end
 ```
 
-### skip_script_injection
+> You can always access the [Userbin profile](https://userbin.com/docs/profile) for the logged in user as `current_profile` when you need to access information that you haven't persisted in your user model.
 
-By default, the Userbin middleware will automatically insert a `<script>` tag before the closing `</body>` in your HTML files in order to handle forms, sessions and user tracking. This script loads everything asynchronously, so it won't affect your page load speed. However if you want to have control of this procedure, set `skip_script_injection` to true and initialize the library yourself. To do that, checkout the [Userbin.js configuration guide](https://userbin.com/docs/javascript#configuration).
+
+## Forms
+
+Once you have set up authentication it's time to choose among the different ways of integrating Userbin into your application.
+
+### Ready-made forms
+
+The easiest and fastest way to integrate login and signup forms is to use the Userbin Widget, which provides a set of ready-made views which can be customized to blend in with your current user interface. These views open up in a popup, and on mobile browsers they open up a new window tailored for smaller devices.
+
+`rel` specifies action; possible options are `login` and `logout`.
+
+```html
+<a href="/account" rel="login">Log in</a>
+<a href="/account" rel="signup">Sign up</a>
+```
+
+### Social buttons
+
+Instead of signing up your users with a username and password, you can offer them to connect with a social identity like Facebook or LinkedIn. To use these button you must first configure your social identiy providers from the [dashboard](https://userbin.com/dashboard). It is also possible to connect a social identity to an already logged in user and the two accounts will be automatically linked.
+
+`rel` determines action. If the user didn't exist before, it's created, otherwise it's logged in.
+
+```html
+<a href="/account" rel="connect-facebook">Connect with Facebook</a>
+<a href="/account" rel="connect-linkedin">Connect with LinkedIn</a>
+```
+
+### Custom forms
+
+The ready-made forms are fairly high level, so you might prefer to use Userbin with your own markup to get full control over looks and behavior.
+
+If you create a form with `name` set to `login` or `signup`, the user will be sent to the URL specified by `action` after being successfully processed at Userbin.
+
+Inputs with name `email` and `password` are processed, others are ignored.
+
+If you add an element with the class `error-messages`, it will be automatically set to `display: block` and populated with a an error message when something goes wrong. So make sure to it is `display: hidden` by default.
+
+```html
+<form action="/account" name="signup">
+  <span class="error-messages"></span>
+  <div class="row">
+    <label>E-mail</label>
+    <input name="email" type="text"></input>
+  </div>
+  <div class="row">
+    <label>Password</label>
+    <input name="password" type="password"></input>
+  </div>
+  <button type="submit">Sign up</button>
+</form>
+```
+
+### Log out
+
+Clears the session and redirects the user to the specified URL.
+
+```html
+<a href="/" rel="logout">Log out</a>
+```
+
+
+## Further configuration
+
+### Skip script injection
+
+By default, the Userbin middleware will automatically insert a `<script>` tag before the closing `</body>` in your HTML files in order to handle forms, sessions and user tracking. This script loads everything asynchronously, so it won't affect your page load speed. However if you want to have control of this procedure, set `skip_script_injection` to true and insert the `<script>` tag yourself. To do that, checkout the [Userbin.js configuration guide](https://userbin.com/docs/javascript#configuration).
 
 ```ruby
 config.skip_script_injection = true
 ```
 
+## Admin dashboard
 
-Further configuration and customization
----------------------------------------
+With Userbin you get an admin dashboard out of the box.
 
-Your Userbin dashboard gives you access to a range of functionality:
-
-- Configure the appearance of the login widget to feel more integrated with your service
-- Connect 10+ OAuth providers like Facebook, Github and Google.
-- Use Markdown to generate mobile-ready transactional emails
-- Invite users to your application
-- See who is logging in and when
-- User management: block, remove and impersonate users
-- Export all your user data from Userbin
+- Invite, update, remove and ban users
+- Log in as any of your users for debugging
+- Configure user validation, access rights and login methods
+- See who is using your web or mobile app in real-time.
+- Customize copy and appearance of your transactional emails.
 
 
-Documentation
--------------
+## More documentation
+
 For complete documentation go to [userbin.com/docs](https://userbin.com/docs)
