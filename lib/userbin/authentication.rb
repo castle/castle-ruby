@@ -43,19 +43,16 @@ module Userbin
 
     def script_tag(login_path)
       script_url = ENV.fetch('USERBIN_SCRIPT_URL') {
-        "//js.userbin.com"
+        "//d3paxvrgg3ab3f.cloudfront.net/js/v0"
       }
       path = login_path || Userbin.config.protected_path
 
       tag =  "<script src='#{script_url}?#{Userbin.config.app_id}'></script>\n"
-      tag += "<script type='text/javascript'>\n"
-      tag += "  Userbin.config({\n"
-      if Userbin.config.root_path
-        tag += "    logoutRedirectUrl: '#{Userbin.config.root_path}',\n"
-      end
-      tag += "    loginRedirectUrl: '#{path}',\n" if path
-      tag += "    reloadOnSuccess: true\n"
-      tag += "  });\n"
+      tag += "<script>"
+      tag += "(function(w,d,t,s,o,a,b) {";
+      tag += "  w[o]=function(){(w[o].c=w[o].c||[]).push(arguments)};a=d.createElement(t);a.async=1;a.src=s;b=d.getElementsByTagName(t)[0];b.parentNode.insertBefore(a,b);";
+      tag += "  }(window,document,'script','#{script_url}','ubin'));";
+      tag += "ubin({appId: '#{Userbin.config.app_id}'});";
       tag += "</script>\n"
     end
 
