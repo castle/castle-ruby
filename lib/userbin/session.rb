@@ -7,6 +7,12 @@ module Userbin
 
   class User < Model; end
 
+  class Token < Model;
+    has_one :identity
+  end
+
+  class Identity < Model; end
+
   class Session < Model
     has_one :user
 
