@@ -38,6 +38,8 @@ module Userbin
           headers, '_ubt', value = {})
 
         [ 400, headers, [message] ]
+      rescue JWT::DecodeError
+        generate_response(env, nil)
       end
     end
 
@@ -47,8 +49,7 @@ module Userbin
       }
       path = login_path || Userbin.config.protected_path
 
-      tag =  "<script src='#{script_url}?#{Userbin.config.app_id}'></script>\n"
-      tag += "<script>"
+      tag  = "<script>"
       tag += "(function(w,d,t,s,o,a,b) {";
       tag += "  w[o]=function(){(w[o].c=w[o].c||[]).push(arguments)};a=d.createElement(t);a.async=1;a.src=s;b=d.getElementsByTagName(t)[0];b.parentNode.insertBefore(a,b);";
       tag += "  }(window,document,'script','#{script_url}','ubin'));";
