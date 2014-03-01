@@ -5,8 +5,7 @@ module Userbin
     JWT.decode(jwt, Userbin.config.api_secret)
   end
 
-  def self.authenticate!(request)
-    jwt = request.cookies['_ubt']
+  def self.authenticate!(jwt)
     return unless jwt
 
     decoded = Userbin.decode_jwt(jwt)

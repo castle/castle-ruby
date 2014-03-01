@@ -18,7 +18,23 @@ module Userbin
       request = Rack::Request.new(env)
 
       begin
-        jwt = Userbin.authenticate!(request)
+        if request.params['userbin_token'] && request.request_method == 'GET'
+          session = Userbin::Session.create(identity: request.params['userbin_token'])
+          jwt = session[:cookie] if session
+
+          if jwt
+            uri = URI(request.url)
+            uri.query = nil
+            redirect_headers = {"Location" => uri.to_s}
+            Rack::Utils.set_cookie_header!(
+              redirect_headers, '_ubt', value: jwt, path: '/')
+            return [301, redirect_headers, []]
+          end
+        end
+
+        jwt = request.cookies['_ubt']
+
+        Userbin.authenticate!(jwt)
 
         if !Userbin.authenticated? && Userbin.config.protected_path &&
           env["PATH_INFO"].start_with?(Userbin.config.protected_path)
