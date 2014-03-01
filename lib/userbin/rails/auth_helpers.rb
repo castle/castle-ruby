@@ -7,6 +7,8 @@ module Userbin
       end
     end
 
+    alias :authorize! :authenticate_user!
+
     def current_user
       Userbin.current_user
     end
