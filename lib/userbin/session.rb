@@ -11,7 +11,11 @@ module Userbin
     has_one :identity
   end
 
-  class Identity < Model; end
+  class Identity < Model;
+    def activate!
+      Identity.save_existing(id, pending: false)
+    end
+  end
 
   class Session < Model
     has_one :user

@@ -35,6 +35,12 @@ module Userbin
     net.body
   end
 
+  def self.resolve_token(userbin_token)
+    token = Userbin::Token.find(userbin_token)
+    return nil unless token # Token expired or invalid
+    token.identity
+  end
+
   def self.current
     Thread.current[:userbin]
   end
