@@ -12,8 +12,8 @@ module Userbin
   end
 
   class Identity < Model;
-    def activate!
-      Identity.save_existing(id, pending: false)
+    def activate!(local_id = nil)
+      Identity.save_existing(id, pending: false, local_id: local_id)
     end
   end
 
