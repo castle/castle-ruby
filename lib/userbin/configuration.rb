@@ -1,5 +1,6 @@
 module Userbin
   class Configuration
+    attr_accessor :current_user
     attr_accessor :create_user
     attr_accessor :find_user
     attr_accessor :protected_path

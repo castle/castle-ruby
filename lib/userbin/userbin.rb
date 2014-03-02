@@ -75,7 +75,9 @@ module Userbin
 
   def self.current_user
     if _current_user
-      if Userbin.config.find_user
+      if Userbin.config.current_user
+        Userbin.config.current_user.call(_current_user.local_id, _current_user)
+      elsif Userbin.config.find_user
         u = Userbin.config.find_user.call(_current_user.id)
         if u
           u
