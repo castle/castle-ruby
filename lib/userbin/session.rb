@@ -11,9 +11,11 @@ module Userbin
     has_one :identity
   end
 
-  class Identity < Model;
+  class Identity < Model
+    custom_post :activate
+
     def activate!(local_id = nil)
-      Identity.save_existing(id, pending: false, local_id: local_id)
+      Identity.activate(id: self.id, local_id: local_id)
     end
   end
 
