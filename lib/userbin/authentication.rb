@@ -122,7 +122,7 @@ module Userbin
            inject_tags(chunk)
          end
        end
-       if response.respond_to?(:body)
+       if response.respond_to?('body=')
          response.body = body
        else
          response = body
