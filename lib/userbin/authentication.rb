@@ -34,7 +34,7 @@ module Userbin
 
         jwt = request.cookies['_ubt']
 
-        Userbin.authenticate!(jwt)
+        jwt = Userbin.authenticate!(jwt, request.ip, request.user_agent)
 
         if !Userbin.authenticated? && Userbin.config.protected_path &&
           env["PATH_INFO"].start_with?(Userbin.config.protected_path)
