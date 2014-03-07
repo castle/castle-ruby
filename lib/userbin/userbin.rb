@@ -5,13 +5,13 @@ module Userbin
     JWT.decode(jwt, Userbin.config.api_secret)
   end
 
-  def self.authenticate!(jwt)
+  def self.authenticate!(jwt, ip = nil, agent = nil)
     return unless jwt
 
     decoded = Userbin.decode_jwt(jwt)
 
     if Time.now > Time.at(decoded['expires_at'] / 1000)
-      jwt = refresh_session(decoded['id'])
+      jwt = refresh_session(decoded['id'], ip, agent)
       return unless jwt
 
       decoded = Userbin.decode_jwt(jwt)
@@ -26,13 +26,19 @@ module Userbin
     return jwt
   end
 
-  def self.refresh_session(session_id)
+  def self.refresh_session(session_id, ip = nil, agent = nil)
     api_endpoint = ENV["USERBIN_API_ENDPOINT"] || 'https://api.userbin.com'
     uri = URI("#{api_endpoint}/sessions/#{session_id}/refresh.jwt")
-    uri.user = config.app_id
-    uri.password = config.api_secret
-    net = Net::HTTP.post_form(uri, {})
-    net.body
+    req = Net::HTTP::Post.new(uri.path)
+    req.set_form_data({})
+    req.basic_auth config.app_id, config.api_secret
+    req['User-Agent'] = agent
+    req['X-Forwarded-For'] = ip
+
+    res = Net::HTTP.start(uri.hostname, uri.port) do |http|
+      http.request(req)
+    end
+    res.body
   end
 
   def self.resolve_token(userbin_token)
