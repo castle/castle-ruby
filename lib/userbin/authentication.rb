@@ -18,6 +18,10 @@ module Userbin
       request = Rack::Request.new(env)
 
       begin
+        if Userbin.config.exclude_regexp && request.url[Userbin.config.exclude_regexp]
+          return @app.call(env)
+        end
+
         if request.params['userbin_token'] && request.request_method == 'GET'
           session = Userbin::Session.create(identity: request.params['userbin_token'])
           jwt = session[:cookie] if session
