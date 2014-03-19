@@ -69,11 +69,16 @@ module Userbin
       }
       path = login_path || Userbin.config.protected_path
 
+      options = {
+        appId: Userbin.config.app_id
+      }
+      options['loginRedirectUrl'] = login_path if login_path
+
       tag  = "<script>"
       tag += "(function(w,d,t,s,o,a,b) {";
       tag += "  w[o]=function(){(w[o].c=w[o].c||[]).push(arguments)};a=d.createElement(t);a.async=1;a.src=s;b=d.getElementsByTagName(t)[0];b.parentNode.insertBefore(a,b);";
       tag += "  }(window,document,'script','#{script_url}','ubin'));";
-      tag += "ubin({appId: '#{Userbin.config.app_id}'});";
+      tag += "ubin(#{MultiJson.encode(options)});";
       tag += "</script>\n"
     end
 
