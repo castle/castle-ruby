@@ -1,4 +1,20 @@
 module Userbin
+  class << self
+    def configure(config_hash=nil)
+      if config_hash
+        config_hash.each do |k,v|
+          config.send("#{k}=", v)
+        end
+      end
+
+      yield(config) if block_given?
+    end
+
+    def config
+      @configuration ||= Userbin::Configuration.new
+    end
+  end
+
   class Configuration
     attr_accessor :current_user
     attr_accessor :create_user
@@ -7,10 +23,6 @@ module Userbin
     attr_accessor :protected_path
     attr_accessor :root_path
     attr_accessor :skip_script_injection
-
-    # restricted_path is obsolete
-    alias :restricted_path :protected_path
-    alias :restricted_path= :protected_path=
 
     def initialize
       self.skip_script_injection = false
