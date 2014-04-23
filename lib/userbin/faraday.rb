@@ -16,7 +16,6 @@ module Userbin
     # @param [Hash] env The response environment
     # @private
     def on_complete(env)
-      p env[:body]
       env[:body] = case env[:status]
       when 204
         parse('{}')

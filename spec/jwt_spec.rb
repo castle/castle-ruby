@@ -3,22 +3,22 @@ require 'timecop'
 
 describe 'Userbin::JWT' do
   context 'valid JWT' do
-    let(:jwt) { 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImlhdCI6MTM5Nzg2NTU1MCwiZXhwIjoxMzk3ODY5MTUwfQ.eyJ1c2VyX2lkIjoiN1d2anBvMThtWWNTU3pEUHp6WFF2WmJIajdadzVEczEifQ.ht2YSVQQkOMuHn8XmdPDG0k-78CybZp26mn7Kkl6UgE' }
+    let(:jwt) { 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImlhdCI6MTM5ODIzOTIwMywiZXhwIjoxMzk4MjQyODAzfQ.eyJ1c2VyX2lkIjoiZUF3djVIdGRiU2s4Yk1OWVpvanNZdW13UXlLcFhxS3IifQ.Apa7EmT5T1sOYz4Af0ERTDzcnUvSalailNJbejZ2ddQ' }
 
     it 'returns a payload' do
       payload = Userbin::JWT.new(jwt).to_json
-      payload['user_id'].should == '7Wvjpo18mYcSSzDPzzXQvZbHj7Zw5Ds1'
+      payload['user_id'].should == 'eAwv5HtdbSk8bMNYZojsYumwQyKpXqKr'
     end
 
     it 'verifies that JWT has expired' do
-      new_time = Time.utc(2014, 4, 19, 0, 59, 11)
+      new_time = Time.utc(2014, 4, 23, 8, 46, 44)
       Timecop.freeze(new_time) do
         Userbin::JWT.new(jwt).expired?.should be_true
       end
     end
 
     it 'verifies that JWT has not expired' do
-      new_time = Time.utc(2014, 4, 19, 0, 59, 10)
+      new_time = Time.utc(2014, 4, 23, 8, 46, 43)
       Timecop.freeze(new_time) do
         Userbin::JWT.new(jwt).expired?.should be_false
       end

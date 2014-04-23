@@ -3,8 +3,9 @@ require 'multi_json'
 require 'openssl'
 require 'net/http'
 
-require "userbin/userbin"
+require "userbin/configuration"
 require "userbin/faraday"
+require "userbin/jwt"
 
 api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
   "https://api.userbin.com/v1"
@@ -17,9 +18,7 @@ api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
   c.use Faraday::Adapter::NetHttp
 end
 
-require "userbin/configuration"
-require "userbin/jwt"
-
+# These need to be required after setting up Her
 require "userbin/models/base"
 require "userbin/models/user"
 require "userbin/models/session"
