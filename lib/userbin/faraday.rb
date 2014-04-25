@@ -23,8 +23,8 @@ module Userbin
         MultiJson.decode(env[:body])['message']
         challenge = Userbin::Challenge.new(payload['params'])
         raise Userbin::ChallengeException.new(challenge), payload['message']
-      when 404
-        raise Userbin::NotFoundError.new(MultiJson.decode(env[:body])['message'])
+      when 400..599
+        raise Userbin::Error.new(MultiJson.decode(env[:body])['message'])
       else
         parse(env[:body])
       end
