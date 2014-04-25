@@ -1,4 +1,5 @@
 require 'her'
+require 'faraday_middleware'
 require 'multi_json'
 require 'openssl'
 require 'net/http'
@@ -13,7 +14,7 @@ api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
 
 @api = Her::API.setup url: api_endpoint do |c|
   c.use Userbin::BasicAuth
-  c.use Faraday::Request::UrlEncoded
+  c.use FaradayMiddleware::EncodeJson
   c.use Userbin::JSONParser
   c.use Faraday::Adapter::NetHttp
 end

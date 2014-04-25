@@ -2,15 +2,15 @@
 http_interactions:
 - request:
     method: post
-    uri: http://secretkey:@localhost:3000/api/v1/users/import
+    uri: https://secretkey:@api.userbin.com/v1/users/import
     body:
       encoding: UTF-8
-      string: users%5B%5D%5Bemail%5D=a%40example.com&users%5B%5D%5Busername%5D=a&users%5B%5D%5Bemail%5D=b%40example.com&users%5B%5D%5Busername%5D=b
+      string: '{"users":[{"email":"10@example.com","username":"10"},{"email":"20@example.com","username":"20"}]}'
     headers:
       User-Agent:
       - Faraday v0.9.0
       Content-Type:
-      - application/x-www-form-urlencoded
+      - application/json
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:

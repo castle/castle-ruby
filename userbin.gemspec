@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.test_files  = Dir["spec/**/*"]
 
   s.add_dependency "her", "~> 0.6.8"
+  s.add_dependency "faraday_middleware", "~> 0.9.1"
   s.add_dependency "multi_json", "~> 1.0"
   s.add_dependency "jwt", "~> 0.1.11"
 
