@@ -11,7 +11,6 @@ VCR.configure do |config|
 end
 
 Userbin.configure do |config|
-  config.app_id = '800000000000000'
   config.api_secret = 'secretkey'
 end
 

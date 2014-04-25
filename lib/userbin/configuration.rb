@@ -28,14 +28,6 @@ module Userbin
       self.skip_script_injection = false
     end
 
-    def app_id
-      ENV['USERBIN_APP_ID'] || @_app_id
-    end
-
-    def app_id=(value)
-      @_app_id = value
-    end
-
     def api_secret
       ENV['USERBIN_API_SECRET'] || @_api_secret
     end

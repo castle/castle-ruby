@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://800000000000000:secretkey@api.userbin.com/v1/users/9RA2j3cYDxt8gefQUduKnxUxRRGy6Rz4
+    uri: https://secretkey:@api.userbin.com/v1/users/9RA2j3cYDxt8gefQUduKnxUxRRGy6Rz4
     body:
       encoding: US-ASCII
       string: ''
