@@ -10,9 +10,25 @@ describe 'Userbin::User' do
 
   it 'handles non-existing user' do
     VCR.use_cassette('user_find_non_existing') do
-      expect {
+      error = nil
+      begin
         user = Userbin::User.find('non_existing')
-      }.to raise_error(Userbin::NotFoundError)
+      rescue Userbin::Error => e
+        error = e
+      end
+      error.to_s.should match /Not found/
+    end
+  end
+
+  it 'imports users' do
+    VCR.use_cassette('user_import') do
+      users = Userbin::User.import(
+        users: [
+          { email: '10@example.com', username: '10' },
+          { email: '20@example.com', username: '20' }
+        ]
+      )
+      users.count.should == 2
     end
   end
 end
