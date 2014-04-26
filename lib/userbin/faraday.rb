@@ -17,6 +17,12 @@ module Userbin
     def on_complete(env)
       env[:body] = '{}' if [204, 405].include?(env[:status])
       env[:body] = case env[:status]
+      when 403
+        raise Userbin::ForbiddenError.new(
+          MultiJson.decode(env[:body])['message'])
+      when 419
+        raise Userbin::UserUnauthorizedError.new(
+          MultiJson.decode(env[:body])['message'])
       when 423
         payload = MultiJson.decode(env[:body])
         challenge = Userbin::Challenge.new(payload['params'])
