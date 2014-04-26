@@ -21,22 +21,13 @@ end
 
 # These need to be required after setting up Her
 require "userbin/models/base"
-require "userbin/models/user"
-require "userbin/models/session"
-require "userbin/models/token"
-require "userbin/models/login_token"
-require "userbin/models/signup_token"
 require "userbin/models/challenge"
+require "userbin/models/session"
+require "userbin/models/user"
 
 class Userbin::Error < Exception; end
 class Userbin::SecurityError < Userbin::Error; end
 class Userbin::ConfigurationError < Userbin::Error; end
-
-class Userbin::LockedException < Userbin::Error; end
-class Userbin::NotFoundError < Userbin::Error; end
-class Userbin::ServerError < Userbin::Error; end
-class Userbin::Unauthorized < Userbin::Error; end
-class Userbin::UnconfirmedException < Userbin::Error; end
 
 class Userbin::ChallengeException < Userbin::Error
   attr_reader :challenge

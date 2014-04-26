@@ -19,7 +19,6 @@ module Userbin
       env[:body] = case env[:status]
       when 423
         payload = MultiJson.decode(env[:body])
-        MultiJson.decode(env[:body])['message']
         challenge = Userbin::Challenge.new(payload['params'])
         raise Userbin::ChallengeException.new(challenge), payload['message']
       when 400..599
