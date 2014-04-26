@@ -15,9 +15,8 @@ module Userbin
     # @param [Hash] env The response environment
     # @private
     def on_complete(env)
+      env[:body] = '{}' if [204, 405].include?(env[:status])
       env[:body] = case env[:status]
-      when 204
-        parse('{}')
       when 423
         payload = MultiJson.decode(env[:body])
         MultiJson.decode(env[:body])['message']
