@@ -4,6 +4,7 @@ module Userbin
   class JWT
     def initialize(jwt)
       begin
+        raise Userbin::SecurityError, 'Empty JWT' unless jwt
         @payload = ::JWT.decode(jwt, Userbin.config.api_secret, true) do |header|
           @created_at = Time.at(header['iat']).utc
           @expires_at = Time.at(header['exp']).utc

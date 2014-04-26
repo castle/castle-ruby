@@ -28,8 +28,18 @@ describe 'Userbin::JWT' do
   context 'invalid JWT' do
     let(:jwt) { 'eyJ0eXhtWWNTU3pEUHp6WFF2WmZp26mn7Kkl6UgE' }
 
-    it 'throws error on invalid JWT' do
-      jwt = 'eyJ0eXhtWWNTU3pEUHp6WFF2WmZp26mn7Kkl6UgE'
+    it 'throws error' do
+      expect {
+        payload = Userbin::JWT.new(jwt).to_json
+      }.to raise_error(Userbin::SecurityError)
+    end
+  end
+
+  context 'nil JWT' do
+    let(:jwt) { nil }
+
+    it 'throws error' do
+      jwt = nil
       expect {
         payload = Userbin::JWT.new(jwt).to_json
       }.to raise_error(Userbin::SecurityError)
