@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: put
+    uri: https://secretkey:@api.userbin.com/v1/users/AKfwtfrAzdDKp55aty8o14MoudkaS9BL
+    body:
+      encoding: UTF-8
+      string: '{"id":"AKfwtfrAzdDKp55aty8o14MoudkaS9BL","email":"updated@example.com","created_at":"2014-04-27
+        22:10:22 +0200"}'
+    headers:
+      User-Agent:
+      - Faraday v0.9.0
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sun, 27 Apr 2014 20:10:22 GMT
+      Status:
+      - 200 OK
+      Connection:
+      - close
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '252'
+      Set-Cookie:
+      - _ubt=; expires=Thu, 01-Jan-1970 00:00:00 GMT
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - '"de56261eb3d3bef170cc8e837af079fd"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+    body:
+      encoding: UTF-8
+      string: '{"id":"AKfwtfrAzdDKp55aty8o14MoudkaS9BL","created_at":"2014-04-27T20:10:22Z","updated_at":"2014-04-27T20:10:22Z","email":"updated@example.com","username":"updated@example.com","name":null,"first_name":null,"last_name":null,"image":null,"status":"ACTIVE","identities":[]}'
+    http_version:
+  recorded_at: Sun, 27 Apr 2014 20:10:22 GMT
+recorded_with: VCR 2.9.0

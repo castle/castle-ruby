@@ -20,6 +20,15 @@ describe 'Userbin::User' do
     end
   end
 
+  it 'updates a user' do
+    VCR.use_cassette('user_update') do
+      user = Userbin::User.new(id: 'AKfwtfrAzdDKp55aty8o14MoudkaS9BL')
+      user.email = 'updated@example.com'
+      user.created_at = Time.now
+      user.save
+    end
+  end
+
   it 'imports users' do
     VCR.use_cassette('user_import') do
       users = Userbin::User.import(
