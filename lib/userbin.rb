@@ -3,6 +3,7 @@ require 'faraday_middleware'
 require 'multi_json'
 require 'openssl'
 require 'net/http'
+require 'request_store'
 
 require "userbin/configuration"
 require "userbin/faraday"

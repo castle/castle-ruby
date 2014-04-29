@@ -13,6 +13,18 @@ module Userbin
     end
   end
 
+  class ContextHeaders < Faraday::Middleware
+    def call(env)
+      userbin_headers = RequestStore.store.fetch(:userbin_headers, [])
+      userbin_headers.each do |key, value|
+        header =
+          "X-Userbin-#{key.to_s.gsub('_', '-').gsub(/\w+/) {|m| m.capitalize}}"
+        env[:request_headers][header] = value
+      end
+      @app.call(env)
+    end
+  end
+
   class JSONParser < Her::Middleware::DefaultParseJSON
     # This method is triggered when the response has been received. It modifies
     # the value of `env[:body]`.
