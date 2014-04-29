@@ -16,18 +16,17 @@ describe 'Userbin utils' do
       end
     end
 
-    let(:request) do
-      Rack::Request.new(Rack::MockRequest.env_for('/',
-        "HTTP_USER_AGENT" => "Mozilla",
-        "REMOTE_ADDR" => "8.8.8.8"))
+    let(:env) do
+      Rack::MockRequest.env_for('/',
+        "HTTP_USER_AGENT" => "Mozilla", "REMOTE_ADDR" => "8.8.8.8")
     end
 
     it 'handles non-existing context headers' do
       Userbin::User.create()
     end
 
-    it 'sets context headers from Rack request' do
-      Userbin.with_context(request) do
+    it 'sets context headers from env' do
+      Userbin.with_context(env) do
         Userbin::User.create()
         @env['request_headers']['X-Userbin-Ip'].should == '8.8.8.8'
         @env['request_headers']['X-Userbin-User-Agent'].should == 'Mozilla'

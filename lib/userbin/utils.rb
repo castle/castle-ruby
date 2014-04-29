@@ -13,7 +13,8 @@ module Userbin
     end
   end
 
-  def self.with_context(request, &block)
+  def self.with_context(env, &block)
+    request = Rack::Request.new(env)
     RequestStore.store[:userbin_headers] = {
       ip: request.ip,
       user_agent: request.user_agent
