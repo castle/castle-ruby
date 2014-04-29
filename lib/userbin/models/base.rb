@@ -3,6 +3,7 @@ require 'her'
 module Userbin
   class Base
     include Her::Model
+    use_api Userbin::API
 
     METHODS.each do |method|
       class_eval <<-RUBY, __FILE__, __LINE__ + 1

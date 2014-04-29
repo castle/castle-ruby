@@ -7,16 +7,10 @@ require 'net/http'
 require "userbin/configuration"
 require "userbin/faraday"
 require "userbin/jwt"
+require "userbin/utils"
 
-api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
-  "https://api.userbin.com/v1"
-}
-
-@api = Her::API.setup url: api_endpoint do |c|
-  c.use Userbin::BasicAuth
-  c.use FaradayMiddleware::EncodeJson
-  c.use Userbin::JSONParser
-  c.use Faraday::Adapter::NetHttp
+module Userbin
+  API = Userbin.setup_api
 end
 
 # These need to be required after setting up Her

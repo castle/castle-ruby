@@ -1,7 +1,12 @@
 module Userbin
   class BasicAuth < Faraday::Middleware
+    def initialize(app, api_secret)
+      super(app)
+      @api_secret = api_secret
+    end
+
     def call(env)
-      value = Base64.encode64("#{Userbin.config.api_secret}:")
+      value = Base64.encode64("#{@api_secret || Userbin.config.api_secret}:")
       value.gsub!("\n", '')
       env[:request_headers]["Authorization"] = "Basic #{value}"
       @app.call(env)
