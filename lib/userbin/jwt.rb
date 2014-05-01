@@ -22,5 +22,9 @@ module Userbin
     def to_json
       @payload
     end
+
+    def app_id
+      @payload['app']
+    end
   end
 end
