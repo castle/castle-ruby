@@ -26,4 +26,13 @@ describe 'Userbin helpers' do
     }
     Userbin.authenticate(opts)
   end
+
+  it 'deauthenticates with context' do
+    Userbin::Session.should_receive(:destroy_existing)
+
+    jwt = Userbin::JWT.new(token)
+    jwt.merge!(context: { ip: '8.8.8.8', user_agent: 'Mozilla' })
+
+    Userbin.deauthenticate(jwt.to_token)
+  end
 end

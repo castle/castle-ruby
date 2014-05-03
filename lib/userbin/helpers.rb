@@ -32,7 +32,11 @@ module Userbin
 
     def deauthenticate(token)
       return unless token
-      Userbin.with_context(warden.env) do
+
+      jwt = Userbin::JWT.new(token)
+      context = jwt.to_json['context']
+
+      Userbin.with_context(context) do
         Userbin::Session.destroy_existing(token)
       end
     end
