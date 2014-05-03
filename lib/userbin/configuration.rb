@@ -13,21 +13,13 @@ module Userbin
     def config
       @configuration ||= Userbin::Configuration.new
     end
+
+    def api_secret=(api_secret)
+      config.api_secret = api_secret
+    end
   end
 
   class Configuration
-    attr_accessor :current_user
-    attr_accessor :create_user
-    attr_accessor :exclude_regexp
-    attr_accessor :find_user
-    attr_accessor :protected_path
-    attr_accessor :root_path
-    attr_accessor :skip_script_injection
-
-    def initialize
-      self.skip_script_injection = false
-    end
-
     def api_secret
       ENV['USERBIN_API_SECRET'] || @_api_secret
     end
