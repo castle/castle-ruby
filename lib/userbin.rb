@@ -9,6 +9,7 @@ require "userbin/configuration"
 require "userbin/faraday"
 require "userbin/jwt"
 require "userbin/utils"
+require "userbin/helpers"
 
 module Userbin
   API = Userbin.setup_api
