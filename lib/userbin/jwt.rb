@@ -6,8 +6,7 @@ module Userbin
       begin
         raise Userbin::SecurityError, 'Empty JWT' unless jwt
         @payload = ::JWT.decode(jwt, Userbin.config.api_secret, true) do |header|
-          @created_at = Time.at(header['iat']).utc
-          @expires_at = Time.at(header['exp']).utc
+          @header = header
           Userbin.config.api_secret # used by the 'key finder' in the JWT gem
         end
       rescue ::JWT::DecodeError => e
@@ -16,15 +15,23 @@ module Userbin
     end
 
     def expired?
-      Time.now.utc > @expires_at
+      Time.now.utc > Time.at(@header['exp']).utc
     end
 
     def to_json
       @payload
     end
 
+    def to_token
+      ::JWT.encode(@payload, Userbin.config.api_secret, "HS256", @header)
+    end
+
     def app_id
       @payload['app']
+    end
+
+    def merge!(payload = {})
+      @payload.merge!(payload)
     end
   end
 end

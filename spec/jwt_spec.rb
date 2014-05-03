@@ -46,4 +46,22 @@ describe 'Userbin::JWT' do
     end
   end
 
+  context '#to_token' do
+    it 'returns the same token' do
+      Userbin::JWT.new(token).to_token.should == token
+    end
+  end
+
+  context '#merge' do
+    it 'merges payload' do
+      jwt = Userbin::JWT.new(token)
+      jwt.merge!(context: { ip: '8.8.8.8' })
+
+      merged_token = jwt.to_token
+      merged_token.should_not == token
+      Userbin::JWT.new(merged_token).
+        to_json['context']['ip'].should == '8.8.8.8'
+    end
+  end
+
 end
