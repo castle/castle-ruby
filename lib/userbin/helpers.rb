@@ -6,7 +6,7 @@ module Userbin
 
       # Restructure user data to fit API
       user_data = opts.fetch(:properties, {})
-      user_data.merge(local_id: opts[:user_id]) if opts[:user_id]
+      user_data.merge!(local_id: opts[:user_id]) if opts[:user_id]
 
       if session.id
         if session.expired?
