@@ -26,7 +26,7 @@ describe 'Userbin utils' do
     end
 
     it 'sets context headers from env' do
-      Userbin.with_context(env) do
+      Userbin.with_context(ip: '8.8.8.8', user_agent: 'Mozilla') do
         Userbin::User.create()
         @env['request_headers']['X-Userbin-Ip'].should == '8.8.8.8'
         @env['request_headers']['X-Userbin-User-Agent'].should == 'Mozilla'
