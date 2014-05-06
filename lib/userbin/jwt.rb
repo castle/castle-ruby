@@ -27,7 +27,7 @@ module Userbin
     end
 
     def app_id
-      @payload['app']
+      @header['aud']
     end
 
     def merge!(payload = {})
