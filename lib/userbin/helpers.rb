@@ -41,5 +41,30 @@ module Userbin
       end
     end
 
+    def two_factor_authenticate!(session_token)
+      challenge = Userbin::JWT.new(session_token).to_json['challenge']
+
+      if challenge
+        case challenge['type']
+        when 'otp_authenticator' then :authenticator
+        when 'otp_sms' then :sms
+        end
+      end
+    end
+
+    def verify_code(session_token, response)
+      return unless session_token
+
+      # Extract context from authenticated session token
+      jwt = Userbin::JWT.new(session_token)
+      context = jwt.to_json['context']
+
+      session = Userbin.with_context(context) do
+        Userbin::Session.new(id: session_token).verify(response: response)
+      end
+
+      session.token
+    end
+
   end
 end
