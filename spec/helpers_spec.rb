@@ -4,9 +4,9 @@ describe 'Userbin helpers' do
   let(:token) { 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImlhdCI6MTM5ODIzOTIwMywiZXhwIjoxMzk4MjQyODAzfQ.eyJ1c2VyX2lkIjoiZUF3djVIdGRiU2s4Yk1OWVpvanNZdW13UXlLcFhxS3IifQ.Apa7EmT5T1sOYz4Af0ERTDzcnUvSalailNJbejZ2ddQ' }
 
   it 'creates a session' do
-    Userbin::Session.should_receive(:create).
-    Userbin.authenticate(user: {email: 'valid@example.com'})
+    Userbin::Session.should_receive(:post).
       and_return(Userbin::Session.new(token: token))
+    Userbin.authenticate(nil, '1234', user: {email: 'valid@example.com'})
   end
 
   it 'refreshes, and does not create a session' do
@@ -21,10 +21,9 @@ describe 'Userbin helpers' do
       context: {
         ip: '8.8.8.8',
         user_agent: 'Mozilla'
-      },
-      current: token,
+      }
     }
-    Userbin.authenticate(opts)
+    Userbin.authenticate(token, opts)
   end
 
   it 'deauthenticates with context' do

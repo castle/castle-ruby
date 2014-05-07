@@ -1,12 +1,10 @@
 module Userbin
   class << self
 
-    def authenticate(opts = {})
-      session = Userbin::Session.new(id: opts[:current])
+    def authenticate(session_token, user_id, opts = {})
+      session = Userbin::Session.new(token: session_token)
 
-      # Restructure user data to fit API
       user_data = opts.fetch(:properties, {})
-      user_data.merge!(local_id: opts[:user_id]) if opts[:user_id]
 
       if session.token
         if session.expired?
@@ -16,7 +14,8 @@ module Userbin
         end
       else
         session = Userbin.with_context(opts[:context]) do
-          Userbin::Session.create(user: user_data)
+          Userbin::Session.post(
+            "/api/v1/users/#{user_id}/sessions", user: user_data)
         end
       end
 
