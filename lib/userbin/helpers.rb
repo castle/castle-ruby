@@ -66,5 +66,15 @@ module Userbin
       session.token
     end
 
+    def security_page_url(session_token)
+      return '' unless session_token
+      begin
+        app_id = Userbin::JWT.new(session_token).app_id
+        "https://#{app_id}.userbin.com/?session_token=#{session_token}"
+      rescue Userbin::Error
+        ''
+      end
+    end
+
   end
 end
