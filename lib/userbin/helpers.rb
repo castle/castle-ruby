@@ -15,7 +15,7 @@ module Userbin
       else
         session = Userbin.with_context(opts[:context]) do
           Userbin::Session.post(
-            "/api/v1/users/#{user_id}/sessions", user: user_data)
+            "users/#{user_id}/sessions", user: user_data)
         end
       end
 
@@ -34,7 +34,7 @@ module Userbin
 
       # Extract context from authenticated session token
       jwt = Userbin::JWT.new(session_token)
-      context = jwt.to_json['context']
+      context = jwt.payload['context']
 
       Userbin.with_context(context) do
         Userbin::Session.destroy_existing(session_token)
@@ -42,7 +42,7 @@ module Userbin
     end
 
     def two_factor_authenticate!(session_token)
-      challenge = Userbin::JWT.new(session_token).to_json['challenge']
+      challenge = Userbin::JWT.new(session_token).payload['challenge']
 
       if challenge
         case challenge['type']
@@ -57,7 +57,7 @@ module Userbin
 
       # Extract context from authenticated session token
       jwt = Userbin::JWT.new(session_token)
-      context = jwt.to_json['context']
+      context = jwt.payload['context']
 
       session = Userbin.with_context(context) do
         Userbin::Session.new(id: session_token).verify(response: response)

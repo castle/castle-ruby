@@ -2,6 +2,9 @@ require 'jwt'
 
 module Userbin
   class JWT
+    attr_reader :header
+    attr_reader :payload
+
     def initialize(jwt)
       begin
         raise Userbin::SecurityError, 'Empty JWT' unless jwt
