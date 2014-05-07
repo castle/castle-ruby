@@ -5,8 +5,9 @@ describe 'Userbin helpers' do
 
   it 'creates a session' do
     Userbin::Session.should_receive(:post).
+      with("users/user%201234/sessions", user: {email: 'valid@example.com'}).
       and_return(Userbin::Session.new(token: token))
-    Userbin.authenticate(nil, '1234', user: {email: 'valid@example.com'})
+    Userbin.authenticate(nil, 'user 1234', properties: {email: 'valid@example.com'})
   end
 
   it 'refreshes, and does not create a session' do

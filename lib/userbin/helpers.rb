@@ -15,7 +15,7 @@ module Userbin
       else
         session = Userbin.with_context(opts[:context]) do
           Userbin::Session.post(
-            "users/#{user_id}/sessions", user: user_data)
+            "users/#{URI.encode(user_id)}/sessions", user: user_data)
         end
       end
 
