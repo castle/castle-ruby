@@ -8,7 +8,7 @@ module Userbin
       user_data = opts.fetch(:properties, {})
       user_data.merge!(local_id: opts[:user_id]) if opts[:user_id]
 
-      if session.id
+      if session.token
         if session.expired?
           session = Userbin.with_context(opts[:context]) do
             session.refresh(user: user_data)
@@ -20,24 +20,25 @@ module Userbin
         end
       end
 
-      token = session.id
+      session_token = session.token
 
       # By encoding the context to the JWT payload, we avoid having to
       # fetch the context for subsequent Userbin calls during the
       # current request
-      jwt = Userbin::JWT.new(token)
+      jwt = Userbin::JWT.new(session_token)
       jwt.merge!(context: opts[:context])
       jwt.to_token
     end
 
-    def deauthenticate(token)
-      return unless token
+    def deauthenticate(session_token)
+      return unless session_token
 
-      jwt = Userbin::JWT.new(token)
+      # Extract context from authenticated session token
+      jwt = Userbin::JWT.new(session_token)
       context = jwt.to_json['context']
 
       Userbin.with_context(context) do
-        Userbin::Session.destroy_existing(token)
+        Userbin::Session.destroy_existing(session_token)
       end
     end
 

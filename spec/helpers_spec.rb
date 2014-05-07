@@ -5,14 +5,14 @@ describe 'Userbin helpers' do
 
   it 'creates a session' do
     Userbin::Session.should_receive(:create).
-      and_return(Userbin::Session.new(id: token))
     Userbin.authenticate(user: {email: 'valid@example.com'})
+      and_return(Userbin::Session.new(token: token))
   end
 
   it 'refreshes, and does not create a session' do
     Userbin::Session.should_not_receive(:create)
     Userbin::Session.any_instance.should_receive(:refresh).
-      and_return(Userbin::Session.new(id: token))
+      and_return(Userbin::Session.new(token: token))
     opts = {
       user_id: '1234',
       properties: {
