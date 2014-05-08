@@ -15,7 +15,7 @@ module Userbin
       else
         session = Userbin.with_context(opts[:context]) do
           Userbin::Session.post(
-            "users/#{URI.encode(user_id)}/sessions", user: user_data)
+            "users/#{URI.encode(user_id.to_s)}/sessions", user: user_data)
         end
       end
 
@@ -42,6 +42,8 @@ module Userbin
     end
 
     def two_factor_authenticate!(session_token)
+      return unless session_token
+
       challenge = Userbin::JWT.new(session_token).payload['challenge']
 
       if challenge
