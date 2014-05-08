@@ -48,11 +48,7 @@ module Userbin
           begin
             env[:request_headers]["X-Userbin-Client-User-Agent"] =
               MultiJson.encode(Userbin::Request.client_user_agent)
-          rescue => e
-            binding.pry
-            #env[:request_headers]["X-Userbin-Client-Raw-User-Agent"] =
-           #   user_agent.inspect, error: "#{e} (#{e.class})"
-          end
+          rescue => error; end
 
           env[:request_headers]["User-Agent"] =
             "Userbin/v1 RubyBindings/#{Userbin::VERSION}"
