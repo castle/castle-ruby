@@ -8,10 +8,11 @@ module Userbin
       }
 
       Her::API.setup url: api_endpoint do |c|
-        c.use Userbin::BasicAuth, api_secret
-        c.use Userbin::ContextHeaders
+        c.use Userbin::Request::Middleware::BasicAuth, api_secret
+        c.use Userbin::Request::Middleware::EnvironmentHeaders
+        c.use Userbin::Request::Middleware::ContextHeaders
         c.use FaradayMiddleware::EncodeJson
-        c.use Userbin::JSONParser
+        c.use Userbin::Request::Middleware::JSONParser
         c.use Faraday::Adapter::NetHttp
       end
     end

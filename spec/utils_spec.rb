@@ -5,7 +5,7 @@ describe 'Userbin utils' do
     before do
       Userbin::User.use_api(api = Her::API.new)
       @user = api.setup do |c|
-        c.use Userbin::ContextHeaders
+        c.use Userbin::Request::Middleware::ContextHeaders
         c.use Her::Middleware::FirstLevelParseJSON
         c.adapter :test do |stub|
           stub.post('/users') do |env|
