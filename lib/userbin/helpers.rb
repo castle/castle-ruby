@@ -72,7 +72,7 @@ module Userbin
       return '' unless session_token
       begin
         app_id = Userbin::JWT.new(session_token).app_id
-        "https://#{app_id}.settings.userbin.com/?session_token=#{session_token}"
+        "https://security.userbin.com/?session_token=#{session_token}"
       rescue Userbin::Error
         ''
       end
