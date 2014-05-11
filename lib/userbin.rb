@@ -4,6 +4,7 @@ require 'multi_json'
 require 'openssl'
 require 'net/http'
 require 'request_store'
+require 'active_support/core_ext/hash/indifferent_access'
 
 require "userbin/version"
 require "userbin/configuration"

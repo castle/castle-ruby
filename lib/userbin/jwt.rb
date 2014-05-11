@@ -9,9 +9,9 @@ module Userbin
       begin
         raise Userbin::SecurityError, 'Empty JWT' unless jwt
         @payload = ::JWT.decode(jwt, Userbin.config.api_secret, true) do |header|
-          @header = header
+          @header = header.with_indifferent_access
           Userbin.config.api_secret # used by the 'key finder' in the JWT gem
-        end
+        end.with_indifferent_access
       rescue ::JWT::DecodeError => e
         raise Userbin::SecurityError.new(e)
       end
