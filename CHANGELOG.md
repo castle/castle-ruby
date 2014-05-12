@@ -1,3 +1,7 @@
+### v1.0.0
+
+ * Total rewrite for new V1 REST API
+
 ### v0.4.4
 
  * before filter `authenticate_user!` for Rails

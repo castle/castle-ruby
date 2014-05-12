@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://secretkey:@secure.userbin.com/v1/users/user-2412/sessions
+    body:
+      encoding: UTF-8
+      string: '{"user":{"email":"valid@example.com"}}'
+    headers:
+      User-Agent:
+      - Faraday v0.9.0
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 201
+      message: 'Created '
+    headers:
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '716'
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - '"c323dc2244006efcc5629936b73749ff"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.1.1/2014-02-24)
+      Date:
+      - Wed, 07 May 2014 16:21:05 GMT
+      Connection:
+      - Keep-Alive
+      Set-Cookie:
+      - _ubt=; expires=Thu, 01-Jan-1970 00:00:00 GMT
+    body:
+      encoding: UTF-8
+      string: '{"id":"S2odxReZnGqhqxPaQ7V7kNkLoXkGZPFz","token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImlzcyI6InVzZXItMjQxMiIsInN1YiI6IlMyb2R4UmVabkdxaHF4UGFRN1Y3a05rTG9Ya0daUEZ6IiwiYXVkIjoiODAwMDAwMDAwMDAwMDAwIiwiZXhwIjoxMzk5NDc5Njc1LCJpYXQiOjEzOTk0Nzk2NjUsImp0aSI6MH0.eyJjaGFsbGVuZ2UiOnsiaWQiOiJUVENqd3VyM3lwbTRUR1ZwWU43cENzTXFxOW9mWEVBSCIsInR5cGUiOiJvdHBfYXV0aGVudGljYXRvciJ9fQ.LT9mUzJEbsizbFxcpMo3zbms0aCDBzfgMbveMGSi1-s","user":{"id":"8Fpmj9asxpq4mwGzx48MP1EQhdWUHDeb","local_id":"user-2412","created_at":"2014-05-07T15:33:58Z","updated_at":"2014-05-07T16:04:56Z","email":"valid@example.com","username":"valid@example.com","name":"New
+        Name","first_name":null,"last_name":null,"image":null,"status":"ACTIVE","mfa_enabled":true}}'
+    http_version:
+  recorded_at: Wed, 07 May 2014 16:21:05 GMT
+recorded_with: VCR 2.9.0
