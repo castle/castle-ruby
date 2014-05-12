@@ -72,7 +72,7 @@ The second argument is a locally unique identifier for the logged in user, commo
 
 ## Two-factor authentication
 
-Two-factor authentication is available to your users out-of-the-box. By browsing to their Security Page, they're able to configure Google Authenticator and SMS settings, set up a backup phone number, and download their recovery codes.
+Two-factor authentication is available to your users out-of-the-box. By browsing to their security settings page, they're able to configure Google Authenticator and SMS settings, set up a backup phone number, and download their recovery codes.
 
 The session token returned from `authenticate` indicates if two-factor authentication is required from the user once your application asks for it. You can do this immediately after you've called `authenticate`, or you can wait until later. You have complete control over what actions you when you want to require two-factor authentication, e.g. when logging in, changing account information, making a purchase etc.
 
@@ -118,13 +118,13 @@ end
 
 ## Security page
 
-Every user has access to their security settings, which is a hosted page on Userbin. Here users can configure two-factor authentication, revoke suspicious sessions and set up notifications. The security page can be customized to fit your current layout by going to the appearance settings in your Userbin dashboard.
+Every user has access to their security settings, which is a hosted page on Userbin. Here users can configure two-factor authentication, revoke suspicious sessions and set up notifications. The security settings page can be customized to fit your current layout by going to the appearance settings in your Userbin dashboard.
 
-**Important:** Since the generated URL contains a Userbin session token that needs to be up-to-date, it's crucial that you don't use this helper directly in your HTML, but instead create a new route where you redirect to the security page.
+**Important:** Since the generated URL contains a Userbin session token that needs to be up-to-date, it's crucial that you don't use this helper directly in your HTML, but instead create a new route where you redirect to the security settings page.
 
 ```ruby
 get '/security'
-  redirect Userbin.security_page_url
+  redirect Userbin.security_settings_url
 end
 ```
 
