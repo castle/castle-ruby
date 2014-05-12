@@ -54,6 +54,7 @@ module Userbin
       end
     end
 
+    # TODO: almost the same as deauthenticate. Refactor?
     def verify_code(session_token, response)
       return unless session_token
 
@@ -62,7 +63,7 @@ module Userbin
       context = jwt.payload['context']
 
       session = Userbin.with_context(context) do
-        Userbin::Session.new(id: session_token).verify(response: response)
+        Userbin::Session.new(token: session_token).verify(response: response)
       end
 
       session.token
