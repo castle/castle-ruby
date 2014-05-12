@@ -116,7 +116,7 @@ rescue Userbin::Error => error
 end
 ```
 
-## Security page
+## User security settings
 
 Every user has access to their security settings, which is a hosted page on Userbin. Here users can configure two-factor authentication, revoke suspicious sessions and set up notifications. The security settings page can be customized to fit your current layout by going to the appearance settings in your Userbin dashboard.
 
