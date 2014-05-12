@@ -69,7 +69,7 @@ module Userbin
       session.token
     end
 
-    def security_page_url(session_token)
+    def security_settings_url(session_token)
       return '' unless session_token
       begin
         app_id = Userbin::JWT.new(session_token).app_id
