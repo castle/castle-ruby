@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: put
-    uri: https://secretkey:@secure.userbin.com/v1/users/AKfwtfrAzdDKp55aty8o14MoudkaS9BL
+    uri: https://:secretkey@secure.userbin.com/v1/users/AKfwtfrAzdDKp55aty8o14MoudkaS9BL
     body:
       encoding: UTF-8
       string: '{"id":"AKfwtfrAzdDKp55aty8o14MoudkaS9BL","email":"updated@example.com","created_at":"2014-04-27

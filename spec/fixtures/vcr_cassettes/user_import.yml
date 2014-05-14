@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://secretkey:@secure.userbin.com/v1/users/import
+    uri: https://:secretkey@secure.userbin.com/v1/users/import
     body:
       encoding: UTF-8
       string: '{"users":[{"email":"10@example.com","username":"10"},{"email":"20@example.com","username":"20"}]}'

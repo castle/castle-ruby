@@ -34,7 +34,7 @@ module Userbin
         end
 
         def call(env)
-          value = Base64.encode64("#{@api_secret || Userbin.config.api_secret}:")
+          value = Base64.encode64(":#{@api_secret || Userbin.config.api_secret}")
           value.gsub!("\n", '')
           env[:request_headers]["Authorization"] = "Basic #{value}"
           @app.call(env)

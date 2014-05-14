@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://secretkey:@secure.userbin.com/v1/users/user-2412/sessions
+    uri: https://:secretkey@secure.userbin.com/v1/users/user-2412/sessions
     body:
       encoding: UTF-8
       string: '{"user":{"email":"valid@example.com"}}'

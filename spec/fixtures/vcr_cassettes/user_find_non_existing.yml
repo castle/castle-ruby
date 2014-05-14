@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://secretkey:@secure.userbin.com/v1/users/non_existing
+    uri: https://:secretkey@secure.userbin.com/v1/users/non_existing
     body:
       encoding: US-ASCII
       string: ''
