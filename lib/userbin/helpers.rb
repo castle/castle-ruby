@@ -44,29 +44,19 @@ module Userbin
     def two_factor_authenticate!(session_token)
       return unless session_token
 
-      challenge = Userbin::JWT.new(session_token).payload['challenge']
+      jwt = Userbin::JWT.new(session_token)
+      context = jwt.payload['context']
 
-      if challenge
-        case challenge['type']
-        when 'otp_authenticator' then :authenticator
-        when 'otp_sms' then :sms
+      if jwt.header['mfa'] == 1
+        Userbin.with_context(context) do
+          Userbin::Challenge.post("users/#{jwt.header['iss']}/challenges")
         end
       end
     end
 
-    # TODO: almost the same as deauthenticate. Refactor?
-    def verify_code(session_token, response)
-      return unless session_token
-
-      # Extract context from authenticated session token
-      jwt = Userbin::JWT.new(session_token)
-      context = jwt.payload['context']
-
-      session = Userbin.with_context(context) do
-        Userbin::Session.new(token: session_token).verify(response: response)
-      end
-
-      session.token
+    def verify_challenge(challenge_id, response)
+      challenge = Userbin::Challenge.new(id: challenge_id)
+      challenge.verify(response: response)
     end
 
     def security_settings_url(session_token)

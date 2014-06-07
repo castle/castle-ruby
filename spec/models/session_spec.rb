@@ -22,7 +22,7 @@ describe 'Userbin::Session' do
     end
   end
 
-  it 'verifies a session' do
+  xit 'verifies a session' do
     VCR.use_cassette('session_verify') do
       Userbin::JWT.new(session_token).payload['challenge'].should_not be_nil
       session = Userbin::Session.new(token: session_token)

@@ -21,5 +21,7 @@ end
 # These need to be required after setting up Her
 require "userbin/models/base"
 require "userbin/models/challenge"
+require "userbin/models/channel"
+require "userbin/models/token"
 require "userbin/models/session"
 require "userbin/models/user"
