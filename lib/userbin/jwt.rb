@@ -2,8 +2,7 @@ require 'jwt'
 
 module Userbin
   class JWT
-    attr_reader :header
-    attr_reader :payload
+    attr_accessor :header, :payload
 
     def initialize(jwt)
       begin
@@ -21,6 +20,10 @@ module Userbin
       Time.now.utc > Time.at(@header['exp']).utc
     end
 
+    def merge!(payload = {})
+      @payload.merge!(payload)
+    end
+
     def to_json
       @payload
     end
@@ -29,12 +32,5 @@ module Userbin
       ::JWT.encode(@payload, Userbin.config.api_secret, "HS256", @header)
     end
 
-    def app_id
-      @header['aud']
-    end
-
-    def merge!(payload = {})
-      @payload.merge!(payload)
-    end
   end
 end

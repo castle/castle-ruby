@@ -1,5 +1,23 @@
 require 'spec_helper'
 
+class MemoryStore < Userbin::SessionStore
+  def initialize
+    @value = nil
+  end
+
+  def read
+    @value
+  end
+
+  def write(value)
+    @value = value
+  end
+
+  def destroy
+    @value = nil
+  end
+end
+
 describe 'Userbin utils' do
   describe 'ContextHeaders middleware' do
     before do
@@ -26,11 +44,12 @@ describe 'Userbin utils' do
     end
 
     it 'sets context headers from env' do
-      Userbin.with_context(ip: '8.8.8.8', user_agent: 'Mozilla') do
-        Userbin::User.create()
-        @env['request_headers']['X-Userbin-Ip'].should == '8.8.8.8'
-        @env['request_headers']['X-Userbin-User-Agent'].should == 'Mozilla'
-      end
+      request = Rack::Request.new(Rack::MockRequest.env_for('/',
+        "HTTP_USER_AGENT" => "Mozilla", "REMOTE_ADDR" => "8.8.8.8"))
+      Userbin::Security.new(request, session_store: MemoryStore.new)
+      Userbin::User.create()
+      @env['request_headers']['X-Userbin-Ip'].should == '8.8.8.8'
+      @env['request_headers']['X-Userbin-User-Agent'].should == 'Mozilla'
     end
   end
 end

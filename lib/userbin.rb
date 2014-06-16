@@ -13,6 +13,7 @@ require "userbin/jwt"
 require "userbin/utils"
 require "userbin/helpers"
 require "userbin/errors"
+require "userbin/session_store"
 
 module Userbin
   API = Userbin.setup_api
@@ -25,3 +26,4 @@ require "userbin/models/channel"
 require "userbin/models/token"
 require "userbin/models/session"
 require "userbin/models/user"
+require "userbin/models/monitoring"

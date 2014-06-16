@@ -5,6 +5,12 @@ module Userbin
     include Her::Model
     use_api Userbin::API
 
+    def initialize(args = {})
+      # allow initializing with id as a string
+      args = { id: args } if args.is_a? String
+      super(args)
+    end
+
     METHODS.each do |method|
       class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def self.instance_#{method}(action)

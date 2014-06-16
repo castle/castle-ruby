@@ -1,72 +1,110 @@
 module Userbin
-  class << self
+  class Security
 
-    def authenticate(session_token, user_id, opts = {})
-      session = Userbin::Session.new(token: session_token)
+    attr_accessor :request, :store, :request_context
 
-      user_data = opts.fetch(:properties, {})
+    def initialize(request, opts = {})
+      # Save a reference in the per-request store so that the request
+      # middleware in request.rb can access it
+      RequestStore.store[:userbin] = self
 
-      if session.token
-        if session.expired?
-          session = Userbin.with_context(opts[:context]) do
-            session.refresh(user: user_data)
-          end
-        end
+      # By default the session token is persisted in the Rack store, which may
+      # in turn point to any source. But this option gives you an option to
+      # use any store, such as Redis or Memcached to store your Userbin tokens.
+      if opts[:session_store]
+        @session_store = opts[:session_store]
       else
-        session = Userbin.with_context(opts[:context]) do
-          Userbin::Session.post(
-            "users/#{URI.encode(user_id.to_s)}/sessions", user: user_data)
-        end
+        @session_store = Userbin::SessionStore::Rack.new(request.session)
       end
 
-      session_token = session.token
-
-      # By encoding the context to the JWT payload, we avoid having to
-      # fetch the context for subsequent Userbin calls during the
-      # current request
-      jwt = Userbin::JWT.new(session_token)
-      jwt.merge!(context: opts[:context])
-      jwt.to_token
+      @request_context = {
+        ip: request.ip,
+        user_agent: request.user_agent
+      }
     end
 
-    def deauthenticate(session_token)
-      return unless session_token
+    def authorize!(user_id, user_attrs = {})
+      # The user identifier is used in API paths so it needs to be cleaned
+      user_id = URI.encode(user_id.to_s)
 
-      # Extract context from authenticated session token
-      jwt = Userbin::JWT.new(session_token)
-      context = jwt.payload['context']
+      # Support multiple users and scopes
+      @session_store.key = "userbin.#{user_id}"
 
-      Userbin.with_context(context) do
-        Userbin::Session.destroy_existing(session_token)
-      end
-    end
-
-    def two_factor_authenticate!(session_token)
-      return unless session_token
-
-      jwt = Userbin::JWT.new(session_token)
-      context = jwt.payload['context']
-
-      if jwt.header['mfa'] == 1
-        Userbin.with_context(context) do
-          Userbin::Challenge.post("users/#{jwt.header['iss']}/challenges")
+      if !session_token
+        session = Userbin::Session.post(
+          "users/#{user_id}/sessions", user: user_attrs)
+        self.session_token = session.token
+      else
+        if Userbin::JWT.new(session_token).expired?
+          Userbin::Monitoring.heartbeat
         end
       end
     end
 
-    def verify_challenge(challenge_id, response)
-      challenge = Userbin::Challenge.new(id: challenge_id)
-      challenge.verify(response: response)
+    def session_token=(value)
+      if value && value != @session_store.read
+        @session_store.write(value)
+      elsif !value
+        @session_store.destroy
+      end
     end
 
-    def security_settings_url(session_token)
-      return '' unless session_token
+    def session_token
+      @session_store.read
+    end
+
+    def logout
+      return unless session_token
+
       begin
-        app_id = Userbin::JWT.new(session_token).app_id
-        "https://security.userbin.com/?session_token=#{session_token}"
+        Userbin::Session.destroy_existing('current')
       rescue Userbin::Error
-        ''
+        # Silently discard logout errors, typically Not Found
       end
+
+      self.session_token = nil
+    end
+
+    def two_factor_authenticate!
+      return unless session_token
+
+      jwt = Userbin::JWT.new(session_token)
+
+      if jwt.header['vfy'] == 1
+        challenge = Userbin::Challenge.post("users/current/challenges")
+
+        # Save payload in Userbin session for easy access when verifying
+        jwt = Userbin::JWT.new(session_token)
+        jwt.payload = { challenge_id: challenge.id }
+        self.session_token = jwt.to_token
+
+        case jwt.header['mfa']
+        when 1 then :authenticator
+        when 2 then :sms
+        when 3 then :call
+        end
+      end
+    end
+
+    def two_factor_verify(response)
+      return unless session_token
+
+      jwt = Userbin::JWT.new(session_token)
+
+      return unless jwt.payload['challenge_id']
+
+      challenge = Userbin::Challenge.new(jwt.payload['challenge_id'])
+      challenge.verify(response: response)
+
+      # session token may have changed during challenge verification
+      jwt = Userbin::JWT.new(session_token)
+      jwt.payload = {}
+      self.session_token = jwt.to_token
+    end
+
+    def security_settings_url
+      return '' unless session_token
+      return "https://security.userbin.com/?session_token=#{session_token}"
     end
 
   end

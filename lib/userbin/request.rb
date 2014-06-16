@@ -57,12 +57,39 @@ module Userbin
         end
       end
 
+      # Sends the active session token in a header, and extracts the returned
+      # session token and sets it locally.
+      #
+      class SessionToken < Faraday::Middleware
+        def call(env)
+          userbin = RequestStore.store[:userbin]
+          return @app.call(env) unless userbin
+
+          # get the session token from our local store
+          if userbin.session_token
+            env[:request_headers]['X-Userbin-Session-Token'] =
+              userbin.session_token
+          end
+
+          # call the API
+          response = @app.call(env)
+
+          # update the local store with the updated session token
+          userbin.session_token =
+            response.env.response_headers['x-userbin-session-token']
+
+          response
+        end
+      end
+
       # Adds request context like IP address and user agent to any request.
       #
       class ContextHeaders < Faraday::Middleware
         def call(env)
-          userbin_headers = RequestStore.store.fetch(:userbin_headers, [])
-          userbin_headers.each do |key, value|
+          userbin = RequestStore.store[:userbin]
+          return @app.call(env) unless userbin
+
+          userbin.request_context.each do |key, value|
             header =
               "X-Userbin-#{key.to_s.gsub('_', '-').gsub(/\w+/) {|m| m.capitalize}}"
             env[:request_headers][header] = value
@@ -82,6 +109,9 @@ module Userbin
           env[:body] = case env[:status]
           when 403
             raise Userbin::ForbiddenError.new(
+              MultiJson.decode(env[:body])['message'])
+          when 404
+            raise Userbin::NotFoundError.new(
               MultiJson.decode(env[:body])['message'])
           when 419
             raise Userbin::UserUnauthorizedError.new(
