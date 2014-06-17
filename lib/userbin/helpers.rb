@@ -1,7 +1,7 @@
 module Userbin
   class Security
 
-    attr_accessor :request, :store, :request_context
+    attr_accessor :request_context
 
     def initialize(request, opts = {})
       # Save a reference in the per-request store so that the request
@@ -27,8 +27,7 @@ module Userbin
       # The user identifier is used in API paths so it needs to be cleaned
       user_id = URI.encode(user_id.to_s)
 
-      # Support multiple users and scopes
-      @session_store.key = "userbin.#{user_id}"
+      @session_store.user_id = user_id
 
       if !session_token
         session = Userbin::Session.post(

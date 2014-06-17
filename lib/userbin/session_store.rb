@@ -1,10 +1,16 @@
 module Userbin
   class SessionStore
-    attr_accessor :key
-
     class Rack < SessionStore
       def initialize(session)
         @session = session
+      end
+
+      def user_id
+        @session['userbin.user_id']
+      end
+
+      def user_id=(value)
+        @session['userbin.user_id'] = value
       end
 
       def read
@@ -18,7 +24,12 @@ module Userbin
       def destroy
         @session.delete(key)
       end
-    end
 
+      private
+
+      def key
+        "userbin.user.#{user_id}"
+      end
+    end
   end
 end
