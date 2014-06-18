@@ -102,7 +102,7 @@ module Userbin
     end
 
     def security_settings_url
-      return '' unless session_token
+      raise Userbin::Error unless session_token
       return "https://security.userbin.com/?session_token=#{session_token}"
     end
 
