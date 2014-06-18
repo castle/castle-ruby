@@ -74,7 +74,7 @@ module Userbin
 
         # Save payload in Userbin session for easy access when verifying
         jwt = Userbin::JWT.new(session_token)
-        jwt.payload = { challenge_id: challenge.id }
+        jwt.payload = { chg: challenge.id }
         self.session_token = jwt.to_token
 
         case jwt.header['mfa']
@@ -90,9 +90,9 @@ module Userbin
 
       jwt = Userbin::JWT.new(session_token)
 
-      return unless jwt.payload['challenge_id']
+      return unless jwt.payload['chg']
 
-      challenge = Userbin::Challenge.new(jwt.payload['challenge_id'])
+      challenge = Userbin::Challenge.new(jwt.payload['chg'])
       challenge.verify(response: response)
 
       # session token may have changed during challenge verification
