@@ -1,4 +1,4 @@
 module Userbin
-  class Token < Base
+  class Token < Model
   end
 end

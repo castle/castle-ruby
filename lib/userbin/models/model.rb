@@ -1,7 +1,7 @@
 require 'her'
 
 module Userbin
-  class Base
+  class Model
     include Her::Model
     use_api Userbin::API
 

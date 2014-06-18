@@ -1,5 +1,5 @@
 module Userbin
-  class Challenge < Base
+  class Challenge < Model
     has_one :channel
     instance_post :verify
   end

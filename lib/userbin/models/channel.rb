@@ -1,5 +1,5 @@
 module Userbin
-  class Channel < Base
+  class Channel < Model
     has_one :token
   end
 end

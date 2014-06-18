@@ -1,5 +1,5 @@
 module Userbin
-  class Session < Base
+  class Session < Model
     instance_post :refresh
   end
 end

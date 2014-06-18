@@ -1,5 +1,5 @@
 module Userbin
-  class Security
+  class Client
 
     attr_accessor :request_context
 
