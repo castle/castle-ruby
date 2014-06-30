@@ -45,7 +45,7 @@ module Userbin
       if !session_token
         # Create a session, and implicitly a user with user_attrs
         session = Userbin::Session.post(
-          "users/current/sessions", user: user_attrs)
+          "users/#{user_id}/sessions", user: user_attrs)
 
         # Set the session token for use in all subsequent requests
         self.session_token = session.token
