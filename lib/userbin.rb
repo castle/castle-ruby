@@ -15,6 +15,7 @@ require 'userbin/session_store'
 require 'userbin/jwt'
 require 'userbin/utils'
 require 'userbin/request'
+require 'userbin/session_token'
 
 module Userbin
   API = Userbin.setup_api

@@ -23,23 +23,6 @@ module Userbin
       }
     end
 
-    def authorize!(user_id, user_attrs = {})
-      # The user identifier is used in API paths so it needs to be cleaned
-      user_id = URI.encode(user_id.to_s)
-
-      @session_store.user_id = user_id
-
-      if !session_token
-        session = Userbin::Session.post(
-          "users/#{user_id}/sessions", user: user_attrs)
-        self.session_token = session.token
-      else
-        if Userbin::JWT.new(session_token).expired?
-          Userbin::Monitoring.heartbeat
-        end
-      end
-    end
-
     def session_token=(value)
       if value && value != @session_store.read
         @session_store.write(value)
@@ -49,61 +32,84 @@ module Userbin
     end
 
     def session_token
-      @session_store.read
+      token = @session_store.read
+      Userbin::SessionToken.new(token) if token
     end
 
-    def logout
-      return unless session_token
+    def authorize!(user_id, user_attrs = {})
+      # The user identifier is used in API paths so it needs to be cleaned
+      user_id = URI.encode(user_id.to_s)
 
-      begin
-        Userbin::Session.destroy_existing('current')
-      rescue Userbin::Error
-        # Silently discard logout errors, typically Not Found
-      end
+      @session_store.user_id = user_id
 
-      self.session_token = nil
-    end
+      if !session_token
+        # Create a session, and implicitly a user with user_attrs
+        session = Userbin::Session.post(
+          "users/current/sessions", user: user_attrs)
 
-    def two_factor_authenticate!
-      return unless session_token
-
-      jwt = Userbin::JWT.new(session_token)
-
-      if jwt.header['vfy'] == 1
-        challenge = Userbin::Challenge.post("users/current/challenges")
-
-        # Save payload in Userbin session for easy access when verifying
-        jwt = Userbin::JWT.new(session_token)
-        jwt.payload = { chg: challenge.id }
-        self.session_token = jwt.to_token
-
-        case jwt.header['mfa']
-        when 1 then :authenticator
-        when 2 then :sms
-        when 3 then :call
+        # Set the session token for use in all subsequent requests
+        self.session_token = session.token
+      else
+        if session_token.expired?
+          Userbin::Monitoring.heartbeat
         end
       end
     end
 
-    def two_factor_verify(response)
+    # This method ends the current monitoring session. It should be called
+    # whenever the user logs out from your system.
+    #
+    def logout
       return unless session_token
 
-      jwt = Userbin::JWT.new(session_token)
+      # Destroy the current session specified in the session token
+      begin
+        Userbin::Session.destroy_existing('current')
+      rescue Userbin::Error; end
 
-      return unless jwt.payload['chg']
+      # Clear the session token
+      self.session_token = nil
+    end
 
-      challenge = Userbin::Challenge.new(jwt.payload['chg'])
+    # This method creates a two-factor challenge for the current user, if the
+    # user has enabled a device for authentication.
+    #
+    # If there already exists a challenge on the current session, it will be
+    # returned. Otherwise a new will be created.
+    #
+    def two_factor_authenticate!
+      return unless session_token
+
+      if session_token.needs_challenge?
+        Userbin::Challenge.post("users/current/challenges")
+        return two_factor_method
+      end
+    end
+
+    # Once a two factor challenge has been created using
+    # two_factor_authenticate!, the response code from the user is verified
+    # using this method.
+    #
+    def two_factor_verify(response)
+      # Need to have an active challenge to verify it
+      return unless session_token && session_token.has_challenge?
+
+      challenge = Userbin::Challenge.new('current')
       challenge.verify(response: response)
-
-      # session token may have changed during challenge verification
-      jwt = Userbin::JWT.new(session_token)
-      jwt.payload = {}
-      self.session_token = jwt.to_token
     end
 
     def security_settings_url
       raise Userbin::Error unless session_token
       return "https://security.userbin.com/?session_token=#{session_token}"
+    end
+
+     # If a two-factor authentication process has been started, this method will
+     # return the method which is used to perform the authentication. Eg.
+     # :authenticator or :sms
+     #
+    def two_factor_method
+      return unless session_token
+      return session_token.challenge_type
     end
 
   end

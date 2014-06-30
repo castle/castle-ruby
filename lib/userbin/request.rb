@@ -68,7 +68,7 @@ module Userbin
           # get the session token from our local store
           if userbin.session_token
             env[:request_headers]['X-Userbin-Session-Token'] =
-              userbin.session_token
+              userbin.session_token.to_s
           end
 
           # call the API
