@@ -117,7 +117,12 @@ module Userbin
             raise Userbin::UserUnauthorizedError.new(
               MultiJson.decode(env[:body])['message'])
           when 400..599
-            raise Userbin::Error.new(MultiJson.decode(env[:body])['message'])
+            begin
+              message = MultiJson.decode(env[:body])['message']
+              raise Userbin::Error.new(message)
+            rescue MultiJson::ParseError
+              raise Userbin::ApiError.new
+            end
           else
             parse(env[:body])
           end
