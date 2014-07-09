@@ -30,29 +30,47 @@ require 'userbin'
 Userbin.api_secret = "YOUR_API_SECRET"
 ```
 
-Initialize a Userbin client for every incoming HTTP request and add it to the environment so that it's accessible during the request lifetime.
-
-```ruby
-env['userbin'] = Userbin::Client.new(request)
-```
-
-
-
 ## Monitor a user
 
-To monitor a logged in user, simply call `authorize!` on the Userbin object. You need to pass the user id, and optionally a hash of [user properties](.), preferrable including at least `email`. This call only result in an HTTP request once every 5 minutes.
+First you'll need to **initialize a Userbin client** for every incoming HTTP request and add it to the environment so that it's accessible during the request lifetime.
+
+To **monitor a logged in user**, simply call `authorize!` on the Userbin object. You need to pass the user id, and optionally a hash of [user properties](.), preferrable including at least `email`. This call only result in an HTTP request once every 5 minutes.
+
+#### Full example
 
 ```ruby
-# do this for *every* request, right after current_user is assigned
-env['userbin'].authorize!(current_user.id, { email: current_user.email })
+class MyController < ApplicationController
+  # Define a before filter
+  before_filter :initialize_userbin
+
+  # Your controller code here
+
+  private
+  def initialize_userbin
+    # initialize Userbin and add it to the request environment
+    env['userbin'] = Userbin::Client.new(request)
+
+    if user_signed_in?
+      user_properties = {
+        email: current_user.email,
+        name: current_user.name # optional
+      }
+
+      begin
+        env['userbin'].authorize!(current_user.id, user_properties)
+      rescue Userbin::Error
+        # logged out from Userbin; clear your current_user and logout
+      end
+    end
+  end
+end
 ```
 
-Clear the session when the user logs out.
+As a last step, you'll need to **clear the Usebin session** when the user logs out from your application.
 
 ```ruby
-env['userbin'].logout
+  env['userbin'].logout
 ```
-
 
 Done! Now log in to your application and watch the user appear in your Userbin dashboard.
 
@@ -64,7 +82,7 @@ Create a new route where you redirect the user to its [security settings page](.
 redirect_to env['userbin'].security_settings_url
 ```
 
-## Activate two-factor authentication
+## Two-factor authentication
 
 If the user has enabled two-factor authentication, `two_factor_authenticate!` will return the second factor that is used to authenticate. If SMS is used, this call will also send out an SMS to the user's registered phone number.
 
@@ -80,9 +98,13 @@ end
 The user enters the authentication code in the form and posts it to your handler.
 
 ```ruby
-env['userbin'].two_factor_verify(params[:code])
+begin
+  env['userbin'].two_factor_verify(params[:code])
+rescue Userbin::UserUnauthorizedError
+  # invalid code, show the form again
+rescue Userbin::ForbiddenError
+  # no tries remaining, log out
+rescue Userbin::Error
+  # logged out from Userbin; clear your current_user and logout
+end
 ```
-
-## Handling errors
-
-If any request runs into an subclass of `Userbin::Error` will be raised with more details on what went wrong.
