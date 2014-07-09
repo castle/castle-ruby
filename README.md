@@ -76,7 +76,7 @@ Done! Now log in to your application and watch the user appear in your Userbin d
 
 ## Add a link to the user's security settings
 
-Create a new route where you redirect the user to its [security settings page](.), where they can configure two-factor authentication, revoke suspicious sessions and set up notifications.
+Create a new route where you redirect the user to its security settings page, where they can configure two-factor authentication, revoke suspicious sessions and set up notifications.
 
 ```ruby
 redirect_to env['userbin'].security_settings_url
