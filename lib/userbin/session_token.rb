@@ -25,7 +25,7 @@ module Userbin
     end
 
     def challenge_type
-      @jwt.payload['chg']['typ'] if has_challenge?
+      @jwt.payload['chg']['typ'].to_sym if has_challenge?
     end
   end
 end
