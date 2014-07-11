@@ -99,36 +99,43 @@ module Userbin
         end
       end
 
-      class JSONParser < Her::Middleware::DefaultParseJSON
-        # This method is triggered when the response has been received. It modifies
-        # the value of `env[:body]`.
-        #
-        # @param [Hash] env The response environment
-        # @private
+      class JSONParser < Faraday::Response::Middleware
         def on_complete(env)
-          env[:body] = '{}' if [204, 405].include?(env[:status])
-          env[:body] = case env[:status]
-          when 403
-            raise Userbin::ForbiddenError.new(
-              MultiJson.decode(env[:body])['message'])
-          when 404
-            raise Userbin::NotFoundError.new(
-              MultiJson.decode(env[:body])['message'])
-          when 419
-            raise Userbin::UserUnauthorizedError.new(
-              MultiJson.decode(env[:body])['message'])
-          when 400..599
-            begin
-              message = MultiJson.decode(env[:body])['message']
-              raise Userbin::Error.new(message)
-            rescue MultiJson::ParseError
-              raise Userbin::ApiError.new
-            end
+          response = if env[:body].nil? || env[:body].empty?
+            {}
           else
-            parse(env[:body])
+            begin
+              MultiJson.load(env[:body], :symbolize_keys => true)
+            rescue MultiJson::LoadError
+              raise Userbin::ApiError, 'Invalid response from Userbin API'
+            end
           end
+
+          case env[:status]
+          when 201..299
+            # OK
+          when 400
+            raise Userbin::BadRequestError, response[:message]
+          when 401
+            raise Userbin::UnauthorizedError, response[:message]
+          when 403
+            raise Userbin::ForbiddenError, response[:message]
+          when 404
+            raise Userbin::NotFoundError, response[:message]
+          when 419
+            raise Userbin::UserUnauthorizedError, response[:message]
+          when 422
+            raise Userbin::InvalidParametersError, response[:message]
+          else
+            raise Userbin::ApiError, response[:message]
+          end
+
+          env[:body] = {
+            data: response
+          }
         end
       end
+
     end
 
   end
