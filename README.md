@@ -66,7 +66,7 @@ class MyController < ApplicationController
 end
 ```
 
-As a last step, you'll need to **clear the Usebin session** when the user logs out from your application.
+As a last step, you'll need to **clear the Userbin session** when the user logs out from your application.
 
 ```ruby
   env['userbin'].logout
