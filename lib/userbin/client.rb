@@ -42,7 +42,7 @@ module Userbin
 
       @session_store.user_id = user_id
 
-      if !session_token
+      unless session_token
         # Create a session, and implicitly a user with user_attrs
         session = Userbin::Session.post(
           "users/#{user_id}/sessions", user: user_attrs)
@@ -65,7 +65,8 @@ module Userbin
       # Destroy the current session specified in the session token
       begin
         Userbin::Session.destroy_existing('current')
-      rescue Userbin::Error; end
+      rescue Userbin::Error # ignored
+      end
 
       # Clear the session token
       self.session_token = nil
