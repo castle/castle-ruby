@@ -20,6 +20,12 @@ module Userbin
   end
 
   class Configuration
+    attr_accessor :request_timeout
+
+    def initialize
+      self.request_timeout = 2.0
+    end
+
     def api_secret
       ENV['USERBIN_API_SECRET'] || @_api_secret
     end

@@ -17,7 +17,7 @@ module Userbin
 
     def self.get_uname
       `uname -a 2>/dev/null`.strip if RUBY_PLATFORM =~ /linux|darwin/i
-    rescue Errno::ENOMEM => ex # couldn't create subprocess
+    rescue Errno::ENOMEM # couldn't create subprocess
       "uname lookup failed"
     end
 
@@ -41,6 +41,21 @@ module Userbin
         end
       end
 
+      # Handle request errors
+      #
+      class RequestErrorHandler < Faraday::Middleware
+        def call(env)
+          env.request.timeout = Userbin.config.request_timeout
+          begin
+            @app.call(env)
+          rescue Faraday::ConnectionFailed
+            raise Userbin::RequestError, 'Could not connect to Userbin API'
+          rescue Faraday::TimeoutError
+            raise Userbin::RequestError, 'Userbin API timed out'
+          end
+        end
+      end
+
       # Adds details about current environment
       #
       class EnvironmentHeaders < Faraday::Middleware
@@ -48,7 +63,7 @@ module Userbin
           begin
             env[:request_headers]["X-Userbin-Client-User-Agent"] =
               MultiJson.encode(Userbin::Request.client_user_agent)
-          rescue => error # ignored
+          rescue # ignored
           end
 
           env[:request_headers]["User-Agent"] =
