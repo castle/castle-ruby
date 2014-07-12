@@ -113,5 +113,9 @@ module Userbin
       return session_token.challenge_type
     end
 
+    def authorized?
+      !!session_token
+    end
+
   end
 end
