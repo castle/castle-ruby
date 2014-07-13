@@ -117,5 +117,10 @@ module Userbin
       !!session_token
     end
 
+    def two_factor_in_progress?
+      return false unless session_token
+      session_token.has_challenge?
+    end
+
   end
 end
