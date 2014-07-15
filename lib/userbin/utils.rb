@@ -18,13 +18,5 @@ module Userbin
         c.use Faraday::Adapter::NetHttp
       end
     end
-
-    def with_context(opts, &block)
-      return block.call unless opts
-      RequestStore.store[:userbin_headers] = {}
-      RequestStore.store[:userbin_headers][:ip] = opts[:ip] if opts[:ip]
-      RequestStore.store[:userbin_headers][:user_agent] = opts[:user_agent] if opts[:user_agent]
-      block.call
-    end
   end
 end
