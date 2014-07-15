@@ -127,7 +127,7 @@ module Userbin
           end
 
           case env[:status]
-          when 201..299
+          when 200..299
             # OK
           when 400
             raise Userbin::BadRequestError, response[:message]
