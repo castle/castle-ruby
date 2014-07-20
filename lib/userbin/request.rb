@@ -146,7 +146,9 @@ module Userbin
           end
 
           env[:body] = {
-            data: response
+            data: response,
+            metadata: [],
+            errors: {}
           }
         end
       end
