@@ -138,6 +138,9 @@ module Userbin
           when 404
             raise Userbin::NotFoundError, response[:message]
           when 419
+            # session token is invalid so clear it
+            RequestStore.store[:userbin].session_token = nil
+
             raise Userbin::UserUnauthorizedError, response[:message]
           when 422
             raise Userbin::InvalidParametersError, response[:message]

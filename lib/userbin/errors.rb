@@ -6,7 +6,7 @@ class Userbin::ConfigurationError < Userbin::Error; end
 
 class Userbin::ApiError < Userbin::Error; end
 
-class Userbin::BadRequest < Userbin::ApiError; end
+class Userbin::BadRequestError < Userbin::ApiError; end
 class Userbin::UnauthorizedError < Userbin::ApiError; end
 class Userbin::ForbiddenError < Userbin::ApiError; end
 class Userbin::NotFoundError < Userbin::ApiError; end

@@ -24,6 +24,10 @@ module Userbin
       !!@jwt.payload['chg']
     end
 
+    def mfa_enabled?
+      @jwt.payload['mfa'] == 1
+    end
+
     def challenge_type
       @jwt.payload['chg']['typ'].to_sym if has_challenge?
     end

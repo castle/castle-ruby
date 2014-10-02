@@ -36,23 +36,29 @@ module Userbin
       Userbin::SessionToken.new(token) if token
     end
 
-    def authorize!(user_id, user_attrs = {})
+    def identify(user_id)
       # The user identifier is used in API paths so it needs to be cleaned
       user_id = URI.encode(user_id.to_s)
 
       @session_store.user_id = user_id
+    end
 
-      unless session_token
-        # Create a session, and implicitly a user with user_attrs
-        session = Userbin::Session.post(
-          "users/#{user_id}/sessions", user: user_attrs)
+    def login(user_id, user_attrs = {})
+      # Clear the session token if any
+      self.session_token = nil
 
-        # Set the session token for use in all subsequent requests
-        self.session_token = session.token
-      else
-        if session_token.expired?
-          Userbin::Monitoring.heartbeat
-        end
+      identify(user_id)
+
+      session = Userbin::Session.post(
+        "users/#{@session_store.user_id}/sessions", user: user_attrs)
+
+      # Set the session token for use in all subsequent requests
+      self.session_token = session.token
+    end
+
+    def authorize
+      if session_token.expired?
+        Userbin::Monitoring.heartbeat
       end
     end
 
@@ -120,6 +126,38 @@ module Userbin
     def two_factor_in_progress?
       return false unless session_token
       session_token.has_challenge?
+    end
+
+    def two_factor_enabled?
+      session_token.mfa_enabled?
+    end
+
+    def two_factor_required?
+      session_token.needs_challenge?
+    end
+
+    def sessions
+      Userbin::User.new('current').sessions
+    end
+
+    def pairings
+      Userbin::User.new('current').pairings
+    end
+
+    def channels
+      Userbin::User.new('current').channels
+    end
+
+    def recovery_codes
+      Userbin::User.new('current').recovery_codes
+    end
+
+    def enable_mfa
+      Userbin::User.new('current').enable_mfa
+    end
+
+    def disable_mfa
+      Userbin::User.new('current').disable_mfa
     end
 
   end

@@ -1,5 +1,6 @@
 module Userbin
   class Channel < Model
-    has_one :token
+    collection_path "users/:user_id/channels"
+    belongs_to :user
   end
 end
