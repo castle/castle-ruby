@@ -23,11 +23,11 @@ end
 
 # These need to be required after setting up Her
 require 'userbin/models/model'
+require 'userbin/models/event'
 require 'userbin/models/challenge'
 require 'userbin/models/channel'
 require 'userbin/models/monitoring'
 require 'userbin/models/pairing'
 require 'userbin/models/recovery_code'
 require 'userbin/models/session'
-require 'userbin/models/token'
 require 'userbin/models/user'

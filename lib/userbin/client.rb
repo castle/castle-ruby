@@ -136,6 +136,10 @@ module Userbin
       session_token.needs_challenge?
     end
 
+    def events
+      Userbin::User.new('current').events
+    end
+
     def sessions
       Userbin::User.new('current').sessions
     end

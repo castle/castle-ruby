@@ -7,6 +7,7 @@ module Userbin
     instance_post :disable_mfa
 
     has_many :channels
+    has_many :events
     has_many :pairings
     has_many :sessions
   end
