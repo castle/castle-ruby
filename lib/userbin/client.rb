@@ -131,11 +131,11 @@ module Userbin
     end
 
     def two_factor_enabled?
-      session_token.mfa_enabled?
+      session_token ? session_token.mfa_enabled? : false
     end
 
     def two_factor_required?
-      session_token.needs_challenge?
+      session_token ? session_token.needs_challenge? : false
     end
 
     def events
