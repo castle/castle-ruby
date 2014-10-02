@@ -57,6 +57,8 @@ module Userbin
     end
 
     def authorize
+      return unless session_token
+
       if session_token.expired?
         Userbin::Monitoring.heartbeat
       end
