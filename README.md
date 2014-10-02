@@ -27,88 +27,123 @@ Install the gem
 bundle install
 ```
 
-Load and configure the library with your Userbin API secret in an initializer or similar
+Load and configure the library with your Userbin API secret in an initializer or similar.
 
 ```ruby
 require 'userbin'
 Userbin.api_secret = "YOUR_API_SECRET"
 ```
 
-## Monitor a user
+## The basics
 
-First you'll need to **initialize a Userbin client** for every incoming HTTP request and add it to the environment so that it's accessible during the request lifetime.
+First you'll need to initialize a Userbin client for every incoming HTTP request and preferrably add it to the environment so that it's accessible during the request lifetime.
 
-To **monitor a logged in user**, simply call `authorize!` on the Userbin object. You need to pass the user id, and optionally a hash of user properties, preferrable including at least `email`. This call only result in an HTTP request once every 5 minutes.
+```ruby
+env['userbin'] = Userbin::Client.new(request)
+```
 
-### 1. Authorize the current user
+At any time, a call to Userbin might result in an exception, maybe because the user has been logged out. You should catch these errors in one place and take action. Just catch and display all Userbin errors for now.
 
 ```ruby
 class ApplicationController < ActionController::Base
-  # Define a before filter which is run on all requests
-  before_filter :initialize_userbin
-
-  # Your controller code here
-
-  private
-  def initialize_userbin
-    # Initialize Userbin and add it to the request environment
-    env['userbin'] = Userbin::Client.new(request)
-
-    if current_user
-      # Optional details for text messages, emails and your dashboard
-      user_properties = {
-        email: current_user.email, # recommended
-        # Add `name`, `username` and `image` for improved experience
-      }
-
-      begin
-        # This checks against Userbin once every 5 minutes under the hood.
-        # The `id` MUST be unique across all your users and roles
-        env['userbin'].authorize!(current_user.id, user_properties)
-      rescue Userbin::Error
-        # Logged out from Userbin; clear your current_user and logout
-        # TODO: implement!
-      end
-    end
+  rescue_from Userbin::Error do |e|
+    redirect_to root_url, alert: e.message
   end
 end
 ```
 
-> **Verify that it works:** Log in to your Ruby application with an existing user, and [watch a user appear](https://dashboard.userbin.com/users) in your Userbin dashboard.
+## Tracking user sessions
 
-### 2. Log out
-
-As a last step, you'll need to **end the Userbin session** when the user logs out from your application.
+You should call `login` as soon as the user has logged in to your application. Pass a unique user identifier, and an optional hash of user properties. This starts the Userbin session.
 
 ```ruby
-def logout
-  # Your code for logging out a user
+def after_login_hook
+  env['userbin'].login(current_user.id, email: current_user.email)
+end
+```
 
-  # End the Userbin session
+And call `logout` just after the user has logged out from your application. This ends the Userbin session.
+
+```ruby
+def after_logout_hook
   env['userbin'].logout
 end
 ```
 
-> **Verify that it works:** Log out of your Ruby application and watch the number of sessions for the user in your Userbin dashboard return to zero.
-
-## Add a link to the user's security settings
-
-Create a new route where you redirect the user to its security settings page, where they can configure two-factor authentication, revoke suspicious sessions and set up notifications.
+The session created by login expires typically every 5 minutes and needs to be refreshed with new metadata. This is done by calling authorize. Makes sure that the session hasn't been revoked or locked.
 
 ```ruby
-class UsersController < ApplicationController
-  def security_settings
-    redirect_to env['userbin'].security_settings_url
-  end
+before_filter do
+  env['userbin'].authorize
 end
 ```
 
-> **Verify that it works:** Log in to your Ruby application and visit your new route. This should redirect to https://security.userbin.com where you'll see that you have one active session. *Don't enable two-factor authentication just yet.*
-
-## Two-factor authentication
+> **Verify that it works:** Log in to your Ruby application and watch a user appear in the [Userbin dashboard](https://dashboard.userbin.com).
 
 
-### 1. Protect routes
+## Configuring two-factor authentication
+
+### Pairing
+
+#### Google Authenticator
+
+Create a new Authenticator pairing to get hold of the QR code image to show to the user.
+
+```ruby
+authenticator = env['userbin'].pairings.create(type: 'authenticator')
+
+puts authenticator.qr_url # => "http://..."
+```
+
+Catch the code from the user to pair the Authenticator app.
+
+```ruby
+authenticator = env['userbin'].pairings.build(id: params[:pairing_id])
+
+begin
+  authenticator.verify(response: params[:code])
+rescue
+  flash.notice = 'Wrong code, try again'
+end
+```
+
+#### YubiKey
+
+YubiKeys are immediately verified for two-factor authentication.
+
+```ruby
+begin
+  env['userbin'].pairings.create(type: 'yubikey', otp: code)
+rescue
+  flash.notice = 'Wrong code, try again'
+end
+```
+
+#### SMS
+
+Create a new phone number pairing which will send out a verification SMS.
+
+```ruby
+phone_number = env['userbin'].pairings.create(
+  type: 'phone_number', number: '+1739855455')
+```
+
+Catch the code from the user to pair the phone number.
+
+```ruby
+phone_number = env['userbin'].pairings.build(id: params[:pairing_id])
+
+begin
+  phone_number.verify(response: params[:code])
+rescue
+  flash.notice = 'Wrong code, try again'
+end
+```
+
+
+### Usage
+
+#### 1. Protect routes
 
 If the user has enabled two-factor authentication, `two_factor_authenticate!` will return the second factor that is used to authenticate. If SMS is used, this call will also send out an SMS to the user's registered phone number.
 
@@ -138,9 +173,7 @@ class UsersController < ApplicationController
 end
 ```
 
-> **Verify that it works:** Enable two-factor on your security settings page, followed by a logout and and login to your Ruby application. You should now be redirected to one of the routes in the case statement.
-
-### 2. Show the two-factor authentication form to the user
+#### 2. Show the two-factor authentication form to the user
 
 ```html
 <p>
@@ -154,7 +187,7 @@ end
 </form>
 ```
 
-### 3. Verify the code from the user
+#### 3. Verify the code from the user
 
 The user enters the authentication code in the form and posts it to your handler.
 
