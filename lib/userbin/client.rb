@@ -64,6 +64,11 @@ module Userbin
       end
     end
 
+    def authorize!
+      raise Userbin::UserUnauthorizedError unless session_token
+      authorize
+    end
+
     # This method ends the current monitoring session. It should be called
     # whenever the user logs out from your system.
     #
