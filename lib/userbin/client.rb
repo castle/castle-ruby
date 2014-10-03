@@ -155,16 +155,20 @@ module Userbin
       Userbin::User.new('current').pairings
     end
 
-    def recovery_codes
-      Userbin::User.new('current').recovery_codes
-    end
-
     def enable_mfa
       Userbin::User.new('current').enable_mfa
     end
 
     def disable_mfa
       Userbin::User.new('current').disable_mfa
+    end
+
+    def recovery_codes(params={})
+      Userbin::User.new('current').recovery_codes
+    end
+
+    def generate_recovery_codes(params={})
+      Userbin::User.new('current').generate_recovery_codes
     end
 
   end

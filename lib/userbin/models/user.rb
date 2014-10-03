@@ -9,5 +9,13 @@ module Userbin
     has_many :events
     has_many :pairings
     has_many :sessions
+
+    def recovery_codes(params={})
+      Userbin::RecoveryCodes.get("/v1/users/#{id}/recovery_codes", params)
+    end
+
+    def generate_recovery_codes(params={})
+      Userbin::RecoveryCodes.post("/v1/users/#{id}/recovery_codes", params)
+    end
   end
 end
