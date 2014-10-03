@@ -150,10 +150,6 @@ module Userbin
       Userbin::User.new('current').pairings
     end
 
-    def channels
-      Userbin::User.new('current').channels
-    end
-
     def recovery_codes
       Userbin::User.new('current').recovery_codes
     end
