@@ -7,8 +7,6 @@
 
 [Userbin](https://userbin.com) provides an additional security layer to your application by adding user activity monitoring, real-time threat protection and two-factor authentication in a white-label package. Your users **do not** need to be signed up or registered for Userbin before using the service and there's no need for them to download any proprietary apps. Also, Userbin requires **no modification of your current database schema** as it uses your local user IDs.
 
-<!-- Your users can now easily activate two-factor authentication, configure the level of security in terms of monitoring and notifications and take action on suspicious behaviour. These settings are available as a per-user security settings page which is easily customized to fit your current layout. -->
-
 ### Using Devise?
 
 If you're using [Devise](https://github.com/plataformatec/devise) for authentication, check out the **[Userbin extension for Devise](https://github.com/userbin/devise_userbin)** for an even easier integration.
@@ -34,63 +32,69 @@ require 'userbin'
 Userbin.api_secret = "YOUR_API_SECRET"
 ```
 
-## The basics
-
-First you'll need to initialize a Userbin client for every incoming HTTP request and preferrably add it to the environment so that it's accessible during the request lifetime.
-
-```ruby
-env['userbin'] = Userbin::Client.new(request)
-```
-
-At any time, a call to Userbin might result in an exception, maybe because the user has been logged out. You should catch these errors in one place and take action. Just catch and display all Userbin errors for now.
+Add a reference it to your ApplicationController or similar so that it's globally accessible throughout a request. A new instance needs to be created for every request.
 
 ```ruby
 class ApplicationController < ActionController::Base
-  rescue_from Userbin::Error do |e|
-    redirect_to root_url, alert: e.message
+  def userbin
+    @userbin ||= Userbin::Client.new(request)
   end
+  # ...
 end
 ```
 
 ## Tracking user sessions
 
-You should call `login` as soon as the user has logged in to your application. Pass a unique user identifier, and an optional hash of user properties. This starts the Userbin session.
+You should call `login` as soon as the user has logged in to your application. Pass a unique user identifier, and an optional hash of user properties which are used when searching for users in your dashboard.
 
 ```ruby
 def after_login_hook
-  env['userbin'].login(current_user.id, email: current_user.email)
+  userbin.login(current_user.id, email: current_user.email)
 end
 ```
 
-And call `logout` just after the user has logged out from your application. This ends the Userbin session.
+When a user logs out from within your application, call `logout` so the session is removed from the user's active sessions.
 
 ```ruby
 def after_logout_hook
-  env['userbin'].logout
+  userbin.logout
 end
 ```
 
-The session created by login expires typically every 5 minutes and needs to be refreshed with new metadata. This is done by calling authorize. Makes sure that the session hasn't been revoked or locked.
+Use `authorize!` to control access to only those logged in to Userbin. This makes sure that the session token created by `login` is valid and up to date, and raises `Userbin::UserUnauthorizedError` if it's not. The session token will be refreshed once every 5 minutes.
 
 ```ruby
 before_filter do
-  env['userbin'].authorize
+  userbin.authorize!
 end
 ```
 
-> **Verify that it works:** Log in to your Ruby application and watch a user appear in the [Userbin dashboard](https://dashboard.userbin.com).
+At any time, a call to Userbin might result in an exception, maybe because the user has been logged out. You should catch these errors in one place and take action.
+
+```ruby
+class ApplicationController < ActionController::Base
+  rescue_from Userbin::UserUnauthorizedError do |e|
+    sign_out # log out your user locally
+    redirect_to root_url
+  end
+end
+```
+
+**Verify that it works:** Log in to your application and watch a user appear in the [Userbin dashboard](https://dashboard.userbin.com).
 
 
 ## Configuring two-factor authentication
 
 ### Pairing
 
+The Pairing API lets users add, verify, and remove authentication devices. Google Authenticator, YubiKey
+
 #### Google Authenticator
 
 Create a new Authenticator pairing to get hold of the QR code image to show to the user.
 
 ```ruby
-authenticator = env['userbin'].pairings.create(type: 'authenticator')
+authenticator = userbin.pairings.create(type: 'authenticator')
 
 puts authenticator.qr_url # => "http://..."
 ```
@@ -98,7 +102,7 @@ puts authenticator.qr_url # => "http://..."
 Catch the code from the user to pair the Authenticator app.
 
 ```ruby
-authenticator = env['userbin'].pairings.build(id: params[:pairing_id])
+authenticator = userbin.pairings.build(id: params[:pairing_id])
 
 begin
   authenticator.verify(response: params[:code])
@@ -113,7 +117,7 @@ YubiKeys are immediately verified for two-factor authentication.
 
 ```ruby
 begin
-  env['userbin'].pairings.create(type: 'yubikey', otp: code)
+  userbin.pairings.create(type: 'yubikey', otp: code)
 rescue
   flash.notice = 'Wrong code, try again'
 end
@@ -124,14 +128,14 @@ end
 Create a new phone number pairing which will send out a verification SMS.
 
 ```ruby
-phone_number = env['userbin'].pairings.create(
+phone_number = userbin.pairings.create(
   type: 'phone_number', number: '+1739855455')
 ```
 
 Catch the code from the user to pair the phone number.
 
 ```ruby
-phone_number = env['userbin'].pairings.build(id: params[:pairing_id])
+phone_number = userbin.pairings.build(id: params[:pairing_id])
 
 begin
   phone_number.verify(response: params[:code])
@@ -157,7 +161,7 @@ class UsersController < ApplicationController
   def authenticate_with_userbin!
     begin
       # Checks if two-factor authentication is needed. Returns nil if not.
-      factor = env['userbin'].two_factor_authenticate!
+      factor = userbin.two_factor_authenticate!
 
       # Show form and message specific to the current factor
       case factor
@@ -197,7 +201,7 @@ def handle_two_factor_response
   authentication_code = params[:code]
 
   begin
-    env['userbin'].two_factor_verify(authentication_code)
+    userbin.two_factor_verify(authentication_code)
   rescue Userbin::UserUnauthorizedError
     # invalid code, show the form again
   rescue Userbin::ForbiddenError
