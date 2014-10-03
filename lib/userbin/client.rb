@@ -91,11 +91,11 @@ module Userbin
     # If there already exists a challenge on the current session, it will be
     # returned. Otherwise a new will be created.
     #
-    def two_factor_authenticate!
+    def two_factor_authenticate!(pairing_id = nil)
       return unless session_token
-
+      args = pairing_id ? { pairing_id: pairing_id } : {}
       if session_token.needs_challenge?
-        Userbin::Challenge.post("users/current/challenges")
+        Userbin::Challenge.post("users/current/challenges", args)
         return two_factor_method
       end
     end
