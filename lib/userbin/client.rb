@@ -3,6 +3,19 @@ module Userbin
 
     attr_accessor :request_context
 
+    def self.install_proxy_methods(*names)
+      names.each do |name|
+        class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def #{name}(*args)
+            Userbin::User.new('current').#{name}(*args)
+          end
+        RUBY
+      end
+    end
+
+    install_proxy_methods :challenges, :events, :sessions, :pairings,
+      :recovery_codes, :generate_recovery_codes, :enable_mfa, :disable_mfa
+
     def initialize(request, opts = {})
       # Save a reference in the per-request store so that the request
       # middleware in request.rb can access it
@@ -142,34 +155,5 @@ module Userbin
     def two_factor_required?
       session_token ? session_token.needs_challenge? : false
     end
-
-    def events
-      Userbin::User.new('current').events
-    end
-
-    def sessions
-      Userbin::User.new('current').sessions
-    end
-
-    def pairings
-      Userbin::User.new('current').pairings
-    end
-
-    def enable_mfa
-      Userbin::User.new('current').enable_mfa
-    end
-
-    def disable_mfa
-      Userbin::User.new('current').disable_mfa
-    end
-
-    def recovery_codes(params={})
-      Userbin::User.new('current').recovery_codes
-    end
-
-    def generate_recovery_codes(params={})
-      Userbin::User.new('current').generate_recovery_codes
-    end
-
   end
 end
