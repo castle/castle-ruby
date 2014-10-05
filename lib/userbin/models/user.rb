@@ -6,6 +6,7 @@ module Userbin
     instance_post :enable_mfa
     instance_post :disable_mfa
 
+    has_many :challenges
     has_many :events
     has_many :pairings
     has_many :sessions
