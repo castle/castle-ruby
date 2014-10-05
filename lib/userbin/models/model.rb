@@ -20,6 +20,21 @@ module Userbin
     end
 
     def self.instance_custom(method, action)
+      #
+      # Add method calls to association: user.challenges.verify(id, attributes)
+      #
+      AssociationProxy.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+        install_proxy_methods :association, :#{action}
+      RUBY
+      HasManyAssociation.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+        def #{action}(id, attributes={})
+          @klass.build({:id => id, :"\#{@parent.singularized_resource_name}_id" => @parent.id}).#{action}(attributes)
+        end
+      RUBY
+
+      #
+      # Add method call to instance: user.enable_mfa
+      #
       class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def #{action}(params={})
           self.class.#{method}("\#{request_path}/#{action}", params)
