@@ -90,7 +90,7 @@ module Userbin
 
       # Destroy the current session specified in the session token
       begin
-        Userbin::Session.destroy_existing('current')
+        sessions.destroy('current')
       rescue Userbin::Error # ignored
       end
 
