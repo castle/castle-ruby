@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'Userbin::Challenge' do
-  it 'creates a challenge' do
+  xit 'creates a challenge' do
     VCR.use_cassette('challenge_create') do
       challenge = Userbin::Challenge.post(
         "users/dTxR68nzuRXT4wrB2HJ4hanYtcaGSz2y/challenges")
@@ -9,7 +9,7 @@ describe 'Userbin::Challenge' do
     end
   end
 
-  it 'verifies a challenge' do
+  xit 'verifies a challenge' do
     VCR.use_cassette('challenge_verify') do
       challenge = Userbin::Challenge.new(id: 'UWwy5FrWf9DTeoTpJz1LpBp4dPkWZ2Ne')
       challenge.verify(response: '000000')
