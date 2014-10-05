@@ -56,6 +56,23 @@ module Userbin
       @session_store.user_id = user_id
     end
 
+    def authorize
+      return unless session_token
+
+      if session_token.expired?
+        Userbin::Monitoring.heartbeat
+      end
+    end
+
+    def authorized?
+      !!session_token
+    end
+
+    def authorize!
+      raise Userbin::UserUnauthorizedError, 'Not logged in' unless session_token
+      authorize
+    end
+
     def login(user_id, user_attrs = {})
       # Clear the session token if any
       self.session_token = nil
@@ -67,19 +84,6 @@ module Userbin
 
       # Set the session token for use in all subsequent requests
       self.session_token = session.token
-    end
-
-    def authorize
-      return unless session_token
-
-      if session_token.expired?
-        Userbin::Monitoring.heartbeat
-      end
-    end
-
-    def authorize!
-      raise Userbin::UserUnauthorizedError unless session_token
-      authorize
     end
 
     # This method ends the current monitoring session. It should be called
@@ -137,10 +141,6 @@ module Userbin
     def two_factor_method
       return unless session_token
       return session_token.challenge_type
-    end
-
-    def authorized?
-      !!session_token
     end
 
     def two_factor_in_progress?
