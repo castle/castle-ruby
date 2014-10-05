@@ -1,4 +1,5 @@
 require 'her'
+require 'userbin/ext/her'
 require 'faraday_middleware'
 require 'multi_json'
 require 'openssl'
