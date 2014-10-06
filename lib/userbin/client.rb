@@ -112,7 +112,7 @@ module Userbin
       return unless session_token
       args = pairing_id ? { pairing_id: pairing_id } : {}
       if session_token.needs_challenge?
-        Userbin::Challenge.post("users/current/challenges", args)
+        challenges.create(args)
         return two_factor_method
       end
     end
@@ -125,8 +125,7 @@ module Userbin
       # Need to have an active challenge to verify it
       return unless session_token && session_token.has_challenge?
 
-      challenge = Userbin::Challenge.new('current')
-      challenge.verify(response: response)
+      challenges.verify('current', response: response)
     end
 
     def security_settings_url
