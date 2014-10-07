@@ -4,7 +4,7 @@ module Userbin
   class << self
     def setup_api(api_secret = nil)
       api_endpoint = ENV.fetch('USERBIN_API_ENDPOINT') {
-        "https://secure.userbin.com/v1"
+        "https://api.userbin.com/v1"
       }
 
       Her::API.setup url: api_endpoint do |c|

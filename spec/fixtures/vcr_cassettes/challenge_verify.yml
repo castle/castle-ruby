@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://:secretkey@secure.userbin.com/v1/challenges/UWwy5FrWf9DTeoTpJz1LpBp4dPkWZ2Ne/verify
+    uri: https://:secretkey@api.userbin.com/v1/challenges/UWwy5FrWf9DTeoTpJz1LpBp4dPkWZ2Ne/verify
     body:
       encoding: UTF-8
       string: '{"response":"000000"}'

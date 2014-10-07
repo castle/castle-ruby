@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://:secretkey@secure.userbin.com/v1/users/dTxR68nzuRXT4wrB2HJ4hanYtcaGSz2y/challenges
+    uri: https://:secretkey@api.userbin.com/v1/users/dTxR68nzuRXT4wrB2HJ4hanYtcaGSz2y/challenges
     body:
       encoding: UTF-8
       string: "{}"
