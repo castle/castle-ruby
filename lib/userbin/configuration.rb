@@ -27,7 +27,7 @@ module Userbin
     end
 
     def api_secret
-      ENV['USERBIN_API_SECRET'] || @_api_secret
+      ENV['USERBIN_API_SECRET'] || @_api_secret || ''
     end
 
     def api_secret=(value)
