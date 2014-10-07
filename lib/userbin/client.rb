@@ -69,8 +69,14 @@ module Userbin
     end
 
     def authorize!
-      raise Userbin::UserUnauthorizedError, 'Not logged in' unless session_token
+      unless session_token
+        raise Userbin::UserUnauthorizedError,
+          'Need to call login before authorize'
+      end
+
       authorize
+
+      raise Userbin::ChallengeRequiredError if two_factor_required?
     end
 
     def login(user_id, user_attrs = {})
