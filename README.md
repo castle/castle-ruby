@@ -11,7 +11,7 @@
 
 - [Getting Started](#getting-started)
 - [Setup User Monitoring](#setup-user-monitoring)
-- [Sessions (Active Logins)](#sessions-active-logins)
+- [Active Sessions)](#active-sessions)
 - [Events (Security Log)](#events-security-log)
 - [Two-factor Authentication](#two-factor-authentication)
   - [Pairing with Google Authenticator](#pairing-with-google-authenticator)
@@ -56,7 +56,7 @@ end
 
 ## Setup User Monitoring
 
-You should call `login` as soon as the user has logged in to your application. Pass a unique user identifier, and an optional hash of user properties which are used when searching for users in your dashboard.
+You should call `login` as soon as the user has logged in to your application. Pass a unique user identifier, and an *optional* hash of user properties which are used when searching for users in your dashboard. This will create a [Session](https://api.userbin.com/#POST--version-users--user_id-sessions---format-) resource and return a corresponding [session token](https://api.userbin.com/#session-tokens) which is stored in the Userbin client.
 
 ```ruby
 def your_after_login_hook
@@ -66,7 +66,7 @@ end
 
 Once logged in to Userbin, all requests made through the Userbin instance are on behalf of the currently logged in user.
 
-When a user logs out from within your application, call `logout` to remove the session from the user's [active sessions](#sessions-active-logins).
+When a user logs out from within your application, call `logout` to remove the session from the user's [active sessions](#active-sessions).
 
 ```ruby
 def your_after_logout_hook
@@ -74,7 +74,19 @@ def your_after_logout_hook
 end
 ```
 
-At any time, a call to Userbin might result in an exception, e.g. when the user has been locked due to suspicious behavior. You should catch these errors in one place and take action.
+The real magic happens when you use `authorize!` to control access to only those logged in to Userbin, which is probably everywhere you allow authenticated users. This makes sure that the session token created by `login` is valid and up to date, and raises `UserUnauthorizedError` if it's not. Reasons for this include being automatically locked down due to suspicious behavior or the session being remotely revoked.
+
+**Note:** The session token will be [refreshed](https://api.userbin.com/#monitoring) every 5 minutes. This means that even though a session becomes invalid, no exceptions will be generated until the next refresh. E.g. revoking a session from the dashboard might take up to 5 minutes to happen.
+
+```ruby
+class AccountController < ApplicationController
+  before_filter :authenticate_user! # from e.g. Devise
+  before_filter { userbin.authorize! }
+  # ...
+end
+```
+
+You should catch these errors in one place and log out the authenticated user.
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -85,29 +97,31 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-Use `authorize!` to control access to only those logged in to Userbin. This makes sure that the session token created by `login` is valid and up to date, and raises `UserUnauthorizedError` if it's not. The session token will be refreshed once every 5 minutes.
 
-```ruby
-class AccountController < ApplicationController
-  before_filter :authenticate_user! # from e.g. Devise
-  before_filter { userbin.authorize! }
-  # ...
-end
-```
 
-**Verify that it works:** Log in to your application and watch your user appear in the [Userbin dashboard](https://dashboard.userbin.com).
+**That's it!** Now log in to your application and watch your user appear in the [Userbin dashboard](https://dashboard.userbin.com).
 
-## Sessions (Active Logins)
+## Active Sessions
+
+Show a list of sessions currently signed to a user's account
 
 ```ruby
 userbin.sessions.each do |session|
-  puts session.id               # => 'yt9BkoHzcQoou4jqbQbJUqqMdxyxvCBr'
-  puts session.context.ip       # => '88.12.129.1'
-  puts session.context.country  # => 'US'
+  puts session.id              # => 'yt9BkoHzcQoou4jqbQbJUqqMdxyxvCBr'
+  puts session.data.remote_ip  # => '88.12.129.1'
+  puts session.data.country    # => 'US'
 end
 ```
 
-## Events (Security Log)
+Destroy a session to revoke access and trigger a `UserUnauthorizedError` the next time `authorize!` refreshes the session token, which is within 5 minutes.
+
+```ruby
+userbin.sessions.destroy('yt9BkoHzcQoou4jqbQbJUqqMdxyxvCBr')
+```
+
+## Account Activity
+
+List a user's recent account activity.
 
 ```ruby
 userbin.events.each do |event|
@@ -203,7 +217,7 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-Create a challenge, which will send the user and SMS if this is the default pairing.
+Create a challenge, which will send the user and SMS if this is the default pairing. After the challenge has been verified, `authorize!` will not throw any further exceptions until any suspicious behavior is detected.
 
 ```ruby
 class ChallengeController < ApplicationController
@@ -265,7 +279,10 @@ userbin.pairings.destroy('yt9BkoHzcQoou4jqbQbJUqqMdxyxvCBr')
 
 ```ruby
 Userbin.configure do |config|
+  # Same as setting it through Userbin.api_secret
   config.api_secret = 'secret'
+
+  # Userbin::RequestError is raised when timing out (default: 2.0)
   config.request_timeout = 2.0
 end
 ```
