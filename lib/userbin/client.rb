@@ -76,7 +76,13 @@ module Userbin
 
       authorize
 
-      raise Userbin::ChallengeRequiredError if two_factor_required?
+      if mfa_in_progress?
+        logout
+        raise Userbin::UserUnauthorizedError,
+            'Logged out due to being unverified'
+      end
+
+      raise Userbin::ChallengeRequiredError if mfa_required?
     end
 
     def login(user_id, user_attrs = {})
@@ -108,57 +114,17 @@ module Userbin
       self.session_token = nil
     end
 
-    # This method creates a two-factor challenge for the current user, if the
-    # user has enabled a device for authentication.
-    #
-    # If there already exists a challenge on the current session, it will be
-    # returned. Otherwise a new will be created.
-    #
-    def two_factor_authenticate!(pairing_id = nil)
-      return unless session_token
-      args = pairing_id ? { pairing_id: pairing_id } : {}
-      if session_token.needs_challenge?
-        challenges.create(args)
-        return two_factor_method
-      end
-    end
-
-    # Once a two factor challenge has been created using
-    # two_factor_authenticate!, the response code from the user is verified
-    # using this method.
-    #
-    def two_factor_verify(response)
-      # Need to have an active challenge to verify it
-      return unless session_token && session_token.has_challenge?
-
-      challenges.verify('current', response: response)
-    end
-
-    def security_settings_url
-      raise Userbin::Error unless session_token
-      return "https://security.userbin.com/?session_token=#{session_token}"
-    end
-
-     # If a two-factor authentication process has been started, this method will
-     # return the method which is used to perform the authentication. Eg.
-     # :authenticator or :sms
-     #
-    def two_factor_method
-      return unless session_token
-      return session_token.challenge_type
-    end
-
-    def two_factor_in_progress?
-      return false unless session_token
-      session_token.has_challenge?
-    end
-
-    def two_factor_enabled?
+    def mfa_enabled?
       session_token ? session_token.mfa_enabled? : false
     end
 
-    def two_factor_required?
+    def mfa_in_progress?
+      session_token ? session_token.has_challenge? : false
+    end
+
+    def mfa_required?
       session_token ? session_token.needs_challenge? : false
     end
+
   end
 end
