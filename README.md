@@ -208,6 +208,8 @@ If the user has enabled two-factor authentication, `authorize!` might raise `Cha
 
 Capture this error just as with UserUnauthorizedError and redirect the user.
 
+If the user tries to reach a path protected by `authorize!` after a challenge has been created but still not verified, the session will be destroyed and UserUnauthorizedError raised.
+
 ```ruby
 class ApplicationController < ActionController::Base
   rescue_from Userbin::ChallengeRequiredError do |exception|
