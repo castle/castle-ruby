@@ -19,7 +19,7 @@
   - [Pairing with YubiKey](#pairing-with-yubikey)
   - [Enabling and Disabling](#enabling-and-disabling)
   - [Authenticating](#authenticating)
-  - [Recovery Codes](#recovery-codes)
+  - [Backup Codes](#backup-codes)
   - [List Pairings](#list-pairings)
 
 ## Getting Started
@@ -242,13 +242,13 @@ class ChallengeController < ApplicationController
 end
 ```
 
-### Recovery Codes
+### Backup Codes
 
-List or generate new recovery codes used for when the user didn't bring their authentication device.
+List or generate new backup codes used for when the user didn't bring their authentication device.
 
 ```ruby
-userbin.recovery_codes
-userbin.generate_recovery_codes(count: 8)
+userbin.backup_codes
+userbin.generate_backup_codes(count: 8)
 ```
 
 ### List Pairings
