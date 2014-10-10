@@ -291,17 +291,3 @@ Userbin.configure do |config|
   config.request_timeout = 2.0
 end
 ```
-
-## Handling Errors
-
-...
-
-```ruby
-class ApplicationController < ActionController::Base
-  rescue_from Userbin::RequestError do |e|
-    redirect_to root_url
-  end
-end
-```
-
-
