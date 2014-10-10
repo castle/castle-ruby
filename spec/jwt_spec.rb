@@ -13,14 +13,14 @@ describe 'Userbin::JWT' do
     it 'verifies that JWT has expired' do
       new_time = Time.utc(2014, 4, 23, 8, 46, 44)
       Timecop.freeze(new_time) do
-        Userbin::JWT.new(token).expired?.should be_true
+        Userbin::JWT.new(token).should be_expired
       end
     end
 
     it 'verifies that JWT has not expired' do
       new_time = Time.utc(2014, 4, 23, 8, 46, 43)
       Timecop.freeze(new_time) do
-        Userbin::JWT.new(token).expired?.should be_false
+        Userbin::JWT.new(token).should_not be_expired
       end
     end
   end
