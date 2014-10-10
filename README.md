@@ -11,8 +11,8 @@
 
 - [Getting Started](#getting-started)
 - [Setup User Monitoring](#setup-user-monitoring)
-- [Active Sessions)](#active-sessions)
-- [Events (Security Log)](#events-security-log)
+- [Active Sessions](#active-sessions)
+- [Security Events](#security-events)
 - [Two-factor Authentication](#two-factor-authentication)
   - [Pairing with Google Authenticator](#pairing-with-google-authenticator)
   - [Pairing with Phone Number (SMS)](#pairing-with-phone-number-sms)
@@ -103,13 +103,14 @@ end
 
 ## Active Sessions
 
-Show a list of sessions currently signed to a user's account
+Show a list of sessions currently signed to a user's account.
+
+The *context* is from the last recorded [security event](#security-events) on a session.
 
 ```ruby
 userbin.sessions.each do |session|
-  puts session.id              # => 'yt9BkoHzcQoou4jqbQbJUqqMdxyxvCBr'
-  puts session.data.remote_ip  # => '88.12.129.1'
-  puts session.data.country    # => 'US'
+  puts session.id          # => 'yt9BkoHzcQoou4jqbQbJUqqMdxyxvCBr'
+  puts session.context.ip  # => '88.12.129.1'
 end
 ```
 
@@ -119,14 +120,16 @@ Destroy a session to revoke access and trigger a `UserUnauthorizedError` the nex
 userbin.sessions.destroy('yt9BkoHzcQoou4jqbQbJUqqMdxyxvCBr')
 ```
 
-## Account Activity
+## Security Events
 
-List a user's recent account activity.
+List a user's recent account activity, which include security events such as user logins and failed two-factor attempts. See the [Event API](https://api.userbin.com/#events) for a list of all the available events.
 
 ```ruby
 userbin.events.each do |event|
-  puts event.id    # => 'yt9BkoHzcQoou4jqbQbJUqqMdxyxvCBr'
-  puts event.name  # => 'session.created'
+  puts event.name                        # => 'session.created'
+  puts event.context.ip                  # => '88.12.129.1'
+  puts event.context.location.country    # => 'Sweden'
+  puts event.context.user_agent.browser  # => 'Chrome'
 end
 ```
 
@@ -288,4 +291,17 @@ Userbin.configure do |config|
   config.request_timeout = 2.0
 end
 ```
+
+## Handling Errors
+
+...
+
+```ruby
+class ApplicationController < ActionController::Base
+  rescue_from Userbin::RequestError do |e|
+    redirect_to root_url
+  end
+end
+```
+
 
