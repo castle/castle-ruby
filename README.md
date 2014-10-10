@@ -239,8 +239,9 @@ class ChallengeController < ApplicationController
     # Yay, the challenge was verified!
     redirect_to root_url
 
-  rescue Userbin::ForbiddenError
+  rescue Userbin::ForbiddenError => e
     flash.notice = 'Wrong code, bye!'
+    raise Userbin::UserUnauthorizedError.new(e) # trigger the global handler
   end
 end
 ```
