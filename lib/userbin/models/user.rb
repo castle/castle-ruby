@@ -12,11 +12,11 @@ module Userbin
     has_many :sessions
 
     def backup_codes(params={})
-      Userbin::RecoveryCodes.get("/v1/users/#{id}/backup_codes", params)
+      Userbin::BackupCodes.get("/v1/users/#{id}/backup_codes", params)
     end
 
     def generate_backup_codes(params={})
-      Userbin::RecoveryCodes.post("/v1/users/#{id}/backup_codes", params)
+      Userbin::BackupCodes.post("/v1/users/#{id}/backup_codes", params)
     end
   end
 end
