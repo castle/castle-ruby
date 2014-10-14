@@ -240,8 +240,10 @@ class ChallengeController < ApplicationController
     redirect_to root_url
 
   rescue Userbin::ForbiddenError => e
+    sign_out # log out your user locally
+
     flash.notice = 'Wrong code, bye!'
-    raise Userbin::UserUnauthorizedError.new(e) # trigger the global handler
+    redirect_to root_path
   end
 end
 ```
