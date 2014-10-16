@@ -14,21 +14,24 @@ module Userbin
     end
 
     install_proxy_methods :challenges, :events, :sessions, :pairings,
-      :backup_codes, :generate_backup_codes, :enable_mfa, :disable_mfa
+      :backup_codes, :generate_backup_codes, :trusted_devices,
+      :enable_mfa, :disable_mfa
 
-    def initialize(request, opts = {})
+    def initialize(request, cookies, opts = {})
       # Save a reference in the per-request store so that the request
       # middleware in request.rb can access it
       RequestStore.store[:userbin] = self
 
       # By default the session token is persisted in the Rack store, which may
-      # in turn point to any source. But this option gives you an option to
+      # in turn point to any source. This option give you an option to
       # use any store, such as Redis or Memcached to store your Userbin tokens.
       if opts[:session_store]
         @session_store = opts[:session_store]
       else
         @session_store = Userbin::SessionStore::Rack.new(request.session)
       end
+
+      @trusted_token_store = Userbin::TrustedTokenStore::Rack.new(cookies)
 
       @request_context = {
         ip: request.ip,
@@ -49,11 +52,24 @@ module Userbin
       Userbin::SessionToken.new(token) if token
     end
 
+    def trusted_device_token=(value)
+      if value && value != @trusted_token_store.read
+        @trusted_token_store.write(value)
+      elsif !value
+        @trusted_token_store.destroy
+      end
+    end
+
+    def trusted_device_token
+      @trusted_token_store.read
+    end
+
     def identify(user_id)
       # The user identifier is used in API paths so it needs to be cleaned
       user_id = URI.encode(user_id.to_s)
 
       @session_store.user_id = user_id
+      @trusted_token_store.user_id = user_id
     end
 
     def authorize
@@ -82,7 +98,9 @@ module Userbin
             'Logged out due to being unverified'
       end
 
-      raise Userbin::ChallengeRequiredError if mfa_required?
+      if mfa_required? && !device_trusted?
+        raise Userbin::ChallengeRequiredError
+      end
     end
 
     def login(user_id, user_attrs = {})
@@ -92,10 +110,18 @@ module Userbin
       identify(user_id)
 
       session = Userbin::Session.post(
-        "users/#{@session_store.user_id}/sessions", user: user_attrs)
+        "users/#{@session_store.user_id}/sessions", user: user_attrs,
+        trusted_device_token: self.trusted_device_token)
 
       # Set the session token for use in all subsequent requests
       self.session_token = session.token
+    end
+
+    def trust_device(attrs = {})
+      trusted_device = trusted_devices.create(attrs)
+
+      # Set the session token for use in all subsequent requests
+      self.trusted_device_token = trusted_device.token
     end
 
     # This method ends the current monitoring session. It should be called
@@ -116,6 +142,10 @@ module Userbin
 
     def mfa_enabled?
       session_token ? session_token.mfa_enabled? : false
+    end
+
+    def device_trusted?
+      session_token ? session_token.device_trusted? : false
     end
 
     def mfa_in_progress?

@@ -43,12 +43,12 @@ require 'userbin'
 Userbin.api_secret = "YOUR_API_SECRET"
 ```
 
-Add a reference to the Userbin client in your main controller so that it's globally accessible throughout a request. The initializer takes a Rack request as argument from which it extracts details such as IP address and user agent and sends it along all API requests.
+Add a reference to the Userbin client in your main controller so that it's globally accessible throughout a request. The initializer takes a Rack **request** as argument from which it extracts details such as IP address and user agent and sends it along all API requests. The second argument is a reference to the **cookies** hash, used for storing the trusted device token.
 
 ```ruby
 class ApplicationController < ActionController::Base
   def userbin
-    @userbin ||= Userbin::Client.new(request)
+    @userbin ||= Userbin::Client.new(request, cookies)
   end
   # ...
 end
@@ -209,7 +209,7 @@ userbin.disable_mfa
 
 If the user has enabled two-factor authentication, `authorize!` might raise `ChallengeRequiredError`, which means they'll have to verify a challenge to proceed.
 
-Capture this error just as with UserUnauthorizedError and redirect the user.
+Capture this error just as with UserUnauthorizedError and redirect the user to a path **not protected** by `authorize!`.
 
 If the user tries to reach a path protected by `authorize!` after a challenge has been created but still not verified, the session will be destroyed and UserUnauthorizedError raised.
 
@@ -224,6 +224,8 @@ end
 
 Create a challenge, which will send the user and SMS if this is the default pairing. After the challenge has been verified, `authorize!` will not throw any further exceptions until any suspicious behavior is detected.
 
+When you call `trust_device`, the user will not be challenged for secondary authentication when they log in to your application from that device for a set period of time. You could add this to your form as a checkbox option.
+
 ```ruby
 class ChallengeController < ApplicationController
   def show
@@ -235,6 +237,9 @@ class ChallengeController < ApplicationController
     code = params.require(:code)
 
     userbin.challenges.verify(challenge_id, response: code)
+
+    # Avoid verification on next login for better experience
+    userbin.trust_device if params[:trust_device]
 
     # Yay, the challenge was verified!
     redirect_to root_url

@@ -10,6 +10,7 @@ module Userbin
     has_many :events
     has_many :pairings
     has_many :sessions
+    has_many :trusted_devices
 
     def backup_codes(params={})
       Userbin::BackupCodes.get("/v1/users/#{id}/backup_codes", params)
