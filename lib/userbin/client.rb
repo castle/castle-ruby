@@ -109,9 +109,9 @@ module Userbin
 
       identify(user_id)
 
-      session = Userbin::Session.post(
-        "users/#{@session_store.user_id}/sessions", user: user_attrs,
-        trusted_device_token: self.trusted_device_token)
+      user = Userbin::User.new(@session_store.user_id)
+      session = user.sessions.create(
+        user: user_attrs, trusted_device_token: self.trusted_device_token)
 
       # Set the session token for use in all subsequent requests
       self.session_token = session.token
