@@ -91,7 +91,7 @@ module Userbin
           response = @app.call(env)
 
           # update the local store with the updated session token
-          token = response.env.response_headers['x-userbin-session-token']
+          token = response.env.response_headers['x-userbin-set-session-token']
           userbin.session_token = token if token
 
           response
