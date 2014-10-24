@@ -23,7 +23,7 @@ module Userbin
     attr_accessor :request_timeout
 
     def initialize
-      self.request_timeout = 2.0
+      self.request_timeout = 30.0
     end
 
     def api_secret
