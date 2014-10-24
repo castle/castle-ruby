@@ -1,5 +1,12 @@
 require 'her'
 
+class Her::Collection
+  # Call the overridden to_json in Userbin::Model
+  def to_json
+    self.map { |m| m.to_json }
+  end
+end
+
 module Userbin
   class Model
     include Her::Model
@@ -9,6 +16,15 @@ module Userbin
       # allow initializing with id as a string
       args = { id: args } if args.is_a? String
       super(args)
+    end
+
+    # Remove the auto-generated embedded User model to prevent recursion
+    def to_json
+      attrs = attributes
+      if attrs['user'] && attrs['user']['id'] == 'current'
+        attrs.delete 'user'
+      end
+      attrs.to_json
     end
 
     METHODS.each do |method|
