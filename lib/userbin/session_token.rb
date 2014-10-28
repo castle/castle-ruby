@@ -31,5 +31,9 @@ module Userbin
     def device_trusted?
       @jwt.payload['tru'] == 1
     end
+
+    def has_default_pairing?
+      @jwt.payload['dpr'] == 1
+    end
   end
 end

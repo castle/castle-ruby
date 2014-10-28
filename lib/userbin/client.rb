@@ -156,5 +156,8 @@ module Userbin
       session_token ? session_token.needs_challenge? : false
     end
 
+    def has_default_pairing?
+      session_token ? session_token.has_default_pairing? : false
+    end
   end
 end
