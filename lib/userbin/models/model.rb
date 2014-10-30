@@ -21,7 +21,7 @@ module Userbin
     # Remove the auto-generated embedded User model to prevent recursion
     def to_json
       attrs = attributes
-      if attrs['user'] && attrs['user']['id'] == 'current'
+      if attrs['user'] && attrs['user']['id'] == '$current'
         attrs.delete 'user'
       end
       attrs.to_json
