@@ -7,7 +7,7 @@ module Userbin
       names.each do |name|
         class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def #{name}(*args)
-            Userbin::User.new('current').#{name}(*args)
+            Userbin::User.new('$current').#{name}(*args)
           end
         RUBY
       end
@@ -132,7 +132,7 @@ module Userbin
 
       # Destroy the current session specified in the session token
       begin
-        sessions.destroy('current')
+        sessions.destroy('$current')
       rescue Userbin::Error # ignored
       end
 
