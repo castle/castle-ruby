@@ -27,6 +27,7 @@ end
 require 'userbin/models/model'
 require 'userbin/models/event'
 require 'userbin/models/challenge'
+require 'userbin/models/context'
 require 'userbin/models/monitoring'
 require 'userbin/models/pairing'
 require 'userbin/models/backup_codes'
