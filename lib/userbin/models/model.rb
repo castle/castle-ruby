@@ -18,6 +18,16 @@ module Userbin
       super(args)
     end
 
+    # Transform model.user.id to model.user_id to allow calls on nested models
+    def attributes
+      attrs = super
+      if attrs['user'] && attrs['user']['id']
+        attrs.merge!('user_id' => attrs['user']['id'])
+        attrs.delete 'user'
+      end
+      attrs
+    end
+
     # Remove the auto-generated embedded User model to prevent recursion
     def to_json
       attrs = attributes
