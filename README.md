@@ -201,8 +201,8 @@ end
 For the sake of flexibility, two-factor authentication isn't enabled automatically when you add your first pairing.
 
 ```ruby
-userbin.enable_mfa
-userbin.disable_mfa
+userbin.enable_mfa!
+userbin.disable_mfa!
 ```
 
 ### Authenticating
@@ -278,7 +278,7 @@ end
 Set a pairing as the default one.
 
 ```ruby
-userbin.pairings.set_default('yt9BkoHzcQoou4jqbQbJUqqMdxyxvCBr')
+userbin.pairings.set_default!('yt9BkoHzcQoou4jqbQbJUqqMdxyxvCBr')
 ```
 
 Remove a pairing. If you remove the default pairing, two-factor authentication will be disabled.

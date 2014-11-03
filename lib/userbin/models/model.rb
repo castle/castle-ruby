@@ -63,7 +63,7 @@ module Userbin
       #
       class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def #{action}(params={})
-          self.class.#{method}("\#{request_path}/#{action}", params)
+          self.class.#{method}("\#{request_path}/#{action.to_s.delete('!')}", params)
         end
       RUBY
     end

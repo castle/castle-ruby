@@ -15,7 +15,7 @@ module Userbin
 
     install_proxy_methods :challenges, :events, :sessions, :pairings,
       :backup_codes, :generate_backup_codes, :trusted_devices,
-      :enable_mfa, :disable_mfa
+      :enable_mfa!, :disable_mfa!
 
     def initialize(request, cookies, opts = {})
       # Save a reference in the per-request store so that the request
