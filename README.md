@@ -43,17 +43,6 @@ require 'userbin'
 Userbin.api_secret = "YOUR_API_SECRET"
 ```
 
-Add a reference to the Userbin client in your main controller so that it's globally accessible throughout a request. The initializer takes a Rack **request** as argument from which it extracts details such as IP address and user agent and sends it along all API requests. The second argument is a reference to the **cookies** hash, used for storing the trusted device token.
-
-```ruby
-class ApplicationController < ActionController::Base
-  def userbin
-    @userbin ||= Userbin::Client.new(request, cookies)
-  end
-  # ...
-end
-```
-
 ## Setup User Monitoring
 
 You should call `login` as soon as the user has logged in to your application. Pass a unique user identifier, and an *optional* hash of user properties which are used when searching for users in your dashboard. This will create a [Session](https://api.userbin.com/#POST--version-users--user_id-sessions---format-) resource and return a corresponding [session token](https://api.userbin.com/#session-tokens) which is stored in the Userbin client.

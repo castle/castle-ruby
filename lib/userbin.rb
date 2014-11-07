@@ -19,6 +19,15 @@ require 'userbin/utils'
 require 'userbin/request'
 require 'userbin/session_token'
 
+require 'userbin/support/rails' if defined?(Rails::Railtie)
+if defined?(Sinatra::Base)
+  if defined?(Padrino)
+    require 'userbin/support/padrino'
+  else
+    require 'userbin/support/sinatra'
+  end
+end
+
 module Userbin
   API = Userbin.setup_api
 end
