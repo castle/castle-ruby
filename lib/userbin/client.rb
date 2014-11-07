@@ -115,6 +115,8 @@ module Userbin
 
       # Set the session token for use in all subsequent requests
       self.session_token = session.token
+
+      session
     end
 
     def trust_device(attrs = {})
