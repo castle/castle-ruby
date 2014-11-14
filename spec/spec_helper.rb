@@ -4,6 +4,8 @@ require 'rack'
 require 'userbin'
 require 'vcr'
 require 'webmock/rspec'
+require 'coveralls'
+Coveralls.wear!
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'

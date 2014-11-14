@@ -28,16 +28,4 @@ describe 'Userbin::User' do
       user.save
     end
   end
-
-  it 'imports users' do
-    VCR.use_cassette('user_import') do
-      users = Userbin::User.import(
-        users: [
-          { email: '10@example.com', username: '10' },
-          { email: '20@example.com', username: '20' }
-        ]
-      )
-      users.count.should == 2
-    end
-  end
 end

@@ -27,4 +27,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "webmock"
   s.add_development_dependency "vcr"
   s.add_development_dependency "timecop"
+  s.add_development_dependency "coveralls", "~> 0.7.2"
 end
