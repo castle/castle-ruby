@@ -1,11 +1,20 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'rack'
-require 'userbin'
 require 'vcr'
 require 'webmock/rspec'
+require 'simplecov'
 require 'coveralls'
-Coveralls.wear!
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
+SimpleCov.start do
+  add_filter 'spec'
+end
+
+require 'userbin'
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
