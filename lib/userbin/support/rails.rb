@@ -1,7 +1,7 @@
 module Userbin
   module UserbinClient
     def userbin
-      @userbin ||= Userbin::Client.new(request, cookies)
+      @userbin ||= Userbin::Client.new(request, response)
     end
   end
 

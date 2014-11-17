@@ -10,7 +10,14 @@ module Userbin
     end
 
     def []=(key, value)
-      @response.set_cookie key, value
+      @request.cookies[key] = value
+      if value
+        @response.set_cookie(key, value: value,
+                                  expires: Time.now + (365 * 24 * 60 * 60),
+                                  path: '/')
+      else
+        @response.delete_cookie(key)
+      end
     end
   end
 end

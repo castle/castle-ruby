@@ -12,13 +12,13 @@ require 'userbin/version'
 require 'userbin/configuration'
 require 'userbin/client'
 require 'userbin/errors'
-require 'userbin/session_store'
-require 'userbin/trusted_token_store'
+require 'userbin/token_store'
 require 'userbin/jwt'
 require 'userbin/utils'
 require 'userbin/request'
 require 'userbin/session_token'
 
+require 'userbin/support/cookie_store'
 require 'userbin/support/rails' if defined?(Rails::Railtie)
 if defined?(Sinatra::Base)
   if defined?(Padrino)

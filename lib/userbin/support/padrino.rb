@@ -5,8 +5,7 @@ module Padrino
     module Userbin
       module Helpers
         def userbin
-          store = ::Userbin::CookieStore.new(request, response)
-          @userbin ||= ::Userbin::Client.new(request, store)
+          @userbin ||= ::Userbin::Client.new(request, response)
         end
       end
 
