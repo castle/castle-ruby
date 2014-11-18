@@ -16,11 +16,11 @@ module Userbin
       @jwt.expired?
     end
 
-    def needs_challenge?
+    def mfa_required?
       @jwt.payload['vfy'] > 0
     end
 
-    def has_challenge?
+    def mfa_in_progress?
       @jwt.payload['chg'] == 1
     end
 

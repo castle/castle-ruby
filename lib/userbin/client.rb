@@ -107,11 +107,11 @@ module Userbin
     end
 
     def mfa_in_progress?
-      @store.session_token ? @store.session_token.has_challenge? : false
+      @store.session_token ? @store.session_token.mfa_in_progress? : false
     end
 
     def mfa_required?
-      @store.session_token ? @store.session_token.needs_challenge? : false
+      @store.session_token ? @store.session_token.mfa_required? : false
     end
 
     def has_default_pairing?
