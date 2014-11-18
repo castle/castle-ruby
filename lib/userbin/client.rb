@@ -39,25 +39,15 @@ module Userbin
       @store.session_token = session_token
     end
 
-    def authorize
-      return unless @store.session_token
-
-      if @store.session_token.expired?
-        Userbin::Monitoring.heartbeat
-      end
-    end
-
-    def authorized?
-      !!@store.session_token
-    end
-
     def authorize!
       unless @store.session_token
         raise Userbin::UserUnauthorizedError,
           'Need to call login before authorize'
       end
 
-      authorize
+      if @store.session_token.expired?
+        Userbin::Monitoring.heartbeat
+      end
 
       if mfa_in_progress?
         logout
@@ -68,6 +58,10 @@ module Userbin
       if mfa_required? && !device_trusted?
         raise Userbin::ChallengeRequiredError
       end
+    end
+
+    def authorized?
+      !!@store.session_token
     end
 
     def login(user_id, user_attrs = {})
@@ -84,16 +78,6 @@ module Userbin
       session
     end
 
-    def trust_device(attrs = {})
-      trusted_device = trusted_devices.create(attrs)
-
-      # Set the session token for use in all subsequent requests
-      @store.trusted_device_token = trusted_device.token
-    end
-
-    # This method ends the current monitoring session. It should be called
-    # whenever the user logs out from your system.
-    #
     def logout
       return unless @store.session_token
 
@@ -105,6 +89,13 @@ module Userbin
 
       # Clear the session token
       @store.session_token = nil
+    end
+
+    def trust_device(attrs = {})
+      trusted_device = trusted_devices.create(attrs)
+
+      # Set the session token for use in all subsequent requests
+      @store.trusted_device_token = trusted_device.token
     end
 
     def mfa_enabled?
