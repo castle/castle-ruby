@@ -84,7 +84,7 @@ module Userbin
       # Destroy the current session specified in the session token
       begin
         sessions.destroy('$current')
-      rescue Userbin::Error # ignored
+      rescue Userbin::ApiError # ignored
       end
 
       # Clear the session token
