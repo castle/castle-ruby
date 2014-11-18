@@ -92,6 +92,10 @@ module Userbin
     end
 
     def trust_device(attrs = {})
+      unless @store.session_token
+        raise Userbin::UserUnauthorizedError,
+          'Need to call login before trusting device'
+      end
       trusted_device = trusted_devices.create(attrs)
 
       # Set the session token for use in all subsequent requests
