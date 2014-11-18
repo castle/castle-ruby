@@ -23,7 +23,7 @@ module Userbin
       RequestStore.store[:userbin] = self
 
       cookies = Userbin::CookieStore.new(request, response)
-      @store = Userbin::TokenStore::Rack.new(cookies)
+      @store = Userbin::TokenStore.new(cookies)
 
       @request_context = {
         ip: request.ip,
