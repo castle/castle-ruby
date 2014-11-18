@@ -34,6 +34,7 @@ end
 
 # These need to be required after setting up Her
 require 'userbin/models/model'
+require 'userbin/models/account'
 require 'userbin/models/event'
 require 'userbin/models/challenge'
 require 'userbin/models/context'
