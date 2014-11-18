@@ -2,7 +2,7 @@ module Userbin
   class Context < Model
     def user_agent
       if attributes['user_agent']
-        Userbin::Location.new(attributes['user_agent'])
+        Userbin::UserAgent.new(attributes['user_agent'])
       end
     end
 
