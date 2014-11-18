@@ -18,3 +18,8 @@ matrix:
     - rvm: 1.9.2
     - rvm: ruby-head
 
+notifications:
+  slack:
+    secure: d6VHA/1HeSMhxNJSKwm0SisupkIw+BP3y97IUp8wCdLaLO5y7fIRF7g35cZbbzMOTaFYUIXabfPuyzCTA1+1JvbgbJ8ykr2/g8LmThe5MXxLvMXtKH2A/qCmQ0TGZ7rMRxjAm14X28920n1vyc+bu5McMZsOnKnACz/SmTnrbKs=
+    on_success: change
+    on_failure: always

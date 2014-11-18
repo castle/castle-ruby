@@ -1,20 +1,24 @@
 require 'spec_helper'
 
-class MemoryStore < Userbin::SessionStore
+class MemoryStore < Userbin::TokenStore
   def initialize
     @value = nil
   end
 
-  def read
-    @value
+  def session_token
+    @value['_ubs']
   end
 
-  def write(value)
-    @value = value
+  def session_token=(value)
+    @value['_ubs'] = value
   end
 
-  def destroy
-    @value = nil
+  def trusted_device_token
+    @value['_ubt']
+  end
+
+  def trusted_device_token=(value)
+    @value['_ubt'] = value
   end
 end
 
