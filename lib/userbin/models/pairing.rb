@@ -4,5 +4,8 @@ module Userbin
     instance_post :verify
     instance_post :set_default!
     belongs_to :user
+    has_one :config
   end
+
+  class Config < Model; end
 end
