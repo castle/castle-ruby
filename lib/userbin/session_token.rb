@@ -16,24 +16,24 @@ module Userbin
       @jwt.expired?
     end
 
-    def mfa_required?
-      @jwt.payload['vfy'] > 0
+    def device_trusted?
+      @jwt.payload['tru'] == 1
     end
 
-    def mfa_in_progress?
-      @jwt.payload['chg'] == 1
+    def has_default_pairing?
+      @jwt.payload['dpr'] > 0
     end
 
     def mfa_enabled?
       @jwt.payload['mfa'] == 1
     end
 
-    def device_trusted?
-      @jwt.payload['tru'] == 1
+    def mfa_in_progress?
+      @jwt.payload['chg'] == 1
     end
 
-    def has_default_pairing?
-      @jwt.payload['dpr'] == 1
+    def mfa_required?
+      @jwt.payload['vfy'] > 0
     end
   end
 end
