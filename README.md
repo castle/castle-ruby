@@ -5,12 +5,14 @@
 [![Dependency Status](https://gemnasium.com/userbin/userbin-ruby.png)](https://gemnasium.com/userbin/userbin-ruby)
 [![Coverage Status](https://coveralls.io/repos/userbin/userbin-ruby/badge.png)](https://coveralls.io/r/userbin/userbin-ruby)
 
-[Userbin](https://userbin.com) provides an additional security layer to your application by adding user activity monitoring, real-time threat protection and two-factor authentication in a white-label package. Your users **do not** need to be signed up or registered for Userbin before using the service and there's no need for them to download any proprietary apps. Also, Userbin requires **no modification of your current database schema** as it uses your local user IDs.
+**[Userbin](https://userbin.com) adds an additional security layer to your application by providing account takeover protection and two-factor authentication in a white-label package**
+
+Your users **do not** need to be signed up or registered for Userbin before using the service and there's no need for them to download any proprietary apps. Also, Userbin requires **no modification of your current database schema** as it uses your local user IDs.
 
 ## Table of Contents
 
+- [Installation](#installation)
 - [Getting Started](#getting-started)
-- [Setup User Monitoring](#setup-user-monitoring)
 - [Active Sessions](#active-sessions)
 - [Security Events](#security-events)
 - [Two-factor Authentication](#two-factor-authentication)
@@ -22,7 +24,7 @@
   - [Backup Codes](#backup-codes)
   - [List Pairings](#list-pairings)
 
-## Getting Started
+## Installation
 
 Add the `userbin` gem to your `Gemfile`
 
@@ -30,22 +32,17 @@ Add the `userbin` gem to your `Gemfile`
 gem "userbin"
 ```
 
-Install the gem
-
-```bash
-bundle install
-```
-
 Load and configure the library with your Userbin API secret in an initializer or similar.
 
 ```ruby
-require 'userbin'
 Userbin.api_secret = "YOUR_API_SECRET"
 ```
 
-## Setup User Monitoring
+## Getting started
 
-You should call `login` as soon as the user has logged in to your application. Pass a unique user identifier, and an *optional* hash of user properties which are used when searching for users in your dashboard. This will create a [Session](https://api.userbin.com/#POST--version-users--user_id-sessions---format-) resource and return a corresponding [session token](https://api.userbin.com/#session-tokens) which is stored in the Userbin client.
+### 1. Logging in and out
+
+You should call `login` as soon as the user has logged in to your application to start the Userbin session. Pass a unique user identifier, and an *optional* hash of user properties which are used when searching for users in your dashboard.
 
 ```ruby
 def your_after_login_hook
@@ -53,9 +50,7 @@ def your_after_login_hook
 end
 ```
 
-Once logged in to Userbin, all requests made through the Userbin instance are on behalf of the currently logged in user.
-
-When a user logs out from within your application, call `logout` to remove the session from the user's [active sessions](#active-sessions).
+When a user logs out from within your application, call `logout` to tell Userbin to remove the session from the user's [active sessions](#active-sessions).
 
 ```ruby
 def your_after_logout_hook
@@ -63,32 +58,46 @@ def your_after_logout_hook
 end
 ```
 
-The real magic happens when you use `authorize!` to control access to only those logged in to Userbin, which is probably everywhere you allow authenticated users. This makes sure that the session token created by `login` is valid and up to date, and raises `UserUnauthorizedError` if it's not. Reasons for this include being automatically locked down due to suspicious behavior or the session being remotely revoked.
+**Check that it works** by logging in to your application and watch your user appear in the [Userbin dashboard](https://dashboard.userbin.com).
 
-**Note:** The session token will be [refreshed](https://api.userbin.com/#monitoring) every 5 minutes. This means that even though a session becomes invalid, no exceptions will be generated until the next refresh. E.g. revoking a session from the dashboard might take up to 5 minutes to happen.
+### 2. Protecting routes
 
-```ruby
-class AccountController < ApplicationController
-  before_filter :authenticate_user! # from e.g. Devise
-  before_filter { userbin.authorize! }
-  # ...
-end
-```
+Call `authorize!` just before your `current_user` is being initialized. Usually you'll want to override your normal authentication filter, e.g. `authenticate_user!` if you're using Devise.
 
-You should catch these errors in one place and log out the authenticated user.
+- `UserUnauthorizedError` will be raised if `login` has not yet been called, or if the session is no longer valid.
+- `ChallengeRequiredError` will be raised when the user has enabled two-factor authentication and is logging in from an untrusted device.
 
 ```ruby
 class ApplicationController < ActionController::Base
-  rescue_from Userbin::UserUnauthorizedError do |e|
-    sign_out # log out your user locally
-    redirect_to root_url
+  rescue_from Userbin::UserUnauthorizedError, with: :user_unauthorized
+  rescue_from Userbin::ChallengeRequiredError, with: :challenge_required
+
+  # IMPLEMENT: Override the authentication method from your framework
+  def authenticate_user!
+    userbin.authorize!
+    super
+  end
+
+  # IMPLEMENT: Log out your user locally
+  def user_unauthorized
+    sign_out
+    redirect_to root_path
+  end
+
+  # IMPLEMENT: Redirect to two-factor authentication login
+  def challenge_required
+    redirect_to show_challenge_path
   end
 end
 ```
 
+Then use the overridden filter in your protected routes as you normally would, and all your critical flows will be protected from account takeover.
 
-
-**That's it!** Now log in to your application and watch your user appear in the [Userbin dashboard](https://dashboard.userbin.com).
+```ruby
+class AccountController < ApplicationController
+  before_filter :authenticate_user!
+end
+```
 
 ## Active Sessions
 
