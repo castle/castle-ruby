@@ -22,7 +22,12 @@ module Userbin
       # middleware in request.rb can access it
       RequestStore.store[:userbin] = self
 
-      cookies = Userbin::CookieStore.new(request, response)
+      if response.class.name == 'ActionDispatch::Cookies::CookieJar'
+        cookies = Userbin::CookieStore::Rack.new(response)
+      else
+        cookies = Userbin::CookieStore::Base.new(request, response)
+      end
+
       @store = Userbin::TokenStore.new(cookies)
 
       @request_context = {
