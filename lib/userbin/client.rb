@@ -32,7 +32,8 @@ module Userbin
 
       @request_context = {
         ip: request.ip,
-        user_agent: request.user_agent
+        user_agent: request.user_agent,
+        cookie_id: cookies['__cid']
       }
     end
 
