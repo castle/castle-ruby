@@ -106,9 +106,11 @@ module Userbin
           return @app.call(env) unless userbin
 
           userbin.request_context.each do |key, value|
-            header =
+            if value
+             header =
               "X-Userbin-#{key.to_s.gsub('_', '-').gsub(/\w+/) {|m| m.capitalize}}"
-            env[:request_headers][header] = value
+              env[:request_headers][header] = value
+            end
           end
           @app.call(env)
         end
