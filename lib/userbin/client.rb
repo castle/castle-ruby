@@ -127,5 +127,9 @@ module Userbin
     def has_default_pairing?
       @store.session_token ? @store.session_token.has_default_pairing? : false
     end
+
+    def track(opts = {})
+      Userbin::Event.post('/v1/events', opts)
+    end
   end
 end
