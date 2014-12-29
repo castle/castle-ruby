@@ -32,7 +32,8 @@ module Userbin
 
       @request_context = {
         ip: request.ip,
-        user_agent: request.user_agent
+        user_agent: request.user_agent,
+        cookie_id: cookies['__cid']
       }
     end
 
@@ -125,6 +126,10 @@ module Userbin
 
     def has_default_pairing?
       @store.session_token ? @store.session_token.has_default_pairing? : false
+    end
+
+    def track(opts = {})
+      Userbin::Event.post('/v1/events', opts)
     end
   end
 end
