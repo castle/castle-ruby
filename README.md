@@ -27,25 +27,42 @@ A Userbin client instance will automatically be made available as `userbin` in y
 
 `track` lets you record the security-related actions your users perform. The more actions you track, the more accurate Userbin is in identifying fraudsters.
 
-When you have access to a logged in user, send along the same user identifier as when you initiated Userbin.js.
+Event names and detail properties that have semantic meaning are prefixed `$`, and we handle them in special ways.
+
+When you have access to a **logged in user**, set `user_id` to the same user identifier as when you initiated Userbin.js.
 
 ```ruby
 userbin.track(
-  user_id: user.id,
-  name: 'login.succeeded')
+  name: '$login.succeeded',
+  user_id: user.id)
 ```
 
-If you don't have access to a logged in user just omit `user_id`, typically when tracking failed logins.
+When you **don't** have access to a logged in user just omit `user_id`, typically when tracking `$login.failed` and `$password_reset.requested`. Instead, whenever you have access to the user-submitted form value, add this to the event details as `$login`.
 
 ```ruby
-userbin.track(name: 'login.failed')
+userbin.track(
+  name: '$login.failed',
+  details: {
+    '$login' => 'johan@userbin.com'
+  })
 ```
 
-All the available events are:
+### Supported events
 
-- `login.succeeded`
-- `login.failed`
-- `logout.succeeded`
+- `$login.succeeded`: Record when a user attempts to log in.
+- `$login.failed`: Record when a user logs out.
+- `$logout.succeeded`:  Record when a user logs out.
+- `$registration.succeeded`: Capture account creation, both when a user signs up as well as when created manually by an administrator.
+- `$registration.failed`: Record when an account failed to be created.
+- `$password_reset.requested`: An attempt was made to reset a user’s password.
+- `$password_reset.succeeded`: The user completed all of the steps in the password reset process and the password was successfully reset. Password resets **do not** required knowledge of the current password.
+- `$password_reset.failed`: Use to record when a user failed to reset their password.
+- `$password_change.succeeded`: Use to record when a user changed their password. This event is only logged when users change their **own** password.
+- `$password_change.failed`:  Use to record when a user failed to change their password.
+
+### Supported detail properties
+
+- `$login`: The submitted email or username from when the user attempted to log in or reset their password. Useful when there is no `user_id` available.
 
 ## Configuration
 
