@@ -131,5 +131,9 @@ module Userbin
     def track(opts = {})
       Userbin::Event.post('/v1/events', opts)
     end
+
+    def recommendation(opts = {})
+      Userbin::Recommendation.get('/v1/recommendation', opts)
+    end
   end
 end
