@@ -2,10 +2,10 @@ require_relative 'cookie_store'
 
 module Padrino
   class Application
-    module Userbin
+    module Castle
       module Helpers
-        def userbin
-          @userbin ||= ::Userbin::Client.new(request, response)
+        def castle
+          @castle ||= ::Castle::Client.new(request, response)
         end
       end
 
@@ -14,6 +14,6 @@ module Padrino
       end
     end
 
-    register Userbin
+    register Castle
   end
 end

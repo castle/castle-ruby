@@ -1,4 +1,4 @@
-module Userbin
+module Castle
   class Client
 
     attr_accessor :request_context
@@ -7,7 +7,7 @@ module Userbin
       names.each do |name|
         class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def #{name}(*args)
-            Userbin::User.new('$current').#{name}(*args)
+            Castle::User.new('$current').#{name}(*args)
           end
         RUBY
       end
@@ -20,15 +20,15 @@ module Userbin
     def initialize(request, response, opts = {})
       # Save a reference in the per-request store so that the request
       # middleware in request.rb can access it
-      RequestStore.store[:userbin] = self
+      RequestStore.store[:castle] = self
 
       if response.class.name == 'ActionDispatch::Cookies::CookieJar'
-        cookies = Userbin::CookieStore::Rack.new(response)
+        cookies = Castle::CookieStore::Rack.new(response)
       else
-        cookies = Userbin::CookieStore::Base.new(request, response)
+        cookies = Castle::CookieStore::Base.new(request, response)
       end
 
-      @store = Userbin::TokenStore.new(cookies)
+      @store = Castle::TokenStore.new(cookies)
 
       @request_context = {
         ip: request.ip,
@@ -47,22 +47,22 @@ module Userbin
 
     def authorize!
       unless @store.session_token
-        raise Userbin::UserUnauthorizedError,
+        raise Castle::UserUnauthorizedError,
           'Need to call login before authorize'
       end
 
       if @store.session_token.expired?
-        Userbin::Monitoring.heartbeat
+        Castle::Monitoring.heartbeat
       end
 
       if mfa_in_progress?
         logout
-        raise Userbin::UserUnauthorizedError,
+        raise Castle::UserUnauthorizedError,
             'Logged out due to being unverified'
       end
 
       if mfa_required? && !device_trusted?
-        raise Userbin::ChallengeRequiredError
+        raise Castle::ChallengeRequiredError
       end
     end
 
@@ -74,7 +74,7 @@ module Userbin
       # Clear the session token if any
       @store.session_token = nil
 
-      user = Userbin::User.new(user_id.to_s)
+      user = Castle::User.new(user_id.to_s)
       session = user.sessions.create(
         user: user_attrs, trusted_device_token: @store.trusted_device_token)
 
@@ -90,7 +90,7 @@ module Userbin
       # Destroy the current session specified in the session token
       begin
         sessions.destroy('$current')
-      rescue Userbin::ApiError # ignored
+      rescue Castle::ApiError # ignored
       end
 
       # Clear the session token
@@ -99,7 +99,7 @@ module Userbin
 
     def trust_device(attrs = {})
       unless @store.session_token
-        raise Userbin::UserUnauthorizedError,
+        raise Castle::UserUnauthorizedError,
           'Need to call login before trusting device'
       end
       trusted_device = trusted_devices.create(attrs)
@@ -129,11 +129,11 @@ module Userbin
     end
 
     def track(opts = {})
-      Userbin::Event.post('/v1/events', opts)
+      Castle::Event.post('/v1/events', opts)
     end
 
     def recommendation(opts = {})
-      Userbin::Recommendation.get('/v1/recommendation', opts)
+      Castle::Recommendation.get('/v1/recommendation', opts)
     end
   end
 end

@@ -1,4 +1,4 @@
-module Userbin
+module Castle
   module Request
 
     def self.client_user_agent
@@ -6,11 +6,11 @@ module Userbin
       lang_version = "#{RUBY_VERSION} p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE})"
 
       {
-        :bindings_version => Userbin::VERSION,
+        :bindings_version => Castle::VERSION,
         :lang => 'ruby',
         :lang_version => lang_version,
         :platform => RUBY_PLATFORM,
-        :publisher => 'userbin',
+        :publisher => 'castle',
         :uname => @uname
       }
     end
@@ -34,7 +34,7 @@ module Userbin
         end
 
         def call(env)
-          value = Base64.encode64(":#{@api_secret || Userbin.config.api_secret}")
+          value = Base64.encode64(":#{@api_secret || Castle.config.api_secret}")
           value.delete!("\n")
           env[:request_headers]["Authorization"] = "Basic #{value}"
           @app.call(env)
@@ -45,13 +45,13 @@ module Userbin
       #
       class RequestErrorHandler < Faraday::Middleware
         def call(env)
-          env.request.timeout = Userbin.config.request_timeout
+          env.request.timeout = Castle.config.request_timeout
           begin
             @app.call(env)
           rescue Faraday::ConnectionFailed
-            raise Userbin::RequestError, 'Could not connect to Userbin API'
+            raise Castle::RequestError, 'Could not connect to Castle API'
           rescue Faraday::TimeoutError
-            raise Userbin::RequestError, 'Userbin API timed out'
+            raise Castle::RequestError, 'Castle API timed out'
           end
         end
       end
@@ -61,13 +61,13 @@ module Userbin
       class EnvironmentHeaders < Faraday::Middleware
         def call(env)
           begin
-            env[:request_headers]["X-Userbin-Client-User-Agent"] =
-              MultiJson.encode(Userbin::Request.client_user_agent)
+            env[:request_headers]["X-Castle-Client-User-Agent"] =
+              MultiJson.encode(Castle::Request.client_user_agent)
           rescue # ignored
           end
 
           env[:request_headers]["User-Agent"] =
-            "Userbin/v1 RubyBindings/#{Userbin::VERSION}"
+            "Castle/v1 RubyBindings/#{Castle::VERSION}"
 
           @app.call(env)
         end
@@ -78,21 +78,21 @@ module Userbin
       #
       class SessionToken < Faraday::Middleware
         def call(env)
-          userbin = RequestStore.store[:userbin]
-          return @app.call(env) unless userbin
+          castle = RequestStore.store[:castle]
+          return @app.call(env) unless castle
 
           # get the session token from our local store
-          if userbin.session_token
-            env[:request_headers]['X-Userbin-Session-Token'] =
-              userbin.session_token.to_s
+          if castle.session_token
+            env[:request_headers]['X-Castle-Session-Token'] =
+              castle.session_token.to_s
           end
 
           # call the API
           response = @app.call(env)
 
           # update the local store with the updated session token
-          token = response.env.response_headers['x-userbin-set-session-token']
-          userbin.session_token = token if token
+          token = response.env.response_headers['X-Castle-set-session-token']
+          castle.session_token = token if token
 
           response
         end
@@ -102,13 +102,13 @@ module Userbin
       #
       class ContextHeaders < Faraday::Middleware
         def call(env)
-          userbin = RequestStore.store[:userbin]
-          return @app.call(env) unless userbin
+          castle = RequestStore.store[:castle]
+          return @app.call(env) unless castle
 
-          userbin.request_context.each do |key, value|
+          castle.request_context.each do |key, value|
             if value
              header =
-              "X-Userbin-#{key.to_s.gsub('_', '-').gsub(/\w+/) {|m| m.capitalize}}"
+              "X-Castle-#{key.to_s.gsub('_', '-').gsub(/\w+/) {|m| m.capitalize}}"
               env[:request_headers][header] = value
             end
           end
@@ -124,7 +124,7 @@ module Userbin
             begin
               MultiJson.load(env[:body], :symbolize_keys => true)
             rescue MultiJson::LoadError
-              raise Userbin::ApiError, 'Invalid response from Userbin API'
+              raise Castle::ApiError, 'Invalid response from Castle API'
             end
           end
 
@@ -132,22 +132,22 @@ module Userbin
           when 200..299
             # OK
           when 400
-            raise Userbin::BadRequestError, response[:message]
+            raise Castle::BadRequestError, response[:message]
           when 401
-            raise Userbin::UnauthorizedError, response[:message]
+            raise Castle::UnauthorizedError, response[:message]
           when 403
-            raise Userbin::ForbiddenError, response[:message]
+            raise Castle::ForbiddenError, response[:message]
           when 404
-            raise Userbin::NotFoundError, response[:message]
+            raise Castle::NotFoundError, response[:message]
           when 419
             # session token is invalid so clear it
-            RequestStore.store[:userbin].session_token = nil
+            RequestStore.store[:castle].session_token = nil
 
-            raise Userbin::UserUnauthorizedError, response[:message]
+            raise Castle::UserUnauthorizedError, response[:message]
           when 422
-            raise Userbin::InvalidParametersError, response[:message]
+            raise Castle::InvalidParametersError, response[:message]
           else
-            raise Userbin::ApiError, response[:message]
+            raise Castle::ApiError, response[:message]
           end
 
           env[:body] = {

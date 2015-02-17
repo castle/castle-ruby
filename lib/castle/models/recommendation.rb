@@ -1,3 +1,3 @@
-module Userbin
+module Castle
   class Recommendation < Model; end
 end

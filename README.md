@@ -1,38 +1,38 @@
-# Ruby SDK for Userbin
+# Ruby SDK for Castle
 
-[![Build Status](https://travis-ci.org/userbin/userbin-ruby.png)](https://travis-ci.org/userbin/userbin-ruby)
-[![Gem Version](https://badge.fury.io/rb/userbin.png)](http://badge.fury.io/rb/userbin)
-[![Dependency Status](https://gemnasium.com/userbin/userbin-ruby.png)](https://gemnasium.com/userbin/userbin-ruby)
-[![Coverage Status](https://coveralls.io/repos/userbin/userbin-ruby/badge.png)](https://coveralls.io/r/userbin/userbin-ruby)
+[![Build Status](https://travis-ci.org/castle/castle-ruby.png)](https://travis-ci.org/castle/castle-ruby)
+[![Gem Version](https://badge.fury.io/rb/castle.png)](http://badge.fury.io/rb/castle)
+[![Dependency Status](https://gemnasium.com/castle/castle-ruby.png)](https://gemnasium.com/castle/castle-ruby)
+[![Coverage Status](https://coveralls.io/repos/castle/castle-ruby/badge.png)](https://coveralls.io/r/castle/castle-ruby)
 
-**[Userbin](https://userbin.com) adds real-time monitoring of your authentication stack, instantly notifying you and your users on potential account hijacks.**
+**[Castle](https://castle.io) adds real-time monitoring of your authentication stack, instantly notifying you and your users on potential account hijacks.**
 
 ## Installation
 
-Add the `userbin` gem to your `Gemfile`
+Add the `castle-rb` gem to your `Gemfile`
 
 ```ruby
-gem 'userbin'
+gem 'castle-rb'
 ```
 
-Load and configure the library with your Userbin API secret in an initializer or similar.
+Load and configure the library with your Castle API secret in an initializer or similar.
 
 ```ruby
-Userbin.api_secret = 'YOUR_API_SECRET'
+Castle.api_secret = 'YOUR_API_SECRET'
 ```
 
-A Userbin client instance will automatically be made available as `userbin` in your Rails, Sinatra or Padrino controllers.
+A Castle client instance will automatically be made available as `castle` in your Rails, Sinatra or Padrino controllers.
 
 ## Tracking security events
 
-`track` lets you record the security-related actions your users perform. The more actions you track, the more accurate Userbin is in identifying fraudsters.
+`track` lets you record the security-related actions your users perform. The more actions you track, the more accurate Castle is in identifying fraudsters.
 
 Event names and detail properties that have semantic meaning are prefixed `$`, and we handle them in special ways.
 
-When you have access to a **logged in user**, set `user_id` to the same user identifier as when you initiated Userbin.js.
+When you have access to a **logged in user**, set `user_id` to the same user identifier as when you initiated Castle.js.
 
 ```ruby
-userbin.track(
+castle.track(
   name: '$login.succeeded',
   user_id: user.id)
 ```
@@ -40,10 +40,10 @@ userbin.track(
 When you **don't** have access to a logged in user just omit `user_id`, typically when tracking `$login.failed` and `$password_reset.requested`. Instead, whenever you have access to the user-submitted form value, add this to the event details as `$login`.
 
 ```ruby
-userbin.track(
+castle.track(
   name: '$login.failed',
   details: {
-    '$login' => 'johan@userbin.com'
+    '$login' => 'johan@castle.io'
   })
 ```
 
@@ -67,11 +67,11 @@ userbin.track(
 ## Configuration
 
 ```ruby
-Userbin.configure do |config|
-  # Same as setting it through Userbin.api_secret
+Castle.configure do |config|
+  # Same as setting it through Castle.api_secret
   config.api_secret = 'secret'
 
-  # Userbin::RequestError is raised when timing out (default: 30.0)
+  # Castle::RequestError is raised when timing out (default: 30.0)
   config.request_timeout = 2.0
 end
 ```

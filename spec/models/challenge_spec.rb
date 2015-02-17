@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe 'Userbin::Challenge' do
+describe 'Castle::Challenge' do
   xit 'creates a challenge' do
     VCR.use_cassette('challenge_create') do
-      challenge = Userbin::Challenge.post(
+      challenge = Castle::Challenge.post(
         "users/dTxR68nzuRXT4wrB2HJ4hanYtcaGSz2y/challenges")
       challenge.channel.token.id.should == 'VVG3qirUxy8mUSkmzy3QpPcuhLN1JY4r'
     end
@@ -11,7 +11,7 @@ describe 'Userbin::Challenge' do
 
   xit 'verifies a challenge' do
     VCR.use_cassette('challenge_verify') do
-      challenge = Userbin::Challenge.new(id: 'UWwy5FrWf9DTeoTpJz1LpBp4dPkWZ2Ne')
+      challenge = Castle::Challenge.new(id: 'UWwy5FrWf9DTeoTpJz1LpBp4dPkWZ2Ne')
       challenge.verify(response: '000000')
     end
   end

@@ -1,4 +1,4 @@
-module Userbin
+module Castle
   class Challenge < Model
     collection_path "users/:user_id/challenges"
     has_one :pairing

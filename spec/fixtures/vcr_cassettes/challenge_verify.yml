@@ -2,15 +2,15 @@
 http_interactions:
 - request:
     method: post
-    uri: https://:secretkey@api.userbin.com/v1/challenges/UWwy5FrWf9DTeoTpJz1LpBp4dPkWZ2Ne/verify
+    uri: https://:secretkey@api.castle.io/v1/challenges/UWwy5FrWf9DTeoTpJz1LpBp4dPkWZ2Ne/verify
     body:
       encoding: UTF-8
       string: '{"response":"000000"}'
     headers:
       User-Agent:
-      - Userbin/v1 RubyBindings/1.0.4
-      X-Userbin-Client-User-Agent:
-      - '{"bindings_version":"1.0.4","lang":"ruby","lang_version":"2.1.1 p76 (2014-02-24)","platform":"x86_64-darwin13.0","publisher":"userbin","uname":"Darwin
+      - Castle/v1 RubyBindings/1.0.4
+      X-Castle-Client-User-Agent:
+      - '{"bindings_version":"1.0.4","lang":"ruby","lang_version":"2.1.1 p76 (2014-02-24)","platform":"x86_64-darwin13.0","publisher":"castle","uname":"Darwin
         Johans-MacBook-Pro-2.local 13.2.0 Darwin Kernel Version 13.2.0: Thu Apr 17
         23:03:13 PDT 2014; root:xnu-2422.100.13~1/RELEASE_X86_64 x86_64"}'
       Content-Type:

@@ -1,18 +1,18 @@
 require 'jwt'
 
-module Userbin
+module Castle
   class JWT
     attr_accessor :header, :payload
 
     def initialize(jwt)
       begin
-        raise Userbin::SecurityError, 'Empty JWT' unless jwt
-        @payload = ::JWT.decode(jwt, Userbin.config.api_secret, true) do |header|
+        raise Castle::SecurityError, 'Empty JWT' unless jwt
+        @payload = ::JWT.decode(jwt, Castleconfig.api_secret, true) do |header|
           @header = header.with_indifferent_access
-          Userbin.config.api_secret # used by the 'key finder' in the JWT gem
+          Castleconfig.api_secret # used by the 'key finder' in the JWT gem
         end.with_indifferent_access
       rescue ::JWT::DecodeError => e
-        raise Userbin::SecurityError.new(e)
+        raise Castle::SecurityError.new(e)
       end
     end
 
@@ -29,7 +29,7 @@ module Userbin
     end
 
     def to_token
-      ::JWT.encode(@payload, Userbin.config.api_secret, "HS256", @header)
+      ::JWT.encode(@payload, Castleconfig.api_secret, "HS256", @header)
     end
 
   end

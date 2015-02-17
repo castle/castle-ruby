@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-class MemoryStore < Userbin::TokenStore
+class MemoryStore < Castle::TokenStore
   def initialize
     @value = nil
   end
@@ -22,12 +22,12 @@ class MemoryStore < Userbin::TokenStore
   end
 end
 
-describe 'Userbin utils' do
+describe 'Castle utils' do
   describe 'ContextHeaders middleware' do
     before do
-      Userbin::User.use_api(api = Her::API.new)
+      Castle::User.use_api(api = Her::API.new)
       @user = api.setup do |c|
-        c.use Userbin::Request::Middleware::ContextHeaders
+        c.use Castle::Request::Middleware::ContextHeaders
         c.use Her::Middleware::FirstLevelParseJSON
         c.adapter :test do |stub|
           stub.post('/users') do |env|
@@ -44,16 +44,16 @@ describe 'Userbin utils' do
     end
 
     it 'handles non-existing context headers' do
-      Userbin::User.create()
+      Castle::User.create()
     end
 
     it 'sets context headers from env' do
       request = Rack::Request.new(Rack::MockRequest.env_for('/',
         "HTTP_USER_AGENT" => "Mozilla", "REMOTE_ADDR" => "8.8.8.8"))
-      Userbin::Client.new(request, session_store: MemoryStore.new)
-      Userbin::User.create()
-      @env['request_headers']['X-Userbin-Ip'].should == '8.8.8.8'
-      @env['request_headers']['X-Userbin-User-Agent'].should == 'Mozilla'
+      Castle::Client.new(request, session_store: MemoryStore.new)
+      Castle::User.create()
+      @env['request_headers']['X-Castle-Ip'].should == '8.8.8.8'
+      @env['request_headers']['X-Castle-User-Agent'].should == 'Mozilla'
     end
   end
 end

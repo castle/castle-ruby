@@ -1,4 +1,4 @@
-module Userbin
+module Castle
   class User < Model
     instance_post :enable_mfa!
     instance_post :disable_mfa!
@@ -10,11 +10,11 @@ module Userbin
     has_many :trusted_devices
 
     def backup_codes(params={})
-      Userbin::BackupCodes.get("/v1/users/#{id}/backup_codes", params)
+      Castle::BackupCodes.get("/v1/users/#{id}/backup_codes", params)
     end
 
     def generate_backup_codes(params={})
-      Userbin::BackupCodes.post("/v1/users/#{id}/backup_codes", params)
+      Castle::BackupCodes.post("/v1/users/#{id}/backup_codes", params)
     end
   end
 end

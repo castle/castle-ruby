@@ -1,4 +1,4 @@
-module Userbin
+module Castle
   class TokenStore
     def initialize(cookies)
       @cookies = cookies
@@ -6,7 +6,7 @@ module Userbin
 
     def session_token
       token = @cookies['_ubs']
-      Userbin::SessionToken.new(token) if token
+      Castle::SessionToken.new(token) if token
     end
 
     def session_token=(value)

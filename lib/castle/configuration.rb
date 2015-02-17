@@ -1,4 +1,4 @@
-module Userbin
+module Castle
   class << self
     def configure(config_hash=nil)
       if config_hash
@@ -11,7 +11,7 @@ module Userbin
     end
 
     def config
-      @configuration ||= Userbin::Configuration.new
+      @configuration ||= Castle::Configuration.new
     end
 
     def api_secret=(api_secret)
@@ -27,7 +27,7 @@ module Userbin
     end
 
     def api_secret
-      ENV['USERBIN_API_SECRET'] || @_api_secret || ''
+      ENV['CASTLE_API_SECRET'] || @_api_secret || ''
     end
 
     def api_secret=(value)

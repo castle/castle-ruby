@@ -1,15 +1,15 @@
 $:.push File.expand_path("../lib", __FILE__)
 
-require 'userbin/version'
+require 'castle/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'userbin'
-  s.version     = Userbin::VERSION
-  s.summary     = "Userbin"
-  s.description = "Secure your application with multi-factor authentication, user activity monitoring, and real-time threat protection."
+  s.name        = 'castle-rb'
+  s.version     = Castle::VERSION
+  s.summary     = "Castle"
+  s.description = "Secure your authentication stack with real-time monitoring, instantly notifying you and your users on potential account hijacks"
   s.authors     = ["Johan"]
-  s.email       = 'johan@userbin.com'
-  s.homepage    = 'https://userbin.com'
+  s.email       = 'johan@castle.io'
+  s.homepage    = 'https://castle.io'
   s.license     = 'MIT'
 
   s.files       = Dir["{app,config,db,lib}/**/*"] + ["README.md"]

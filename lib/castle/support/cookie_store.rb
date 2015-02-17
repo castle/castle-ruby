@@ -1,4 +1,4 @@
-module Userbin
+module Castle
   module CookieStore
     class Base
       def initialize(request, response)

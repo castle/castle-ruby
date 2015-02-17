@@ -1,4 +1,4 @@
-module Userbin
+module Castle
   class SessionStore
     class Rack < SessionStore
       def initialize(session)
@@ -6,11 +6,11 @@ module Userbin
       end
 
       def user_id
-        @session['userbin.user_id']
+        @session['Castleuser_id']
       end
 
       def user_id=(value)
-        @session['userbin.user_id'] = value
+        @session['Castleuser_id'] = value
       end
 
       def read
@@ -28,7 +28,7 @@ module Userbin
       private
 
       def key
-        "userbin.user.#{user_id}"
+        "Castleuser.#{user_id}"
       end
     end
   end

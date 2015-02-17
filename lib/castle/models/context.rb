@@ -1,14 +1,14 @@
-module Userbin
+module Castle
   class Context < Model
     def user_agent
       if attributes['user_agent']
-        Userbin::UserAgent.new(attributes['user_agent'])
+        Castle::UserAgent.new(attributes['user_agent'])
       end
     end
 
     def location
       if attributes['location']
-        Userbin::Location.new(attributes['location'])
+        Castle::Location.new(attributes['location'])
       end
     end
   end

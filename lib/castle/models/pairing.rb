@@ -1,4 +1,4 @@
-module Userbin
+module Castle
   class Pairing < Model
     collection_path "users/:user_id/pairings"
     instance_post :verify

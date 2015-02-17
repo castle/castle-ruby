@@ -1,4 +1,4 @@
-module Userbin
+module Castle
   class Account < Model
     def self.fetch
       get('/v1/account')

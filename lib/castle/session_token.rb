@@ -1,10 +1,10 @@
 require 'jwt'
 
-module Userbin
+module Castle
   class SessionToken
     def initialize(token)
       if token
-        @jwt = Userbin::JWT.new(token)
+        @jwt = Castle::JWT.new(token)
       end
     end
 

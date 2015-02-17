@@ -1,16 +1,16 @@
 require 'her'
 
 class Her::Collection
-  # Call the overridden to_json in Userbin::Model
+  # Call the overridden to_json in Castle::Model
   def to_json
     self.map { |m| m.to_json }
   end
 end
 
-module Userbin
+module Castle
   class Model
     include Her::Model
-    use_api Userbin::API
+    use_api Castle::API
 
     def initialize(args = {})
       # allow initializing with id as a string

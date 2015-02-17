@@ -1,10 +1,10 @@
 require_relative 'cookie_store'
 
 module Sinatra
-  module Userbin
+  module Castle
     module Helpers
-      def userbin
-        @userbin ||= ::Userbin::Client.new(request, response)
+      def castle
+        @castle ||= ::Castle::Client.new(request, response)
       end
     end
 
@@ -13,5 +13,5 @@ module Sinatra
     end
   end
 
-  register Userbin
+  register Castle
 end
