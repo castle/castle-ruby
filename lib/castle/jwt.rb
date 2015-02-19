@@ -7,9 +7,9 @@ module Castle
     def initialize(jwt)
       begin
         raise Castle::SecurityError, 'Empty JWT' unless jwt
-        @payload = ::JWT.decode(jwt, Castleconfig.api_secret, true) do |header|
+        @payload = ::JWT.decode(jwt, Castle.config.api_secret, true) do |header|
           @header = header.with_indifferent_access
-          Castleconfig.api_secret # used by the 'key finder' in the JWT gem
+          Castle.config.api_secret # used by the 'key finder' in the JWT gem
         end.with_indifferent_access
       rescue ::JWT::DecodeError => e
         raise Castle::SecurityError.new(e)
@@ -29,7 +29,7 @@ module Castle
     end
 
     def to_token
-      ::JWT.encode(@payload, Castleconfig.api_secret, "HS256", @header)
+      ::JWT.encode(@payload, Castle.config.api_secret, "HS256", @header)
     end
 
   end

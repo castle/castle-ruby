@@ -21,7 +21,7 @@ VCR.configure do |config|
   config.hook_into :webmock
 end
 
-Castleconfigure do |config|
+Castle.configure do |config|
   config.api_secret = 'secretkey'
 end
 
