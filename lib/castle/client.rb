@@ -135,5 +135,7 @@ module Castle
     def recommendation(opts = {})
       Castle::Recommendation.get('/v1/recommendation', opts)
     end
+
+    alias_method :recommend, :recommendation
   end
 end
