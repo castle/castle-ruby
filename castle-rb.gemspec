@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency "her", "~> 0.7.2"
   s.add_dependency "faraday_middleware", "~> 0.9.1"
   s.add_dependency "multi_json", "~> 1.0"
-  s.add_dependency "jwt", "~> 0.1.13"
+  s.add_dependency "jwt", "~> 1.2.0"
   s.add_dependency "request_store", "~> 1.1"
   s.add_dependency "activesupport", ">= 3"
 
