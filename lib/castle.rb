@@ -30,6 +30,10 @@ end
 
 module Castle
   API = Castle.setup_api
+
+  def self.secure_encode(properties = {})
+    ::JWT.encode(properties, Castle.config.api_secret)
+  end
 end
 
 # These need to be required after setting up Her

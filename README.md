@@ -64,6 +64,24 @@ castle.track(
 
 - `$login`: The submitted email or username from when the user attempted to log in or reset their password. Useful when there is no `user_id` available.
 
+## Secure mode
+
+Avoid client-side spoofing by having your backend sign the user data with `secure_encode`.
+
+```erb
+_castle('setUser', '<%= Castle.secure_encode({
+  id: current_user.id,
+  email: current_user.email }) %>');
+```
+
+This will use your API Secret to encode the data into [JWT](http://jwt.io) format, for example:
+
+```javascript
+_castle('setUser', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1...y4PCIXrz1Ejs');
+```
+
+**Important:** Make sure you enable **Secure mode** in the [Castle dashboard](https://dashboard.castle.io/settings/general).
+
 ## Configuration
 
 ```ruby
