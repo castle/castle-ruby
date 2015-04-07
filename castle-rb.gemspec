@@ -1,6 +1,6 @@
 $:.push File.expand_path("../lib", __FILE__)
 
-require 'castle/version'
+require 'castle-rb/version'
 
 Gem::Specification.new do |s|
   s.name        = 'castle-rb'
@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
 
   s.files       = Dir["{app,config,db,lib}/**/*"] + ["README.md"]
   s.test_files  = Dir["spec/**/*"]
+  s.require_paths = ['lib']
 
   s.add_dependency "her", "~> 0.7.2"
   s.add_dependency "faraday_middleware", "~> 0.9.1"

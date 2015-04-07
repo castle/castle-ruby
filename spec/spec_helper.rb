@@ -14,7 +14,7 @@ SimpleCov.start do
   add_filter 'spec'
 end
 
-require 'castle'
+require 'castle-rb'
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
