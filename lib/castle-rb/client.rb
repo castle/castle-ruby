@@ -33,7 +33,8 @@ module Castle
       @request_context = {
         ip: request.ip,
         user_agent: request.user_agent,
-        cookie_id: cookies['__cid'] || ''
+        cookie_id: cookies['__cid'] || '',
+        headers: header_string(request)
       }
     end
 
@@ -137,5 +138,20 @@ module Castle
     end
 
     alias_method :recommend, :recommendation
+
+    private
+
+    def header_string(request)
+      scrub_headers = ['Cookie']
+
+      headers = request.env.keys.grep(/^HTTP_/).map do |header|
+        name = header.gsub(/^HTTP_/, '').split('_').map(&:capitalize).join('-')
+        unless scrub_headers.include?(name)
+          { name => request.env[header] }
+        end
+      end.compact.inject(:merge)
+
+      MultiJson.encode(headers)
+    end
   end
 end
