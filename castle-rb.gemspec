@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.test_files  = Dir["spec/**/*"]
   s.require_paths = ['lib']
 
-  s.add_dependency "her", "~> 0.7.2"
+  s.add_dependency "her", "~> 0.7.6"
   s.add_dependency "faraday_middleware", "~> 0.9.1"
   s.add_dependency "multi_json", "~> 1.0"
   s.add_dependency "jwt", "~> 1.2.0"
