@@ -1,5 +1,5 @@
 #
-# Add destroy to association: user.challenges.destroy(id)
+# Add destroy to association: user.events.destroy(id)
 #
 module Her::Model::Associations
   class AssociationProxy

@@ -73,31 +73,6 @@ module Castle
         end
       end
 
-      # Sends the active session token in a header, and extracts the returned
-      # session token and sets it locally.
-      #
-      class SessionToken < Faraday::Middleware
-        def call(env)
-          castle = RequestStore.store[:castle]
-          return @app.call(env) unless castle
-
-          # get the session token from our local store
-          if castle.session_token
-            env[:request_headers]['X-Castle-Session-Token'] =
-              castle.session_token.to_s
-          end
-
-          # call the API
-          response = @app.call(env)
-
-          # update the local store with the updated session token
-          token = response.env.response_headers['X-Castle-set-session-token']
-          castle.session_token = token if token
-
-          response
-        end
-      end
-
       # Adds request context like IP address and user agent to any request.
       #
       class ContextHeaders < Faraday::Middleware

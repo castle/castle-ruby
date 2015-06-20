@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Castle::VERSION
   s.summary     = "Castle"
   s.description = "Secure your authentication stack with real-time monitoring, instantly notifying you and your users on potential account hijacks"
-  s.authors     = ["Johan"]
+  s.authors     = ["Johan Brissmyr"]
   s.email       = 'johan@castle.io'
   s.homepage    = 'https://castle.io'
   s.license     = 'MIT'

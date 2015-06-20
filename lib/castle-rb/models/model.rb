@@ -28,15 +28,6 @@ module Castle
       attrs
     end
 
-    # Remove the auto-generated embedded User model to prevent recursion
-    def to_json
-      attrs = attributes
-      if attrs['user'] && attrs['user']['id'] == '$current'
-        attrs.delete 'user'
-      end
-      attrs.to_json
-    end
-
     METHODS.each do |method|
       class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def self.instance_#{method}(action)
@@ -47,7 +38,7 @@ module Castle
 
     def self.instance_custom(method, action)
       #
-      # Add method calls to association: user.challenges.verify(id, attributes)
+      # Add method calls to association: user.events.some_method(id, attributes)
       #
       AssociationProxy.class_eval <<-RUBY, __FILE__, __LINE__ + 1
         install_proxy_methods :association, :#{action}
@@ -59,7 +50,7 @@ module Castle
       RUBY
 
       #
-      # Add method call to instance: user.enable_mfa
+      # Add method call to instance: user.enable_something
       #
       class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def #{action}(params={})

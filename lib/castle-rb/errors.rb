@@ -13,4 +13,3 @@ class Castle::UserUnauthorizedError < Castle::ApiError; end
 class Castle::InvalidParametersError < Castle::ApiError; end
 
 class Castle::UnauthorizedError < Castle::ApiError; end
-class Castle::ChallengeRequiredError < Castle::ApiError; end

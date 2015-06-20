@@ -12,7 +12,6 @@ module Castle
         c.use Castle::Request::Middleware::RequestErrorHandler
         c.use Castle::Request::Middleware::EnvironmentHeaders
         c.use Castle::Request::Middleware::ContextHeaders
-        c.use Castle::Request::Middleware::SessionToken
         c.use FaradayMiddleware::EncodeJson
         c.use Castle::Request::Middleware::JSONParser
         c.use Faraday::Adapter::NetHttp
