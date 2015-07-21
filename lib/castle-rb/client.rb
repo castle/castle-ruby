@@ -17,8 +17,15 @@ module Castle
     end
 
     def track(opts = {})
-      # Castle::Event.post('/v1/events', opts)
       Castle::Event.create(opts)
+    end
+
+    def verify(opts = {})
+      Castle::Verification.create(opts)
+    end
+
+    def approve(opts = {})
+      Castle::Verification.new('$current').approve
     end
 
     private
