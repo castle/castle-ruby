@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = 'castle-rb'
   s.version     = Castle::VERSION
   s.summary     = "Castle"
-  s.description = "Secure your authentication stack with real-time monitoring, instantly notifying you and your users on potential account hijacks"
+  s.description = "Secure your authentication stack with user account monitoring"
   s.authors     = ["Johan Brissmyr"]
   s.email       = 'johan@castle.io'
   s.homepage    = 'https://castle.io'
@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.add_dependency "her", "~> 0.7.6"
   s.add_dependency "faraday_middleware", "~> 0.9.1"
   s.add_dependency "multi_json", "~> 1.0"
-  s.add_dependency "jwt", "~> 1.2.0"
   s.add_dependency "request_store", "~> 1.1"
   s.add_dependency "activesupport", ">= 3"
 

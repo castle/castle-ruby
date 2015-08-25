@@ -12,7 +12,6 @@ require 'castle-rb/version'
 require 'castle-rb/configuration'
 require 'castle-rb/client'
 require 'castle-rb/errors'
-require 'castle-rb/jwt'
 require 'castle-rb/utils'
 require 'castle-rb/request'
 
@@ -28,10 +27,6 @@ end
 
 module Castle
   API = Castle.setup_api
-
-  def self.secure_encode(properties = {})
-    ::JWT.encode(properties, Castle.config.api_secret)
-  end
 end
 
 # These need to be required after setting up Her
