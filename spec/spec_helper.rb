@@ -11,6 +11,8 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 ]
 SimpleCov.start do
   add_filter 'spec'
+  add_group 'Models', 'lib/castle-rb/models'
+  add_group 'Support', 'lib/castle-rb/support'
 end
 
 require 'castle-rb'
