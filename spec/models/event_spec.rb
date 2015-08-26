@@ -1,6 +1,6 @@
-describe Castle::User do
+describe Castle::Event do
   it 'extends Castle::Model' do
-    instance = Castle::User.new
+    instance = Castle::Event.new
     expect(instance).to be_a Castle::Model
   end
 end

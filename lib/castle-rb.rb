@@ -33,6 +33,8 @@ end
 require 'castle-rb/models/model'
 require 'castle-rb/models/account'
 require 'castle-rb/models/event'
+require 'castle-rb/models/location'
+require 'castle-rb/models/user_agent'
 require 'castle-rb/models/context'
 require 'castle-rb/models/user'
 require 'castle-rb/models/verification'

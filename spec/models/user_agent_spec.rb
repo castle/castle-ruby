@@ -1,6 +1,6 @@
-describe Castle::User do
+describe Castle::UserAgent do
   it 'extends Castle::Model' do
-    instance = Castle::User.new
+    instance = Castle::UserAgent.new
     expect(instance).to be_a Castle::Model
   end
 end
