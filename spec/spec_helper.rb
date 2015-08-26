@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'rack'
-require 'vcr'
 require 'webmock/rspec'
 require 'simplecov'
 require 'coveralls'
@@ -15,11 +14,6 @@ SimpleCov.start do
 end
 
 require 'castle-rb'
-
-VCR.configure do |config|
-  config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
-  config.hook_into :webmock
-end
 
 Castle.configure do |config|
   config.api_secret = 'secretkey'
