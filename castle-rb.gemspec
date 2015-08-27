@@ -16,16 +16,15 @@ Gem::Specification.new do |s|
   s.test_files  = Dir["spec/**/*"]
   s.require_paths = ['lib']
 
-  s.add_dependency "her", "~> 0.7.6"
-  s.add_dependency "faraday_middleware", "~> 0.9.1"
-  s.add_dependency "multi_json", "~> 1.0"
-  s.add_dependency "request_store", "~> 1.1"
-  s.add_dependency "activesupport", '~> 3'
+  s.add_dependency "her", "~> 0.7"
+  s.add_dependency "faraday_middleware", "~> 0.10"
+  s.add_dependency "multi_json", "~> 1.11"
+  s.add_dependency "request_store", "~> 1.2"
+  s.add_dependency "activesupport", "~> 4.0"
 
-  s.add_development_dependency "rspec", '~> 0'
-  s.add_development_dependency "rack", '~> 0'
-  s.add_development_dependency "webmock", '~> 0'
-  s.add_development_dependency "vcr", '~> 0'
-  s.add_development_dependency "timecop", '~> 0'
-  s.add_development_dependency "coveralls", "~> 0.7.2"
+  s.add_development_dependency "rspec", "~> 3.3"
+  s.add_development_dependency "rack", "~> 1.6"
+  s.add_development_dependency "webmock", "~> 1.21"
+  s.add_development_dependency "timecop", "~> 0.8"
+  s.add_development_dependency "coveralls", "~> 0.8"
 end

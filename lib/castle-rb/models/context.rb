@@ -12,7 +12,4 @@ module Castle
       end
     end
   end
-
-  class UserAgent < Model; end
-  class Location < Model; end
 end
