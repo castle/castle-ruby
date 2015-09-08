@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "faraday_middleware", "~> 0.10"
   s.add_dependency "multi_json", "~> 1.11"
   s.add_dependency "request_store", "~> 1.2"
-  s.add_dependency "activesupport", "~> 4.0"
+  s.add_dependency "activesupport", '> 2'
 
   s.add_development_dependency "rspec", "~> 3.3"
   s.add_development_dependency "rack", "~> 1.6"
