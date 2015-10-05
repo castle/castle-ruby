@@ -54,6 +54,9 @@ castle.track(
 - `$logout.succeeded`:  Record when a user logs out.
 - `$registration.succeeded`: Capture account creation, both when a user signs up as well as when created manually by an administrator.
 - `$registration.failed`: Record when an account failed to be created.
+- `$email_change.requested`: An attempt was made to change a user’s email.
+- `$email_change.succeeded`: The user completed all of the steps in the email address change process and the email was successfully changed.
+- `$email_change.failed`: Use to record when a user failed to change their email address.
 - `$challenge.requested`: Record when a user is prompted with additional verification, such as two-factor authentication or a captcha.
 - `$challenge.succeeded`: Record when additional verification was successful.
 - `$challenge.failed`: Record when additional verification failed.
