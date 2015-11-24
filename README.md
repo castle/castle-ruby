@@ -23,7 +23,19 @@ Castle.api_secret = 'YOUR_API_SECRET'
 
 A Castle client instance will automatically be made available as `castle` in your Rails, Sinatra or Padrino controllers.
 
-## Tracking security events
+## Identifying users
+
+Call `identify` when a user logs in or updates their information.
+
+```ruby
+castle.identify(user.id, {
+  created_at: user.created_at,
+  email: user.email,
+  name: user.name
+})
+```
+
+## Tracking events
 
 `track` lets you record the security-related actions your users perform. The more actions you track, the more accurate Castle is in identifying fraudsters.
 

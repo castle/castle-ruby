@@ -16,6 +16,10 @@ module Castle
       }
     end
 
+    def identify(user_id, opts = {})
+      Castle::User.save_existing(user_id, opts)
+    end
+
     def track(opts = {})
       Castle::Event.create(opts)
     end
