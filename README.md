@@ -31,9 +31,15 @@ Call `identify` when a user logs in or updates their information.
 castle.identify(user.id, {
   created_at: user.created_at,
   email: user.email,
-  name: user.name
+  name: user.name,
+  custom_attributes: {
+    company_name: 'Acme',
+    age: 28
+  }
 })
 ```
+
+Read more about the available fields in the [API docs](https://api.castle.io/docs#users).
 
 ## Tracking events
 
