@@ -53,7 +53,7 @@ module Castle
       # Add method call to instance: user.enable_something
       #
       class_eval <<-RUBY, __FILE__, __LINE__ + 1
-        def #{action}(params={})
+        def #{action}!(params={})
           self.class.#{method}("\#{request_path}/#{action.to_s.delete('!')}", params)
         end
       RUBY

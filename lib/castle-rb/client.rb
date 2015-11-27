@@ -24,12 +24,12 @@ module Castle
       Castle::Event.create(opts)
     end
 
-    def verify(opts = {})
-      Castle::Verification.create(opts)
+    def authenticate(user_id)
+      Castle::Authentication.create(user_id: user_id)
     end
 
-    def approve(opts = {})
-      Castle::Verification.new('$current').approve
+    def authentication(authentication_id)
+      Castle::Authentication.find(authentication_id)
     end
 
     private

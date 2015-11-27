@@ -1,6 +1,6 @@
-describe Castle::Verification do
+describe Castle::Authentication do
   it 'extends Castle::Model' do
-    instance = Castle::Verification.new
+    instance = Castle::Authentication.new
     expect(instance).to be_a Castle::Model
   end
 end
