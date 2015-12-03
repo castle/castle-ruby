@@ -1,6 +1,5 @@
 module Castle
   class Authentication < Model
-    has_one :user
     has_one :context
 
     instance_post :approve
