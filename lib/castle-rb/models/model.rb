@@ -19,14 +19,14 @@ module Castle
     end
 
     # Transform model.user.id to model.user_id to allow calls on nested models
-    def attributes
-      attrs = super
-      if attrs['user'] && attrs['user']['id']
-        attrs.merge!('user_id' => attrs['user']['id'])
-        attrs.delete 'user'
-      end
-      attrs
-    end
+    # def attributes
+    #   attrs = super
+    #   if attrs['user'] && attrs['user']['id']
+    #     attrs.merge!('user_id' => attrs['user']['id'])
+    #     attrs.delete 'user'
+    #   end
+    #   attrs
+    # end
 
     METHODS.each do |method|
       class_eval <<-RUBY, __FILE__, __LINE__ + 1
