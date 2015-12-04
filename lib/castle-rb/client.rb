@@ -32,6 +32,10 @@ module Castle
       Castle::Authentication.find(authentication_id)
     end
 
+    def authentications
+      Castle::Authentication
+    end
+
     private
 
     def extract_cookies(request, response)
