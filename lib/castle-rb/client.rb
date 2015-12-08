@@ -1,7 +1,7 @@
 module Castle
   class Client
 
-    attr_accessor :request_context
+    attr_accessor :request_context, :do_not_track
 
     def initialize(request, response, opts = {})
       # Save a reference in the per-request store so that the request
@@ -17,11 +17,21 @@ module Castle
     end
 
     def identify(user_id, opts = {})
+      return if @do_not_track
       Castle::User.save_existing(user_id, opts)
     end
 
     def track(opts = {})
+      return if @do_not_track
       Castle::Event.create(opts)
+    end
+
+    def do_not_track!
+      @do_not_track = true
+    end
+
+    def track!
+      @do_not_track = false
     end
 
     def authenticate(user_id)
