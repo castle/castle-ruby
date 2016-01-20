@@ -68,7 +68,7 @@ castle.track(
 ### Supported events
 
 - `$login.succeeded`: Record when a user attempts to log in.
-- `$login.failed`: Record when a user logs out.
+- `$login.failed`: Record when a user fails a login attempt.
 - `$logout.succeeded`:  Record when a user logs out.
 - `$registration.succeeded`: Capture account creation, both when a user signs up as well as when created manually by an administrator.
 - `$registration.failed`: Record when an account failed to be created.
