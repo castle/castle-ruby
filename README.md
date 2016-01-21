@@ -21,72 +21,11 @@ Load and configure the library with your Castle API secret in an initializer or 
 Castle.api_secret = 'YOUR_API_SECRET'
 ```
 
-A Castle client instance will automatically be made available as `castle` in your Rails, Sinatra or Padrino controllers.
+A Castle client instance will be made available as `castle` in your Rails, Sinatra or Padrino controllers. The client will automatically configure the [request context](https://api.castle.io/docs#request-context) for each request.
 
-## Identifying users
+## Documentation
 
-Call `identify` when a user logs in or updates their information.
-
-```ruby
-castle.identify(user.id, {
-  created_at: user.created_at,
-  email: user.email,
-  name: user.name,
-  custom_attributes: {
-    company_name: 'Acme',
-    age: 28
-  }
-})
-```
-
-Read more about the available fields in the [API docs](https://api.castle.io/docs#users).
-
-## Tracking events
-
-`track` lets you record the security-related actions your users perform. The more actions you track, the more accurate Castle is in identifying fraudsters.
-
-Event names and detail properties that have semantic meaning are prefixed `$`, and we handle them in special ways.
-
-When you have access to a **logged in user**, set `user_id` to the same user identifier as when you initiated Castle.js.
-
-```ruby
-castle.track(
-  name: '$login.succeeded',
-  user_id: user.id)
-```
-
-When you **don't** have access to a logged in user just omit `user_id`, typically when tracking `$login.failed` and `$password_reset.requested`. Instead, whenever you have access to the user-submitted form value, add this to the event details as `$login`.
-
-```ruby
-castle.track(
-  name: '$login.failed',
-  details: {
-    '$login' => 'johan@castle.io'
-  })
-```
-
-### Supported events
-
-- `$login.succeeded`: Record when a user attempts to log in.
-- `$login.failed`: Record when a user fails a login attempt.
-- `$logout.succeeded`:  Record when a user logs out.
-- `$registration.succeeded`: Capture account creation, both when a user signs up as well as when created manually by an administrator.
-- `$registration.failed`: Record when an account failed to be created.
-- `$email_change.requested`: An attempt was made to change a user’s email.
-- `$email_change.succeeded`: The user completed all of the steps in the email address change process and the email was successfully changed.
-- `$email_change.failed`: Use to record when a user failed to change their email address.
-- `$challenge.requested`: Record when a user is prompted with additional verification, such as two-factor authentication or a captcha.
-- `$challenge.succeeded`: Record when additional verification was successful.
-- `$challenge.failed`: Record when additional verification failed.
-- `$password_reset.requested`: An attempt was made to reset a user’s password.
-- `$password_reset.succeeded`: The user completed all of the steps in the password reset process and the password was successfully reset. Password resets **do not** required knowledge of the current password.
-- `$password_reset.failed`: Use to record when a user failed to reset their password.
-- `$password_change.succeeded`: Use to record when a user changed their password. This event is only logged when users change their **own** password.
-- `$password_change.failed`:  Use to record when a user failed to change their password.
-
-### Supported detail properties
-
-- `$login`: The submitted email or username from when the user attempted to log in or reset their password. Useful when there is no `user_id` available.
+[Official Castle docs](https://castle.io/docs)
 
 ## Exceptions
 
