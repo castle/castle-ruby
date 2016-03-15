@@ -50,5 +50,8 @@ Castle.configure do |config|
 
   # Castle::RequestError is raised when timing out (default: 30.0)
   config.request_timeout = 2.0
+
+  # For tracking in non-web environments: https://castle.io/docs/sources (default: 'web')
+  config.source_header = 'backend'
 end
 ```

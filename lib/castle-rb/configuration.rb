@@ -21,6 +21,7 @@ module Castle
 
   class Configuration
     attr_accessor :request_timeout
+    attr_accessor :source_header
 
     def initialize
       self.request_timeout = 30.0

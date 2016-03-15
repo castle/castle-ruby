@@ -66,6 +66,11 @@ module Castle
           rescue # ignored
           end
 
+          if Castle.config.source_header
+            env[:request_headers]["X-Castle-Source"] =
+              Castle.config.source_header
+          end
+
           env[:request_headers]["User-Agent"] =
             "Castle/v1 RubyBindings/#{Castle::VERSION}"
 
