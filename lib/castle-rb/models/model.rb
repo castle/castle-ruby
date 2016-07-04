@@ -1,4 +1,4 @@
-require 'her'
+require 'castle-her'
 
 class Her::Collection
   # Call the overridden to_json in Castle::Model

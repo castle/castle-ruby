@@ -1,4 +1,4 @@
-require 'her'
+require 'castle-her'
 require 'castle-rb/ext/her'
 require 'faraday_middleware'
 require 'multi_json'
