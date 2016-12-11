@@ -46,7 +46,6 @@ GEM
     safe_yaml (1.0.4)
     slop (3.6.0)
     thread_safe (0.3.5)
-    timecop (0.8.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     webmock (1.24.6)
@@ -63,7 +62,6 @@ DEPENDENCIES
   rack (~> 1.6)
   rake
   rspec
-  timecop (~> 0.8)
   webmock (~> 1.21)
 
 BUNDLED WITH
