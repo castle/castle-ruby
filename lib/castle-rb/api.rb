@@ -6,6 +6,8 @@ module Castle
       @http = Net::HTTP.new(Castle.config.api_endpoint.host,
                             Castle.config.api_endpoint.port)
 
+      @http.read_timeout = Castle.config.request_timeout
+
       if Castle.config.api_endpoint.scheme == 'https'
         @http.use_ssl = true
         @http.verify_mode = OpenSSL::SSL::VERIFY_PEER
@@ -34,7 +36,7 @@ module Castle
         response = @http.request(req)
       rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
              Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
-             Net::ProtocolError => e
+             Net::ProtocolError, Net::ReadTimeout => e
         raise Castle::RequestError, 'Castle API connection error'
       end
 
