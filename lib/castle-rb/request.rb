@@ -62,7 +62,7 @@ module Castle
         def call(env)
           begin
             env[:request_headers]["X-Castle-Client-User-Agent"] =
-              MultiJson.encode(Castle::Request.client_user_agent)
+              JSON.generate(Castle::Request.client_user_agent)
           rescue # ignored
           end
 
@@ -102,8 +102,8 @@ module Castle
             {}
           else
             begin
-              MultiJson.load(env[:body], :symbolize_keys => true)
-            rescue MultiJson::LoadError
+              JSON.parse(env[:body], :symbolize_names => true)
+            rescue JSON::ParserError
               raise Castle::ApiError, 'Invalid response from Castle API'
             end
           end

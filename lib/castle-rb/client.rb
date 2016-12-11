@@ -68,7 +68,7 @@ module Castle
         end
       end.compact.inject(:merge)
 
-      MultiJson.encode(headers)
+      JSON.generate(headers)
     end
   end
 end
