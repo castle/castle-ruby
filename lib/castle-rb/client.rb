@@ -10,6 +10,10 @@ module Castle
       @api = API.new(cookie_id, ip, headers)
     end
 
+    def identify(args)
+      @api.request('identify', args)
+    end
+
     def authenticate(args)
       @api.request('authenticate', args)
     end
