@@ -25,6 +25,8 @@ module Castle
 
     def initialize
       self.request_timeout = 30.0
+      self.api_endpoint =
+        ENV['CASTLE_API_ENDPOINT'] || 'https://api.castle.io/v1'
     end
 
     def api_secret
@@ -33,6 +35,14 @@ module Castle
 
     def api_secret=(value)
       @_api_secret = value
+    end
+
+    def api_endpoint
+      @_api_endpoint
+    end
+
+    def api_endpoint=(value)
+      @_api_endpoint = URI(value)
     end
   end
 end

@@ -1,23 +1,13 @@
 language: ruby
 rvm:
-- 1.8.7
-- 1.9.2
-- 1.9.3
-- 2.0.0
-- 2.1.1
-- 2.2.3
+- 2.2.6
+- 2.3.3
 - ruby-head
-- jruby-18mode
-- jruby-19mode
-- jruby-head
-matrix:
-  allow_failures:
-  - rvm: jruby-18mode
-  - rvm: 1.8.7
-  - rvm: 1.9.2
-  - rvm: ruby-head
 notifications:
   slack:
     secure: JVXUf9/+m3mRZU6WnJxgskpSbDY6tHRTQwFeUtq7eYFdXYr/BTCprS2RsANLr8K5eLBgOJeEILAZW/plwpBfa9TnWQxknL/OqY4nyrrtUdc+i7TfBNEwO/I6owvELKSYjgxjClJXkcPS8pg6UTr+wYpbQ+7ToVnPdHf6J3Hy7X4=
     on_success: change
     on_failure: always
+before_install:
+  - gem install bundler
+  - gem install bundler

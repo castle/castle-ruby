@@ -3,7 +3,6 @@
 [![Build Status](https://travis-ci.org/castle/castle-ruby.png)](https://travis-ci.org/castle/castle-ruby)
 [![Gem Version](https://badge.fury.io/rb/castle-rb.png)](http://badge.fury.io/rb/castle-rb)
 [![Dependency Status](https://gemnasium.com/castle/castle-ruby.png)](https://gemnasium.com/castle/castle-ruby)
-[![Coverage Status](https://coveralls.io/repos/castle/castle-ruby/badge.png)](https://coveralls.io/r/castle/castle-ruby)
 
 **[Castle](https://castle.io) adds real-time monitoring of your authentication stack, instantly notifying you and your users on potential account hijacks.**
 

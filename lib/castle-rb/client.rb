@@ -1,55 +1,31 @@
 module Castle
   class Client
+    attr_accessor :do_not_track, :api
 
-    attr_accessor :request_context, :do_not_track
+    def initialize(request, response)
+      cookie_id = extract_cookie(request, response)['__cid'] || ''
+      ip = request.ip
+      headers = header_string(request)
 
-    def initialize(request, response, opts = {})
-      # Save a reference in the per-request store so that the request
-      # middleware in request.rb can access it
-      RequestStore.store[:castle] = self
-
-      @request_context = {
-        ip: request.ip,
-        user_agent: request.user_agent,
-        cookie_id: extract_cookies(request, response)['__cid'] || '',
-        headers: header_string(request)
-      }
+      @api = API.new(cookie_id, ip, headers)
     end
 
-    def identify(user_id, opts = {})
-      return if @do_not_track
-      Castle::User.save_existing(user_id, opts)
+    def identify(args)
+      @api.request('identify', args)
     end
 
-    def track(opts = {})
-      return if @do_not_track
-      Castle::Event.create(opts)
+    def authenticate(args)
+      @api.request('authenticate', args)
     end
 
-    def do_not_track!
-      @do_not_track = true
-    end
-
-    def track!
-      @do_not_track = false
-    end
-
-    def authenticate(user_id)
-      Castle::Authentication.create(user_id: user_id)
-    end
-
-    def authentication(authentication_id)
-      Castle::Authentication.find(authentication_id)
-    end
-
-    def authentications
-      Castle::Authentication
+    def track(args)
+      @api.request('track', args)
     end
 
     private
 
-    def extract_cookies(request, response)
-      # Extract the cookie set by the Castle Javascript
+    # Extract the cookie set by the Castle Javascript
+    def extract_cookie(request, response)
       if response.class.name == 'ActionDispatch::Cookies::CookieJar'
         Castle::CookieStore::Rack.new(response)
       else
@@ -68,7 +44,7 @@ module Castle
         end
       end.compact.inject(:merge)
 
-      MultiJson.encode(headers)
+      JSON.generate(headers || {})
     end
   end
 end
