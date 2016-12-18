@@ -1,6 +1,5 @@
 require 'openssl'
 require 'net/http'
-require 'active_support/core_ext/hash/indifferent_access'
 
 require 'castle-rb/version'
 

@@ -16,8 +16,6 @@ Gem::Specification.new do |s|
   s.test_files  = Dir["spec/**/*"]
   s.require_paths = ['lib']
 
-  s.add_dependency "activesupport", '> 2'
-
   s.add_development_dependency "pry"
   s.add_development_dependency "rack", "~> 1.6"
   s.add_development_dependency "rspec"
