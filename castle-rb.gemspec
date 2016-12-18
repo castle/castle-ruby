@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.test_files  = Dir["spec/**/*"]
   s.require_paths = ['lib']
 
-  s.add_development_dependency "pry"
+  s.add_development_dependency "pry", '~> 0.10.4'
   s.add_development_dependency "rack", "~> 1.6"
-  s.add_development_dependency "rspec"
+  s.add_development_dependency "rspec", '~> 3.5'
   s.add_development_dependency "webmock", "~> 1.21"
 end
