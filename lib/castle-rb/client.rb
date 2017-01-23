@@ -11,7 +11,7 @@ module Castle
     end
 
     def identify(args)
-      @api.request('identify', args)
+      @api.request('identify', args) unless do_not_track?
     end
 
     def authenticate(args)
@@ -19,8 +19,21 @@ module Castle
     end
 
     def track(args)
-      @api.request('track', args)
+      @api.request('track', args) unless do_not_track?
     end
+
+    def do_not_track!
+      @do_not_track = true
+    end
+
+    def track!
+      @do_not_track = false
+    end
+
+    def do_not_track?
+      !!@do_not_track
+    end
+
 
     private
 
