@@ -10,6 +10,10 @@ module Castle
       @api = API.new(cookie_id, ip, headers)
     end
 
+    def fetch_review(id)
+      @api.request("reviews/#{id}", nil, method: 'GET')
+    end
+
     def identify(args)
       @api.request('identify', args) unless do_not_track?
     end
