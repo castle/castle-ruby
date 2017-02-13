@@ -26,12 +26,12 @@ module Castle
       @headers.delete_if { |k, v| v.nil? }
     end
 
-    def request(endpoint, args, method: 'Post')
+    def request(endpoint, args, method: :post)
       http_method = method.to_s.capitalize
       req = Net::HTTP.const_get(http_method).new(
         "#{Castle.config.api_endpoint.path}/#{endpoint}", @headers)
       req.basic_auth("", Castle.config.api_secret)
-      req.body = args.to_json unless http_method == 'GET'
+      req.body = args.to_json unless http_method == 'Get'
 
       begin
         response = @http.request(req)
