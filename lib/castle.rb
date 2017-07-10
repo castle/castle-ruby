@@ -9,6 +9,7 @@ require 'castle/configuration'
 require 'castle/client'
 require 'castle/errors'
 require 'castle/api'
+require 'castle/uname'
 require 'castle/support/cookie_store'
 require 'castle/support/rails' if defined?(Rails::Railtie)
 
