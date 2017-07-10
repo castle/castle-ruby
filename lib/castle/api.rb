@@ -67,7 +67,7 @@ module Castle
       @http.request(req)
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
            Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
-           Net::ProtocolError, Net::ReadTimeout
+           Net::ProtocolError
       raise Castle::RequestError, 'Castle API connection error'
     end
 
