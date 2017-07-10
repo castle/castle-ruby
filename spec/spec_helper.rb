@@ -5,7 +5,7 @@ require 'bundler/setup'
 require 'rack'
 require 'webmock/rspec'
 require 'pry'
-require 'castle-rb'
+require 'castle'
 
 Castle.configure do |config|
   config.api_secret = 'secret'

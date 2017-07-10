@@ -24,4 +24,13 @@ module Castle
   class InvalidParametersError < Castle::ApiError; end
   # api error unauthorized 401
   class UnauthorizedError < Castle::ApiError; end
+
+  RESPONSE_ERRORS = {
+    400 => Castle::BadRequestError,
+    401 => Castle::UnauthorizedError,
+    403 => Castle::ForbiddenError,
+    404 => Castle::NotFoundError,
+    419 => Castle::UserUnauthorizedError,
+    422 => Castle::InvalidParametersError
+  }.freeze
 end
