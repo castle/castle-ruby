@@ -20,4 +20,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rack", "~> 1.6"
   s.add_development_dependency "rspec", '~> 3.5'
   s.add_development_dependency "webmock", "~> 1.21"
+  s.add_development_dependency "polishgeeks-dev-tools", "~> 1.4.0"
 end
