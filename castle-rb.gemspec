@@ -2,7 +2,7 @@
 
 $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
-require 'castle-rb/version'
+require 'castle/version'
 
 Gem::Specification.new do |s|
   s.name        = 'castle-rb'
