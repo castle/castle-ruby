@@ -24,10 +24,11 @@ describe Castle::API do
 
     api_endpoint = 'http://new.herokuapp.com:3000/v2'
     Castle.config.api_endpoint = api_endpoint
-    uri = URI(api_endpoint)
+    # uri = URI(api_endpoint)
 
     api.request('authenticate', user_id: '1234')
     assert_requested :post,
-                     "#{api_endpoint.gsub(/new/, ':secret@new')}/authenticate", times: 1
+                     "#{api_endpoint.gsub(/new/, ':secret@new')}/authenticate",
+                     times: 1
   end
 end

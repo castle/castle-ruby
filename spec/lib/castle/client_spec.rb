@@ -21,8 +21,9 @@ describe Castle::Client do
   let(:review_id) { '12356789' }
 
   it 'parses the request' do
-    expect(Castle::API).to receive(:new).with(cookie_id, ip,
-                                              "{\"X-Forwarded-For\":\"#{ip}\"}").and_call_original
+    expect(Castle::API).to receive(:new).with(
+      cookie_id, ip, "{\"X-Forwarded-For\":\"#{ip}\"}"
+    ).and_call_original
 
     client = Castle::Client.new(request, nil)
     client.authenticate(name: '$login.succeeded', user_id: '1234')
@@ -52,7 +53,8 @@ describe Castle::Client do
   it 'fetches review' do
     client.fetch_review(review_id)
 
-    assert_requested :get, "https://:secret@api.castle.io/v1/reviews/#{review_id}",
+    assert_requested :get,
+                     "https://:secret@api.castle.io/v1/reviews/#{review_id}",
                      times: 1
   end
 end
