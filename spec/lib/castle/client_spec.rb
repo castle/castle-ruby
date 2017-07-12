@@ -22,8 +22,6 @@ describe Castle::Client do
 
   describe 'parses the request' do
     let(:api_data) { [cookie_id, ip, "{\"X-Forwarded-For\":\"#{ip}\"}"] }
-    let(:client) { described_class.new(request, nil) }
-
     before do
       allow(Castle::API).to receive(:new).with(*api_data).and_call_original
     end
