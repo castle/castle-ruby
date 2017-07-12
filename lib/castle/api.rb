@@ -10,10 +10,14 @@ module Castle
       @headers = Castle::Headers.new.prepare(cookie_id, ip, headers)
     end
 
-    def request(endpoint, args, method: :post)
-      request = Castle::Request.new(@headers).build(endpoint, args, method)
-      response = perform_request(request)
-      Castle::Response.new(response).parse
+    def request_query(endpoint)
+      request = Castle::Request.new(@headers).build_query(endpoint)
+      perform_request(request)
+    end
+
+    def request(endpoint, args)
+      request = Castle::Request.new(@headers).build(endpoint, args, :post)
+      perform_request(request)
     end
 
     private
@@ -34,7 +38,7 @@ module Castle
     end
 
     def perform_request(req)
-      @http.request(req)
+      Castle::Response.new(@http.request(req)).parse
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
            Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
            Net::ProtocolError

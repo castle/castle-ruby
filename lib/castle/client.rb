@@ -14,7 +14,7 @@ module Castle
     end
 
     def fetch_review(id)
-      @api.request("reviews/#{id}", nil, method: :get)
+      @api.request_query("reviews/#{id}")
     end
 
     def identify(args)

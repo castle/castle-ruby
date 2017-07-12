@@ -39,4 +39,16 @@ describe Castle::API do
       assert_requested :post, path, times: 1
     end
   end
+
+  describe 'handles query request' do
+    before do
+      stub_request(:any, /new.herokuapp.com/)
+      Castle.config.api_endpoint = api_endpoint
+    end
+    it do
+      api.request_query('review/1')
+      path = "#{api_endpoint.gsub(/new/, ':secret@new')}/review/1"
+      assert_requested :get, path, times: 1
+    end
+  end
 end

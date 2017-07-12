@@ -8,14 +8,27 @@ module Castle
       @headers = headers
     end
 
-    def build(endpoint, args, method)
-      http_method = method.to_s.capitalize
-      request = Net::HTTP.const_get(http_method).new(
+    def build_query(endpoint)
+      request = Net::HTTP::Get.new(
         "#{@config.api_endpoint.path}/#{endpoint}", @headers
       )
-      request.basic_auth('', @config.api_secret)
-      request.body = args.to_json unless http_method == 'Get'
+      add_basic_auth(request)
       request
+    end
+
+    def build(endpoint, args, method)
+      request = Net::HTTP.const_get(method.to_s.capitalize).new(
+        "#{@config.api_endpoint.path}/#{endpoint}", @headers
+      )
+      request.body = args.to_json
+      add_basic_auth(request)
+      request
+    end
+
+    private
+
+    def add_basic_auth(request)
+      request.basic_auth('', @config.api_secret)
     end
   end
 end
