@@ -1,17 +1,27 @@
 # frozen_string_literal: true
 
-class Castle::Error < RuntimeError; end
+module Castle
+  # general error
+  class Error < RuntimeError; end
+  # request error
+  class RequestError < Castle::Error; end
+  # security error
+  class SecurityError < Castle::Error; end
+  # wrong configuration error
+  class ConfigurationError < Castle::Error; end
+  # error returned by api
+  class ApiError < Castle::Error; end
 
-class Castle::RequestError < Castle::Error; end
-class Castle::SecurityError < Castle::Error; end
-class Castle::ConfigurationError < Castle::Error; end
-
-class Castle::ApiError < Castle::Error; end
-
-class Castle::BadRequestError < Castle::ApiError; end
-class Castle::ForbiddenError < Castle::ApiError; end
-class Castle::NotFoundError < Castle::ApiError; end
-class Castle::UserUnauthorizedError < Castle::ApiError; end
-class Castle::InvalidParametersError < Castle::ApiError; end
-
-class Castle::UnauthorizedError < Castle::ApiError; end
+  # api error bad request 400
+  class BadRequestError < Castle::ApiError; end
+  # api error forbidden 403
+  class ForbiddenError < Castle::ApiError; end
+  # api error not found 404
+  class NotFoundError < Castle::ApiError; end
+  # api error user unauthorized 419
+  class UserUnauthorizedError < Castle::ApiError; end
+  # api error invalid param 422
+  class InvalidParametersError < Castle::ApiError; end
+  # api error unauthorized 401
+  class UnauthorizedError < Castle::ApiError; end
+end
