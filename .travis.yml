@@ -1,13 +1,15 @@
 language: ruby
 rvm:
-- 2.2.6
-- 2.3.3
-- ruby-head
+  - 2.4.1
+  - 2.3.4
+  - 2.2.7
+  - 2.1.10
+  - ruby-head
+
 notifications:
   slack:
     secure: JVXUf9/+m3mRZU6WnJxgskpSbDY6tHRTQwFeUtq7eYFdXYr/BTCprS2RsANLr8K5eLBgOJeEILAZW/plwpBfa9TnWQxknL/OqY4nyrrtUdc+i7TfBNEwO/I6owvELKSYjgxjClJXkcPS8pg6UTr+wYpbQ+7ToVnPdHf6J3Hy7X4=
     on_success: change
     on_failure: always
-before_install:
-  - gem install bundler
-  - gem install bundler
+
+script: bundle exec rspec

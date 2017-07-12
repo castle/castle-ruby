@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    castle-rb (2.1.0)
+    castle-rb (2.2.0)
 
 GEM
   remote: http://rubygems.org/
@@ -51,4 +51,4 @@ DEPENDENCIES
   webmock (~> 1.21)
 
 BUNDLED WITH
-   1.13.6
+   1.15.1
