@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'openssl'
 require 'net/http'
 
@@ -17,4 +19,3 @@ if defined?(Sinatra::Base)
     require 'castle-rb/support/sinatra'
   end
 end
-

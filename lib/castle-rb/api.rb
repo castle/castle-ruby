@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Castle
   class API
     attr_accessor :http, :headers
@@ -14,23 +16,24 @@ module Castle
       end
 
       @headers = {
-        "Content-Type" => "application/json",
-        "X-Castle-Cookie-Id" => cookie_id,
-        "X-Castle-Ip" => ip,
-        "X-Castle-Headers" => headers,
-        "X-Castle-Client-User-Agent" => JSON.generate(client_user_agent),
-        "X-Castle-Source" => Castle.config.source_header,
-        "User-Agent" => "Castle/v1 RubyBindings/#{Castle::VERSION}"
+        'Content-Type' => 'application/json',
+        'X-Castle-Cookie-Id' => cookie_id,
+        'X-Castle-Ip' => ip,
+        'X-Castle-Headers' => headers,
+        'X-Castle-Client-User-Agent' => JSON.generate(client_user_agent),
+        'X-Castle-Source' => Castle.config.source_header,
+        'User-Agent' => "Castle/v1 RubyBindings/#{Castle::VERSION}"
       }
 
-      @headers.delete_if { |k, v| v.nil? }
+      @headers.delete_if { |_k, v| v.nil? }
     end
 
     def request(endpoint, args, method: :post)
       http_method = method.to_s.capitalize
       req = Net::HTTP.const_get(http_method).new(
-        "#{Castle.config.api_endpoint.path}/#{endpoint}", @headers)
-      req.basic_auth("", Castle.config.api_secret)
+        "#{Castle.config.api_endpoint.path}/#{endpoint}", @headers
+      )
+      req.basic_auth('', Castle.config.api_secret)
       req.body = args.to_json unless http_method == 'Get'
 
       begin
@@ -64,7 +67,7 @@ module Castle
         {}
       else
         begin
-          JSON.parse(response.body, :symbolize_names => true)
+          JSON.parse(response.body, symbolize_names: true)
         rescue JSON::ParserError
           raise Castle::ApiError, 'Invalid response from Castle API'
         end
@@ -76,19 +79,19 @@ module Castle
       lang_version = "#{RUBY_VERSION} p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE})"
 
       {
-        :bindings_version => Castle::VERSION,
-        :lang => 'ruby',
-        :lang_version => lang_version,
-        :platform => RUBY_PLATFORM,
-        :publisher => 'castle',
-        :uname => @uname
+        bindings_version: Castle::VERSION,
+        lang: 'ruby',
+        lang_version: lang_version,
+        platform: RUBY_PLATFORM,
+        publisher: 'castle',
+        uname: @uname
       }
     end
 
     def get_uname
       `uname -a 2>/dev/null`.strip if RUBY_PLATFORM =~ /linux|darwin/i
     rescue Errno::ENOMEM # couldn't create subprocess
-      "uname lookup failed"
+      'uname lookup failed'
     end
   end
 end

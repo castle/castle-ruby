@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Castle
   class Client
     attr_accessor :do_not_track, :api
@@ -38,7 +40,6 @@ module Castle
       !!@do_not_track
     end
 
-
     private
 
     # Extract the cookie set by the Castle Javascript
@@ -56,9 +57,7 @@ module Castle
 
       headers = request.env.keys.grep(/^HTTP_/).map do |header|
         name = header.gsub(/^HTTP_/, '').split('_').map(&:capitalize).join('-')
-        unless scrub_headers.include?(name)
-          { name => request.env[header] }
-        end
+        { name => request.env[header] } unless scrub_headers.include?(name)
       end.compact.inject(:merge)
 
       JSON.generate(headers || {})

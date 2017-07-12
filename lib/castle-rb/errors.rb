@@ -1,4 +1,6 @@
-class Castle::Error < Exception; end
+# frozen_string_literal: true
+
+class Castle::Error < RuntimeError; end
 
 class Castle::RequestError < Castle::Error; end
 class Castle::SecurityError < Castle::Error; end

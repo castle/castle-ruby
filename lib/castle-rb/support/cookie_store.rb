@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Castle
   module CookieStore
     class Base
@@ -43,6 +45,5 @@ module Castle
         end
       end
     end
-
   end
 end
