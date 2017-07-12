@@ -2,3 +2,4 @@
 /coverage/
 *.gem
 /vendor/bundle/
+/tmp/
