@@ -3,6 +3,8 @@
 module Castle
   module CookieStore
     class Base
+      EXPIRATION_TIME = 20 * 365 * 24 * 60 * 60 # cookie expiration time 20y
+
       def initialize(request, response)
         @request = request
         @response = response
@@ -17,7 +19,7 @@ module Castle
         if value
           @response.set_cookie(key,
                                value: value,
-                               expires: Time.now + (20 * 365 * 24 * 60 * 60),
+                               expires: Time.now + self.class::EXPIRATION_TIME,
                                path: '/')
         else
           @response.delete_cookie(key)
@@ -38,7 +40,7 @@ module Castle
         if value
           @cookies[key] = {
             value: value,
-            expires: Time.now + (20 * 365 * 24 * 60 * 60),
+            expires: Time.now + self.class::EXPIRATION_TIME,
             path: '/'
           }
         else
