@@ -15,9 +15,10 @@ module Castle
       def []=(key, value)
         @request.cookies[key] = value
         if value
-          @response.set_cookie(key, value: value,
-                                    expires: Time.now + (20 * 365 * 24 * 60 * 60),
-                                    path: '/')
+          @response.set_cookie(key,
+                               value: value,
+                               expires: time.now + (20 * 365 * 24 * 60 * 60),
+                               path: '/')
         else
           @response.delete_cookie(key)
         end

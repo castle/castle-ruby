@@ -17,15 +17,21 @@ describe Castle::Client do
                               'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh")
   end
   let(:request) { Request.new(env) }
-  let(:client) { Castle::Client.new(request, nil) }
+  let(:client) { described_class.new(request, nil) }
   let(:review_id) { '12356789' }
 
-  it 'parses the request' do
-    expect(Castle::API).to receive(:new).with(cookie_id, ip,
-                                              "{\"X-Forwarded-For\":\"#{ip}\"}").and_call_original
+  describe 'parses the request' do
+    let(:api_data) { [cookie_id, ip, "{\"X-Forwarded-For\":\"#{ip}\"}"] }
+    let(:client) { described_class.new(request, nil) }
 
-    client = Castle::Client.new(request, nil)
-    client.authenticate(name: '$login.succeeded', user_id: '1234')
+    before do
+      allow(Castle::API).to receive(:new).with(*api_data).and_call_original
+    end
+
+    it do
+      client.authenticate(name: '$login.succeeded', user_id: '1234')
+      expect(Castle::API).to have_received(:new).with(*api_data)
+    end
   end
 
   it 'identifies' do
@@ -52,7 +58,8 @@ describe Castle::Client do
   it 'fetches review' do
     client.fetch_review(review_id)
 
-    assert_requested :get, "https://:secret@api.castle.io/v1/reviews/#{review_id}",
+    assert_requested :get,
+                     "https://:secret@api.castle.io/v1/reviews/#{review_id}",
                      times: 1
   end
 end

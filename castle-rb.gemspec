@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://castle.io'
   s.license     = 'MIT'
 
-  s.files       = Dir['{app,config,db,lib}/**/*'] + ['README.md']
+  s.files       = Dir['{lib}/**/*'] + ['README.md']
   s.test_files  = Dir['spec/**/*']
   s.require_paths = ['lib']
 end

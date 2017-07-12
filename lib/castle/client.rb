@@ -5,6 +5,7 @@ module Castle
     attr_accessor :do_not_track, :api
 
     def initialize(request, response)
+      @do_not_track = false
       cookie_id = extract_cookie(request, response)['__cid'] || ''
       ip = request.ip
       headers = header_string(request)
@@ -37,7 +38,7 @@ module Castle
     end
 
     def do_not_track?
-      !!@do_not_track
+      @do_not_track
     end
 
     private
