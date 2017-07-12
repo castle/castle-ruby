@@ -1,10 +1,10 @@
+# frozen_string_literal: true
+
 module Castle
   class << self
-    def configure(config_hash=nil)
-      if config_hash
-        config_hash.each do |k,v|
-          config.send("#{k}=", v)
-        end
+    def configure(config_hash = nil)
+      (config_hash || {}).each do |k, v|
+        config.send("#{k}=", v)
       end
 
       yield(config) if block_given?

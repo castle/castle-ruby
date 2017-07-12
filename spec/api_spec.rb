@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Castle::API do
@@ -5,16 +7,16 @@ describe Castle::API do
 
   it 'handles timeout' do
     stub_request(:any, /api.castle.io/).to_timeout
-    expect {
+    expect do
       api.request('authenticate', user_id: '1234')
-    }.to raise_error(Castle::RequestError)
+    end.to raise_error(Castle::RequestError)
   end
 
   it 'handles non-OK response code' do
     stub_request(:any, /api.castle.io/).to_return(status: 400)
-    expect {
+    expect do
       api.request('authenticate', user_id: '1234')
-    }.to raise_error(Castle::BadRequestError)
+    end.to raise_error(Castle::BadRequestError)
   end
 
   it 'handles custom API endpoint' do
@@ -26,6 +28,6 @@ describe Castle::API do
 
     api.request('authenticate', user_id: '1234')
     assert_requested :post,
-      "#{api_endpoint.gsub(/new/, ":secret@new")}/authenticate", times: 1
+                     "#{api_endpoint.gsub(/new/, ':secret@new')}/authenticate", times: 1
   end
 end

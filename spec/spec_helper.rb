@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rubygems'
 require 'bundler/setup'
 require 'rack'
@@ -15,7 +17,7 @@ RSpec.configure do |config|
   config.before(:each) do
     Castle.config.api_endpoint = 'https://api.castle.io/v1'
     Castle.config.request_timeout = 30.0
-    stub_request(:any, /api.castle.io/).
-      to_return(status: 200, body: "{}", headers: {})
+    stub_request(:any, /api.castle.io/)
+      .to_return(status: 200, body: '{}', headers: {})
   end
 end

@@ -1,14 +1,6 @@
 AllCops:
   TargetRubyVersion: 2.3
 
-Metrics/ModuleLength:
-  Exclude:
-    - "**/*_spec.rb"
-
-Metrics/BlockLength:
-  Exclude:
-    - "**/*_spec.rb"
-
 Style/FileName:
   Exclude:
     - "lib/castle-rb.rb"

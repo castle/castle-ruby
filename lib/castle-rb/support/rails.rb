@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Castle
   module CastleClient
     def castle
