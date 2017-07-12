@@ -4,7 +4,7 @@ module Castle
   class API
     attr_accessor :http, :headers
 
-    def initialize(cookie_id, ip, headers)
+    def initialize(client_id, ip, headers)
       @http = Net::HTTP.new(Castle.config.api_endpoint.host,
                             Castle.config.api_endpoint.port)
 
@@ -17,7 +17,7 @@ module Castle
 
       @headers = {
         'Content-Type' => 'application/json',
-        'X-Castle-Cookie-Id' => cookie_id,
+        'X-Castle-Client-Id' => client_id,
         'X-Castle-Ip' => ip,
         'X-Castle-Headers' => headers,
         'X-Castle-Client-User-Agent' => JSON.generate(client_user_agent),

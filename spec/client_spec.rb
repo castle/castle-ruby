@@ -10,18 +10,34 @@ end
 
 describe Castle::Client do
   let(:ip) { '1.2.3.4' }
-  let(:cookie_id) { 'abcd' }
+  let(:client_id) { 'abcd' }
   let(:env) do
     Rack::MockRequest.env_for('/',
                               'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
-                              'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh")
+                              'HTTP_COOKIE' => "__cid=#{client_id};other=efgh")
   end
   let(:request) { Request.new(env) }
   let(:client) { Castle::Client.new(request, nil) }
   let(:review_id) { '12356789' }
 
+  context 'with X-Castle-Client-Id header' do
+    let(:env) do
+      Rack::MockRequest.env_for('/',
+                              'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
+                              'HTTP_X_CASTLE_CLIENT_ID' => client_id)
+    end
+    it 'appends the client_id' do
+      expect(Castle::API).to receive(:new).with(client_id, ip,
+                                              anything).and_call_original
+
+      client = Castle::Client.new(request, nil)
+      client.authenticate(name: '$login.succeeded', user_id: '1234')
+    end
+  end
+
+
   it 'parses the request' do
-    expect(Castle::API).to receive(:new).with(cookie_id, ip,
+    expect(Castle::API).to receive(:new).with(client_id, ip,
                                               "{\"X-Forwarded-For\":\"#{ip}\"}").and_call_original
 
     client = Castle::Client.new(request, nil)
