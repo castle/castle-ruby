@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe 'Castle::VERSION' do
+describe Castle do
   it 'have version' do
-    expect(Castle::VERSION).to match(/\d\.\d\.\d/)
+    expect(described_class::VERSION).to match(/\d\.\d\.\d/)
   end
 end

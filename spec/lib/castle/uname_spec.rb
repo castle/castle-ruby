@@ -6,7 +6,7 @@ describe Castle::Uname do
   describe 'fetch' do
     context 'successfully' do
       before do
-        expect(described_class).to receive(:`).with(
+        allow(described_class).to receive(:`).with(
           'uname -a 2>/dev/null'
         ).and_call_original
       end
@@ -16,7 +16,7 @@ describe Castle::Uname do
     end
     context 'successfully' do
       before do
-        expect(described_class).to receive(:`).with(
+        allow(described_class).to receive(:`).with(
           'uname -a 2>/dev/null'
         ).and_raise(Errno::ENOMEM)
       end
