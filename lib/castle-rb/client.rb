@@ -8,7 +8,7 @@ module Castle
       ip = request.ip
       headers = header_string(request)
 
-      @api = API.new(get_client_id(request, response), ip, headers)
+      @api = API.new(client_id(request, response), ip, headers)
     end
 
     def fetch_review(id)
@@ -41,9 +41,9 @@ module Castle
 
     private
 
-    def get_client_id(request, response)
+    def client_id(request, response)
       client_id = extract_cookie(request, response)['__cid']
-      client_id ||= get_client_id_header(request)
+      client_id ||= client_id_from_header(request)
       client_id || ''
     end
 
@@ -56,7 +56,7 @@ module Castle
       end
     end
 
-    def get_client_id_header(request)
+    def client_id_from_header(request)
       request.env['HTTP_X_CASTLE_CLIENT_ID']
     end
 
