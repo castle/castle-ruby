@@ -5,10 +5,9 @@ module Castle
   class Headers
     def initialize
       @config = Castle.config
-      @uname = Castle::Uname
       @headers = {
         'Content-Type' => 'application/json',
-        'User-Agent' => "Castle/v1 RubyBindings/#{version}"
+        'User-Agent' => "Castle/v1 RubyBindings/#{Castle::VERSION}"
       }
     end
 
@@ -28,25 +27,13 @@ module Castle
 
     def client_user_agent
       {
-        bindings_version: version,
+        bindings_version: Castle::VERSION,
         lang: 'ruby',
-        lang_version: lang_version,
-        platform: RUBY_PLATFORM,
+        lang_version: Castle::System.lang_version,
+        platform: Castle::System.platform,
         publisher: 'castle',
-        uname: @uname.fetch
+        uname: Castle::System.uname
       }
-    end
-
-    def version
-      Castle::VERSION
-    end
-
-    def platform
-      RUBY_PLATFORM
-    end
-
-    def lang_version
-      "#{RUBY_VERSION} p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE})"
     end
   end
 end

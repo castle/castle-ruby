@@ -41,7 +41,7 @@ describe Castle::Headers do
     let(:prepared_header_parsed) { JSON.parse(prepared_headers[header]) }
 
     before do
-      allow(Castle::Uname).to receive(:fetch).and_return('name')
+      allow(Castle::System).to receive(:uname).and_return('name')
     end
 
     it { expect(prepared_header_parsed).to include('lang') }
