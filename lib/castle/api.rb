@@ -15,8 +15,8 @@ module Castle
       perform_request(request)
     end
 
-    def request(endpoint, args)
-      request = Castle::Request.new(@headers).build(endpoint, args, :post)
+    def request(endpoint, args, method = :post)
+      request = Castle::Request.new(@headers).build(endpoint, args, method)
       perform_request(request)
     end
 
