@@ -5,6 +5,10 @@ require 'bundler/setup'
 require 'rack'
 require 'webmock/rspec'
 require 'pry'
+
+require 'simplecov'
+SimpleCov.start
+
 require 'castle'
 
 Castle.configure do |config|
