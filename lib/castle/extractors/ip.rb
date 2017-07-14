@@ -3,7 +3,7 @@
 module Castle
   module Extractors
     # used for extraction of ip from the request
-    class Ip
+    class IP
       def initialize(request)
         @request = request
       end

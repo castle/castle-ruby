@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Castle::Extractors::Cookie do
+describe Castle::Extractors::ClientId do
   subject(:extractor) { described_class.new(request) }
 
   let(:client_id) { 'abcd' }

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Castle::Extractors::Ip do
+describe Castle::Extractors::IP do
   subject(:extractor) { described_class.new(request) }
 
   let(:request) { Rack::Request.new(env) }
