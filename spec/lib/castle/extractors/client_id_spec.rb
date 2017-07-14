@@ -15,7 +15,7 @@ describe Castle::Extractors::ClientId do
 
   describe 'cookie' do
     it do
-      expect(extractor.extract(nil, '__cid')).to eql(client_id)
+      expect(extractor.call(nil, '__cid')).to eql(client_id)
     end
   end
 end

@@ -8,7 +8,7 @@ module Castle
         @request = request
       end
 
-      def extract(response, name)
+      def call(response, name)
         extract_cookie(response)[name] || ''
       end
 

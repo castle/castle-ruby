@@ -14,7 +14,7 @@ describe Castle::Extractors::IP do
     end
 
     it do
-      expect(extractor.extract).to eql('1.2.3.4')
+      expect(extractor.call).to eql('1.2.3.4')
     end
   end
 end

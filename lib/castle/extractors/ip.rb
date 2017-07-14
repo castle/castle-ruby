@@ -8,7 +8,7 @@ module Castle
         @request = request
       end
 
-      def extract
+      def call
         @request.ip
       end
     end

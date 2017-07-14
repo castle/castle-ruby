@@ -6,9 +6,9 @@ module Castle
 
     def initialize(request, response)
       @do_not_track = false
-      cookie_id = Extractors::ClientId.new(request).extract(response, '__cid')
-      ip = Extractors::IP.new(request).extract
-      headers = Extractors::Headers.new(request).extract
+      cookie_id = Extractors::ClientId.new(request).call(response, '__cid')
+      ip = Extractors::IP.new(request).call
+      headers = Extractors::Headers.new(request).call
       @api = API.new(cookie_id, ip, headers)
     end
 

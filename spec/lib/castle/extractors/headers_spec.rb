@@ -17,7 +17,7 @@ describe Castle::Extractors::Headers do
 
   describe 'header should extract http headers but skip cookies related' do
     it do
-      expect(extractor.extract).to eql(
+      expect(extractor.call).to eql(
         '{"X-Forwarded-For":"1.2.3.4","Test":"2"}'
       )
     end

@@ -11,7 +11,7 @@ module Castle
       end
 
       # Serialize HTTP headers
-      def extract
+      def call
         headers = http_headers.each_with_object({}) do |header, acc|
           name = format_header_name(header)
           unless @disabled_headers.include?(name)
