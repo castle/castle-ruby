@@ -11,8 +11,8 @@ module Castle
     attr_reader :api_secret, :api_endpoint
 
     def initialize
-      @request_timeout = self.class::REQUEST_TIMEOUT
-      self.api_endpoint = self.class::API_ENDPOINT
+      @request_timeout = REQUEST_TIMEOUT
+      self.api_endpoint = API_ENDPOINT
       self.api_secret = ''
     end
 

@@ -19,7 +19,7 @@ module Castle
         if value
           @response.set_cookie(key,
                                value: value,
-                               expires: Time.now + self.class::EXPIRATION_TIME,
+                               expires: Time.now + EXPIRATION_TIME,
                                path: '/')
         else
           @response.delete_cookie(key)
@@ -40,7 +40,7 @@ module Castle
         if value
           @cookies[key] = {
             value: value,
-            expires: Time.now + self.class::EXPIRATION_TIME,
+            expires: Time.now + EXPIRATION_TIME,
             path: '/'
           }
         else
