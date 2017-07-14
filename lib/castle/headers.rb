@@ -29,7 +29,7 @@ module Castle
       {
         bindings_version: Castle::VERSION,
         lang: 'ruby',
-        lang_version: Castle::System.lang_version,
+        lang_version: Castle::System.ruby_version,
         platform: Castle::System.platform,
         publisher: 'castle',
         uname: Castle::System.uname
