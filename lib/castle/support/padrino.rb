@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'cookie_store'
-
 module Padrino
   class Application
     module Castle

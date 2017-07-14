@@ -5,6 +5,9 @@ Style/FileName:
   Exclude:
     - "lib/castle-rb.rb"
 
+Style/MethodMissing:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 
