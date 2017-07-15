@@ -4,9 +4,11 @@ module Castle
   # Get information regarding system
   module System
     class << self
-      # Returns hardware name, nodename, operating system release, name and version
+      # Returns hardware name, nodename, operating system release,
+      #  name and version
       # @example Castle::System.uname #=>
-      #   Linux server 3.18.44-vs2.3.7.5-beng #1 SMP Thu Oct 27 14:11:29 BST 2016 x86_64 GNU/Linux
+      #   Linux server 3.18.44-vs2.3.7.5-beng #1 SMP
+      #   Thu Oct 27 14:11:29 BST 2016 x86_64 GNU/Linux
       def uname
         `uname -a 2>/dev/null`.strip if platform =~ /linux|darwin/i
       rescue Errno::ENOMEM # couldn't create subprocess
