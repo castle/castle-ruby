@@ -3,7 +3,7 @@
 module Castle
   # manages configuration variables
   class Configuration
-    REQUEST_TIMEOUT = 30.0
+    REQUEST_TIMEOUT = 0.5 # in seconds
     API_ENDPOINT = 'https://api.castle.io/v1'
     WHITELISTED = [
       'User-Agent',

@@ -55,7 +55,7 @@ Castle.configure do |config|
   # Same as setting it through Castle.api_secret
   config.api_secret = 'secret'
 
-  # Castle::RequestError is raised when timing out (default: 30.0)
+  # Castle::RequestError is raised when timing out in seconds (default: 0.5 of second)
   config.request_timeout = 2.0
 
   # For tracking in non-web environments: https://castle.io/docs/sources (default: 'web')
