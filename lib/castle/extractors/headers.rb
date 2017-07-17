@@ -8,12 +8,13 @@ module Castle
         @request = request
         @request_env = @request.env
         @disabled_headers = ['Cookie']
+        @formatter = HeaderFormatter.new
       end
 
       # Serialize HTTP headers
       def call
         headers = http_headers.each_with_object({}) do |header, acc|
-          name = format_header_name(header)
+          name = @formatter.call(header)
           unless @disabled_headers.include?(name)
             acc[name] = @request_env[header]
           end
@@ -23,10 +24,6 @@ module Castle
       end
 
       private
-
-      def format_header_name(header)
-        header.gsub(/^HTTP_/, '').split('_').map(&:capitalize).join('-')
-      end
 
       def http_headers
         @request_env.keys.grep(/^HTTP_/)
