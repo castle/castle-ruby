@@ -6,7 +6,7 @@ describe Castle::System do
   describe '.uname' do
     subject(:uname) { described_class.uname }
 
-    before { expect(described_class).to receive(:platform) { platform } }
+    before { allow(described_class).to receive(:platform) { platform } }
 
     context 'darwin' do
       let(:platform) { 'x86_64-apple-darwin16.6.0' }
