@@ -54,3 +54,8 @@ Castle.configure do |config|
   config.source_header = 'backend'
 end
 ```
+
+
+## Signature
+
+`Castle::SecureMode.signature(user_id)` will create a signed user_id.

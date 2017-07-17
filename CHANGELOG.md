@@ -3,6 +3,10 @@
 ## 3.0.0 (unreleased)
 
 
+**Features:**
+
+- added helper for generating signature
+
 ## 2.3.2
 
 **Bug fixes:**
