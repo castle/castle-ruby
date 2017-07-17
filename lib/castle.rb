@@ -40,5 +40,3 @@ module Castle
     end
   end
 end
-
-require 'castle/support'
