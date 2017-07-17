@@ -27,7 +27,7 @@ module Castle
         @config_api_endpoint.host,
         @config_api_endpoint.port
       )
-      http.read_timeout = @config.request_timeout
+      http.read_timeout = @config.request_timeout / 1000.0
       prepare_http_for_ssl(http) if @config_api_endpoint.scheme == 'https'
       http
     end
