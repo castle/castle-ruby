@@ -9,7 +9,8 @@ module Castle
       end
 
       def call(response, name)
-        extract_cookie(response)[name] || ''
+        extract_cookie(response)[name] ||
+          @request.env.fetch('HTTP_X_CASTLE_CLIENT_ID', '')
       end
 
       private

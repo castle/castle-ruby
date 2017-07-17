@@ -11,9 +11,9 @@ module Castle
       }
     end
 
-    def prepare(cookie_id, ip, castle_headers)
+    def prepare(client_id, ip, castle_headers)
       @headers.merge!(
-        'X-Castle-Cookie-Id' => cookie_id,
+        'X-Castle-Client-Id' => client_id,
         'X-Castle-Ip' => ip,
         'X-Castle-Headers' => castle_headers,
         'X-Castle-Client-User-Agent' => JSON.generate(client_user_agent),

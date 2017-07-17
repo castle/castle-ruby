@@ -28,7 +28,7 @@ describe Castle::Headers do
     end
   end
   it_behaves_like 'for_header', 'Content-Type', 'application/json'
-  it_behaves_like 'for_header', 'X-Castle-Cookie-Id', 'some_id'
+  it_behaves_like 'for_header', 'X-Castle-Client-Id', 'some_id'
   it_behaves_like 'for_header', 'X-Castle-Ip', '1.1.1.1'
   it_behaves_like 'for_header', 'X-Castle-Headers', 'headers'
   it_behaves_like 'for_header', 'X-Castle-Source', 'web'
