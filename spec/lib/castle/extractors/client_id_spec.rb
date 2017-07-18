@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Castle::Extractors::ClientId do
-  subject(:extractor) { described_class.new(request) }
+  subject(:extractor) { described_class.new(request, request.cookies) }
 
   let(:client_id) { 'abcd' }
   let(:request) { Rack::Request.new(env) }
@@ -20,7 +20,7 @@ describe Castle::Extractors::ClientId do
     end
 
     it do
-      expect(extractor.call(nil, '__cid')).to eql(client_id)
+      expect(extractor.call('__cid')).to eql(client_id)
     end
   end
 
@@ -33,7 +33,7 @@ describe Castle::Extractors::ClientId do
     end
 
     it 'appends the client_id' do
-      expect(extractor.call(nil, '__cid')).to eql(client_id)
+      expect(extractor.call('__cid')).to eql(client_id)
     end
   end
 end

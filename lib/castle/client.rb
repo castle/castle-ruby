@@ -4,12 +4,12 @@ module Castle
   class Client
     attr_accessor :api
 
-    def initialize(request, response)
+    def initialize(request, cookies = request.cookies)
       @do_not_track = false
-      cookie_id = Extractors::ClientId.new(request).call(response, '__cid')
+      client_id = Extractors::ClientId.new(request, cookies).call('__cid')
       ip = Extractors::IP.new(request).call
       headers = Extractors::Headers.new(request).call
-      @api = API.new(cookie_id, ip, headers)
+      @api = API.new(client_id, ip, headers)
     end
 
     def fetch_review(id)
