@@ -5,7 +5,7 @@
 
 **Features:**
 
-- added helper for generating signature
+- [#32](github.com/castle/castle-ruby/pull/32) added helper for generating signature
 
 ## 2.3.2
 
