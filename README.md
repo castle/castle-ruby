@@ -20,7 +20,15 @@ Load and configure the library with your Castle API secret in an initializer or 
 Castle.api_secret = 'YOUR_API_SECRET'
 ```
 
-A Castle client instance will be made available as `castle` in your Rails, Sinatra or Padrino controllers. The client will automatically configure the [request context](https://api.castle.io/docs#request-context) for each request.
+A Castle client instance will be made available as `castle` in your
+
+* Rails controllers when you add `require 'castle/support/rails'`
+
+* Padrino controllers when you add `require 'castle/support/padrino'`
+
+* Sinatra when you add `require 'castle/support/sinatra'`
+
+The client will automatically configure the [request context](https://api.castle.io/docs#request-context) for each request.
 
 ## Documentation
 
