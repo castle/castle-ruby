@@ -95,4 +95,50 @@ describe Castle::Configuration do
       end
     end
   end
+
+  describe 'whitelisted' do
+    it do
+      expect(config.whitelisted.size).to be_eql(11)
+    end
+
+    context 'setter' do
+      before do
+        config.whitelisted = ['header']
+      end
+      it do
+        expect(config.whitelisted).to be_eql(['Header'])
+      end
+    end
+
+    context 'appending' do
+      before do
+        config.whitelisted += ['header']
+      end
+      it { expect(config.whitelisted).to be_include('Header') }
+      it { expect(config.whitelisted.size).to be_eql(12) }
+    end
+  end
+
+  describe 'blacklisted' do
+    it do
+      expect(config.blacklisted.size).to be_eql(1)
+    end
+
+    context 'setter' do
+      before do
+        config.blacklisted = ['header']
+      end
+      it do
+        expect(config.blacklisted).to be_eql(['Header'])
+      end
+    end
+
+    context 'appending' do
+      before do
+        config.blacklisted += ['header']
+      end
+      it { expect(config.blacklisted).to be_include('Header') }
+      it { expect(config.blacklisted.size).to be_eql(2) }
+    end
+  end
 end

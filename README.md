@@ -60,6 +60,19 @@ Castle.configure do |config|
 
   # For tracking in non-web environments: https://castle.io/docs/sources (default: 'web')
   config.source_header = 'backend'
+
+  # Whitelisted and Blacklisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
+  # Whitelisted headers
+  config.whitelisted = ['X_HEADER']
+  # or append to default
+  config.whitelisted += ['http-x-header']
+
+  # Blacklisted headers 
+  config.blacklisted = ['HTTP-X-header'] 
+  # or append to default
+  config.blacklisted += ['X_HEADER']
+
+  # blacklisted headers take advantage over whitelisted elements
 end
 ```
 

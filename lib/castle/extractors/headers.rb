@@ -7,26 +7,19 @@ module Castle
       def initialize(request)
         @request = request
         @request_env = @request.env
-        @disabled_headers = ['Cookie']
         @formatter = HeaderFormatter.new
       end
 
       # Serialize HTTP headers
       def call
-        headers = http_headers.each_with_object({}) do |header, acc|
+        headers = @request_env.keys.each_with_object({}) do |header, acc|
           name = @formatter.call(header)
-          unless @disabled_headers.include?(name)
-            acc[name] = @request_env[header]
-          end
+          next unless Castle.config.whitelisted.include?(name)
+          next if Castle.config.blacklisted.include?(name)
+          acc[name] = @request_env[header]
         end
 
         JSON.generate(headers)
-      end
-
-      private
-
-      def http_headers
-        @request_env.keys.grep(/^HTTP_/)
       end
     end
   end

@@ -15,6 +15,7 @@
 **Features:**
 
 - [#32](github.com/castle/castle-ruby/pull/32) added helper for generating signature
+- [#27](github.com/castle/castle-ruby/pull/27) added whitelisted and blacklisted to configuration (with defaults)
 
 ## 2.3.2
 

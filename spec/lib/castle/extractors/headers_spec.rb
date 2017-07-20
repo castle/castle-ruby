@@ -9,16 +9,19 @@ describe Castle::Extractors::Headers do
   let(:env) do
     Rack::MockRequest.env_for('/',
                               'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
-                              'HTTP_TEST' => '2',
+                              'HTTP_OK' => 'OK',
                               'TEST' => '1',
                               'HTTP_COOKIE' => "__cid=#{client_id};other=efgh")
   end
   let(:request) { Rack::Request.new(env) }
 
-  describe 'header should extract http headers but skip cookies related' do
+  describe 'extract http headers with whitelisted and blacklisted support' do
+    before do
+      Castle.config.whitelisted += ['TEST']
+    end
     it do
       expect(extractor.call).to eql(
-        '{"X-Forwarded-For":"1.2.3.4","Test":"2"}'
+        '{"X-Forwarded-For":"1.2.3.4","Test":"1"}'
       )
     end
   end
