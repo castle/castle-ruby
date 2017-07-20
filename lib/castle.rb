@@ -18,7 +18,6 @@ require 'castle/headers'
 require 'castle/response'
 require 'castle/request'
 require 'castle/api'
-require 'castle/cookie_store'
 
 # main sdk module
 module Castle

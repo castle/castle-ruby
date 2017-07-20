@@ -4,7 +4,7 @@ module Sinatra
   module Castle
     module Helpers
       def castle
-        @castle ||= ::Castle::Client.new(request, response)
+        @castle ||= ::Castle::Client.new(request)
       end
     end
 

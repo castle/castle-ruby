@@ -3,7 +3,7 @@
 module Castle
   module CastleClient
     def castle
-      @castle ||= request.env['castle'] || Castle::Client.new(request, response)
+      @castle ||= request.env['castle'] || Castle::Client.new(request)
     end
   end
 

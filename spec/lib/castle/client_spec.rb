@@ -17,7 +17,7 @@ describe Castle::Client do
                               'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh")
   end
   let(:request) { Request.new(env) }
-  let(:client) { described_class.new(request, nil) }
+  let(:client) { described_class.new(request) }
   let(:review_id) { '12356789' }
 
   describe 'parses the request' do

@@ -5,6 +5,7 @@
 **Enhancements:**
 
 - [#31](github.com/castle/castle-ruby/pull/31/) remove auto-integration with Rails, Padrino, Sinatra (see BREAKING CHANGES, README)
+- [#35](github.com/castle/castle-ruby/pull/35) dropped unused cookie store class, more informative Castle:Client constructor params
 
 **BREAKING CHANGES:**
 
