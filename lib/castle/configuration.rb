@@ -3,7 +3,8 @@
 module Castle
   # manages configuration variables
   class Configuration
-    REQUEST_TIMEOUT = 30.0
+    SUPPORTED = %i[source_header request_timeout api_secret api_endpoint].freeze
+    REQUEST_TIMEOUT = 500 # in milliseconds
     API_ENDPOINT = 'https://api.castle.io/v1'
     WHITELISTED = [
       'User-Agent',

@@ -4,14 +4,16 @@
 
 **Enhancements:**
 
-- [#31](github.com/castle/castle-ruby/pull/31/) remove auto-integration with Rails, Padrino, Sinatra (see BREAKING CHANGES, README)
 - [#35](github.com/castle/castle-ruby/pull/35) dropped unused cookie store class, more informative Castle:Client constructor params
+- [#30](github.com/castle/castle-ruby/pull/30) change request timeout to 500ms
+- [#31](github.com/castle/castle-ruby/pull/31) remove auto-integration with Rails, Padrino, Sinatra (see BREAKING CHANGES, README)
 
 **BREAKING CHANGES:**
 
 - add `require 'castle/support/rails'` to have Castle client instance available as `castle` in your Rails controllers
 - add `require 'castle/support/padrino'` to have Castle client instance available as `castle` in your Padrino helpers
 - add `require 'castle/support/sinatra'` to have Castle client instance available as `castle` in your Sinatra helpers
+- request timeout uses milliseconds unit from now on
 
 **Features:**
 
