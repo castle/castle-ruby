@@ -6,7 +6,7 @@ module Castle
     class ClientId
       def initialize(request, cookies)
         @request = request
-        @cookies = cookies
+        @cookies = cookies || {}
       end
 
       def call(name)
