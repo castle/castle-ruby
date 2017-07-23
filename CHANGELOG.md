@@ -19,6 +19,7 @@
 
 - [#32](github.com/castle/castle-ruby/pull/32) added helper for generating signature
 - [#27](github.com/castle/castle-ruby/pull/27) added whitelisted and blacklisted to configuration (with defaults)
+- [#41](github.com/castle/castle-ruby/pull/41) added Hanami helpers
 
 ## 2.3.2
 
