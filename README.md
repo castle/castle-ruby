@@ -26,7 +26,15 @@ A Castle client instance will be made available as `castle` in your
 
 * Padrino controllers when you add `require 'castle/support/padrino'`
 
-* Sinatra when you add `require 'castle/support/sinatra'`
+* Sinatra app when you add `require 'castle/support/sinatra'` (and additionally explicitly add `register Sinatra::Castle` to your `Sinatra::Base` class if you have a modular application)
+
+```
+require 'castle/support/sinatra'
+
+class ApplicationController < Sinatra::Base
+  register Sinatra::Castle
+end
+```
 
 The client will automatically configure the [request context](https://api.castle.io/docs#request-context) for each request.
 
