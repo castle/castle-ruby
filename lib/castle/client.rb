@@ -4,8 +4,9 @@ module Castle
   class Client
     attr_accessor :api
 
-    def initialize(request, cookies = request.cookies)
-      @do_not_track = false
+    def initialize(request, options = {})
+      @do_not_track = default_tracking(options)
+      cookies = options[:cookies] || request.cookies
       client_id = Extractors::ClientId.new(request, cookies).call('__cid')
       ip = Extractors::IP.new(request).call
       headers = Extractors::Headers.new(request).call
@@ -17,7 +18,7 @@ module Castle
     end
 
     def identify(args)
-      @api.request('identify', args) unless do_not_track?
+      @api.request('identify', args) if tracked?
     end
 
     def authenticate(args)
@@ -25,19 +26,25 @@ module Castle
     end
 
     def track(args)
-      @api.request('track', args) unless do_not_track?
+      @api.request('track', args) if tracked?
     end
 
-    def do_not_track!
+    def turn_off_tracking
       @do_not_track = true
     end
 
-    def track!
+    def turn_on_tracking
       @do_not_track = false
     end
 
-    def do_not_track?
-      @do_not_track
+    def tracked?
+      !@do_not_track
+    end
+
+    private
+
+    def default_tracking(options)
+      options.key?(:do_not_track) ? options[:do_not_track] : false
     end
   end
 end
