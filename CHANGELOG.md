@@ -14,8 +14,8 @@
 - add `require 'castle/support/padrino'` to have Castle client instance available as `castle` in your Padrino helpers
 - add `require 'castle/support/sinatra'` to have Castle client instance available as `castle` in your Sinatra helpers
 - request timeout uses milliseconds unit from now on
-- renamed `track!` to `turn_on_tracking`
-- renamed `do_no_track!` to `turn_off_tracking`
+- renamed `track!` to `enable_tracking`
+- renamed `do_no_track!` to `disable_tracking`
 - renamed `don_no_track?` to `tracked?` with opposite behaviour
 - `Castle::Client` now takes options as a second argument
 

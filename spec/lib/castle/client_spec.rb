@@ -64,20 +64,13 @@ describe Castle::Client do
 
   describe 'tracked?' do
     context 'off' do
-      before do
-        client.turn_off_tracking
-      end
-      it do
-        expect(client).not_to be_tracked
-      end
+      before { client.disable_tracking }
+      it { expect(client).not_to be_tracked }
     end
+
     context 'on' do
-      before do
-        client.turn_on_tracking
-      end
-      it do
-        expect(client).to be_tracked
-      end
+      before { client.enable_tracking }
+      it { expect(client).to be_tracked }
     end
   end
 end

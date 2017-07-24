@@ -29,11 +29,11 @@ module Castle
       @api.request('track', args) if tracked?
     end
 
-    def turn_off_tracking
+    def disable_tracking
       @do_not_track = true
     end
 
-    def turn_on_tracking
+    def enable_tracking
       @do_not_track = false
     end
 
