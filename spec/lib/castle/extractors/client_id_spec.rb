@@ -3,9 +3,10 @@
 require 'spec_helper'
 
 describe Castle::Extractors::ClientId do
-  subject(:extractor) { described_class.new(request, request.cookies) }
+  subject(:extractor) { described_class.new(request, cookies) }
 
   let(:client_id) { 'abcd' }
+  let(:cookies) { request.cookies }
   let(:request) { Rack::Request.new(env) }
   let(:env) do
     Rack::MockRequest.env_for('/', headers)
@@ -34,6 +35,15 @@ describe Castle::Extractors::ClientId do
 
     it 'appends the client_id' do
       expect(extractor.call('__cid')).to eql(client_id)
+    end
+  end
+
+  context 'allow cookies to be undefined' do
+    let(:cookies) { nil }
+    let(:headers) { {} }
+
+    it do
+      expect(extractor.call('__cid')).to eql('')
     end
   end
 end
