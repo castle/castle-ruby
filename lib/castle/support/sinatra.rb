@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'sinatra/base'
+
 module Sinatra
   module Castle
     module Helpers
@@ -9,7 +11,7 @@ module Sinatra
     end
 
     def self.registered(app)
-      app.helpers Helpers
+      app.helpers Castle::Helpers
     end
   end
 
