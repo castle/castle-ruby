@@ -36,6 +36,18 @@ class ApplicationController < Sinatra::Base
 end
 ```
 
+* Hanami when you add `require 'castle/support/hanami'` and include `Castle::Hanami` to your Hanami application
+
+```
+require 'castle/support/hanami'
+
+module Web
+  class Application < Hanami::Application
+    include Castle::Hanami
+  end
+end
+```
+
 The client will automatically configure the [request context](https://api.castle.io/docs#request-context) for each request.
 
 ## Documentation
