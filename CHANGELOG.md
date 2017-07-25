@@ -14,12 +14,17 @@
 - add `require 'castle/support/padrino'` to have Castle client instance available as `castle` in your Padrino helpers
 - add `require 'castle/support/sinatra'` to have Castle client instance available as `castle` in your Sinatra helpers
 - request timeout uses milliseconds unit from now on
+- renamed `track!` to `enable_tracking`
+- renamed `do_no_track!` to `disable_tracking`
+- renamed `don_no_track?` to `tracked?` with opposite behaviour
+- `Castle::Client` now takes options as a second argument
 
 **Features:**
 
 - [#32](github.com/castle/castle-ruby/pull/32) added helper for generating signature
 - [#27](github.com/castle/castle-ruby/pull/27) added whitelisted and blacklisted to configuration (with defaults)
 - [#41](github.com/castle/castle-ruby/pull/41) added Hanami helpers
+- [#42](github.com/castle/castle-ruby/pull/42) added possibility to set do_not_track flag in `Castle::Client` options
 
 ## 2.3.2
 

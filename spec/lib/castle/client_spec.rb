@@ -61,4 +61,16 @@ describe Castle::Client do
                      "https://:secret@api.castle.io/v1/reviews/#{review_id}",
                      times: 1
   end
+
+  describe 'tracked?' do
+    context 'off' do
+      before { client.disable_tracking }
+      it { expect(client).not_to be_tracked }
+    end
+
+    context 'on' do
+      before { client.enable_tracking }
+      it { expect(client).to be_tracked }
+    end
+  end
 end

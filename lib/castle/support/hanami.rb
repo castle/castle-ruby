@@ -4,7 +4,7 @@ module Castle
   module Hanami
     module Action
       def castle
-        @castle ||= ::Castle::Client.new(request, (cookies if defined? cookies))
+        @castle ||= ::Castle::Client.new(request, cookies: (cookies if defined? cookies))
       end
     end
 
