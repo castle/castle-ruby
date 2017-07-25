@@ -5,6 +5,12 @@ require 'net/http'
 
 require 'castle/version'
 
+require 'castle/command'
+require 'castle/context_merger'
+require 'castle/commands/identify'
+require 'castle/commands/authenticate'
+require 'castle/commands/track'
+require 'castle/commands/page'
 require 'castle/configuration'
 require 'castle/client'
 require 'castle/errors'

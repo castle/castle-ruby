@@ -26,30 +26,37 @@ describe Castle::Client do
     end
 
     it do
-      client.authenticate(name: '$login.succeeded', user_id: '1234')
+      client.authenticate('$login.succeeded', '1234')
       expect(Castle::API).to have_received(:new).with(*api_data)
     end
   end
 
   it 'identifies' do
-    client.identify(user_id: '1234', traits: { name: 'Jo' })
+    client.identify('1234', traits: { name: 'Jo' })
     assert_requested :post, 'https://:secret@api.castle.io/v1/identify',
                      times: 1,
-                     body: { user_id: '1234', traits: { name: 'Jo' } }
+                     body: { user_id: '1234', context: {}, traits: { name: 'Jo' } }
   end
 
   it 'authenticates' do
-    client.authenticate(name: '$login.succeeded', user_id: '1234')
+    client.authenticate('$login.succeeded', '1234')
     assert_requested :post, 'https://:secret@api.castle.io/v1/authenticate',
                      times: 1,
-                     body: { name: '$login.succeeded', user_id: '1234' }
+                     body: { event: '$login.succeeded', context: {}, user_id: '1234' }
   end
 
   it 'tracks' do
-    client.track(name: '$login.succeeded', user_id: '1234')
+    client.track('$login.succeeded', user_id: '1234')
     assert_requested :post, 'https://:secret@api.castle.io/v1/track',
                      times: 1,
-                     body: { name: '$login.succeeded', user_id: '1234' }
+                     body: { event: '$login.succeeded', context: {}, user_id: '1234' }
+  end
+
+  it 'pages' do
+    client.page('page_name', user_id: '1234')
+    assert_requested :post, 'https://:secret@api.castle.io/v1/page',
+                     times: 1,
+                     body: { name: 'page_name', context: {}, user_id: '1234' }
   end
 
   it 'fetches review' do

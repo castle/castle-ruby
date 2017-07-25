@@ -7,26 +7,39 @@ module Castle
     def initialize(request, options = {})
       @do_not_track = default_tracking(options)
       cookies = options[:cookies] || request.cookies
+      @context = options[:context] || {}
       client_id = Extractors::ClientId.new(request, cookies).call('__cid')
       ip = Extractors::IP.new(request).call
       headers = Extractors::Headers.new(request).call
       @api = API.new(client_id, ip, headers)
     end
 
-    def fetch_review(id)
-      @api.request_query("reviews/#{id}")
+    def fetch_review(review_id)
+      @api.request_query("reviews/#{review_id}")
     end
 
-    def identify(args)
-      @api.request('identify', args) if tracked?
+    def identify(event, options = {})
+      return unless tracked?
+      command = Castle::Commands::Identify.new(@context).build(event, options || {})
+      @api.request(command)
     end
 
-    def authenticate(args)
-      @api.request('authenticate', args)
+    def authenticate(event, user_id, options = {})
+      return unless tracked?
+      command = Castle::Commands::Authenticate.new(@context).build(event, user_id, options || {})
+      @api.request(command)
     end
 
-    def track(args)
-      @api.request('track', args) if tracked?
+    def track(event, options = {})
+      return unless tracked?
+      command = Castle::Commands::Track.new(@context).build(event, options || {})
+      @api.request(command)
+    end
+
+    def page(name, options = {})
+      return unless tracked?
+      command = Castle::Commands::Page.new(@context).build(name, options || {})
+      @api.request(command)
     end
 
     def disable_tracking

@@ -5,6 +5,7 @@ require 'spec_helper'
 describe Castle::API do
   let(:api) { described_class.new('abcd', '1.2.3.4', '{}') }
   let(:api_endpoint) { 'http://new.herokuapp.com:3000/v2' }
+  let(:command) { Castle::Command.new('authenticate', '1234', :post) }
 
   describe 'handles timeout' do
     before do
@@ -12,7 +13,7 @@ describe Castle::API do
     end
     it do
       expect do
-        api.request('authenticate', user_id: '1234')
+        api.request(command)
       end.to raise_error(Castle::RequestError)
     end
   end
@@ -23,7 +24,7 @@ describe Castle::API do
     end
     it do
       expect do
-        api.request('authenticate', user_id: '1234')
+        api.request(command)
       end.to raise_error(Castle::BadRequestError)
     end
   end
@@ -34,7 +35,7 @@ describe Castle::API do
       allow(Castle.config).to receive(:api_endpoint).and_return(URI(api_endpoint))
     end
     it do
-      api.request('authenticate', user_id: '1234')
+      api.request(command)
       path = "#{api_endpoint.gsub(/new/, ':secret@new')}/authenticate"
       assert_requested :post, path, times: 1
     end
