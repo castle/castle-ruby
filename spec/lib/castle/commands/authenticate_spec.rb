@@ -9,7 +9,7 @@ describe Castle::Commands::Authenticate do
     let(:context) { { test: { test1: '1' } } }
     let(:command) do
       command_builder.build('event_name', '1234', not_here: '2', something: '1234',
-                                                  properties: { 'pro': 1 },
+                                                  properties: { pro: 1 },
                                                   traits: { sample: 'ok' },
                                                   active: 'ok',
                                                   context: { test: { test2: '1' } })
@@ -19,7 +19,7 @@ describe Castle::Commands::Authenticate do
     it do
       expect(command.data).to be_eql(
         context: { test: { test1: '1', test2: '1' } },
-        properties: { 'pro': 1 },
+        properties: { pro: 1 },
         event: 'event_name', user_id: '1234'
       )
     end

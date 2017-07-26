@@ -9,7 +9,7 @@ describe Castle::Commands::Identify do
     let(:context) { { test: { test1: '1' } } }
     let(:command) do
       command_builder.build('1234', not_here: '2', something: '1234',
-                                    properties: { 'pro': 1 }, traits: { sample: 'ok' },
+                                    properties: { pro: 1 }, traits: { sample: 'ok' },
                                     active: 'ok',
                                     context: { test: { test2: '1' } })
     end
