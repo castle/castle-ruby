@@ -45,11 +45,11 @@ module Castle
     end
 
     def whitelisted=(value)
-      @whitelisted = value ? value.map { |header| @formatter.call(header) } : []
+      @whitelisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
     end
 
     def blacklisted=(value)
-      @blacklisted = value ? value.map { |header| @formatter.call(header) } : []
+      @blacklisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
     end
 
     private
