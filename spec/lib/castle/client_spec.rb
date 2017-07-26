@@ -2,12 +2,6 @@
 
 require 'spec_helper'
 
-class Request < Rack::Request
-  def delegate?
-    false
-  end
-end
-
 describe Castle::Client do
   let(:ip) { '1.2.3.4' }
   let(:cookie_id) { 'abcd' }
@@ -16,7 +10,7 @@ describe Castle::Client do
                               'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
                               'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh")
   end
-  let(:request) { Request.new(env) }
+  let(:request) { Rack::Request.new(env) }
   let(:client) { described_class.new(request) }
   let(:review_id) { '12356789' }
 
