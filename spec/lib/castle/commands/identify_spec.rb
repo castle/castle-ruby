@@ -16,7 +16,7 @@ describe Castle::Commands::Identify do
 
     it { expect(command.path).to be_eql('identify') }
     it do
-      expect(command.data).to be_eql(context: { test: { test2: '1' } },
+      expect(command.data).to be_eql(context: { test: { test1: '1', test2: '1' } },
                                      traits: { sample: 'ok' },
                                      active: true,
                                      user_id: '1234')

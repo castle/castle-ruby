@@ -18,7 +18,7 @@ describe Castle::Commands::Authenticate do
     it { expect(command.path).to be_eql('authenticate') }
     it do
       expect(command.data).to be_eql(
-        context: { test: { test2: '1' } },
+        context: { test: { test1: '1', test2: '1' } },
         properties: { 'pro': 1 },
         event: 'event_name', user_id: '1234'
       )

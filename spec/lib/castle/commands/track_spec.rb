@@ -16,7 +16,7 @@ describe Castle::Commands::Track do
 
     it { expect(command.path).to be_eql('track') }
     it do
-      expect(command.data).to be_eql(context: { test: { test2: '1' } },
+      expect(command.data).to be_eql(context: { test: { test1: '1', test2: '1' } },
                                      properties: {  'pro': 1 },
                                      event: 'approve',
                                      user_id: '1234')

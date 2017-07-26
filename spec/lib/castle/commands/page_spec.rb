@@ -17,7 +17,7 @@ describe Castle::Commands::Page do
     it { expect(command.path).to be_eql('page') }
     it do
       expect(command.data).to be_eql(
-        context: { test: { test2: '1' } },
+        context: { test: { test1: '1', test2: '1' } },
         properties: { 'pro': 1 },
         name: 'url', user_id: '1234'
       )

@@ -6,6 +6,8 @@ require 'net/http'
 require 'castle/version'
 
 require 'castle/command'
+require 'castle/utils/merger'
+require 'castle/utils/cloner'
 require 'castle/context_merger'
 require 'castle/commands/identify'
 require 'castle/commands/authenticate'
