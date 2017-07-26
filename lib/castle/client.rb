@@ -6,12 +6,10 @@ module Castle
 
     def initialize(request, options = {})
       @do_not_track = default_tracking(options)
-      cookies = options[:cookies] || request.cookies
       @context = options[:context] || {}
-      client_id = Extractors::ClientId.new(request, cookies).call('__cid')
-      ip = Extractors::IP.new(request).call
-      headers = Extractors::Headers.new(request).call
-      @api = API.new(client_id, ip, headers)
+      cookies = options[:cookies] || request.cookies
+      @castle_headers = build_castle_headers(request, cookies)
+      @api = API.new(@castle_headers)
     end
 
     def fetch_review(review_id)
@@ -55,6 +53,13 @@ module Castle
     end
 
     private
+
+    def build_castle_headers(request, cookies)
+      client_id = Extractors::ClientId.new(request, cookies).call('__cid')
+      ip = Extractors::IP.new(request).call
+      request_headers = Extractors::Headers.new(request).call
+      Castle::Headers.new.prepare(client_id, ip, request_headers)
+    end
 
     def default_tracking(options)
       options.key?(:do_not_track) ? options[:do_not_track] : false

@@ -3,9 +3,15 @@
 require 'spec_helper'
 
 describe Castle::API do
-  let(:api) { described_class.new('abcd', '1.2.3.4', '{}') }
+  let(:api) { described_class.new('X-Castle-Client-Id' => 'abcd', 'X-Castle-Ip' => '1.2.3.4') }
   let(:api_endpoint) { 'http://new.herokuapp.com:3000/v2' }
   let(:command) { Castle::Command.new('authenticate', '1234', :post) }
+  let(:result_headers) do
+    { 'Accept' => '*/*',
+      'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+      'User-Agent' => 'Ruby', 'X-Castle-Client-Id' => 'abcd',
+      'X-Castle-Ip' => '1.2.3.4' }
+  end
 
   describe 'handles timeout' do
     before do
@@ -37,7 +43,7 @@ describe Castle::API do
     it do
       api.request(command)
       path = "#{api_endpoint.gsub(/new/, ':secret@new')}/authenticate"
-      assert_requested :post, path, times: 1
+      assert_requested :post, path, times: 1, headers: result_headers
     end
   end
 
@@ -49,7 +55,7 @@ describe Castle::API do
     it do
       api.request_query('review/1')
       path = "#{api_endpoint.gsub(/new/, ':secret@new')}/review/1"
-      assert_requested :get, path, times: 1
+      assert_requested :get, path, times: 1, headers: result_headers
     end
   end
 

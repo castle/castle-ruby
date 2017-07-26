@@ -7,7 +7,7 @@ describe Castle::Client do
   let(:cookie_id) { 'abcd' }
   let(:env) do
     Rack::MockRequest.env_for('/',
-                              'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
+                              'HTTP_X_FORWARDED_FOR' => ip,
                               'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh")
   end
   let(:request) { Rack::Request.new(env) }
@@ -19,15 +19,29 @@ describe Castle::Client do
   end
 
   describe 'parses the request' do
-    let(:api_data) { [cookie_id, ip, "{\"X-Forwarded-For\":\"#{ip}\"}"] }
+    # rubocop:disable Metrics/LineLength
+    let(:castle_headers) do
+      { 'Content-Type' => 'application/json',
+        'User-Agent' => 'Castle/v1 RubyBindings/2.3.2',
+        'X-Castle-Client-Id' => 'abcd',
+        'X-Castle-Ip' => '1.2.3.4',
+        'X-Castle-Headers' => '{"X-Forwarded-For":"1.2.3.4"}',
+        'X-Castle-Client-User-Agent' =>
+          %({"bindings_version":"#{Castle::VERSION}","lang":"ruby","lang_version":"2.4.1-p111 (2017-03-22)","platform":"x86_64-apple-darwin16.4.0","publisher":"castle","uname":"Darwin Kernel Version 16.7.0"}) }
+    end
+
+    # rubocop:enable Metrics/LineLength
 
     before do
-      allow(Castle::API).to receive(:new).with(*api_data).and_call_original
+      allow(Castle::System).to receive(:ruby_version).and_return('2.4.1-p111 (2017-03-22)')
+      allow(Castle::System).to receive(:platform).and_return('x86_64-apple-darwin16.4.0')
+      allow(Castle::System).to receive(:uname).and_return('Darwin Kernel Version 16.7.0')
+      allow(Castle::API).to receive(:new).with(castle_headers).and_call_original
     end
 
     it do
       client.authenticate('$login.succeeded', '1234')
-      expect(Castle::API).to have_received(:new).with(*api_data)
+      expect(Castle::API).to have_received(:new).with(castle_headers)
     end
   end
 

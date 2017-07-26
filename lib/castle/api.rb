@@ -3,11 +3,11 @@
 module Castle
   # this class is responsible for making requests to api
   class API
-    def initialize(cookie_id, ip, headers)
+    def initialize(headers)
       @config = Castle.config
       @config_api_endpoint = @config.api_endpoint
       @http = prepare_http
-      @headers = Castle::Headers.new.prepare(cookie_id, ip, headers)
+      @headers = headers
     end
 
     def request_query(endpoint)
