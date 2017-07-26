@@ -13,11 +13,11 @@ describe Castle::Headers do
   end
 
   let(:ip) { '1.1.1.1' }
-  let(:castle_headers) { 'headers' }
+  let(:request_headers) { { 'headers' => 'ok' } }
   let(:client_id) { 'some_id' }
 
   let(:prepared_headers) do
-    subject.prepare(client_id, ip, castle_headers)
+    subject.prepare(client_id, ip, request_headers)
   end
 
   shared_examples 'for_header' do |header, value|
@@ -30,7 +30,7 @@ describe Castle::Headers do
   it_behaves_like 'for_header', 'Content-Type', 'application/json'
   it_behaves_like 'for_header', 'X-Castle-Client-Id', 'some_id'
   it_behaves_like 'for_header', 'X-Castle-Ip', '1.1.1.1'
-  it_behaves_like 'for_header', 'X-Castle-Headers', 'headers'
+  it_behaves_like 'for_header', 'X-Castle-Headers', '{"headers":"ok"}'
   it_behaves_like 'for_header', 'X-Castle-Source', 'web'
   it_behaves_like 'for_header',
                   'User-Agent',
@@ -74,7 +74,7 @@ describe Castle::Headers do
     end
 
     context 'castle headers' do
-      let(:castle_headers) { nil }
+      let(:request_headers) { nil }
 
       it_behaves_like 'for_missing_header', 'X-Castle-Headers'
     end

@@ -11,11 +11,11 @@ module Castle
       }
     end
 
-    def prepare(client_id, ip, castle_headers)
+    def prepare(client_id, ip, request_headers)
       @headers.merge!(
         'X-Castle-Client-Id' => client_id,
         'X-Castle-Ip' => ip,
-        'X-Castle-Headers' => castle_headers,
+        'X-Castle-Headers' => request_headers ? JSON.generate(request_headers) : nil,
         'X-Castle-Client-User-Agent' => JSON.generate(client_user_agent),
         'X-Castle-Source' => @config.source_header
       )
