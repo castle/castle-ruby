@@ -31,6 +31,7 @@ module Castle
       self.api_endpoint = API_ENDPOINT
       self.whitelisted = WHITELISTED
       self.blacklisted = BLACKLISTED
+      self.source_header = 'web'
       self.api_secret = ''
     end
 

@@ -81,7 +81,7 @@ describe Castle::Configuration do
 
   describe 'source_header' do
     it do
-      expect(config.source_header).to be_eql(nil)
+      expect(config.source_header).to be_eql('web')
     end
 
     context 'setter' do
