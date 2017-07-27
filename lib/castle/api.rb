@@ -38,11 +38,14 @@ module Castle
     end
 
     def perform_request(req)
-      Castle::Response.new(@http.request(req)).parse
-    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
-           Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
-           Net::ProtocolError
-      raise Castle::RequestError, 'Castle API connection error'
+      raise Castle::ConfigurationError, 'configuration is not valid' unless @config.valid?
+      begin
+        Castle::Response.new(@http.request(req)).parse
+      rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
+             Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
+             Net::ProtocolError
+        raise Castle::RequestError, 'Castle API connection error'
+      end
     end
   end
 end

@@ -21,7 +21,7 @@ describe Castle::API do
     before do
       stub_request(:any, /api.castle.io/).to_return(status: 400)
     end
-    it 'handles non-OK response code' do
+    it do
       expect do
         api.request('authenticate', user_id: '1234')
       end.to raise_error(Castle::BadRequestError)
@@ -31,7 +31,7 @@ describe Castle::API do
   describe 'handles custom API endpoint' do
     before do
       stub_request(:any, /new.herokuapp.com/)
-      Castle.config.api_endpoint = api_endpoint
+      allow(Castle.config).to receive(:api_endpoint).and_return(URI(api_endpoint))
     end
     it do
       api.request('authenticate', user_id: '1234')
@@ -43,12 +43,23 @@ describe Castle::API do
   describe 'handles query request' do
     before do
       stub_request(:any, /new.herokuapp.com/)
-      Castle.config.api_endpoint = api_endpoint
+      allow(Castle.config).to receive(:api_endpoint).and_return(URI(api_endpoint))
     end
     it do
       api.request_query('review/1')
       path = "#{api_endpoint.gsub(/new/, ':secret@new')}/review/1"
       assert_requested :get, path, times: 1
+    end
+  end
+
+  describe 'handles missing configuration' do
+    before do
+      allow(Castle.config).to receive(:api_secret).and_return('')
+    end
+    it do
+      expect do
+        api.request('authenticate', user_id: '1234')
+      end.to raise_error(Castle::ConfigurationError)
     end
   end
 end

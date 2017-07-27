@@ -52,6 +52,10 @@ module Castle
       @blacklisted = value ? value.map { |header| @formatter.call(header) } : []
     end
 
+    def valid?
+      !api_secret.to_s.empty? && !api_endpoint.scheme.nil?
+    end
+
     private
 
     def respond_to_missing?(method_name, _include_private)
