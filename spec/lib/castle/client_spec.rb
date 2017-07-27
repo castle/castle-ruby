@@ -75,6 +75,29 @@ describe Castle::Client do
       it { expect(request_response['action']).to be_eql('allow') }
       it { expect(request_response['user_id']).to be_eql('1234') }
     end
+
+    context 'when request with fail' do
+      before do
+        allow(client.api).to receive(:request).and_raise(Castle::RequestError)
+      end
+
+      context 'with request error and throw strategy' do
+        before { allow(Castle.config).to receive(:failover_strategy).and_return(:throw) }
+        it do
+          expect do
+            request_response
+          end.to raise_error(Castle::RequestError)
+        end
+      end
+
+      context 'with request error and not throw on eg deny strategy' do
+        before { allow(Castle.config).to receive(:failover_strategy).and_return(:deny) }
+
+        it { assert_not_requested :post, 'https://:secret@api.castle.io/v1/authenticate' }
+        it { expect(request_response['action']).to be_eql('deny') }
+        it { expect(request_response['user_id']).to be_eql('1234') }
+      end
+    end
   end
 
   describe 'track' do

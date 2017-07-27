@@ -21,3 +21,7 @@ Metrics/BlockLength:
 
 Metrics/LineLength:
   Max: 100
+
+RSpec/NestedGroups:
+  Max: 4
+

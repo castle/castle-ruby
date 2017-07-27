@@ -41,10 +41,10 @@ module Castle
       http.verify_mode = OpenSSL::SSL::VERIFY_PEER
     end
 
-    def perform_request(req)
+    def perform_request(request)
       raise Castle::ConfigurationError, 'configuration is not valid' unless @config.valid?
       begin
-        Castle::Response.new(@http.request(req)).parse
+        Castle::Response.new(@http.request(request)).parse
       rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
              Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
              Net::ProtocolError

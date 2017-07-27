@@ -23,7 +23,11 @@ module Castle
     def authenticate(options = {})
       if tracked?
         command = Castle::Commands::Authenticate.new(@context).build(options || {})
-        @api.request(command)
+        begin
+          @api.request(command)
+        rescue Castle::RequestError => error
+          fake_response_or_raise(FakeAuthResponse.new(user_id), error)
+        end
       else
         FakeAuthResponse.new(user_id, :allow).generate
       end
@@ -52,6 +56,11 @@ module Castle
     def setup_context(request, cookies, additional_context)
       default_context = Castle::DefaultContext.new(request, cookies).call
       Castle::ContextMerger.new(default_context).call(additional_context || {})
+    end
+
+    def fake_response_or_raise(fake_response, error)
+      return fake_response.generate unless Castle.config.failover_strategy == :throw
+      raise error
     end
 
     def default_tracking(options)
