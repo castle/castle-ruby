@@ -6,6 +6,7 @@ module Castle
     SUPPORTED = %i[request_timeout api_secret api_endpoint].freeze
     REQUEST_TIMEOUT = 500 # in milliseconds
     API_ENDPOINT = 'https://api.castle.io/v1'
+    FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
     WHITELISTED = [
       'User-Agent',
       'Accept-Language',
@@ -23,11 +24,12 @@ module Castle
     BLACKLISTED = ['HTTP_COOKIE'].freeze
 
     attr_accessor :request_timeout
-    attr_reader :api_secret, :api_endpoint, :whitelisted, :blacklisted
+    attr_reader :api_secret, :api_endpoint, :whitelisted, :blacklisted, :failover_strategy
 
     def initialize
       @formatter = Castle::HeaderFormatter.new
       @request_timeout = REQUEST_TIMEOUT
+      self.failover_strategy = :allow
       self.api_endpoint = API_ENDPOINT
       self.whitelisted = WHITELISTED
       self.blacklisted = BLACKLISTED
@@ -54,6 +56,12 @@ module Castle
 
     def valid?
       !api_secret.to_s.empty? && !api_endpoint.scheme.nil?
+    end
+
+    def failover_strategy=(value)
+      @failover_strategy = FAILOVER_STRATEGIES.detect { |strategy| strategy == value.to_sym }
+      raise Castle::ConfigurationError, 'there is no such a strategy' if @failover_strategy.nil?
+      @failover_strategy
     end
 
     private
