@@ -14,6 +14,10 @@ describe Castle::Client do
   let(:client) { described_class.new(request) }
   let(:review_id) { '12356789' }
 
+  before do
+    stub_request(:any, /api.castle.io/).to_return(status: 200, body: '{}', headers: {})
+  end
+
   describe 'parses the request' do
     let(:api_data) { [cookie_id, ip, "{\"X-Forwarded-For\":\"#{ip}\"}"] }
 
