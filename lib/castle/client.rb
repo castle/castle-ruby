@@ -21,9 +21,12 @@ module Castle
     end
 
     def authenticate(options = {})
-      return unless tracked?
-      command = Castle::Commands::Authenticate.new(@context).build(options || {})
-      @api.request(command)
+      if tracked?
+        command = Castle::Commands::Authenticate.new(@context).build(options || {})
+        @api.request(command)
+      else
+        FakeAuthResponse.new(user_id, :allow).generate
+      end
     end
 
     def track(options = {})

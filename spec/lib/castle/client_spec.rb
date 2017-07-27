@@ -43,34 +43,65 @@ describe Castle::Client do
     end
   end
 
-  it 'identifies' do
-    client.identify(user_id: '1234', traits: { name: 'Jo' })
-    assert_requested :post, 'https://api.castle.io/v1/identify',
-                     times: 1,
-                     body: { user_id: '1234', context: context, traits: { name: 'Jo' } }.to_json
-  end
-
-  it 'authenticates' do
-    client.authenticate(event: '$login.succeeded', user_id: '1234')
-    assert_requested :post, 'https://api.castle.io/v1/authenticate',
-                     times: 1 do |req|
-      req.body == { event: '$login.succeeded', user_id: '1234', context: context }.to_json
+  describe 'identify' do
+    before { client.identify(user_id: '1234', traits: { name: 'Jo' }) }
+    it do
+      assert_requested :post, 'https://api.castle.io/v1/identify',
+                       times: 1,
+                       body: { user_id: '1234', context: context, traits: { name: 'Jo' } }.to_json
     end
   end
 
-  it 'tracks' do
-    client.track(event: '$login.succeeded', user_id: '1234')
-    assert_requested :post, 'https://api.castle.io/v1/track',
-                     times: 1,
-                     body: { event: '$login.succeeded', context: context, user_id: '1234' }.to_json
+  describe 'authenticate' do
+    let(:request_response) { client.authenticate(event: '$login.succeeded', user_id: '1234') }
+
+    context 'with tracking' do
+      before { request_response }
+      it do
+        request
+        assert_requested :post, 'https://api.castle.io/v1/authenticate',
+                         times: 1 do |req|
+          req.body == { event: '$login.succeeded', user_id: '1234', context: context }.to_json
+        end
+      end
+    end
+    context 'with tracking disabled' do
+      before do
+        client.disable_tracking
+        request_response
+      end
+
+      it { assert_not_requested :post, 'https://api.castle.io/v1/authenticate' }
+      it { expect(request_response['action']).to be_eql('allow') }
+      it { expect(request_response['user_id']).to be_eql('1234') }
+    end
   end
 
-  it 'fetches review' do
-    client.fetch_review(review_id)
+  describe 'track' do
+    before { client.track(event: '$login.succeeded', user_id: '1234') }
+    it do
+      assert_requested :post, 'https://api.castle.io/v1/track',
+                       times: 1,
+                       body: { event: '$login.succeeded', context: context, user_id: '1234' }
+    end
+  end
 
-    assert_requested :get,
-                     "https://api.castle.io/v1/reviews/#{review_id}",
-                     times: 1
+  describe 'page' do
+    before { client.page('page_name', user_id: '1234') }
+    it do
+      assert_requested :post, 'https://:secret@api.castle.io/v1/page',
+                       times: 1,
+                       body: { name: 'page_name', context: context, user_id: '1234' }
+    end
+  end
+
+  describe 'fetch review' do
+    before { client.fetch_review(review_id) }
+    it do
+      assert_requested :get,
+                       "https://api.castle.io/v1/reviews/#{review_id}",
+                       times: 1
+    end
   end
 
   describe 'tracked?' do
