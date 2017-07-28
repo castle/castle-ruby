@@ -65,7 +65,7 @@ describe Castle::API do
     end
     it do
       expect do
-        api.request('authenticate', user_id: '1234')
+        api.request(command)
       end.to raise_error(Castle::ConfigurationError)
     end
   end
