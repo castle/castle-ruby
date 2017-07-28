@@ -75,6 +75,9 @@ Castle.configure do |config|
   # Same as setting it through Castle.api_secret
   config.api_secret = 'secret'
 
+  # For authenticate method you can set failover strategies: allow(default), deny, challenge, throw
+  config.failover_strategy = :deny
+
   # Castle::RequestError is raised when timing out in seconds (default: 500 milliseconds)
   config.request_timeout = 2000
 
@@ -90,6 +93,7 @@ Castle.configure do |config|
   config.blacklisted += ['X_HEADER']
 
   # blacklisted headers take advantage over whitelisted elements
+
 end
 ```
 
