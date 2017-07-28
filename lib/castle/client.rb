@@ -26,10 +26,10 @@ module Castle
         begin
           @api.request(command)
         rescue Castle::RequestError => error
-          fake_response_or_raise(FakeAuthResponse.new(user_id), error)
+          failover_response_or_raise(FailoverAuthResponse.new(user_id), error)
         end
       else
-        FakeAuthResponse.new(user_id, :allow).generate
+        FailoverAuthResponse.new(user_id, :allow).generate
       end
     end
 
@@ -58,8 +58,8 @@ module Castle
       Castle::ContextMerger.new(default_context).call(additional_context || {})
     end
 
-    def fake_response_or_raise(fake_response, error)
-      return fake_response.generate unless Castle.config.failover_strategy == :throw
+    def failover_response_or_raise(failover_response, error)
+      return failover_response.generate unless Castle.config.failover_strategy == :throw
       raise error
     end
 
