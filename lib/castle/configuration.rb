@@ -60,7 +60,7 @@ module Castle
 
     def failover_strategy=(value)
       @failover_strategy = FAILOVER_STRATEGIES.detect { |strategy| strategy == value.to_sym }
-      raise Castle::ConfigurationError, 'there is no such a strategy' if @failover_strategy.nil?
+      raise Castle::ConfigurationError, 'unrecognized failover strategy' if @failover_strategy.nil?
       @failover_strategy
     end
 
