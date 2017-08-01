@@ -24,9 +24,6 @@ describe Castle::Client do
 
   before do
     stub_const('Castle::VERSION', '2.2.0')
-  end
-
-  before do
     stub_request(:any, /api.castle.io/).to_return(status: 200, body: '{}', headers: {})
   end
 
