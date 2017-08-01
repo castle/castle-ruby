@@ -8,10 +8,10 @@ describe Castle::Commands::Track do
   describe 'build' do
     let(:context) { { test: { test1: '1' } } }
     let(:command) do
-      command_builder.build('approve', user_id: '1234', something: '1234',
-                                       properties: { pro: 1 }, traits: { sample: 'ok' },
-                                       active: 'ok',
-                                       context: { test: { test2: '1' } })
+      command_builder.build(event: 'approve', user_id: '1234', something: '1234',
+                            properties: { pro: 1 }, traits: { sample: 'ok' },
+                            active: 'ok',
+                            context: { test: { test2: '1' } })
     end
 
     it { expect(command.path).to be_eql('track') }

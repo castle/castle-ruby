@@ -7,7 +7,8 @@ module Castle
         @context_merger = ContextMerger.new(context)
       end
 
-      def build(user_id, options = {})
+      def build(options = {})
+        user_id = options[:user_id]
         raise Castle::InvalidParametersError if user_id.nil? || user_id.to_s.empty?
         request_args = {
           user_id: user_id,

@@ -8,11 +8,11 @@ describe Castle::Commands::Authenticate do
   describe 'build' do
     let(:context) { { test: { test1: '1' } } }
     let(:command) do
-      command_builder.build('event_name', '1234', not_here: '2', something: '1234',
-                                                  properties: { pro: 1 },
-                                                  traits: { sample: 'ok' },
-                                                  active: 'ok',
-                                                  context: { test: { test2: '1' } })
+      command_builder.build(event: 'event_name', user_id: '1234', not_here: '2', something: '1234',
+                            properties: { pro: 1 },
+                            traits: { sample: 'ok' },
+                            active: 'ok',
+                            context: { test: { test2: '1' } })
     end
 
     it { expect(command.path).to be_eql('authenticate') }

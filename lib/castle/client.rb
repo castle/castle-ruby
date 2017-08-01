@@ -17,21 +17,21 @@ module Castle
       @api.request_query("reviews/#{review_id}")
     end
 
-    def identify(event, options = {})
+    def identify(options = {})
       return unless tracked?
-      command = Castle::Commands::Identify.new(@context).build(event, options || {})
+      command = Castle::Commands::Identify.new(@context).build(options || {})
       @api.request(command)
     end
 
-    def authenticate(event, user_id, options = {})
+    def authenticate(options = {})
       return unless tracked?
-      command = Castle::Commands::Authenticate.new(@context).build(event, user_id, options || {})
+      command = Castle::Commands::Authenticate.new(@context).build(options || {})
       @api.request(command)
     end
 
-    def track(event, options = {})
+    def track(options = {})
       return unless tracked?
-      command = Castle::Commands::Track.new(@context).build(event, options || {})
+      command = Castle::Commands::Track.new(@context).build(options || {})
       @api.request(command)
     end
 

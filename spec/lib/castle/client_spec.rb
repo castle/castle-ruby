@@ -53,27 +53,27 @@ describe Castle::Client do
     end
 
     it do
-      client.authenticate('$login.succeeded', '1234')
+      client.authenticate(event: '$login.succeeded', user_id: '1234')
       expect(Castle::API).to have_received(:new).with(castle_headers)
     end
   end
 
   it 'identifies' do
-    client.identify('1234', traits: { name: 'Jo' })
+    client.identify(user_id: '1234', traits: { name: 'Jo' })
     assert_requested :post, 'https://:secret@api.castle.io/v1/identify',
                      times: 1,
                      body: { user_id: '1234', context: context, traits: { name: 'Jo' } }
   end
 
   it 'authenticates' do
-    client.authenticate('$login.succeeded', '1234')
+    client.authenticate(event: '$login.succeeded', user_id: '1234')
     assert_requested :post, 'https://:secret@api.castle.io/v1/authenticate',
                      times: 1,
                      body: { event: '$login.succeeded', context: context, user_id: '1234' }
   end
 
   it 'tracks' do
-    client.track('$login.succeeded', user_id: '1234')
+    client.track(event: '$login.succeeded', user_id: '1234')
     assert_requested :post, 'https://:secret@api.castle.io/v1/track',
                      times: 1,
                      body: { event: '$login.succeeded', context: context, user_id: '1234' }
