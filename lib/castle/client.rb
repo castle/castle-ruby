@@ -35,12 +35,6 @@ module Castle
       @api.request(command)
     end
 
-    def page(name, options = {})
-      return unless tracked?
-      command = Castle::Commands::Page.new(@context).build(name, options || {})
-      @api.request(command)
-    end
-
     def disable_tracking
       @do_not_track = true
     end

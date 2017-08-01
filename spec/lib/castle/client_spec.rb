@@ -79,13 +79,6 @@ describe Castle::Client do
                      body: { event: '$login.succeeded', context: context, user_id: '1234' }
   end
 
-  it 'pages' do
-    client.page('page_name', user_id: '1234')
-    assert_requested :post, 'https://:secret@api.castle.io/v1/page',
-                     times: 1,
-                     body: { name: 'page_name', context: context, user_id: '1234' }
-  end
-
   it 'fetches review' do
     client.fetch_review(review_id)
 
