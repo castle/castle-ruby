@@ -11,7 +11,7 @@ module Castle
     def call
       context = {
         active: true,
-        origin: Castle.config.source_header,
+        origin: 'web',
         request: {
           headers: @headers || {}
         },

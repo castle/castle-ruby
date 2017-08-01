@@ -3,7 +3,7 @@
 module Castle
   # manages configuration variables
   class Configuration
-    SUPPORTED = %i[source_header request_timeout api_secret api_endpoint].freeze
+    SUPPORTED = %i[request_timeout api_secret api_endpoint].freeze
     REQUEST_TIMEOUT = 500 # in milliseconds
     API_ENDPOINT = 'https://api.castle.io/v1'
     WHITELISTED = [
@@ -22,7 +22,7 @@ module Castle
 
     BLACKLISTED = ['HTTP_COOKIE'].freeze
 
-    attr_accessor :request_timeout, :source_header
+    attr_accessor :request_timeout
     attr_reader :api_secret, :api_endpoint, :whitelisted, :blacklisted
 
     def initialize
@@ -31,7 +31,6 @@ module Castle
       self.api_endpoint = API_ENDPOINT
       self.whitelisted = WHITELISTED
       self.blacklisted = BLACKLISTED
-      self.source_header = 'web'
       self.api_secret = ''
     end
 

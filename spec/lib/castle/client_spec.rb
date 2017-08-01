@@ -38,7 +38,6 @@ describe Castle::Client do
         'X-Castle-Client-Id' => 'abcd',
         'X-Castle-Ip' => '1.2.3.4',
         'X-Castle-Headers' => JSON.generate(headers),
-        'X-Castle-Source' => 'web',
         'X-Castle-Client-User-Agent' =>
           %({"bindings_version":"2.2.0","lang":"ruby","lang_version":"2.4.1-p111 (2017-03-22)","platform":"x86_64-apple-darwin16.4.0","publisher":"castle","uname":"Darwin Kernel Version 16.7.0"}) }
     end

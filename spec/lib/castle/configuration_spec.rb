@@ -79,23 +79,6 @@ describe Castle::Configuration do
     end
   end
 
-  describe 'source_header' do
-    it do
-      expect(config.source_header).to be_eql('web')
-    end
-
-    context 'setter' do
-      let(:value) { 'header' }
-
-      before do
-        config.source_header = value
-      end
-      it do
-        expect(config.source_header).to be_eql(value)
-      end
-    end
-  end
-
   describe 'whitelisted' do
     it do
       expect(config.whitelisted.size).to be_eql(11)

@@ -16,8 +16,7 @@ module Castle
         'X-Castle-Client-Id' => client_id,
         'X-Castle-Ip' => ip,
         'X-Castle-Headers' => request_headers ? JSON.generate(request_headers) : nil,
-        'X-Castle-Client-User-Agent' => JSON.generate(client_user_agent),
-        'X-Castle-Source' => @config.source_header
+        'X-Castle-Client-User-Agent' => JSON.generate(client_user_agent)
       )
       @headers.delete_if { |_k, header_value| header_value.nil? }
       @headers

@@ -10,7 +10,6 @@ describe Castle::DefaultContext do
   let(:default_context) { subject.call }
 
   before do
-    allow(Castle.config).to receive(:source_header).and_return('web')
     stub_const('Castle::VERSION', '2.2.0')
   end
 

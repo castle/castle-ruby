@@ -8,7 +8,6 @@ describe Castle::Headers do
   end
 
   before do
-    allow(Castle.config).to receive(:source_header).and_return('web')
     stub_const('Castle::VERSION', '2.2.0')
   end
 
@@ -31,7 +30,6 @@ describe Castle::Headers do
   it_behaves_like 'for_header', 'X-Castle-Client-Id', 'some_id'
   it_behaves_like 'for_header', 'X-Castle-Ip', '1.1.1.1'
   it_behaves_like 'for_header', 'X-Castle-Headers', '{"headers":"ok"}'
-  it_behaves_like 'for_header', 'X-Castle-Source', 'web'
   it_behaves_like 'for_header',
                   'User-Agent',
                   'Castle/v1 RubyBindings/2.2.0'
