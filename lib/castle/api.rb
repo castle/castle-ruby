@@ -3,7 +3,7 @@
 module Castle
   # this class is responsible for making requests to api
   class API
-    def initialize(headers)
+    def initialize(headers = {})
       @config = Castle.config
       @config_api_endpoint = @config.api_endpoint
       @http = prepare_http
