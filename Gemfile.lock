@@ -43,7 +43,7 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.1)
     slop (3.6.0)
-    webmock (1.24.6)
+    webmock (3.0.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -53,12 +53,12 @@ PLATFORMS
 
 DEPENDENCIES
   castle-rb!
-  pry (~> 0.10.4)
+  pry
   rack (~> 1.6)
   rake
-  rspec (~> 3.5)
+  rspec
   simplecov
-  webmock (~> 1.21)
+  webmock
 
 BUNDLED WITH
    1.15.3
