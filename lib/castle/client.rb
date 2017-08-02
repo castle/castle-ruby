@@ -6,10 +6,7 @@ module Castle
 
     def initialize(request, options = {})
       @do_not_track = default_tracking(options)
-      request_headers = Extractors::Headers.new(request).call
-      ip = Extractors::IP.new(request).call
-      @context = setup_context(request_headers, ip, options[:context])
-      @castle_headers = setup_castle_headers(request, request_headers, ip, options[:cookies])
+      @context = setup_context(request, options[:cookies], options[:context])
       @api = API.new(@castle_headers)
     end
 
@@ -49,14 +46,9 @@ module Castle
 
     private
 
-    def setup_context(request_headers, ip, additional_context)
-      default_context = Castle::DefaultContext.new(request_headers, ip).call
+    def setup_context(request, cookies, additional_context)
+      default_context = Castle::DefaultContext.new(request, cookies).call
       Castle::ContextMerger.new(default_context).call(additional_context || {})
-    end
-
-    def setup_castle_headers(request, request_headers, ip, cookies)
-      client_id = Extractors::ClientId.new(request, cookies || request.cookies).call('__cid')
-      Castle::Headers.new.prepare(client_id, ip, request_headers)
     end
 
     def default_tracking(options)

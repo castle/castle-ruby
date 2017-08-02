@@ -42,7 +42,7 @@ describe Castle::API do
     end
     it do
       api.request(command)
-      path = "#{api_endpoint.gsub(/new/, ':secret@new')}/authenticate"
+      path = "#{api_endpoint}/authenticate"
       assert_requested :post, path, times: 1, headers: result_headers
     end
   end
@@ -54,7 +54,7 @@ describe Castle::API do
     end
     it do
       api.request_query('review/1')
-      path = "#{api_endpoint.gsub(/new/, ':secret@new')}/review/1"
+      path = "#{api_endpoint}/review/1"
       assert_requested :get, path, times: 1, headers: result_headers
     end
   end
