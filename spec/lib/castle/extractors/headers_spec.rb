@@ -21,7 +21,7 @@ describe Castle::Extractors::Headers do
     end
     it do
       expect(extractor.call).to eql(
-        '{"X-Forwarded-For":"1.2.3.4","Test":"1"}'
+        'X-Forwarded-For' => '1.2.3.4', 'Test' => '1'
       )
     end
   end

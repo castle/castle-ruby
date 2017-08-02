@@ -78,9 +78,6 @@ Castle.configure do |config|
   # Castle::RequestError is raised when timing out in seconds (default: 500 milliseconds)
   config.request_timeout = 2000
 
-  # For tracking in non-web environments: https://castle.io/docs/sources (default: 'web')
-  config.source_header = 'backend'
-
   # Whitelisted and Blacklisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
   # Whitelisted headers
   config.whitelisted = ['X_HEADER']

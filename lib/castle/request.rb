@@ -3,7 +3,7 @@
 module Castle
   # generate api request
   class Request
-    def initialize(headers)
+    def initialize(headers = {})
       @config = Castle.config
       @headers = headers
     end
