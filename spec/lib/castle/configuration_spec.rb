@@ -124,4 +124,27 @@ describe Castle::Configuration do
       it { expect(config.blacklisted.size).to be_eql(2) }
     end
   end
+
+  describe 'failover_strategy' do
+    it do
+      expect(config.failover_strategy).to be_eql(:allow)
+    end
+
+    context 'setter' do
+      before do
+        config.failover_strategy = :deny
+      end
+      it do
+        expect(config.failover_strategy).to be_eql(:deny)
+      end
+    end
+
+    context 'when broken' do
+      it do
+        expect do
+          config.failover_strategy = :unicorn
+        end.to raise_error(Castle::ConfigurationError)
+      end
+    end
+  end
 end

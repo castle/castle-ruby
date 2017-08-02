@@ -21,9 +21,16 @@ module Castle
     end
 
     def authenticate(options = {})
-      return unless tracked?
-      command = Castle::Commands::Authenticate.new(@context).build(options || {})
-      @api.request(command)
+      if tracked?
+        command = Castle::Commands::Authenticate.new(@context).build(options || {})
+        begin
+          @api.request(command)
+        rescue Castle::RequestError => error
+          failover_response_or_raise(FailoverAuthResponse.new(options[:user_id]), error)
+        end
+      else
+        FailoverAuthResponse.new(options[:user_id], :allow).generate
+      end
     end
 
     def track(options = {})
@@ -49,6 +56,11 @@ module Castle
     def setup_context(request, cookies, additional_context)
       default_context = Castle::DefaultContext.new(request, cookies).call
       Castle::ContextMerger.new(default_context).call(additional_context || {})
+    end
+
+    def failover_response_or_raise(failover_response, error)
+      return failover_response.generate unless Castle.config.failover_strategy == :throw
+      raise error
     end
 
     def default_tracking(options)

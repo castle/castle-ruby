@@ -25,6 +25,7 @@
 - [#27](github.com/castle/castle-ruby/pull/27) added whitelisted and blacklisted to configuration (with defaults)
 - [#41](github.com/castle/castle-ruby/pull/41) added Hanami helpers
 - [#42](github.com/castle/castle-ruby/pull/42) added possibility to set do_not_track flag in `Castle::Client` options
+- [#48](github.com/castle/castle-ruby/pull/48) added failover strategies for `authenticate` method
 
 ## 2.3.2
 
