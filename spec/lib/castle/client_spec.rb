@@ -105,16 +105,9 @@ describe Castle::Client do
     it do
       assert_requested :post, 'https://api.castle.io/v1/track',
                        times: 1,
-                       body: { event: '$login.succeeded', context: context, user_id: '1234' }
-    end
-  end
-
-  describe 'page' do
-    before { client.page('page_name', user_id: '1234') }
-    it do
-      assert_requested :post, 'https://:secret@api.castle.io/v1/page',
-                       times: 1,
-                       body: { name: 'page_name', context: context, user_id: '1234' }
+                       body: {
+                         event: '$login.succeeded', context: context, user_id: '1234'
+                       }.to_json
     end
   end
 

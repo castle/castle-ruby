@@ -26,10 +26,10 @@ module Castle
         begin
           @api.request(command)
         rescue Castle::RequestError => error
-          failover_response_or_raise(FailoverAuthResponse.new(user_id), error)
+          failover_response_or_raise(FailoverAuthResponse.new(options[:user_id]), error)
         end
       else
-        FailoverAuthResponse.new(user_id, :allow).generate
+        FailoverAuthResponse.new(options[:user_id], :allow).generate
       end
     end
 
