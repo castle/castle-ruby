@@ -14,7 +14,7 @@ module Castle
         client_id: @client_id,
         active: true,
         origin: 'web',
-        request_headers: @headers || {},
+        headers: @headers || {},
         ip: @ip,
         library: {
           name: 'castle-rb',

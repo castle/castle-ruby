@@ -19,7 +19,7 @@ describe Castle::Client do
       client_id: 'abcd',
       active: true,
       origin: 'web',
-      request_headers: headers,
+      headers: headers,
       ip: ip,
       library: { name: 'castle-rb', version: '2.2.0' }
     }

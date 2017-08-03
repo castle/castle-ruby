@@ -25,7 +25,7 @@ describe Castle::DefaultContext do
   it { expect(default_context[:active]).to be_eql(true) }
   it { expect(default_context[:origin]).to be_eql('web') }
   it {
-    expect(default_context[:request_headers]).to be_eql(
+    expect(default_context[:headers]).to be_eql(
       'X-Forwarded-For' => '1.2.3.4', 'Accept-Language' => 'en', 'User-Agent' => 'test'
     )
   }
