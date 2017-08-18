@@ -24,4 +24,3 @@ Metrics/LineLength:
 
 RSpec/NestedGroups:
   Max: 4
-
