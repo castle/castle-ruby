@@ -15,6 +15,7 @@ module Castle
           context: build_context(options[:context])
         }
         request_args[:properties] = options[:properties] if options.key?(:properties)
+        request_args[:traits] = options[:traits] if options.key?(:traits)
 
         Castle::Command.new('authenticate', request_args, :post)
       end

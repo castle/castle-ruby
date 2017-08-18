@@ -20,6 +20,7 @@ describe Castle::Commands::Authenticate do
       expect(command.data).to be_eql(
         context: { test: { test1: '1', test2: '1' } },
         properties: { pro: 1 },
+        traits: { sample: 'ok' },
         event: 'event_name', user_id: '1234'
       )
     end
