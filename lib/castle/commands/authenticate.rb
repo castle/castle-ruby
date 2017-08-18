@@ -26,10 +26,10 @@ module Castle
       end
 
       def required_data(options)
-        event = options[:event]
-        user_id = options[:user_id]
-        raise Castle::InvalidParametersError if event.nil? || event.to_s.empty? ||
-                                                user_id.nil? || user_id.to_s.empty?
+        event = options[:event].to_s
+        user_id = options[:user_id].to_s
+
+        raise Castle::InvalidParametersError if event.empty? || user_id.empty?
 
         [event, user_id]
       end
