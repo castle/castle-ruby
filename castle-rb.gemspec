@@ -17,4 +17,6 @@ Gem::Specification.new do |s|
   s.files       = Dir['{lib}/**/*'] + ['README.md']
   s.test_files  = Dir['spec/**/*']
   s.require_paths = ['lib']
+
+  s.add_development_dependency 'coveralls'
 end

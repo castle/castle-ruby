@@ -1,8 +1,9 @@
 # Ruby SDK for Castle
 
-[![Build Status](https://travis-ci.org/castle/castle-ruby.png)](https://travis-ci.org/castle/castle-ruby)
-[![Gem Version](https://badge.fury.io/rb/castle-rb.png)](http://badge.fury.io/rb/castle-rb)
-[![Dependency Status](https://gemnasium.com/castle/castle-ruby.png)](https://gemnasium.com/castle/castle-ruby)
+[![Build Status](https://travis-ci.org/castle/castle-ruby.svg?branch=master)](https://travis-ci.org/castle/castle-ruby)
+[![Coverage Status](https://coveralls.io/repos/github/castle/castle-ruby/badge.svg?branch=coveralls)](https://coveralls.io/github/castle/castle-ruby?branch=coveralls)
+[![Gem Version](https://badge.fury.io/rb/castle-rb.svg)](https://badge.fury.io/rb/castle-rb)
+[![Dependency Status](https://gemnasium.com/badges/github.com/castle/castle-ruby.svg)](https://gemnasium.com/github.com/castle/castle-ruby)
 
 **[Castle](https://castle.io) adds real-time monitoring of your authentication stack, instantly notifying you and your users on potential account hijacks.**
 
@@ -87,8 +88,8 @@ Castle.configure do |config|
   # or append to default
   config.whitelisted += ['http-x-header']
 
-  # Blacklisted headers 
-  config.blacklisted = ['HTTP-X-header'] 
+  # Blacklisted headers
+  config.blacklisted = ['HTTP-X-header']
   # or append to default
   config.blacklisted += ['X_HEADER']
 
