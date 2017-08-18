@@ -17,9 +17,10 @@ describe Castle::DefaultContext do
   end
   let(:request) { Rack::Request.new(env) }
   let(:default_context) { subject.call }
+  let(:version) { '2.2.0' }
 
   before do
-    stub_const('Castle::VERSION', '2.2.0')
+    stub_const('Castle::VERSION', version)
   end
 
   it { expect(default_context[:active]).to be_eql(true) }
@@ -31,6 +32,6 @@ describe Castle::DefaultContext do
   }
   it { expect(default_context[:ip]).to be_eql(ip) }
   it { expect(default_context[:library][:name]).to be_eql('castle-rb') }
-  it { expect(default_context[:library][:version]).to be_eql('2.2.0') }
-  it { expect(default_context[:userAgent]).to be_eql('test') }
+  it { expect(default_context[:library][:version]).to be_eql(version) }
+  it { expect(default_context[:user_agent]).to be_eql('test') }
 end

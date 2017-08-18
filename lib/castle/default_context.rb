@@ -22,7 +22,7 @@ module Castle
         }
       }
       context[:locale] = @headers['Accept-Language'] if @headers['Accept-Language']
-      context[:userAgent] = @headers['User-Agent'] if @headers['User-Agent']
+      context[:user_agent] = @headers['User-Agent'] if @headers['User-Agent']
       context
     end
     # rubocop:enable Metrics/MethodLength
