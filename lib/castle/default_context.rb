@@ -8,7 +8,6 @@ module Castle
       @ip = Extractors::IP.new(request).call
     end
 
-    # rubocop:disable Metrics/MethodLength
     def call
       context = {
         client_id: @client_id,
@@ -25,6 +24,5 @@ module Castle
       context[:user_agent] = @headers['User-Agent'] if @headers['User-Agent']
       context
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end
