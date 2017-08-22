@@ -7,7 +7,7 @@ module Castle
       @config = Castle.config
       @config_api_endpoint = @config.api_endpoint
       @http = prepare_http
-      @headers = headers
+      @headers = headers.merge('Content-Type' => 'application/json')
     end
 
     def request_query(endpoint)
