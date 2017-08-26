@@ -43,7 +43,7 @@ GEM
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
     safe_yaml (1.0.4)
-    simplecov (0.15.0)
+    simplecov (0.14.1)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
@@ -72,4 +72,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.15.3
+   1.15.4

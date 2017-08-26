@@ -2,6 +2,7 @@
 
 require 'openssl'
 require 'net/http'
+require 'json'
 
 require 'castle/version'
 require 'castle/errors'
