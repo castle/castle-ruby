@@ -24,12 +24,12 @@ module Castle
       if tracked?
         command = Castle::Commands::Authenticate.new(@context).build(options || {})
         begin
-          @api.request(command)
+          @api.request(command).merge('failover' => false, 'failover_reason' => nil)
         rescue Castle::RequestError => error
-          failover_response_or_raise(FailoverAuthResponse.new(options[:user_id]), error)
+          failover_response_or_raise(FailoverAuthResponse.new(options[:user_id], reason: error.to_s), error)
         end
       else
-        FailoverAuthResponse.new(options[:user_id], :allow).generate
+        FailoverAuthResponse.new(options[:user_id], strategy: :allow, reason: 'Castle set to do not track.').generate
       end
     end
 
