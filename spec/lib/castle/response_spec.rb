@@ -32,8 +32,8 @@ describe Castle::Response do
     it_behaves_like 'response_failed', 404, Castle::NotFoundError
     it_behaves_like 'response_failed', 419, Castle::UserUnauthorizedError
     it_behaves_like 'response_failed', 422, Castle::InvalidParametersError
-    it_behaves_like 'response_failed', 500, Castle::ApiError
     it_behaves_like 'response_failed', 499, Castle::ApiError
+    it_behaves_like 'response_failed', 500, Castle::InternalServerError
   end
 
   describe 'parse' do

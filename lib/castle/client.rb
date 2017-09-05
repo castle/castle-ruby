@@ -25,7 +25,7 @@ module Castle
         command = Castle::Commands::Authenticate.new(@context).build(options || {})
         begin
           @api.request(command).merge('failover' => false, 'failover_reason' => nil)
-        rescue Castle::RequestError => error
+        rescue Castle::RequestError, Castle::InternalServerError => error
           failover_response_or_raise(FailoverAuthResponse.new(options[:user_id], reason: error.to_s), error)
         end
       else

@@ -112,6 +112,24 @@ describe Castle::Client do
         it { expect(request_response['failover_reason']).to be_eql('Castle::RequestError') }
       end
     end
+
+    context 'when request is internal server error' do
+      before { allow(client.api).to receive(:request).and_raise(Castle::InternalServerError) }
+
+      context 'throw strategy' do
+        before { allow(Castle.config).to receive(:failover_strategy).and_return(:throw) }
+
+        it { expect { request_response }.to raise_error(Castle::InternalServerError) }
+      end
+
+      context 'not throw on eg deny strategy' do
+        it { assert_not_requested :post, 'https://:secret@api.castle.io/v1/authenticate' }
+        it { expect(request_response['action']).to be_eql('allow') }
+        it { expect(request_response['user_id']).to be_eql('1234') }
+        it { expect(request_response['failover']).to be true }
+        it { expect(request_response['failover_reason']).to be_eql('Castle::InternalServerError') }
+      end
+    end
   end
 
   describe 'track' do
