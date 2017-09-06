@@ -24,4 +24,6 @@ module Castle
   class InvalidParametersError < Castle::ApiError; end
   # api error unauthorized 401
   class UnauthorizedError < Castle::ApiError; end
+  # all internal server errors
+  class InternalServerError < Castle::ApiError; end
 end

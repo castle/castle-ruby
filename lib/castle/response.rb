@@ -36,6 +36,8 @@ module Castle
 
       return if response_code.between?(200, 299)
 
+      raise Castle::InternalServerError if response_code.between?(500, 599)
+
       error = RESPONSE_ERRORS.fetch(response_code, Castle::ApiError)
       raise error, @response[:message]
     end
