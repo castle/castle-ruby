@@ -9,15 +9,18 @@ module Castle
 
       def build(options = {})
         event, user_id = required_data(options)
-        request_args = {
+
+        args = {
           event: event,
           user_id: user_id,
           context: build_context(options[:context])
         }
-        request_args[:properties] = options[:properties] if options.key?(:properties)
-        request_args[:traits] = options[:traits] if options.key?(:traits)
 
-        Castle::Command.new('authenticate', request_args, :post)
+        args[:properties] = options[:properties] if options.key?(:properties)
+        args[:traits] = options[:traits] if options.key?(:traits)
+        args[:context][:active] = true if args[:context].key?(:active) && args[:context][:active]
+
+        Castle::Command.new('authenticate', args, :post)
       end
 
       private

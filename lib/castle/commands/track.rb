@@ -9,15 +9,20 @@ module Castle
 
       def build(options = {})
         event = options[:event]
+
         raise Castle::InvalidParametersError if event.nil? || event.to_s.empty?
-        request_args = {
+
+        args = {
           event: event,
           context: build_context(options[:context])
         }
-        request_args[:user_id] = options[:user_id] if options.key?(:user_id)
-        request_args[:properties] = options[:properties] if options.key?(:properties)
 
-        Castle::Command.new('track', request_args, :post)
+        args[:user_id] = options[:user_id] if options.key?(:user_id)
+        args[:properties] = options[:properties] if options.key?(:properties)
+        args[:traits] = options[:traits] if options.key?(:traits)
+        args[:context][:active] = true if args[:context].key?(:active) && args[:context][:active]
+
+        Castle::Command.new('track', args, :post)
       end
 
       private
