@@ -80,9 +80,7 @@ describe Castle::Commands::Authenticate do
 
     context 'active string' do
       let(:payload) { default_payload.merge({ context: { active: 'string' } }) }
-      let(:command_data) do
-        default_payload.merge({ context: context.merge(active: true) })
-      end
+      let(:command_data) { default_payload.merge({ context: context }) }
 
       it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('authenticate') }

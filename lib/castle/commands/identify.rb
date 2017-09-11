@@ -11,13 +11,18 @@ module Castle
         user_id = options[:user_id]
         raise Castle::InvalidParametersError if user_id.nil? || user_id.to_s.empty?
 
+        if options[:context] && options[:context].key?(:active)
+          unless [true, false].include?(options[:context][:active])
+            options[:context].delete(:active)
+          end
+        end
+
         args = {
           user_id: user_id,
           context: build_context(options[:context])
         }
 
         args[:traits] = options[:traits] if options.key?(:traits)
-        args[:context][:active] = true if args[:context].key?(:active) && args[:context][:active]
 
         Castle::Command.new('identify', args, :post)
       end

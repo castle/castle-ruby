@@ -12,6 +12,12 @@ module Castle
 
         raise Castle::InvalidParametersError if event.nil? || event.to_s.empty?
 
+        if options[:context] && options[:context].key?(:active)
+          unless [true, false].include?(options[:context][:active])
+            options[:context].delete(:active)
+          end
+        end
+
         args = {
           event: event,
           context: build_context(options[:context])
@@ -20,7 +26,6 @@ module Castle
         args[:user_id] = options[:user_id] if options.key?(:user_id)
         args[:properties] = options[:properties] if options.key?(:properties)
         args[:traits] = options[:traits] if options.key?(:traits)
-        args[:context][:active] = true if args[:context].key?(:active) && args[:context][:active]
 
         Castle::Command.new('track', args, :post)
       end
