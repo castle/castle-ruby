@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'activesupport', require: nil
 gem 'rack'
 gem 'rake'
 
