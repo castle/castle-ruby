@@ -15,14 +15,19 @@ module Castle
     end
 
     def identify(options = {})
+      options = (options || {}).with_indifferent_access
+
       return unless tracked?
-      command = Castle::Commands::Identify.new(@context).build(options || {})
+
+      command = Castle::Commands::Identify.new(@context).build(options)
       @api.request(command)
     end
 
     def authenticate(options = {})
+      options = (options || {}).with_indifferent_access
+
       if tracked?
-        command = Castle::Commands::Authenticate.new(@context).build(options || {})
+        command = Castle::Commands::Authenticate.new(@context).build(options)
         begin
           @api.request(command).merge('failover' => false, 'failover_reason' => nil)
         rescue Castle::RequestError, Castle::InternalServerError => error
@@ -34,8 +39,11 @@ module Castle
     end
 
     def track(options = {})
+      options = (options || {}).with_indifferent_access
+
       return unless tracked?
-      command = Castle::Commands::Track.new(@context).build(options || {})
+
+      command = Castle::Commands::Track.new(@context).build(options)
       @api.request(command)
     end
 

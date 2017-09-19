@@ -4,6 +4,8 @@ require 'openssl'
 require 'net/http'
 require 'json'
 
+require 'active_support/core_ext/hash/indifferent_access'
+
 require 'castle/version'
 require 'castle/errors'
 require 'castle/command'
