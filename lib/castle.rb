@@ -4,11 +4,10 @@ require 'openssl'
 require 'net/http'
 require 'json'
 
-require 'active_support/core_ext/hash/keys'
-
 require 'castle/version'
 require 'castle/errors'
 require 'castle/command'
+require 'castle/utils'
 require 'castle/utils/merger'
 require 'castle/utils/cloner'
 require 'castle/context_merger'

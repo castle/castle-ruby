@@ -15,7 +15,7 @@ module Castle
     end
 
     def identify(options = {})
-      options = (options || {}).deep_symbolize_keys
+      options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
 
@@ -24,7 +24,7 @@ module Castle
     end
 
     def authenticate(options = {})
-      options = (options || {}).deep_symbolize_keys
+      options = Castle::Utils.deep_symbolize_keys(options || {})
 
       if tracked?
         command = Castle::Commands::Authenticate.new(@context).build(options)
@@ -39,7 +39,7 @@ module Castle
     end
 
     def track(options = {})
-      options = (options || {}).deep_symbolize_keys
+      options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
 

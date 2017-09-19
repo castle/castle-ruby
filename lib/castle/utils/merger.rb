@@ -4,8 +4,8 @@ module Castle
   module Utils
     class Merger
       def self.call(first, second)
-        first.deep_symbolize_keys!
-        second.deep_symbolize_keys!
+        Castle::Utils.deep_symbolize_keys!(first)
+        Castle::Utils.deep_symbolize_keys!(second)
 
         second.each do |name, value|
           if value.nil?
