@@ -4,7 +4,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'rack'
 require 'webmock/rspec'
-require 'pry'
+require 'byebug'
 
 require 'coveralls'
 Coveralls.wear!

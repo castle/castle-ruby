@@ -18,6 +18,7 @@
 - renamed `do_no_track!` to `disable_tracking`
 - renamed `don_no_track?` to `tracked?` with opposite behaviour
 - `Castle::Client` now takes options as a second argument
+- drop support for ruby 2.1
 
 **Features:**
 
