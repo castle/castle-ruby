@@ -35,15 +35,29 @@ describe Castle::ReplaceInvalidCharacters do
     it { is_expected.to eq input }
   end
 
-  context 'when input is a hash with invalid UTF-8 characters' do
-    let(:input) { { user_id: "inv\xC4lid" } }
+  context 'with invalid UTF-8 characters' do
+    context 'when input is a hash' do
+      let(:input) { { user_id: "inv\xC4lid" } }
 
-    it { is_expected.to eq(user_id: 'inv�lid') }
-  end
+      it { is_expected.to eq(user_id: 'inv�lid') }
+    end
 
-  context 'when input is a nested hash with invalid UTF-8 characters' do
-    let(:input) { { user: { id: "inv\xC4lid" } } }
+    context 'when input is a nested hash' do
+      let(:input) { { user: { id: "inv\xC4lid" } } }
 
-    it { is_expected.to eq(user: { id: 'inv�lid' }) }
+      it { is_expected.to eq(user: { id: 'inv�lid' }) }
+    end
+
+    context 'when input is an array of hashes' do
+      let(:input) { [{ user: "inv\xC4lid" }] * 2 }
+
+      it { is_expected.to eq([{ user: 'inv�lid' }, { user: 'inv�lid' }]) }
+    end
+
+    context 'when input is an array' do
+      let(:input) { ["inv\xC4lid"] * 2 }
+
+      it { is_expected.to eq(['inv�lid', 'inv�lid']) }
+    end
   end
 end

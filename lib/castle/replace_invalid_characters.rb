@@ -3,12 +3,14 @@
 module Castle
   class ReplaceInvalidCharacters
     def self.call(arg)
-      if arg.is_a?(String)
+      if arg.is_a?(::String)
         arg.encode('UTF-8', invalid: :replace, undef: :replace)
-      elsif arg.is_a?(Hash)
+      elsif arg.is_a?(::Hash)
         arg.each_with_object({}) do |(k, v), h|
           h[k] = call(v)
         end
+      elsif arg.is_a?(::Array)
+        arg.map(&method(:call))
       else
         arg
       end
