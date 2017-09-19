@@ -59,5 +59,11 @@ describe Castle::ReplaceInvalidCharacters do
 
       it { is_expected.to eq(['inv�lid', 'inv�lid']) }
     end
+
+    context 'when input is a hash with array in key' do
+      let(:input) { { items: ["inv\xC4lid"] * 2 } }
+
+      it { is_expected.to eq(items: ['inv�lid', 'inv�lid']) }
+    end
   end
 end
