@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::Utils do
   let(:nested_strings) { { 'a' => { 'b' => { 'c' => 3 } } } }
   let(:nested_symbols) { { a: { b: { c: 3 } } } }

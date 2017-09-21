@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::Commands::Track do
   subject(:instance) { described_class.new(context) }
 

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::Response do
   subject(:castle_response) do
     described_class.new(response)

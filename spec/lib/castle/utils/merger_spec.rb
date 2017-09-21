@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::Utils::Merger do
   subject(:merger) { described_class }
 

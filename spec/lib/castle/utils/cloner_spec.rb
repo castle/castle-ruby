@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::Utils::Cloner do
   subject(:cloner) { described_class }
 

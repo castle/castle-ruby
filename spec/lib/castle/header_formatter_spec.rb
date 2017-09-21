@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::HeaderFormatter do
   subject(:formatter) { described_class.new }
 

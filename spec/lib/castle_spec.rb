@@ -1,25 +1,18 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle do
   subject(:castle) { described_class }
 
   describe 'config' do
-    it do
-      expect(castle.config).to be_kind_of(Castle::Configuration)
-    end
+    it { expect(castle.config).to be_kind_of(Castle::Configuration) }
   end
 
   describe 'api_secret setter' do
     let(:value) { 'new_secret' }
 
-    before do
-      castle.api_secret = value
-    end
-    it do
-      expect(castle.config.api_secret).to be_eql(value)
-    end
+    before { castle.api_secret = value }
+
+    it { expect(castle.config.api_secret).to be_eql(value) }
   end
 
   describe 'configure' do
@@ -38,14 +31,13 @@ describe Castle do
           config.request_timeout = timeout
         end
       end
+
       it_behaves_like 'config_setup'
     end
 
     context 'by options' do
-      before do
-        castle.configure(request_timeout: timeout,
-                         api_secret: value)
-      end
+      before { castle.configure(request_timeout: timeout, api_secret: value) }
+
       it_behaves_like 'config_setup'
     end
 
@@ -55,6 +47,7 @@ describe Castle do
           config.api_secret = value
         end
       end
+
       it_behaves_like 'config_setup'
     end
   end
