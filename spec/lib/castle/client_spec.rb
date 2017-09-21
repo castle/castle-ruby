@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::Client do
   let(:ip) { '1.2.3.4' }
   let(:cookie_id) { 'abcd' }
@@ -189,6 +187,7 @@ describe Castle::Client do
 
   describe 'fetch review' do
     before { client.fetch_review(review_id) }
+
     it do
       assert_requested :get,
                        "https://api.castle.io/v1/reviews/#{review_id}",
@@ -199,11 +198,13 @@ describe Castle::Client do
   describe 'tracked?' do
     context 'off' do
       before { client.disable_tracking }
+
       it { expect(client).not_to be_tracked }
     end
 
     context 'on' do
       before { client.enable_tracking }
+
       it { expect(client).to be_tracked }
     end
   end

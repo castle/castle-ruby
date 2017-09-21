@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::Extractors::ClientId do
   subject(:extractor) { described_class.new(request, cookies) }
 

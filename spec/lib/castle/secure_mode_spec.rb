@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::SecureMode do
   it 'has signature' do
     expect(described_class.signature('test')).to eql(

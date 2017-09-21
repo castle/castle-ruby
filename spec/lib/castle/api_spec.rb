@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::API do
   let(:api) { described_class.new('X-Castle-Client-Id' => 'abcd', 'X-Castle-Ip' => '1.2.3.4') }
   let(:api_endpoint) { 'http://new.herokuapp.com:3000/v2' }

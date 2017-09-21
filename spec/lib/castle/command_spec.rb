@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Castle::Command do
   subject(:command) { described_class.new('go', { id: '1' }, :post) }
 
