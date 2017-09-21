@@ -20,7 +20,7 @@ module Castle
       request = Net::HTTP.const_get(method.to_s.capitalize).new(
         "#{@config.api_endpoint.path}/#{endpoint}", @headers
       )
-      request.body = args.to_json
+      request.body = ::Castle::Utils.replace_invalid_characters(args).to_json
       add_basic_auth(request)
       request
     end

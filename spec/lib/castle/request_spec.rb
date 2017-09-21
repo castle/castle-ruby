@@ -32,6 +32,12 @@ describe Castle::Request do
       it { expect(request.path).to eql('/v1/endpoint') }
       it { expect(request.to_hash['sample-header']).to eql(['1']) }
       it { expect(request.to_hash['authorization'][0]).to match(/Basic \w/) }
+
+      context 'with non-UTF-8 charaters' do
+        let(:params) { { name: "\xC4" } }
+
+        it { expect(request.body).to eq '{"name":"�"}' }
+      end
     end
   end
 end

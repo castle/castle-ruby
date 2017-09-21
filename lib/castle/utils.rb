@@ -38,6 +38,18 @@ module Castle
           object
         end
       end
+
+      def replace_invalid_characters(arg)
+        if arg.is_a?(::String)
+          arg.encode('UTF-8', invalid: :replace, undef: :replace)
+        elsif arg.is_a?(::Hash)
+          arg.each_with_object({}) { |(k, v), h| h[k] = replace_invalid_characters(v) }
+        elsif arg.is_a?(::Array)
+          arg.map(&method(:replace_invalid_characters))
+        else
+          arg
+        end
+      end
     end
   end
 end
