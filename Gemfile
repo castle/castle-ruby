@@ -4,9 +4,12 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'pry'
-gem 'rack', '~> 1.6'
+gem 'rack'
 gem 'rake'
+
+group :development, :test do
+  gem 'byebug'
+end
 
 group :test do
   gem 'rspec'

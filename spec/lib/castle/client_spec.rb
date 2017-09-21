@@ -46,23 +46,56 @@ describe Castle::Client do
   end
 
   describe 'identify' do
-    before { client.identify(user_id: '1234', traits: { name: 'Jo' }) }
+    let(:request_body) { { user_id: '1234', context: context, traits: { name: 'Jo' } } }
 
-    it do
-      assert_requested :post, 'https://api.castle.io/v1/identify',
-                       times: 1,
-                       body: { user_id: '1234', context: context, traits: { name: 'Jo' } }.to_json
+    before { client.identify(options) }
+
+    context 'symbol keys' do
+      let(:options) { { user_id: '1234', traits: { name: 'Jo' } } }
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/identify',
+                        times: 1,
+                        body: request_body.to_json
+      end
+    end
+
+    context 'string keys' do
+      let(:options) { { 'user_id' => '1234', 'traits' => { 'name' => 'Jo' } } }
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/identify',
+                        times: 1,
+                        body: request_body.to_json
+      end
     end
   end
 
   describe 'authenticate' do
-    let(:request_response) { client.authenticate(event: '$login.succeeded', user_id: '1234') }
-    let(:request_body) do
-      {
-        event: '$login.succeeded',
-        user_id: '1234',
-        context: context
-      }
+    let(:options) { { event: '$login.succeeded', user_id: '1234' } }
+    let(:request_response) { client.authenticate(options) }
+    let(:request_body) { { event: '$login.succeeded', user_id: '1234', context: context } }
+
+    context 'symbol keys' do
+      before { request_response }
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
+          req.body == request_body.to_json
+        end
+      end
+    end
+
+    context 'string keys' do
+      let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
+
+      before { request_response }
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
+          req.body == request_body.to_json
+        end
+      end
     end
 
     context 'tracking enabled' do
@@ -92,16 +125,12 @@ describe Castle::Client do
     end
 
     context 'when request with fail' do
-      before do
-        allow(client.api).to receive(:request).and_raise(Castle::RequestError)
-      end
+      before { allow(client.api).to receive(:request).and_raise(Castle::RequestError) }
 
       context 'with request error and throw strategy' do
         before { allow(Castle.config).to receive(:failover_strategy).and_return(:throw) }
 
-        it do
-          expect { request_response }.to raise_error(Castle::RequestError)
-        end
+        it { expect { request_response }.to raise_error(Castle::RequestError) }
       end
 
       context 'with request error and not throw on eg deny strategy' do
@@ -133,13 +162,28 @@ describe Castle::Client do
   end
 
   describe 'track' do
-    before { client.track(event: '$login.succeeded', user_id: '1234') }
-    it do
-      assert_requested :post, 'https://api.castle.io/v1/track',
-                       times: 1,
-                       body: {
-                         event: '$login.succeeded', context: context, user_id: '1234'
-                       }.to_json
+    let(:request_body) { { event: '$login.succeeded', context: context, user_id: '1234' } }
+
+    before { client.track(options) }
+
+    context 'symbol keys' do
+      let(:options) { { event: '$login.succeeded', user_id: '1234' } }
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/track',
+                        times: 1,
+                        body: request_body.to_json
+      end
+    end
+
+    context 'string keys' do
+      let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/track',
+                        times: 1,
+                        body: request_body.to_json
+      end
     end
   end
 

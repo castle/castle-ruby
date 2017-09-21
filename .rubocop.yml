@@ -1,5 +1,7 @@
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4
+  Exclude:
+    - 'lib/castle/core_ext/hash/keys.rb'
 
 Style/FileName:
   Exclude:
