@@ -3,7 +3,6 @@
 module Castle
   # manages configuration variables
   class Configuration
-    SUPPORTED = %i[request_timeout api_secret api_endpoint].freeze
     REQUEST_TIMEOUT = 500 # in milliseconds
     FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
     WHITELISTED = [
