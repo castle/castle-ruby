@@ -19,6 +19,7 @@
 - renamed `don_no_track?` to `tracked?` with opposite behaviour
 - `Castle::Client` now takes options as a second argument
 - drop support for ruby 2.1
+- replaced `config.api_endpoint` with `config.host` and `config.port`
 
 **Features:**
 
