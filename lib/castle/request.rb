@@ -8,15 +8,9 @@ module Castle
       @headers = headers
     end
 
-    def build_query(endpoint)
-      request = Net::HTTP::Get.new(build_url(endpoint), @headers)
-      add_basic_auth(request)
-      request
-    end
-
     def build(endpoint, args, method)
       request = Net::HTTP.const_get(method.to_s.capitalize).new(build_url(endpoint), @headers)
-      request.body = ::Castle::Utils.replace_invalid_characters(args).to_json
+      request.body = ::Castle::Utils.replace_invalid_characters(args).to_json unless method == :get
       add_basic_auth(request)
       request
     end

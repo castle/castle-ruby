@@ -9,11 +9,6 @@ module Castle
       @headers = headers.merge('Content-Type' => 'application/json')
     end
 
-    def request_query(endpoint)
-      request = Castle::Request.new(@headers).build_query(endpoint)
-      perform_request(request)
-    end
-
     def request(command)
       request = Castle::Request.new(@headers).build(
         command.path,

@@ -12,7 +12,6 @@ describe Castle::Client do
   end
   let(:request) { Rack::Request.new(env) }
   let(:client) { described_class.new(request) }
-  let(:review_id) { '12356789' }
   let(:headers) { { 'X-Forwarded-For' => ip.to_s } }
   let(:context) do
     {
@@ -182,16 +181,6 @@ describe Castle::Client do
                         times: 1,
                         body: request_body.to_json
       end
-    end
-  end
-
-  describe 'fetch review' do
-    before { client.fetch_review(review_id) }
-
-    it do
-      assert_requested :get,
-                       "https://api.castle.io/v1/reviews/#{review_id}",
-                       times: 1
     end
   end
 

@@ -32,17 +32,6 @@ describe Castle::API do
     end
   end
 
-  describe 'handles query request' do
-    before do
-      stub_request(:any, /api.castle.io/)
-    end
-    it do
-      api.request_query('review/1')
-      path = "https://api.castle.io/v1/review/1"
-      assert_requested :get, path, times: 1, headers: result_headers
-    end
-  end
-
   describe 'handles missing configuration' do
     before do
       allow(Castle.config).to receive(:api_secret).and_return('')
