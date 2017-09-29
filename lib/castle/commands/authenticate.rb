@@ -3,9 +3,7 @@
 module Castle
   module Commands
     class Authenticate
-      def initialize(context)
-        @context_merger = ContextMerger.new(context)
-      end
+      include WithContext
 
       def build(options = {})
         event, user_id = required_data(options)
@@ -29,10 +27,6 @@ module Castle
       end
 
       private
-
-      def build_context(request_context)
-        @context_merger.call(request_context || {})
-      end
 
       def required_data(options)
         event = options[:event].to_s
