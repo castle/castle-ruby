@@ -3,9 +3,7 @@
 module Castle
   module Commands
     class Track
-      def initialize(context)
-        @context_merger = ContextMerger.new(context)
-      end
+      include WithContext
 
       def build(options = {})
         event = options[:event]
@@ -28,12 +26,6 @@ module Castle
         args[:traits] = options[:traits] if options.key?(:traits)
 
         Castle::Command.new('track', args, :post)
-      end
-
-      private
-
-      def build_context(request_context)
-        @context_merger.call(request_context || {})
       end
     end
   end

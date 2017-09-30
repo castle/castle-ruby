@@ -3,9 +3,7 @@
 module Castle
   module Commands
     class Identify
-      def initialize(context)
-        @context_merger = ContextMerger.new(context)
-      end
+      include WithContext
 
       def build(options = {})
         user_id = options[:user_id]
@@ -25,12 +23,6 @@ module Castle
         args[:traits] = options[:traits] if options.key?(:traits)
 
         Castle::Command.new('identify', args, :post)
-      end
-
-      private
-
-      def build_context(request_context)
-        @context_merger.call(request_context || {})
       end
     end
   end

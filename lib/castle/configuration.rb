@@ -3,9 +3,7 @@
 module Castle
   # manages configuration variables
   class Configuration
-    SUPPORTED = %i[request_timeout api_secret api_endpoint].freeze
     REQUEST_TIMEOUT = 500 # in milliseconds
-    API_ENDPOINT = 'https://api.castle.io/v1'
     FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
     WHITELISTED = [
       'User-Agent',
@@ -23,23 +21,19 @@ module Castle
 
     BLACKLISTED = ['HTTP_COOKIE'].freeze
 
-    attr_accessor :request_timeout
-    attr_reader :api_secret, :api_endpoint, :whitelisted, :blacklisted, :failover_strategy
+    attr_accessor :host, :port, :request_timeout, :url_prefix
+    attr_reader :api_secret, :host, :port, :whitelisted, :blacklisted, :failover_strategy
 
     def initialize
       @formatter = Castle::HeaderFormatter.new
       @request_timeout = REQUEST_TIMEOUT
       self.failover_strategy = :allow
-      self.api_endpoint = API_ENDPOINT
+      self.host = 'api.castle.io'
+      self.port = 443
+      self.url_prefix = 'v1'
       self.whitelisted = WHITELISTED
       self.blacklisted = BLACKLISTED
       self.api_secret = ''
-    end
-
-    def api_endpoint=(value)
-      @api_endpoint = URI(
-        ENV.fetch('CASTLE_API_ENDPOINT', value)
-      )
     end
 
     def api_secret=(value)
@@ -55,7 +49,7 @@ module Castle
     end
 
     def valid?
-      !api_secret.to_s.empty? && !api_endpoint.scheme.nil?
+      !api_secret.to_s.empty? && !host.to_s.empty? && !port.to_s.empty?
     end
 
     def failover_strategy=(value)
@@ -70,8 +64,8 @@ module Castle
       /^(\w+)=$/ =~ method_name
     end
 
-    def method_missing(_m, *_args)
-      raise Castle::ConfigurationError, 'there is no such a config'
+    def method_missing(m, *_args)
+      raise Castle::ConfigurationError, "there is no such a config #{m}"
     end
   end
 end

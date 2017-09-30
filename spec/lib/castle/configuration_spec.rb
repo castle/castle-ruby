@@ -5,35 +5,33 @@ describe Castle::Configuration do
     described_class.new
   end
 
-  describe 'api_endpoint' do
-    context 'env' do
-      let(:value) { 50.0 }
-
-      before do
-        allow(ENV).to receive(:fetch).with(
-          'CASTLE_API_ENDPOINT', 'https://api.castle.io/v1'
-        ).and_return('https://new.herokuapp.com')
-        allow(ENV).to receive(:fetch).with(
-          'CASTLE_API_SECRET', ''
-        ).and_call_original
-      end
-
-      it do
-        expect(config.api_endpoint).to be_eql(URI('https://new.herokuapp.com'))
-      end
+  describe 'host' do
+    context 'default' do
+      it { expect(config.host).to be_eql('api.castle.io') }
     end
 
-    it do
-      expect(config.api_endpoint).to be_eql(URI('https://api.castle.io/v1'))
+    context 'setter' do
+      before { config.host = 'api.castle.dev' }
+
+      it { expect(config.host).to be_eql('api.castle.dev') }
+    end
+  end
+
+  describe 'host' do
+    context 'default' do
+      it { expect(config.port).to be_eql(443) }
+    end
+
+    context 'setter' do
+      before { config.port = 3001 }
+
+      it { expect(config.port).to be_eql(3001) }
     end
   end
 
   describe 'api_secret' do
     context 'env' do
       before do
-        allow(ENV).to receive(:fetch).with(
-          'CASTLE_API_ENDPOINT', 'https://api.castle.io/v1'
-        ).and_call_original
         allow(ENV).to receive(:fetch).with(
           'CASTLE_API_SECRET', ''
         ).and_return('secret_key')

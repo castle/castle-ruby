@@ -10,19 +10,6 @@ module Castle
       @api = API.new
     end
 
-    def fetch_review(review_id)
-      @api.request_query("reviews/#{review_id}")
-    end
-
-    def identify(options = {})
-      options = Castle::Utils.deep_symbolize_keys(options || {})
-
-      return unless tracked?
-
-      command = Castle::Commands::Identify.new(@context).build(options)
-      @api.request(command)
-    end
-
     def authenticate(options = {})
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
@@ -36,6 +23,15 @@ module Castle
       else
         FailoverAuthResponse.new(options[:user_id], strategy: :allow, reason: 'Castle set to do not track.').generate
       end
+    end
+
+    def identify(options = {})
+      options = Castle::Utils.deep_symbolize_keys(options || {})
+
+      return unless tracked?
+
+      command = Castle::Commands::Identify.new(@context).build(options)
+      @api.request(command)
     end
 
     def track(options = {})

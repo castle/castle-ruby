@@ -5,14 +5,8 @@ module Castle
   class API
     def initialize(headers = {})
       @config = Castle.config
-      @config_api_endpoint = @config.api_endpoint
       @http = prepare_http
       @headers = headers.merge('Content-Type' => 'application/json')
-    end
-
-    def request_query(endpoint)
-      request = Castle::Request.new(@headers).build_query(endpoint)
-      perform_request(request)
     end
 
     def request(command)
@@ -27,12 +21,9 @@ module Castle
     private
 
     def prepare_http
-      http = Net::HTTP.new(
-        @config_api_endpoint.host,
-        @config_api_endpoint.port
-      )
+      http = Net::HTTP.new(@config.host, @config.port)
       http.read_timeout = @config.request_timeout / 1000.0
-      prepare_http_for_ssl(http) if @config_api_endpoint.scheme == 'https'
+      prepare_http_for_ssl(http) if @config.port == 443
       http
     end
 
