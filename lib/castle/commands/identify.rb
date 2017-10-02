@@ -6,8 +6,7 @@ module Castle
       include WithContext
 
       def build(options = {})
-        user_id = options[:user_id]
-        raise Castle::InvalidParametersError if user_id.nil? || user_id.to_s.empty?
+        validate!(options)
 
         if options[:context] && options[:context].key?(:active)
           unless [true, false].include?(options[:context][:active])
@@ -16,13 +15,22 @@ module Castle
         end
 
         args = {
-          user_id: user_id,
+          user_id: options[:user_id],
           context: build_context(options[:context])
         }
 
         args[:traits] = options[:traits] if options.key?(:traits)
 
         Castle::Command.new('identify', args, :post)
+      end
+
+      private
+
+      def validate!(options)
+        %i[user_id].each do |key|
+          next unless options[key].to_s.empty?
+          raise Castle::InvalidParametersError, "#{key} is missing or empty"
+        end
       end
     end
   end
