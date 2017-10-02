@@ -9,18 +9,6 @@ describe Castle::Commands::Authenticate do
   describe '.build' do
     subject(:command) { instance.build(payload) }
 
-    context 'no user_id' do
-      let(:payload) { { event: '$login.authenticate' } }
-
-      it { expect { command }.to raise_error(Castle::InvalidParametersError) }
-    end
-
-    context 'no event' do
-      let(:payload) { { user_id: '1234' } }
-
-      it { expect { command }.to raise_error(Castle::InvalidParametersError) }
-    end
-
     context 'simple merger' do
       let(:payload) { default_payload.merge({ context: { test: { test2: '1' } } }) }
       let(:command_data) do
@@ -83,6 +71,36 @@ describe Castle::Commands::Authenticate do
       it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('authenticate') }
       it { expect(command.data).to be_eql(command_data) }
+    end
+  end
+
+  describe '#validate!' do
+    subject(:validate!) { instance.build(payload) }
+
+    context 'event not present' do
+      let(:payload) { {} }
+
+      it do
+        expect do
+          validate!
+        end.to raise_error(Castle::InvalidParametersError, 'event is missing or empty')
+      end
+    end
+
+    context 'user_id not present' do
+      let(:payload) { { event: '$login.track' } }
+
+      it do
+        expect do
+          validate!
+        end.to raise_error(Castle::InvalidParametersError, 'user_id is missing or empty')
+      end
+    end
+
+    context 'event and user_id present' do
+      let(:payload) { { event: '$login.track', user_id: '1234' } }
+
+      it { expect { validate! }.not_to raise_error }
     end
   end
 end
