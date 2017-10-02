@@ -7,7 +7,7 @@ module Castle
     def initialize(request, options = {})
       @do_not_track = default_tracking(options)
       @context = setup_context(request, options[:cookies], options[:context])
-      @api = API.new
+      @api = API.new(options[:headers] || {})
     end
 
     def authenticate(options = {})
