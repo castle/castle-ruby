@@ -20,7 +20,10 @@ module Castle
           raise Castle::InvalidParametersError, "#{key} is missing or empty"
         end
 
-        # check for properties
+        if options[:properties]
+          raise Castle::InvalidParametersError,
+                'properties are not supported in identify calls'
+        end
       end
     end
   end
