@@ -51,9 +51,9 @@ describe Castle::Client do
       let(:options) { { user_id: '1234', traits: { name: 'Jo' } } }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/identify',
-                        times: 1,
-                        body: request_body.to_json
+        assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
+          JSON.parse(req.body) == JSON.parse(request_body.to_json)
+        end
       end
     end
 
@@ -61,9 +61,9 @@ describe Castle::Client do
       let(:options) { { 'user_id' => '1234', 'traits' => { 'name' => 'Jo' } } }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/identify',
-                        times: 1,
-                        body: request_body.to_json
+        assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
+          JSON.parse(req.body) == JSON.parse(request_body.to_json)
+        end
       end
     end
   end
@@ -167,9 +167,9 @@ describe Castle::Client do
       let(:options) { { event: '$login.succeeded', user_id: '1234' } }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/track',
-                        times: 1,
-                        body: request_body.to_json
+        assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+          JSON.parse(req.body) == JSON.parse(request_body.to_json)
+        end
       end
     end
 
@@ -177,9 +177,9 @@ describe Castle::Client do
       let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/track',
-                        times: 1,
-                        body: request_body.to_json
+        assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+          JSON.parse(req.body) == JSON.parse(request_body.to_json)
+        end
       end
     end
   end
