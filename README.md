@@ -63,7 +63,8 @@ The client will automatically configure the [request context](https://api.castle
 begin
   castle.track(
     name: '$login.succeeded',
-    user_id: user.id)
+    user_id: user.id
+  )
 rescue Castle::Error => e
   puts e.message
 end
@@ -88,13 +89,10 @@ Castle.configure do |config|
   # or append to default
   config.whitelisted += ['http-x-header']
 
-  # Blacklisted headers
+  # Blacklisted headers take advantage over whitelisted elements
   config.blacklisted = ['HTTP-X-header']
   # or append to default
   config.blacklisted += ['X_HEADER']
-
-  # blacklisted headers take advantage over whitelisted elements
-
 end
 ```
 

@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = 'castle-rb'
   s.version     = Castle::VERSION
   s.summary     = 'Castle'
-  s.description = 'The easiest way to protect your users'
+  s.description = 'Castle protects your users from account compromise'
   s.authors     = ['Johan Brissmyr']
   s.email       = 'johan@castle.io'
   s.homepage    = 'https://castle.io'
@@ -17,6 +17,4 @@ Gem::Specification.new do |s|
   s.files       = Dir['{lib}/**/*'] + ['README.md']
   s.test_files  = Dir['spec/**/*']
   s.require_paths = ['lib']
-
-  s.add_development_dependency 'coveralls'
 end
