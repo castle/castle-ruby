@@ -23,7 +23,7 @@ GEM
     json (2.1.0)
     public_suffix (3.0.0)
     rack (2.0.3)
-    rake (12.1.0)
+    rake (12.2.1)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
