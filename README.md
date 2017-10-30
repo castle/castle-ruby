@@ -62,7 +62,7 @@ The client will automatically configure the [request context](https://api.castle
 ```ruby
 begin
   castle.track(
-    name: '$login.succeeded',
+    event: '$login.succeeded',
     user_id: user.id
   )
 rescue Castle::Error => e
