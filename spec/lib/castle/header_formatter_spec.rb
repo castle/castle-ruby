@@ -18,4 +18,8 @@ describe Castle::HeaderFormatter do
   it 'does not remove http if there is no _- char' do
     expect(formatter.call('httpX_teST')).to be_eql('Httpx-Test')
   end
+
+  it 'removes HTTP_' do
+    expect(formatter.call(:clearance)).to be_eql('Clearance')
+  end
 end
