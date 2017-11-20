@@ -2,6 +2,8 @@
 
 ## master
 
+## 3.0.1 (2017-11-20)
+
 **Bug fixes:**
 
 - [#84](github.com/castle/castle-ruby/pull/84) allow to use symbols for headers data

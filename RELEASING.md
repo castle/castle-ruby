@@ -2,7 +2,7 @@ Releasing
 =========
 
 1. Update `VERSION` in `lib/castle/version.rb` to the new version
-2. Update the `HISTORY.md` for the impending release
+2. Update the `CHANGELOG.md` for the impending release
 3. `git commit -am "prepare for release X.Y.Z."` (where X.Y.Z is the new version)
 4. `git tag -a vX.Y.Z -m "release X.Y.Z"` (where X.Y.Z is the new version)
 5. `git push --tags`
