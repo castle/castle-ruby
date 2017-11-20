@@ -12,7 +12,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'coveralls'
+  gem 'coveralls_reborn'
   gem 'rspec'
   gem 'simplecov'
   gem 'webmock'
