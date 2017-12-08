@@ -112,7 +112,7 @@ class CastleTrackingWorker
   include Sidekiq::Worker
 
   def perform(request, context = nil, track_options = {})
-    client = ::Castle::Client.new(request, {context: context})
+    client = ::Castle::Client.new(request, { context: context })
     client.track(track_options)
   end
 end
