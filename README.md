@@ -100,3 +100,26 @@ end
 ## Signature
 
 `Castle::SecureMode.signature(user_id)` will create a signed user_id.
+
+## Async tracking
+
+By default Castle sends requests synchronously. To eg. use Sidekiq to send requests in a background worker you can pass data to the worker:
+
+#### castle_tracking_worker.rb
+
+```
+class CastleTrackingWorker
+  include Sidekiq::Worker
+
+  def perform(request, context = nil, track_options = {})
+    client = ::Castle::Client.new(request, { context: context })
+    client.track(track_options)
+  end
+end
+```
+
+#### tracking_controller.rb
+
+```
+CastleTrackingWorker.perform_async(request, optional_context, {})
+```
