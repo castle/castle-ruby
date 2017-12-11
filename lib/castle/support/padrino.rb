@@ -5,7 +5,7 @@ module Padrino
     module Castle
       module Helpers
         def castle
-          @castle ||= ::Castle::Client.new(request)
+          @castle ||= ::Castle::Client.from_request(request)
         end
       end
 

@@ -11,7 +11,7 @@ describe Castle::Client do
     )
   end
   let(:request) { Rack::Request.new(env) }
-  let(:client) { described_class.new(request) }
+  let(:client) { described_class.from_request(request) }
   let(:headers) { { 'X-Forwarded-For' => ip.to_s } }
   let(:context) do
     {

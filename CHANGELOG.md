@@ -2,6 +2,21 @@
 
 ## master
 
+## 3.1.0 (2017-12-11)
+
+**Enhancements:**
+
+- [#90](github.com/castle/castle-ruby/pull/90) added ability to extract context object and initialize client with that object
+
+**BREAKING CHANGES:**
+
+- `Castle::Client.new` does not not build context object anymore
+- to use previous functionality use `Castle::Client.from_request`
+
+**Features:**
+
+- added `Castle::Client.to_context` method which allows to generate context object from the request
+
 ## 3.0.1 (2017-11-20)
 
 **Bug fixes:**
@@ -25,7 +40,7 @@
 - renamed `track!` to `enable_tracking`
 - renamed `do_no_track!` to `disable_tracking`
 - renamed `don_no_track?` to `tracked?` with opposite behaviour
-- `Castle::Client` now takes options as a second argument
+- `Castle::Client.new` now takes options as a second argument
 - drop support for ruby 2.1
 - replaced `config.api_endpoint` with `config.host` and `config.port`
 - renamed `fetch_review` to `Castle::Review.retrieve`
