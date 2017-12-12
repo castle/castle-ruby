@@ -29,7 +29,7 @@ A Castle client instance will be made available as `castle` in your
 
 * Sinatra app when you add `require 'castle/support/sinatra'` (and additionally explicitly add `register Sinatra::Castle` to your `Sinatra::Base` class if you have a modular application)
 
-```
+```ruby
 require 'castle/support/sinatra'
 
 class ApplicationController < Sinatra::Base
@@ -39,7 +39,7 @@ end
 
 * Hanami when you add `require 'castle/support/hanami'` and include `Castle::Hanami` to your Hanami application
 
-```
+```ruby
 require 'castle/support/hanami'
 
 module Web
@@ -107,12 +107,12 @@ By default Castle sends requests synchronously. To eg. use Sidekiq to send reque
 
 #### castle_tracking_worker.rb
 
-```
+```ruby
 class CastleTrackingWorker
   include Sidekiq::Worker
 
-  def perform(request, context = nil, track_options = {})
-    client = ::Castle::Client.new(request, { context: context })
+  def perform(context, track_options = {})
+    client = ::Castle::Client.new(context)
     client.track(track_options)
   end
 end
@@ -120,6 +120,17 @@ end
 
 #### tracking_controller.rb
 
-```
-CastleTrackingWorker.perform_async(request, optional_context, {})
+```ruby
+request_context = ::Castle::Client.to_context(request)
+track_options = {
+  event: '$login.succeeded',
+  user_id: user.id,
+  properties: {
+    key: 'value'
+  },
+  traits: {
+    key: 'value'
+  }
+}
+CastleTrackingWorker.perform_async(request_context, track_options)
 ```

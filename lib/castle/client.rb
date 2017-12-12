@@ -2,11 +2,22 @@
 
 module Castle
   class Client
+    class << self
+      def from_request(request, options = {})
+        new(to_context(request, options), options[:do_not_track])
+      end
+
+      def to_context(request, options = {})
+        default_context = Castle::DefaultContext.new(request, options[:cookies]).call
+        Castle::ContextMerger.new(default_context).call(options[:context] || {})
+      end
+    end
+
     attr_accessor :api
 
-    def initialize(request, options = {})
-      @do_not_track = default_tracking(options)
-      @context = setup_context(request, options[:cookies], options[:context])
+    def initialize(context, do_not_track = false)
+      @do_not_track = do_not_track
+      @context = context
       @api = API.new
     end
 
@@ -65,10 +76,6 @@ module Castle
     def failover_response_or_raise(failover_response, error)
       return failover_response.generate unless Castle.config.failover_strategy == :throw
       raise error
-    end
-
-    def default_tracking(options)
-      options.key?(:do_not_track) ? options[:do_not_track] : false
     end
   end
 end
