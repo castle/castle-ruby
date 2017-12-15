@@ -2,6 +2,8 @@
 
 ## master
 
+## 3.2.0 (2017-12-15)
+
 **BREAKING CHANGES:**
 
 - [#91](github.com/castle/castle-ruby/pull/91) symbolize keys for failover strategy
