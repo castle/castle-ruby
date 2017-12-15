@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    castle-rb (3.0.1)
+    castle-rb (3.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -46,7 +46,7 @@ GEM
     term-ansicolor (1.6.0)
       tins (~> 1.0)
     thor (0.20.0)
-    tins (1.16.0)
+    tins (1.16.3)
     webmock (3.1.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
