@@ -11,10 +11,10 @@ module Castle
 
     def generate
       {
-        'action' => @strategy.to_s,
-        'user_id' => @user_id,
-        'failover' => true,
-        'failover_reason' => @reason
+        action: @strategy.to_s,
+        user_id: @user_id,
+        failover: true,
+        failover_reason: @reason
       }
     end
   end
