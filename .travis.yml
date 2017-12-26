@@ -5,6 +5,10 @@ rvm:
   - 2.2.9
   - ruby-head
 
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+
 notifications:
   slack:
     secure: JVXUf9/+m3mRZU6WnJxgskpSbDY6tHRTQwFeUtq7eYFdXYr/BTCprS2RsANLr8K5eLBgOJeEILAZW/plwpBfa9TnWQxknL/OqY4nyrrtUdc+i7TfBNEwO/I6owvELKSYjgxjClJXkcPS8pg6UTr+wYpbQ+7ToVnPdHf6J3Hy7X4=
