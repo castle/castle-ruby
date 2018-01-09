@@ -6,6 +6,9 @@ rvm:
   - 2.2.9
   - ruby-head
 
+before_install:
+  - gem update --system
+
 matrix:
   allow_failures:
     - rvm: ruby-head
