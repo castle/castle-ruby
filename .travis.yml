@@ -1,11 +1,18 @@
 language: ruby
-rvm:
-  - 2.4.2
-  - 2.3.5
-  - 2.2.8
-  - 2.5.0
-  - ruby-head
-
+matrix:
+  - rvm: 2.4.2
+  - rvm: 2.3.5
+  - rvm: 2.2.8
+  - rvm: 2.5.0
+    # https://github.com/travis-ci/travis-ci/issues/8978
+    before_install:
+      - gem update --system
+      - gem update bundler
+  - rvm: ruby-head
+    # https://github.com/travis-ci/travis-ci/issues/8978
+    before_install:
+      - gem update --system
+      - gem update bundler
 notifications:
   slack:
     secure: JVXUf9/+m3mRZU6WnJxgskpSbDY6tHRTQwFeUtq7eYFdXYr/BTCprS2RsANLr8K5eLBgOJeEILAZW/plwpBfa9TnWQxknL/OqY4nyrrtUdc+i7TfBNEwO/I6owvELKSYjgxjClJXkcPS8pg6UTr+wYpbQ+7ToVnPdHf6J3Hy7X4=
