@@ -5,8 +5,8 @@ module Castle
     class << self
       def from_request(request, options = {})
         new(
-          to_context(request, options.slice(:context, :cookies)),
-          to_options(options.slice(:do_not_track, :timestamp))
+          to_context(request, options),
+          to_options(options)
         )
       end
 
