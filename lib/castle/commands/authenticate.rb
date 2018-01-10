@@ -3,13 +3,16 @@
 module Castle
   module Commands
     class Authenticate
-      include WithContext
+      def initialize(context)
+        @context = context
+      end
 
       def build(options = {})
         validate!(options)
-        build_context!(options)
+        context = ContextMerger.call(@context, options[:context])
+        context = ContextSanitizer.call(context)
 
-        Castle::Command.new('authenticate', options, :post)
+        Castle::Command.new('authenticate', options.merge(context: context), :post)
       end
 
       private
