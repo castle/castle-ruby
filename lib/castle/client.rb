@@ -6,13 +6,18 @@ module Castle
       def from_request(request, options = {})
         new(
           to_context(request, options.slice(:context, :cookies)),
-          options.slice(:do_not_track)
+          to_options(options.slice(:do_not_track, :timestamp))
         )
       end
 
       def to_context(request, context_options = {})
         default_context = Castle::DefaultContext.new(request, context_options[:cookies]).call
         Castle::ContextMerger.call(default_context, context_options[:context])
+      end
+
+      def to_options(options = {})
+        options[:timestamp] ||= Time.now.iso8601
+        options
       end
     end
 
@@ -29,6 +34,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       if tracked?
+        options[:timestamp] = @timestamp if @timestamp
         command = Castle::Commands::Authenticate.new(@context).build(options)
         begin
           @api.request(command).merge(failover: false, failover_reason: nil)
@@ -44,6 +50,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
+      options[:timestamp] = @timestamp if @timestamp
 
       command = Castle::Commands::Identify.new(@context).build(options)
       @api.request(command)
@@ -53,6 +60,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
+      options[:timestamp] = @timestamp if @timestamp
 
       command = Castle::Commands::Track.new(@context).build(options)
       @api.request(command)

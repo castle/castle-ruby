@@ -5,6 +5,7 @@ require 'bundler/setup'
 require 'rack'
 require 'webmock/rspec'
 require 'byebug'
+require 'timecop'
 
 require 'coveralls'
 Coveralls.wear!

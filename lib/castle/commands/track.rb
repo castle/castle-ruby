@@ -11,7 +11,10 @@ module Castle
         validate!(options)
         context = ContextMerger.call(@context, options[:context])
         context = ContextSanitizer.call(context)
-        Castle::Command.new('track', options.merge(context: context), :post)
+
+        Castle::Command.new('track',
+                            options.merge(context: context, sent_at: Time.now.iso8601),
+                            :post)
       end
 
       private
