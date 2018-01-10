@@ -31,8 +31,8 @@ describe Castle::Client do
   end
 
   let(:time_now) { Time.now }
-  let(:time_auto) { time_now.iso8601 }
-  let(:time_user) { (Time.now - 10_000).iso8601 }
+  let(:time_auto) { time_now.utc.iso8601(3) }
+  let(:time_user) { (Time.now - 10_000).utc.iso8601(3) }
 
   before do
     Timecop.freeze(time_now)

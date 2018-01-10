@@ -13,7 +13,8 @@ module Castle
         context = ContextSanitizer.call(context)
 
         Castle::Command.new('authenticate',
-                            options.merge(context: context, sent_at: Time.now.iso8601),
+                            options.merge(context: context,
+                                          sent_at: Castle::Utils::Timestamp.call),
                             :post)
       end
 

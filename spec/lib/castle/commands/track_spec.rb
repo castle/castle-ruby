@@ -7,7 +7,7 @@ describe Castle::Commands::Track do
   let(:default_payload) { { event: '$login.track', sent_at: time_auto } }
 
   let(:time_now) { Time.now }
-  let(:time_auto) { time_now.iso8601 }
+  let(:time_auto) { time_now.utc.iso8601(3) }
 
   before do
     Timecop.freeze(time_now)

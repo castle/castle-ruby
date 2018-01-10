@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Castle
+  # removes not proper active flag values
   class ContextSanitizer
     class << self
       def call(context)
