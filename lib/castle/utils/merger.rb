@@ -4,19 +4,19 @@ module Castle
   module Utils
     class Merger
       def self.call(first, second)
-        Castle::Utils.deep_symbolize_keys!(first)
-        Castle::Utils.deep_symbolize_keys!(second)
+        first_s = Castle::Utils.deep_symbolize_keys(first)
+        second_s = Castle::Utils.deep_symbolize_keys(second)
 
-        second.each do |name, value|
+        second_s.each do |name, value|
           if value.nil?
-            first.delete(name)
-          elsif value.is_a?(Hash) && first[name].is_a?(Hash)
-            call(first[name], value)
+            first_s.delete(name)
+          elsif value.is_a?(Hash) && first_s[name].is_a?(Hash)
+            first_s[name] = call(first_s[name], value)
           else
-            first[name] = value
+            first_s[name] = value
           end
         end
-        first
+        first_s
       end
     end
   end
