@@ -122,7 +122,7 @@ end
 
 ```ruby
 request_context = ::Castle::Client.to_context(request)
-track_options = {
+track_options = ::Castle::Client.to_options({
   event: '$login.succeeded',
   user_id: user.id,
   properties: {
@@ -131,6 +131,6 @@ track_options = {
   traits: {
     key: 'value'
   }
-}
+})
 CastleTrackingWorker.perform_async(request_context, track_options)
 ```

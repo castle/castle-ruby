@@ -4,19 +4,28 @@ module Castle
   class Client
     class << self
       def from_request(request, options = {})
-        new(to_context(request, options), options[:do_not_track])
+        new(
+          to_context(request, options),
+          to_options(options)
+        )
       end
 
       def to_context(request, options = {})
         default_context = Castle::DefaultContext.new(request, options[:cookies]).call
-        Castle::ContextMerger.new(default_context).call(options[:context] || {})
+        Castle::ContextMerger.call(default_context, options[:context])
+      end
+
+      def to_options(options = {})
+        options[:timestamp] ||= Castle::Utils::Timestamp.call
+        options
       end
     end
 
     attr_accessor :api
 
-    def initialize(context, do_not_track = false)
-      @do_not_track = do_not_track
+    def initialize(context, options = {})
+      @do_not_track = options[:do_not_track]
+      @timestamp = options[:timestamp]
       @context = context
       @api = API.new
     end
@@ -25,6 +34,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       if tracked?
+        options[:timestamp] ||= @timestamp if @timestamp
         command = Castle::Commands::Authenticate.new(@context).build(options)
         begin
           @api.request(command).merge(failover: false, failover_reason: nil)
@@ -40,6 +50,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
+      options[:timestamp] ||= @timestamp if @timestamp
 
       command = Castle::Commands::Identify.new(@context).build(options)
       @api.request(command)
@@ -49,6 +60,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
+      options[:timestamp] ||= @timestamp if @timestamp
 
       command = Castle::Commands::Track.new(@context).build(options)
       @api.request(command)
@@ -70,7 +82,7 @@ module Castle
 
     def setup_context(request, cookies, additional_context)
       default_context = Castle::DefaultContext.new(request, cookies).call
-      Castle::ContextMerger.new(default_context).call(additional_context || {})
+      Castle::ContextMerger.call(default_context, additional_context)
     end
 
     def failover_response_or_raise(failover_response, error)

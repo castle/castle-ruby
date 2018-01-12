@@ -3,13 +3,19 @@
 module Castle
   module Commands
     class Track
-      include WithContext
+      def initialize(context)
+        @context = context
+      end
 
       def build(options = {})
         validate!(options)
-        build_context!(options)
+        context = ContextMerger.call(@context, options[:context])
+        context = ContextSanitizer.call(context)
 
-        Castle::Command.new('track', options, :post)
+        Castle::Command.new('track',
+                            options.merge(context: context,
+                                          sent_at: Castle::Utils::Timestamp.call),
+                            :post)
       end
 
       private

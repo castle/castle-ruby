@@ -4,7 +4,18 @@ describe Castle::Commands::Identify do
   subject(:instance) { described_class.new(context) }
 
   let(:context) { { test: { test1: '1' } } }
-  let(:default_payload) { { user_id: '1234' } }
+  let(:default_payload) { { user_id: '1234', sent_at: time_auto } }
+
+  let(:time_now) { Time.now }
+  let(:time_auto) { time_now.utc.iso8601(3) }
+
+  before do
+    Timecop.freeze(time_now)
+  end
+
+  after do
+    Timecop.return
+  end
 
   describe '.build' do
     subject(:command) { instance.build(payload) }

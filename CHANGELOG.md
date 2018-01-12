@@ -2,6 +2,16 @@
 
 ## master
 
+## 3.3.0 (2017-12-15)
+
+**BREAKING CHANGES:**
+
+- [#97](github.com/castle/castle-ruby/pull/97) when data is sent in batches you may want to wrap data options with to_options method before you send it to the worker (see README) to include proper timestamp in the query
+
+**Features:**
+
+- [#97](github.com/castle/castle-ruby/pull/97) `Castle::Client` has additional option `timestamp`, `timestamp` and `sent_at` time values are automatically added to the requests, added `Castle::Client.to_options` method which adds properly formatted timestamp param to the options
+
 ## 3.2.0 (2017-12-15)
 
 **BREAKING CHANGES:**

@@ -15,5 +15,6 @@ group :test do
   gem 'coveralls_reborn'
   gem 'rspec'
   gem 'simplecov'
+  gem 'timecop'
   gem 'webmock'
 end

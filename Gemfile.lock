@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    castle-rb (3.2.0)
+    castle-rb (3.3.0)
 
 GEM
   remote: https://rubygems.org/
@@ -46,6 +46,7 @@ GEM
     term-ansicolor (1.6.0)
       tins (~> 1.0)
     thor (0.20.0)
+    timecop (0.9.1)
     tins (1.16.3)
     webmock (3.2.1)
       addressable (>= 2.3.6)
@@ -63,6 +64,7 @@ DEPENDENCIES
   rake
   rspec
   simplecov
+  timecop
   webmock
 
 BUNDLED WITH
