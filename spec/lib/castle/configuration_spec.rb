@@ -77,7 +77,7 @@ describe Castle::Configuration do
 
   describe 'whitelisted' do
     it do
-      expect(config.whitelisted.size).to be_eql(11)
+      expect(config.whitelisted.size).to be_eql(13)
     end
 
     context 'setter' do
@@ -94,7 +94,7 @@ describe Castle::Configuration do
         config.whitelisted += ['header']
       end
       it { expect(config.whitelisted).to be_include('Header') }
-      it { expect(config.whitelisted.size).to be_eql(12) }
+      it { expect(config.whitelisted.size).to be_eql(14) }
     end
   end
 
