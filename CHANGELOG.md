@@ -2,6 +2,8 @@
 
 ## master
 
+## 3.3.1 (2018-01-22)
+
 **Enhancements:**
 
 - [#100](github.com/castle/castle-ruby/pull/100) use request.remote_ip and CF connecting IP in favour of request.ip if present
