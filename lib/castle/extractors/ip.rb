@@ -9,6 +9,7 @@ module Castle
       end
 
       def call
+        return @request.remote_ip if @request.respond_to?(:remote_ip)
         @request.ip
       end
     end
