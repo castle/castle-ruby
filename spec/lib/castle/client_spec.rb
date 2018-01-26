@@ -72,6 +72,68 @@ describe Castle::Client do
     end
   end
 
+  describe 'impersonate' do
+    let(:impersonator) { 'test@castle.io' }
+    let(:request_body) do
+      { user_id: '1234', impersonator: impersonator, timestamp: time_auto,
+        sent_at: time_auto, context: context }
+    end
+
+    before { client.impersonate(options) }
+
+    context 'symbol keys' do
+      let(:options) { { user_id: '1234', impersonator: impersonator } }
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
+          JSON.parse(req.body) == JSON.parse(request_body.to_json)
+        end
+      end
+
+      context 'when passed timestamp in options and no defined timestamp' do
+        let(:client) { client_with_no_timestamp }
+        let(:options) { { user_id: '1234', impersonator: impersonator, timestamp: time_user } }
+        let(:request_body) do
+          { user_id: '1234', impersonator: impersonator, context: context,
+            timestamp: time_user, sent_at: time_auto }
+        end
+
+        it do
+          assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
+            JSON.parse(req.body) == JSON.parse(request_body.to_json)
+          end
+        end
+      end
+
+      context 'with client initialized with timestamp' do
+        let(:client) { client_with_user_timestamp }
+        let(:request_body) do
+          { user_id: '1234', timestamp: time_user, sent_at: time_auto,
+            context: context, impersonator: impersonator }
+        end
+
+        it do
+          assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
+            JSON.parse(req.body) == JSON.parse(request_body.to_json)
+          end
+        end
+      end
+    end
+
+    context 'string keys and no impersonator' do
+      let(:options) { { 'user_id' => '1234' } }
+      let(:request_body) do
+        { user_id: '1234', timestamp: time_auto, sent_at: time_auto, context: context }
+      end
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
+          JSON.parse(req.body) == JSON.parse(request_body.to_json)
+        end
+      end
+    end
+  end
+
   describe 'identify' do
     let(:request_body) do
       { user_id: '1234', timestamp: time_auto,
