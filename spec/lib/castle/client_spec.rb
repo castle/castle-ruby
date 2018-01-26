@@ -27,7 +27,7 @@ describe Castle::Client do
       active: true,
       origin: 'web',
       user_agent: ua,
-      headers: { :'X-Forwarded-For' => ip.to_s, :'User-Agent' => ua },
+      headers: { 'X-Forwarded-For': ip.to_s, 'User-Agent': ua },
       ip: ip,
       library: { name: 'castle-rb', version: '2.2.0' }
     }
@@ -45,9 +45,7 @@ describe Castle::Client do
     ).to_return(status: 200, body: '{}', headers: {})
   end
 
-  after do
-    Timecop.return
-  end
+  after { Timecop.return }
 
   describe 'parses the request' do
     before do

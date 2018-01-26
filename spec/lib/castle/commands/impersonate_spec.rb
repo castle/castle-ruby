@@ -10,13 +10,8 @@ describe Castle::Commands::Impersonate do
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
 
-  before do
-    Timecop.freeze(time_now)
-  end
-
-  after do
-    Timecop.return
-  end
+  before { Timecop.freeze(time_now) }
+  after { Timecop.return }
 
   describe '.build' do
     subject(:command) { instance.build(payload) }
@@ -24,12 +19,14 @@ describe Castle::Commands::Impersonate do
     context 'with simple merger' do
       let(:payload) { default_payload.merge(context: { test: { test2: '1' } }) }
       let(:command_data) do
-        default_payload.merge(context: {
-          test: { test2: '1' },
-          user_agent: 'test',
-          ip: '127.0.0.1',
-          client_id: 'test'
-        })
+        default_payload.merge(
+          context: {
+            test: { test2: '1' },
+            user_agent: 'test',
+            ip: '127.0.0.1',
+            client_id: 'test'
+          }
+        )
       end
 
       it { expect(command.method).to be_eql(:post) }
