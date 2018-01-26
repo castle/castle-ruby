@@ -70,8 +70,6 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
-      options[:timestamp] ||= @timestamp if @timestamp
-
       command = Castle::Commands::Impersonate.new(@context).build(options)
       @api.request(command)
     end
