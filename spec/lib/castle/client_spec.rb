@@ -3,9 +3,11 @@
 describe Castle::Client do
   let(:ip) { '1.2.3.4' }
   let(:cookie_id) { 'abcd' }
+  let(:ua) { 'Chrome' }
   let(:env) do
     Rack::MockRequest.env_for(
       '/',
+      'HTTP_USER_AGENT' => ua,
       'HTTP_X_FORWARDED_FOR' => ip,
       'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh"
     )
@@ -18,13 +20,14 @@ describe Castle::Client do
   end
   let(:client_with_no_timestamp) { described_class.new(request_to_context) }
 
-  let(:headers) { { 'X-Forwarded-For' => ip.to_s } }
+  let(:headers) { { 'X-Forwarded-For' => ip.to_s, 'User-Agent' => ua } }
   let(:context) do
     {
       client_id: 'abcd',
       active: true,
       origin: 'web',
-      headers: { 'X-Forwarded-For': ip.to_s },
+      user_agent: ua,
+      headers: { :'X-Forwarded-For' => ip.to_s, :'User-Agent' => ua },
       ip: ip,
       library: { name: 'castle-rb', version: '2.2.0' }
     }
@@ -75,57 +78,13 @@ describe Castle::Client do
   describe 'impersonate' do
     let(:impersonator) { 'test@castle.io' }
     let(:request_body) do
-      { user_id: '1234', impersonator: impersonator, timestamp: time_auto,
-        sent_at: time_auto, context: context }
+      { user_id: '1234', impersonator: impersonator, context: context }
     end
+    let(:options) { { user_id: '1234', impersonator: impersonator } }
 
     before { client.impersonate(options) }
 
     context 'when used with symbol keys' do
-      let(:options) { { user_id: '1234', impersonator: impersonator } }
-
-      it do
-        assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
-          JSON.parse(req.body) == JSON.parse(request_body.to_json)
-        end
-      end
-
-      context 'when passed timestamp in options and no defined timestamp' do
-        let(:client) { client_with_no_timestamp }
-        let(:options) { { user_id: '1234', impersonator: impersonator, timestamp: time_user } }
-        let(:request_body) do
-          { user_id: '1234', impersonator: impersonator, context: context,
-            timestamp: time_user, sent_at: time_auto }
-        end
-
-        it do
-          assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
-            JSON.parse(req.body) == JSON.parse(request_body.to_json)
-          end
-        end
-      end
-
-      context 'with client initialized with timestamp' do
-        let(:client) { client_with_user_timestamp }
-        let(:request_body) do
-          { user_id: '1234', timestamp: time_user, sent_at: time_auto,
-            context: context, impersonator: impersonator }
-        end
-
-        it do
-          assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
-            JSON.parse(req.body) == JSON.parse(request_body.to_json)
-          end
-        end
-      end
-    end
-
-    context 'when used with string keys and no impersonator' do
-      let(:options) { { 'user_id' => '1234' } }
-      let(:request_body) do
-        { user_id: '1234', timestamp: time_auto, sent_at: time_auto, context: context }
-      end
-
       it do
         assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)

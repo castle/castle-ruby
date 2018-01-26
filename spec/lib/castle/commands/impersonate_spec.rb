@@ -3,9 +3,9 @@
 describe Castle::Commands::Impersonate do
   subject(:instance) { described_class.new(context) }
 
-  let(:context) { { test: { test1: '1' } } }
+  let(:context) { { user_agent: 'test', ip: '127.0.0.1', client_id: 'test' } }
   let(:impersonator) { 'test@castle.io' }
-  let(:default_payload) { { user_id: '1234', sent_at: time_auto } }
+  let(:default_payload) { { user_id: '1234' } }
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
@@ -24,7 +24,12 @@ describe Castle::Commands::Impersonate do
     context 'with simple merger' do
       let(:payload) { default_payload.merge(context: { test: { test2: '1' } }) }
       let(:command_data) do
-        default_payload.merge(context: { test: { test1: '1', test2: '1' } })
+        default_payload.merge(context: {
+          test: { test2: '1' },
+          user_agent: 'test',
+          ip: '127.0.0.1',
+          client_id: 'test'
+        })
       end
 
       it { expect(command.method).to be_eql(:post) }
