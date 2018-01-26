@@ -81,7 +81,7 @@ describe Castle::Client do
 
     before { client.impersonate(options) }
 
-    context 'symbol keys' do
+    context 'when used with symbol keys' do
       let(:options) { { user_id: '1234', impersonator: impersonator } }
 
       it do
@@ -120,7 +120,7 @@ describe Castle::Client do
       end
     end
 
-    context 'string keys and no impersonator' do
+    context 'when used with string keys and no impersonator' do
       let(:options) { { 'user_id' => '1234' } }
       let(:request_body) do
         { user_id: '1234', timestamp: time_auto, sent_at: time_auto, context: context }
@@ -142,7 +142,7 @@ describe Castle::Client do
 
     before { client.identify(options) }
 
-    context 'symbol keys' do
+    context 'when used with symbol keys' do
       let(:options) { { user_id: '1234', traits: { name: 'Jo' } } }
 
       it do
@@ -181,7 +181,7 @@ describe Castle::Client do
       end
     end
 
-    context 'string keys' do
+    context 'when used with string keys' do
       let(:options) { { 'user_id' => '1234', 'traits' => { 'name' => 'Jo' } } }
 
       it do
@@ -200,7 +200,7 @@ describe Castle::Client do
         timestamp: time_auto, sent_at: time_auto }
     end
 
-    context 'symbol keys' do
+    context 'when used with symbol keys' do
       before { request_response }
 
       it do
@@ -239,7 +239,7 @@ describe Castle::Client do
       end
     end
 
-    context 'string keys' do
+    context 'when used with string keys' do
       let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
 
       before { request_response }
@@ -251,7 +251,7 @@ describe Castle::Client do
       end
     end
 
-    context 'tracking enabled' do
+    context 'when tracking enabled' do
       before { request_response }
 
       it do
@@ -264,7 +264,7 @@ describe Castle::Client do
       it { expect(request_response[:failover_reason]).to be_nil }
     end
 
-    context 'tracking disabled' do
+    context 'when tracking disabled' do
       before do
         client.disable_tracking
         request_response
@@ -322,7 +322,7 @@ describe Castle::Client do
 
     before { client.track(options) }
 
-    context 'symbol keys' do
+    context 'when used with symbol keys' do
       let(:options) { { event: '$login.succeeded', user_id: '1234' } }
 
       it do
@@ -361,7 +361,7 @@ describe Castle::Client do
       end
     end
 
-    context 'string keys' do
+    context 'when used with string keys' do
       let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
 
       it do
@@ -373,13 +373,13 @@ describe Castle::Client do
   end
 
   describe 'tracked?' do
-    context 'off' do
+    context 'when off' do
       before { client.disable_tracking }
 
       it { expect(client).not_to be_tracked }
     end
 
-    context 'on' do
+    context 'when on' do
       before { client.enable_tracking }
 
       it { expect(client).to be_tracked }

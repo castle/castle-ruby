@@ -21,7 +21,7 @@ describe Castle::Commands::Impersonate do
   describe '.build' do
     subject(:command) { instance.build(payload) }
 
-    context 'simple merger' do
+    context 'with simple merger' do
       let(:payload) { default_payload.merge(context: { test: { test2: '1' } }) }
       let(:command_data) do
         default_payload.merge(context: { test: { test1: '1', test2: '1' } })
@@ -32,7 +32,7 @@ describe Castle::Commands::Impersonate do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'impersonator' do
+    context 'with impersonator' do
       let(:payload) { default_payload.merge(impersonator: impersonator) }
       let(:command_data) do
         default_payload.merge(impersonator: impersonator, context: context)
@@ -43,7 +43,7 @@ describe Castle::Commands::Impersonate do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'active true' do
+    context 'when active true' do
       let(:payload) { default_payload.merge(context: { active: true }) }
       let(:command_data) do
         default_payload.merge(context: context.merge(active: true))
@@ -54,7 +54,7 @@ describe Castle::Commands::Impersonate do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'active false' do
+    context 'when active false' do
       let(:payload) { default_payload.merge(context: { active: false }) }
       let(:command_data) do
         default_payload.merge(context: context.merge(active: false))
@@ -65,7 +65,7 @@ describe Castle::Commands::Impersonate do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'active string' do
+    context 'when active string' do
       let(:payload) { default_payload.merge(context: { active: 'string' }) }
       let(:command_data) { default_payload.merge(context: context) }
 
@@ -78,7 +78,7 @@ describe Castle::Commands::Impersonate do
   describe '#validate!' do
     subject(:validate!) { instance.build(payload) }
 
-    context 'user_id not present' do
+    context 'when user_id not present' do
       let(:payload) { {} }
 
       it do
@@ -88,7 +88,7 @@ describe Castle::Commands::Impersonate do
       end
     end
 
-    context 'user_id present' do
+    context 'when user_id present' do
       let(:payload) { { user_id: '1234' } }
 
       it { expect { validate! }.not_to raise_error }
