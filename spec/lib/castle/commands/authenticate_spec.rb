@@ -9,13 +9,8 @@ describe Castle::Commands::Authenticate do
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
 
-  before do
-    Timecop.freeze(time_now)
-  end
-
-  after do
-    Timecop.return
-  end
+  before { Timecop.freeze(time_now) }
+  after { Timecop.return }
 
   describe '.build' do
     subject(:command) { instance.build(payload) }

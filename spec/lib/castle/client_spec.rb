@@ -3,9 +3,11 @@
 describe Castle::Client do
   let(:ip) { '1.2.3.4' }
   let(:cookie_id) { 'abcd' }
+  let(:ua) { 'Chrome' }
   let(:env) do
     Rack::MockRequest.env_for(
       '/',
+      'HTTP_USER_AGENT' => ua,
       'HTTP_X_FORWARDED_FOR' => ip,
       'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh"
     )
@@ -18,13 +20,14 @@ describe Castle::Client do
   end
   let(:client_with_no_timestamp) { described_class.new(request_to_context) }
 
-  let(:headers) { { 'X-Forwarded-For' => ip.to_s } }
+  let(:headers) { { 'X-Forwarded-For' => ip.to_s, 'User-Agent' => ua } }
   let(:context) do
     {
       client_id: 'abcd',
       active: true,
       origin: 'web',
-      headers: { 'X-Forwarded-For': ip.to_s },
+      user_agent: ua,
+      headers: { 'X-Forwarded-For': ip.to_s, 'User-Agent': ua },
       ip: ip,
       library: { name: 'castle-rb', version: '2.2.0' }
     }
@@ -42,9 +45,7 @@ describe Castle::Client do
     ).to_return(status: 200, body: '{}', headers: {})
   end
 
-  after do
-    Timecop.return
-  end
+  after { Timecop.return }
 
   describe 'parses the request' do
     before do
@@ -72,6 +73,24 @@ describe Castle::Client do
     end
   end
 
+  describe 'impersonate' do
+    let(:impersonator) { 'test@castle.io' }
+    let(:request_body) do
+      { user_id: '1234', impersonator: impersonator, context: context }
+    end
+    let(:options) { { user_id: '1234', impersonator: impersonator } }
+
+    before { client.impersonate(options) }
+
+    context 'when used with symbol keys' do
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
+          JSON.parse(req.body) == JSON.parse(request_body.to_json)
+        end
+      end
+    end
+  end
+
   describe 'identify' do
     let(:request_body) do
       { user_id: '1234', timestamp: time_auto,
@@ -80,7 +99,7 @@ describe Castle::Client do
 
     before { client.identify(options) }
 
-    context 'symbol keys' do
+    context 'when used with symbol keys' do
       let(:options) { { user_id: '1234', traits: { name: 'Jo' } } }
 
       it do
@@ -119,7 +138,7 @@ describe Castle::Client do
       end
     end
 
-    context 'string keys' do
+    context 'when used with string keys' do
       let(:options) { { 'user_id' => '1234', 'traits' => { 'name' => 'Jo' } } }
 
       it do
@@ -138,7 +157,7 @@ describe Castle::Client do
         timestamp: time_auto, sent_at: time_auto }
     end
 
-    context 'symbol keys' do
+    context 'when used with symbol keys' do
       before { request_response }
 
       it do
@@ -177,7 +196,7 @@ describe Castle::Client do
       end
     end
 
-    context 'string keys' do
+    context 'when used with string keys' do
       let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
 
       before { request_response }
@@ -189,7 +208,7 @@ describe Castle::Client do
       end
     end
 
-    context 'tracking enabled' do
+    context 'when tracking enabled' do
       before { request_response }
 
       it do
@@ -202,7 +221,7 @@ describe Castle::Client do
       it { expect(request_response[:failover_reason]).to be_nil }
     end
 
-    context 'tracking disabled' do
+    context 'when tracking disabled' do
       before do
         client.disable_tracking
         request_response
@@ -260,7 +279,7 @@ describe Castle::Client do
 
     before { client.track(options) }
 
-    context 'symbol keys' do
+    context 'when used with symbol keys' do
       let(:options) { { event: '$login.succeeded', user_id: '1234' } }
 
       it do
@@ -299,7 +318,7 @@ describe Castle::Client do
       end
     end
 
-    context 'string keys' do
+    context 'when used with string keys' do
       let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
 
       it do
@@ -311,13 +330,13 @@ describe Castle::Client do
   end
 
   describe 'tracked?' do
-    context 'off' do
+    context 'when off' do
       before { client.disable_tracking }
 
       it { expect(client).not_to be_tracked }
     end
 
-    context 'on' do
+    context 'when on' do
       before { client.enable_tracking }
 
       it { expect(client).to be_tracked }
