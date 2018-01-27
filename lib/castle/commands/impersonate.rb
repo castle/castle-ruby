@@ -30,7 +30,7 @@ module Castle
       end
 
       def validate_context!(context)
-        %i[user_agent ip client_id].each do |key|
+        %i[user_agent ip].each do |key|
           next unless context[key].to_s.empty?
           raise Castle::InvalidParametersError, "#{key} is missing or empty"
         end
