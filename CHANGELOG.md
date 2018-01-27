@@ -2,6 +2,8 @@
 
 ## master
 
+## 3.4.0-rc.0 (2018-01-27)
+
 - [#101](github.com/castle/castle-ruby/pull/103) added `impersonate` method with `user_id`, `impersonator` and `context` options
 
 ## 3.3.1 (2018-01-22)
