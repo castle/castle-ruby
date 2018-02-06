@@ -11,20 +11,25 @@ module Castle
       end
 
       def to_context(request, options = {})
-        default_context = Castle::DefaultContext.new(request, options[:cookies]).call
-        Castle::ContextMerger.call(default_context, options[:context])
+        default_context = Castle::Context::Default.new(request, options[:cookies]).call
+        Castle::Context::Merger.call(default_context, options[:context])
       end
 
       def to_options(options = {})
         options[:timestamp] ||= Castle::Utils::Timestamp.call
         options
       end
+
+      def failover_response_or_raise(failover_response, error)
+        return failover_response.generate unless Castle.config.failover_strategy == :throw
+        raise error
+      end
     end
 
     attr_accessor :api
 
     def initialize(context, options = {})
-      @do_not_track = options[:do_not_track]
+      @do_not_track = options.fetch(:do_not_track, false)
       @timestamp = options[:timestamp]
       @context = context
       @api = API.new
@@ -34,15 +39,20 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       if tracked?
-        options[:timestamp] ||= @timestamp if @timestamp
+        add_timestamp_if_necessary!(options)
         command = Castle::Commands::Authenticate.new(@context).build(options)
         begin
           @api.request(command).merge(failover: false, failover_reason: nil)
         rescue Castle::RequestError, Castle::InternalServerError => error
-          failover_response_or_raise(FailoverAuthResponse.new(options[:user_id], reason: error.to_s), error)
+          self.class::failover_response_or_raise(
+            FailoverAuthResponse.new(options[:user_id], reason: error.to_s), error
+          )
         end
       else
-        FailoverAuthResponse.new(options[:user_id], strategy: :allow, reason: 'Castle set to do not track.').generate
+        FailoverAuthResponse.new(
+          options[:user_id],
+          strategy: :allow, reason: 'Castle set to do not track.'
+        ).generate
       end
     end
 
@@ -50,7 +60,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
-      options[:timestamp] ||= @timestamp if @timestamp
+      add_timestamp_if_necessary!(options)
 
       command = Castle::Commands::Identify.new(@context).build(options)
       @api.request(command)
@@ -60,7 +70,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
-      options[:timestamp] ||= @timestamp if @timestamp
+      add_timestamp_if_necessary!(options)
 
       command = Castle::Commands::Track.new(@context).build(options)
       @api.request(command)
@@ -68,8 +78,6 @@ module Castle
 
     def impersonate(options = {})
       options = Castle::Utils.deep_symbolize_keys(options || {})
-
-      return unless tracked?
       command = Castle::Commands::Impersonate.new(@context).build(options)
       @api.request(command)
     end
@@ -88,14 +96,8 @@ module Castle
 
     private
 
-    def setup_context(request, cookies, additional_context)
-      default_context = Castle::DefaultContext.new(request, cookies).call
-      Castle::ContextMerger.call(default_context, additional_context)
-    end
-
-    def failover_response_or_raise(failover_response, error)
-      return failover_response.generate unless Castle.config.failover_strategy == :throw
-      raise error
+    def add_timestamp_if_necessary!(options)
+      options[:timestamp] ||= @timestamp if @timestamp
     end
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::ContextMerger do
+describe Castle::Context::Merger do
   let(:first) { { test: { test1: { c: '4' } } } }
 
   context '#call' do

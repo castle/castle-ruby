@@ -9,8 +9,8 @@ module Castle
 
       def build(options = {})
         validate!(options)
-        context = ContextMerger.call(@context, options[:context])
-        context = ContextSanitizer.call(context)
+        context = Castle::Context::Merger.call(@context, options[:context])
+        context = Castle::Context::Sanitizer.call(context)
 
         Castle::Command.new('authenticate',
                             options.merge(context: context,
