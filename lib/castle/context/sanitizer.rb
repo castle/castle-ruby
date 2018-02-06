@@ -12,7 +12,8 @@ module Castle
         private
 
         def sanitized_active_mode(context)
-          return context unless context && context.key?(:active)
+          return unless context
+          return context unless context.key?(:active)
           return context if [true, false].include?(context[:active])
           context.reject { |key| key == :active }
         end

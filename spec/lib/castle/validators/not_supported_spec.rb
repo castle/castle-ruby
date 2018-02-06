@@ -12,7 +12,7 @@ describe Castle::Validators::NotSupported do
           call
         end.to raise_error(
           Castle::InvalidParametersError,
-          'first is/are not supported in identify calls'
+          'first is/are not supported'
         )
       end
     end
