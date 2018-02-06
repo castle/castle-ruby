@@ -44,7 +44,7 @@ module Castle
         begin
           @api.request(command).merge(failover: false, failover_reason: nil)
         rescue Castle::RequestError, Castle::InternalServerError => error
-          self.class::failover_response_or_raise(
+          self.class.failover_response_or_raise(
             FailoverAuthResponse.new(options[:user_id], reason: error.to_s), error
           )
         end

@@ -35,28 +35,28 @@ describe Castle::Response do
   end
 
   describe 'parse' do
-    context 'successfully' do
+    context 'when success' do
       let(:response) { OpenStruct.new(body: '{"user":1}', code: 200) }
 
       it do
         expect(castle_response.parse).to eql(user: 1)
       end
     end
-    context 'return empty object when response empty' do
+    context 'when response empty' do
       let(:response) { OpenStruct.new(body: '', code: 200) }
 
       it do
         expect(castle_response.parse).to eql({})
       end
     end
-    context 'return empty object when response nil' do
+    context 'when response nil' do
       let(:response) { OpenStruct.new(code: 200) }
 
       it do
         expect(castle_response.parse).to eql({})
       end
     end
-    context 'fail when json is malformed' do
+    context 'when json is malformed' do
       let(:response) { OpenStruct.new(body: '{a', code: 200) }
 
       it do

@@ -15,10 +15,10 @@ describe Castle::Commands::Track do
   describe '#build' do
     subject(:command) { instance.build(payload) }
 
-    context 'simple merger' do
-      let(:payload) { default_payload.merge({ context: { test: { test2: '1' } } }) }
+    context 'with simple merger' do
+      let(:payload) { default_payload.merge(context: { test: { test2: '1' } }) }
       let(:command_data) do
-        default_payload.merge({ context: { test: { test1: '1', test2: '1' } } })
+        default_payload.merge(context: { test: { test1: '1', test2: '1' } })
       end
 
       it { expect(command.method).to be_eql(:post) }
@@ -26,10 +26,10 @@ describe Castle::Commands::Track do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'user_id' do
-      let(:payload) { default_payload.merge({ user_id: '1234' }) }
+    context 'with user_id' do
+      let(:payload) { default_payload.merge(user_id: '1234') }
       let(:command_data) do
-        default_payload.merge({ user_id: '1234', context: context })
+        default_payload.merge(user_id: '1234', context: context)
       end
 
       it { expect(command.method).to be_eql(:post) }
@@ -37,10 +37,10 @@ describe Castle::Commands::Track do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'properties' do
-      let(:payload) { default_payload.merge({ properties: { test: '1' } }) }
+    context 'with properties' do
+      let(:payload) { default_payload.merge(properties: { test: '1' }) }
       let(:command_data) do
-        default_payload.merge({ properties: { test: '1' }, context: context })
+        default_payload.merge(properties: { test: '1' }, context: context)
       end
 
       it { expect(command.method).to be_eql(:post) }
@@ -48,10 +48,10 @@ describe Castle::Commands::Track do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'traits' do
-      let(:payload) { default_payload.merge({ traits: { test: '1' } }) }
+    context 'with traits' do
+      let(:payload) { default_payload.merge(traits: { test: '1' }) }
       let(:command_data) do
-        default_payload.merge({ traits: { test: '1' }, context: context })
+        default_payload.merge(traits: { test: '1' }, context: context)
       end
 
       it { expect(command.method).to be_eql(:post) }
@@ -59,10 +59,10 @@ describe Castle::Commands::Track do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'active true' do
-      let(:payload) { default_payload.merge({ context: { active: true } }) }
+    context 'when active true' do
+      let(:payload) { default_payload.merge(context: { active: true }) }
       let(:command_data) do
-        default_payload.merge({ context: context.merge(active: true) })
+        default_payload.merge(context: context.merge(active: true))
       end
 
       it { expect(command.method).to be_eql(:post) }
@@ -70,10 +70,10 @@ describe Castle::Commands::Track do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'active false' do
-      let(:payload) { default_payload.merge({ context: { active: false } }) }
+    context 'when active false' do
+      let(:payload) { default_payload.merge(context: { active: false }) }
       let(:command_data) do
-        default_payload.merge({ context: context.merge(active: false) })
+        default_payload.merge(context: context.merge(active: false))
       end
 
       it { expect(command.method).to be_eql(:post) }
@@ -81,9 +81,9 @@ describe Castle::Commands::Track do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'active string' do
-      let(:payload) { default_payload.merge({ context: { active: 'string' } }) }
-      let(:command_data) { default_payload.merge({ context: context }) }
+    context 'when active string' do
+      let(:payload) { default_payload.merge(context: { active: 'string' }) }
+      let(:command_data) { default_payload.merge(context: context) }
 
       it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('track') }
@@ -94,7 +94,7 @@ describe Castle::Commands::Track do
   describe '#validate!' do
     subject(:validate!) { instance.build(payload) }
 
-    context 'event not present' do
+    context 'when event not present' do
       let(:payload) { {} }
 
       it do
@@ -104,7 +104,7 @@ describe Castle::Commands::Track do
       end
     end
 
-    context 'event present' do
+    context 'when event present' do
       let(:payload) { { event: '$login.track' } }
 
       it { expect { validate! }.not_to raise_error }

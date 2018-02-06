@@ -6,7 +6,8 @@ module Castle
       class << self
         def call(options, keys)
           keys.each do |key|
-            raise Castle::InvalidParametersError, "#{key} is/are not supported in identify calls" if options.key?(key)
+            next unless options.key?(key)
+            raise Castle::InvalidParametersError, "#{key} is/are not supported in identify calls"
           end
         end
       end

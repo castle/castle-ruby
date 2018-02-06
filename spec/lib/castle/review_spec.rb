@@ -7,7 +7,7 @@ describe Castle::Review do
     ).to_return(status: 200, body: '{}', headers: {})
   end
 
-  context '#retrieve' do
+  describe '#retrieve' do
     subject(:retrieve) { described_class.retrieve(review_id) }
 
     let(:review_id) { '1234' }

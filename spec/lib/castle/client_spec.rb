@@ -255,7 +255,7 @@ describe Castle::Client do
     context 'when request is internal server error' do
       before { allow(client.api).to receive(:request).and_raise(Castle::InternalServerError) }
 
-      context 'throw strategy' do
+      describe 'throw strategy' do
         before { allow(Castle.config).to receive(:failover_strategy).and_return(:throw) }
 
         it { expect { request_response }.to raise_error(Castle::InternalServerError) }

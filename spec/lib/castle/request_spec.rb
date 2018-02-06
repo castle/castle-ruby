@@ -7,7 +7,7 @@ describe Castle::Request do
   let(:api_secret) { Castle.config.api_secret }
 
   describe 'build' do
-    context 'get' do
+    context 'when get' do
       let(:path) { 'endpoint' }
       let(:params) { { user_id: 1 } }
       let(:request) { subject.build(path, params, :get) }
@@ -19,7 +19,7 @@ describe Castle::Request do
       it { expect(request.to_hash['authorization'][0]).to match(/Basic \w/) }
     end
 
-    context 'post' do
+    context 'when post' do
       let(:path) { 'endpoint' }
       let(:params) { { user_id: 1 } }
       let(:request) { subject.build(path, params, :post) }
