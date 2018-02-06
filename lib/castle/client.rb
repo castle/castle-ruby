@@ -39,7 +39,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       if tracked?
-        add_timestamp_if_necessary!(options)
+        add_timestamp_if_necessary(options)
         command = Castle::Commands::Authenticate.new(@context).build(options)
         begin
           @api.request(command).merge(failover: false, failover_reason: nil)
@@ -60,7 +60,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
-      add_timestamp_if_necessary!(options)
+      add_timestamp_if_necessary(options)
 
       command = Castle::Commands::Identify.new(@context).build(options)
       @api.request(command)
@@ -70,7 +70,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
-      add_timestamp_if_necessary!(options)
+      add_timestamp_if_necessary(options)
 
       command = Castle::Commands::Track.new(@context).build(options)
       @api.request(command)
@@ -96,7 +96,7 @@ module Castle
 
     private
 
-    def add_timestamp_if_necessary!(options)
+    def add_timestamp_if_necessary(options)
       options[:timestamp] ||= @timestamp if @timestamp
     end
   end

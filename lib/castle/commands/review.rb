@@ -4,8 +4,7 @@ module Castle
   module Commands
     class Review
       def build(review_id)
-        raise Castle::InvalidParametersError if review_id.nil? || review_id.to_s.empty?
-
+        Castle::Validators::Present.call({review_id: review_id}, %i[review_id])
         Castle::Command.new("reviews/#{review_id}", nil, :get)
       end
     end
