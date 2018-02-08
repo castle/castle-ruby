@@ -4,7 +4,7 @@
 
 **Enhancements:**
 
-- [#108](github.com/castle/castle-ruby/pull/108) move context classes to theirs own scope, move command validations to their own classes, code cleanup
+- [#108](github.com/castle/castle-ruby/pull/108) move context and command validation to their own scope and classes, code cleanup, code cleanup
 
 ## 3.4.0 (2018-01-27)
 
