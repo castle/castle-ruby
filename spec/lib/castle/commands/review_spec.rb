@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Castle::Commands::Review do
-  subject(:instance) { described_class.new }
+  subject(:instance) { described_class }
 
   let(:context) { {} }
   let(:review_id) { '1234' }

@@ -6,23 +6,23 @@ describe Castle::Configuration do
   end
 
   describe 'host' do
-    context 'default' do
+    context 'with default' do
       it { expect(config.host).to be_eql('api.castle.io') }
     end
 
-    context 'setter' do
+    context 'with setter' do
       before { config.host = 'api.castle.dev' }
 
       it { expect(config.host).to be_eql('api.castle.dev') }
     end
   end
 
-  describe 'host' do
-    context 'default' do
+  describe 'post' do
+    context 'with default' do
       it { expect(config.port).to be_eql(443) }
     end
 
-    context 'setter' do
+    context 'with setter' do
       before { config.port = 3001 }
 
       it { expect(config.port).to be_eql(3001) }
@@ -30,7 +30,7 @@ describe Castle::Configuration do
   end
 
   describe 'api_secret' do
-    context 'env' do
+    context 'with env' do
       before do
         allow(ENV).to receive(:fetch).with(
           'CASTLE_API_SECRET', ''
@@ -42,7 +42,7 @@ describe Castle::Configuration do
       end
     end
 
-    context 'setter' do
+    context 'with setter' do
       let(:value) { 'new_secret' }
 
       before do
@@ -63,7 +63,7 @@ describe Castle::Configuration do
       expect(config.request_timeout).to be_eql(500)
     end
 
-    context 'setter' do
+    context 'with setter' do
       let(:value) { 50.0 }
 
       before do
@@ -80,7 +80,7 @@ describe Castle::Configuration do
       expect(config.whitelisted.size).to be_eql(13)
     end
 
-    context 'setter' do
+    context 'with setter' do
       before do
         config.whitelisted = ['header']
       end
@@ -89,7 +89,7 @@ describe Castle::Configuration do
       end
     end
 
-    context 'appending' do
+    context 'when appending' do
       before do
         config.whitelisted += ['header']
       end
@@ -103,7 +103,7 @@ describe Castle::Configuration do
       expect(config.blacklisted.size).to be_eql(1)
     end
 
-    context 'setter' do
+    context 'with setter' do
       before do
         config.blacklisted = ['header']
       end
@@ -112,7 +112,7 @@ describe Castle::Configuration do
       end
     end
 
-    context 'appending' do
+    context 'when appending' do
       before do
         config.blacklisted += ['header']
       end
@@ -126,7 +126,7 @@ describe Castle::Configuration do
       expect(config.failover_strategy).to be_eql(:allow)
     end
 
-    context 'setter' do
+    context 'with setter' do
       before do
         config.failover_strategy = :deny
       end

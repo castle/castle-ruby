@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::ContextSanitizer do
+describe Castle::Context::Sanitizer do
   let(:paylod) { { test: 'test' } }
 
   describe '#call' do

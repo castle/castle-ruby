@@ -24,7 +24,7 @@ module Castle
     BLACKLISTED = ['HTTP_COOKIE'].freeze
 
     attr_accessor :host, :port, :request_timeout, :url_prefix
-    attr_reader :api_secret, :host, :port, :whitelisted, :blacklisted, :failover_strategy
+    attr_reader :api_secret, :whitelisted, :blacklisted, :failover_strategy
 
     def initialize
       @formatter = Castle::HeaderFormatter.new
@@ -57,7 +57,6 @@ module Castle
     def failover_strategy=(value)
       @failover_strategy = FAILOVER_STRATEGIES.detect { |strategy| strategy == value.to_sym }
       raise Castle::ConfigurationError, 'unrecognized failover strategy' if @failover_strategy.nil?
-      @failover_strategy
     end
 
     private

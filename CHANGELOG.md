@@ -2,6 +2,10 @@
 
 ## master
 
+**Enhancements:**
+
+- [#108](github.com/castle/castle-ruby/pull/108) move context and command validation to their own scope and classes, code cleanup, code cleanup
+
 ## 3.4.0 (2018-01-27)
 
 - [#101](github.com/castle/castle-ruby/pull/103) added `impersonate` method with `user_id`, `impersonator` and `context` options

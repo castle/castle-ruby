@@ -24,7 +24,7 @@ describe Castle do
       it { expect(castle.config.request_timeout).to be_eql(timeout) }
     end
 
-    context 'by block' do
+    context 'with block' do
       before do
         castle.configure do |config|
           config.api_secret = value
@@ -35,13 +35,13 @@ describe Castle do
       it_behaves_like 'config_setup'
     end
 
-    context 'by options' do
+    context 'with options' do
       before { castle.configure(request_timeout: timeout, api_secret: value) }
 
       it_behaves_like 'config_setup'
     end
 
-    context 'by block and options' do
+    context 'with block and options' do
       before do
         castle.configure(request_timeout: timeout) do |config|
           config.api_secret = value

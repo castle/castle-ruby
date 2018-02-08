@@ -36,7 +36,7 @@ describe Castle::Extractors::ClientId do
     end
   end
 
-  context 'allow cookies to be undefined' do
+  context 'when cookies undefined' do
     let(:cookies) { nil }
     let(:headers) { {} }
 
