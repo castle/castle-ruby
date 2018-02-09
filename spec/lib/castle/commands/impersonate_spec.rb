@@ -5,7 +5,7 @@ describe Castle::Commands::Impersonate do
 
   let(:context) { { user_agent: 'test', ip: '127.0.0.1', client_id: 'test' } }
   let(:impersonator) { 'test@castle.io' }
-  let(:default_payload) { { user_id: '1234' } }
+  let(:default_payload) { { user_id: '1234', sent_at: time_auto } }
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
