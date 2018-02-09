@@ -5,7 +5,7 @@
 [![Gem Version](https://badge.fury.io/rb/castle-rb.svg)](https://badge.fury.io/rb/castle-rb)
 [![Dependency Status](https://gemnasium.com/badges/github.com/castle/castle-ruby.svg)](https://gemnasium.com/github.com/castle/castle-ruby)
 
-**[Castle](https://castle.io) adds real-time monitoring of your authentication stack, instantly notifying you and your users on potential account hijacks.**
+**[Castle](https://castle.io) analyzes device, location, and interaction patterns in your web and mobile apps and lets you stop account takeover attacks in real-time..**
 
 ## Installation
 
@@ -14,6 +14,10 @@ Add the `castle-rb` gem to your `Gemfile`
 ```ruby
 gem 'castle-rb'
 ```
+
+## Configuration
+
+### Framework configuration
 
 Load and configure the library with your Castle API secret in an initializer or similar.
 
@@ -49,28 +53,7 @@ module Web
 end
 ```
 
-The client will automatically configure the [request context](https://api.castle.io/docs#request-context) for each request.
-
-## Documentation
-
-[Official Castle docs](https://castle.io/docs)
-
-## Exceptions
-
-`Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response. You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
-
-```ruby
-begin
-  castle.track(
-    event: '$login.succeeded',
-    user_id: user.id
-  )
-rescue Castle::Error => e
-  puts e.message
-end
-```
-
-## Configuration
+### Client configuration
 
 ```ruby
 Castle.configure do |config|
@@ -96,6 +79,23 @@ Castle.configure do |config|
 end
 ```
 
+The client will automatically configure the context for each request.
+
+## Tracking
+
+Here is a simple example of a track event.
+
+
+```ruby
+begin
+  castle.track(
+    event: '$login.succeeded',
+    user_id: user.id
+  )
+rescue Castle::Error => e
+  puts e.message
+end
+```
 
 ## Signature
 
@@ -134,3 +134,11 @@ track_options = ::Castle::Client.to_options({
 })
 CastleTrackingWorker.perform_async(request_context, track_options)
 ```
+
+## Exceptions
+
+`Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response. You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
+
+## Documentation
+
+[Official Castle docs](https://castle.io/docs)
