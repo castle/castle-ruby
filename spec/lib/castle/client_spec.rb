@@ -76,7 +76,8 @@ describe Castle::Client do
   describe 'impersonate' do
     let(:impersonator) { 'test@castle.io' }
     let(:request_body) do
-      { user_id: '1234', impersonator: impersonator, context: context }
+      { user_id: '1234', timestamp: time_auto, sent_at: time_auto,
+        impersonator: impersonator, context: context }
     end
     let(:options) { { user_id: '1234', impersonator: impersonator } }
 
