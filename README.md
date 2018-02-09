@@ -135,6 +135,10 @@ track_options = ::Castle::Client.to_options({
 CastleTrackingWorker.perform_async(request_context, track_options)
 ```
 
+## Impersonation mode
+
+https://castle.io/docs/impersonation
+
 ## Exceptions
 
 `Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response. You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
