@@ -2,9 +2,11 @@
 
 ## master
 
+- [#113](github.com/castle/castle-ruby/pull/113) support ruby >= 2.2.6
+
 **Enhancements:**
 
-- [#108](github.com/castle/castle-ruby/pull/108) move context and command validation to their own scope and classes, code cleanup, code cleanup
+- [#108](github.com/castle/castle-ruby/pull/108) move context and command validation to their own scope and classes, code cleanup
 
 ## 3.4.0 (2018-01-27)
 
