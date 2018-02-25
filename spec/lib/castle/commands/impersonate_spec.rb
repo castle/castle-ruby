@@ -75,6 +75,13 @@ describe Castle::Commands::Impersonate do
       it { expect(command.path).to be_eql('impersonate') }
       it { expect(command.data).to be_eql(command_data) }
     end
+
+    context 'when reset' do
+      let(:payload) { default_payload.merge(reset: true) }
+
+      it { expect(command.method).to be_eql(:delete) }
+      it { expect(command.path).to be_eql('impersonate') }
+    end
   end
 
   describe '#validate!' do
