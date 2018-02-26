@@ -2,9 +2,11 @@
 
 ## master
 
+## 3.4.2 (2018-02-26)
+
 **Features:**
 
-- [#114](github.com/castle/castle-ruby/pull/114) added reset option to `impersonate`
+- [#115](github.com/castle/castle-ruby/pull/114) added reset option to `impersonate`
 
 ## 3.4.1 (2018-02-21)
 
