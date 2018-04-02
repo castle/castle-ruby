@@ -2,6 +2,10 @@
 
 ## master
 
+**BREAKING CHANGES:**
+
+- [#119](github.com/castle/castle-ruby/pull/119) usage of `traits` key is deprecated, use `user_traits` instead
+
 ## 3.4.2 (2018-02-26)
 
 **Features:**

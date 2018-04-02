@@ -48,10 +48,10 @@ describe Castle::Commands::Track do
       it { expect(command.data).to be_eql(command_data) }
     end
 
-    context 'with traits' do
-      let(:payload) { default_payload.merge(traits: { test: '1' }) }
+    context 'with user_traits' do
+      let(:payload) { default_payload.merge(user_traits: { test: '1' }) }
       let(:command_data) do
-        default_payload.merge(traits: { test: '1' }, context: context)
+        default_payload.merge(user_traits: { test: '1' }, context: context)
       end
 
       it { expect(command.method).to be_eql(:post) }
