@@ -65,8 +65,8 @@ module Castle
       /^(\w+)=$/ =~ method_name
     end
 
-    def method_missing(m, *_args)
-      raise Castle::ConfigurationError, "there is no such a config #{m}"
+    def method_missing(setting, *_args)
+      raise Castle::ConfigurationError, "there is no such a config #{setting}"
     end
   end
 end

@@ -9,9 +9,8 @@ module Castle
         @cookies = cookies || {}
       end
 
-      def call(name)
-        @cookies[name] ||
-          @request.env.fetch('HTTP_X_CASTLE_CLIENT_ID', '')
+      def call
+        @request.env['HTTP_X_CASTLE_CLIENT_ID'] || @cookies['__cid'] || ''
       end
     end
   end

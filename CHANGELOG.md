@@ -6,6 +6,10 @@
 
 - [#119](github.com/castle/castle-ruby/pull/119) usage of `traits` key is deprecated, use `user_traits` instead
 
+**Enhancements:**
+
+- [#122](github.com/castle/castle-ruby/pull/122) `X-Castle-Client-Id` takes precedence over `cid` from `cookies`
+
 ## 3.4.2 (2018-02-26)
 
 **Features:**
