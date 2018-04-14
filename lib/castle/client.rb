@@ -81,7 +81,9 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
       add_timestamp_if_necessary(options)
       command = Castle::Commands::Impersonate.new(@context).build(options)
-      @api.request(command)
+      @api.request(command).tap do |response|
+        raise Castle::ImpersonationFailed unless response[:success]
+      end
     end
 
     def disable_tracking

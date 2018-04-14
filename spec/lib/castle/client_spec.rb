@@ -36,13 +36,14 @@ describe Castle::Client do
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
   let(:time_user) { (Time.now - 10_000).utc.iso8601(3) }
+  let(:response_body) { {}.to_json }
 
   before do
     Timecop.freeze(time_now)
     stub_const('Castle::VERSION', '2.2.0')
     stub_request(:any, /api.castle.io/).with(
       basic_auth: ['', 'secret']
-    ).to_return(status: 200, body: '{}', headers: {})
+    ).to_return(status: 200, body: response_body, headers: {})
   end
 
   after { Timecop.return }
@@ -79,16 +80,23 @@ describe Castle::Client do
       { user_id: '1234', timestamp: time_auto, sent_at: time_auto,
         impersonator: impersonator, context: context }
     end
+    let(:response_body) { { success: true }.to_json }
     let(:options) { { user_id: '1234', impersonator: impersonator } }
 
-    before { client.impersonate(options) }
-
     context 'when used with symbol keys' do
+      before { client.impersonate(options) }
+
       it do
         assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
+    end
+
+    context 'when request is not successful' do
+      let(:response_body) { {}.to_json }
+
+      it { expect { client.impersonate(options) }.to raise_error(Castle::ImpersonationFailed) }
     end
   end
 
