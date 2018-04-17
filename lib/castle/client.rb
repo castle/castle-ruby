@@ -17,6 +17,7 @@ module Castle
 
       def to_options(options = {})
         options[:timestamp] ||= Castle::Utils::Timestamp.call
+        warn '[DEPRECATION] use user_traits instead of traits key' if options.key?(:traits)
         options
       end
 

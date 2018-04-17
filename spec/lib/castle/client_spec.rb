@@ -65,8 +65,8 @@ describe Castle::Client do
   end
 
   describe 'to_options' do
-    let(:options) { { user_id: '1234', traits: { name: 'Jo' } } }
-    let(:result) { { user_id: '1234', traits: { name: 'Jo' }, timestamp: time_auto } }
+    let(:options) { { user_id: '1234', user_traits: { name: 'Jo' } } }
+    let(:result) { { user_id: '1234', user_traits: { name: 'Jo' }, timestamp: time_auto } }
 
     it do
       expect(described_class.to_options(options)).to eql(result)
@@ -95,13 +95,13 @@ describe Castle::Client do
   describe 'identify' do
     let(:request_body) do
       { user_id: '1234', timestamp: time_auto,
-        sent_at: time_auto, context: context, traits: { name: 'Jo' } }
+        sent_at: time_auto, context: context, user_traits: { name: 'Jo' } }
     end
 
     before { client.identify(options) }
 
     context 'when used with symbol keys' do
-      let(:options) { { user_id: '1234', traits: { name: 'Jo' } } }
+      let(:options) { { user_id: '1234', user_traits: { name: 'Jo' } } }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
@@ -111,9 +111,9 @@ describe Castle::Client do
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:client) { client_with_no_timestamp }
-        let(:options) { { user_id: '1234', traits: { name: 'Jo' }, timestamp: time_user } }
+        let(:options) { { user_id: '1234', user_traits: { name: 'Jo' }, timestamp: time_user } }
         let(:request_body) do
-          { user_id: '1234', traits: { name: 'Jo' }, context: context,
+          { user_id: '1234', user_traits: { name: 'Jo' }, context: context,
             timestamp: time_user, sent_at: time_auto }
         end
 
@@ -128,7 +128,7 @@ describe Castle::Client do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
           { user_id: '1234', timestamp: time_user, sent_at: time_auto,
-            context: context, traits: { name: 'Jo' } }
+            context: context, user_traits: { name: 'Jo' } }
         end
 
         it do
@@ -140,7 +140,7 @@ describe Castle::Client do
     end
 
     context 'when used with string keys' do
-      let(:options) { { 'user_id' => '1234', 'traits' => { 'name' => 'Jo' } } }
+      let(:options) { { 'user_id' => '1234', 'user_traits' => { 'name' => 'Jo' } } }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|

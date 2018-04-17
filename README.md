@@ -128,7 +128,7 @@ track_options = ::Castle::Client.to_options({
   properties: {
     key: 'value'
   },
-  traits: {
+  user_traits: {
     key: 'value'
   }
 })
