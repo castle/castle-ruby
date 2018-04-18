@@ -4,7 +4,7 @@ module Castle
   module Context
     class Default
       def initialize(request, cookies = nil)
-        @client_id = Extractors::ClientId.new(request, cookies || request.cookies).call('__cid')
+        @client_id = Extractors::ClientId.new(request, cookies || request.cookies).call
         @headers = Extractors::Headers.new(request).call
         @request_ip = Extractors::IP.new(request).call
       end
