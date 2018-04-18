@@ -26,4 +26,7 @@ module Castle
   class UnauthorizedError < Castle::ApiError; end
   # all internal server errors
   class InternalServerError < Castle::ApiError; end
+
+  # impersonation command failed
+  class ImpersonationFailed < Castle::ApiError; end
 end

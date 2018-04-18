@@ -9,6 +9,7 @@
 **Enhancements:**
 
 - [#122](github.com/castle/castle-ruby/pull/122) `X-Castle-Client-Id` takes precedence over `cid` from `cookies`
+- [#121](github.com/castle/castle-ruby/pull/121) raise Castle::ImpersonationFailed when impersonation request failed
 
 ## 3.4.2 (2018-02-26)
 
