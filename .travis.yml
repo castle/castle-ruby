@@ -1,12 +1,15 @@
+dist: trusty
+sudo: false
 language: ruby
+cache: bundler
 rvm:
-  - 2.5.0
+  - 2.3.7
   - 2.4.3
-  - 2.3.6
-  - 2.2.9
+  - 2.5.1
   - ruby-head
 
 before_install:
+  - gem install bundler
   - gem update --system
 
 matrix:
