@@ -48,7 +48,7 @@ GEM
     thor (0.20.0)
     timecop (0.9.1)
     tins (1.16.3)
-    webmock (3.4.1)
+    webmock (3.4.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
