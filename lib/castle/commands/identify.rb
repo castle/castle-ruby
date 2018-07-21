@@ -8,7 +8,6 @@ module Castle
       end
 
       def build(options = {})
-        Castle::Validators::Present.call(options, %i[user_id])
         Castle::Validators::NotSupported.call(options, %i[properties])
         context = Castle::Context::Merger.call(@context, options[:context])
         context = Castle::Context::Sanitizer.call(context)

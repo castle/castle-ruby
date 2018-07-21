@@ -75,11 +75,7 @@ describe Castle::Commands::Identify do
     context 'with user_id not present' do
       let(:payload) { {} }
 
-      it do
-        expect do
-          validate!
-        end.to raise_error(Castle::InvalidParametersError, 'user_id is missing or empty')
-      end
+      it { expect { validate! }.not_to raise_error }
     end
 
     context 'with user_id present' do
