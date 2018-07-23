@@ -3,9 +3,9 @@
 module Castle
   class Review
     def self.retrieve(review_id)
-      command = Castle::Commands::Review.build(review_id)
-
-      API.new.request(command)
+      Castle::API.request(
+        Castle::Commands::Review.build(review_id)
+      )
     end
   end
 end

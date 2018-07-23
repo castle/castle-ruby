@@ -14,10 +14,6 @@ describe Castle::Review do
 
     before { retrieve }
 
-    it do
-      assert_requested :get,
-                       "https://api.castle.io/v1/reviews/#{review_id}",
-                       times: 1
-    end
+    it { assert_requested :get, "https://api.castle.io/v1/reviews/#{review_id}", times: 1 }
   end
 end

@@ -3,8 +3,17 @@
 module Castle
   # general error
   class Error < RuntimeError; end
-  # request error
-  class RequestError < Castle::Error; end
+  # Raised when anything is wrong with the request (any unhappy path)
+  # This error indicates that either we would wait too long for a response or something
+  # else happened somewhere in the middle and we weren't able to get the results
+  class RequestError < Castle::Error
+    attr_reader :reason
+
+    # @param reason [Exception] the core exception that causes this error
+    def initialize(reason)
+      @reason = reason
+    end
+  end
   # security error
   class SecurityError < Castle::Error; end
   # wrong configuration error
