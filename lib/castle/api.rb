@@ -2,44 +2,38 @@
 
 module Castle
   # this class is responsible for making requests to api
-  class API
-    def initialize(headers = {})
-      @config = Castle.config
-      @http = prepare_http
-      @headers = headers.merge('Content-Type' => 'application/json')
-    end
+  module API
+    # Errors we handle internally
+    HANDLED_ERRORS = [
+      Timeout::Error,
+      Errno::EINVAL,
+      Errno::ECONNRESET,
+      EOFError,
+      Net::HTTPBadResponse,
+      Net::HTTPHeaderSyntaxError,
+      Net::ProtocolError
+    ].freeze
 
-    def request(command)
-      request = Castle::Request.new(@headers).build(
-        command.path,
-        command.data,
-        command.method
-      )
-      perform_request(request)
-    end
+    private_constant :HANDLED_ERRORS
 
-    private
+    class << self
+      def request(command, headers = {})
+        raise Castle::ConfigurationError, 'configuration is not valid' unless Castle.config.valid?
 
-    def prepare_http
-      http = Net::HTTP.new(@config.host, @config.port)
-      http.read_timeout = @config.request_timeout / 1000.0
-      prepare_http_for_ssl(http) if @config.port == 443
-      http
-    end
-
-    def prepare_http_for_ssl(http)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-    end
-
-    def perform_request(request)
-      raise Castle::ConfigurationError, 'configuration is not valid' unless @config.valid?
-      begin
-        Castle::Response.new(@http.request(request)).parse
-      rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
-             Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
-             Net::ProtocolError
-        raise Castle::RequestError, 'Castle API connection error'
+        begin
+          Castle::API::Response.call(
+            Castle::API::Request.call(
+              command,
+              Castle.config.api_secret,
+              headers
+            )
+          )
+        rescue *HANDLED_ERRORS => error
+          # @note We need to initialize the error, as the original error is a cause for this
+          # custom exception. If we would do it the default Ruby way, the original error
+          # would get converted into a string
+          raise Castle::RequestError.new(error) # rubocop:disable Style/RaiseArgs
+        end
       end
     end
   end

@@ -2,6 +2,10 @@
 
 ## master
 
+**Enhancements:**
+
+- [#132](https://github.com/castle/castle-ruby/pull/132) refactor internal `Castle::API` and it's components
+
 ## 3.5.0 (2018-04-18)
 
 **BREAKING CHANGES:**

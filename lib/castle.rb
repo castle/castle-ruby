@@ -1,39 +1,44 @@
 # frozen_string_literal: true
 
-require 'openssl'
-require 'net/http'
-require 'json'
-require 'time'
+%w[
+  openssl
+  net/http
+  json
+  time
+].each(&method(:require))
 
-require 'castle/version'
-require 'castle/errors'
-require 'castle/command'
-require 'castle/utils'
-require 'castle/utils/merger'
-require 'castle/utils/cloner'
-require 'castle/utils/timestamp'
-require 'castle/validators/present'
-require 'castle/validators/not_supported'
-require 'castle/context/merger'
-require 'castle/context/sanitizer'
-require 'castle/context/default'
-require 'castle/commands/identify'
-require 'castle/commands/authenticate'
-require 'castle/commands/track'
-require 'castle/commands/review'
-require 'castle/commands/impersonate'
-require 'castle/configuration'
-require 'castle/failover_auth_response'
-require 'castle/client'
-require 'castle/header_formatter'
-require 'castle/secure_mode'
-require 'castle/extractors/client_id'
-require 'castle/extractors/headers'
-require 'castle/extractors/ip'
-require 'castle/response'
-require 'castle/request'
-require 'castle/review'
-require 'castle/api'
+%w[
+  castle/version
+  castle/errors
+  castle/command
+  castle/utils
+  castle/utils/merger
+  castle/utils/cloner
+  castle/utils/timestamp
+  castle/validators/present
+  castle/validators/not_supported
+  castle/context/merger
+  castle/context/sanitizer
+  castle/context/default
+  castle/commands/identify
+  castle/commands/authenticate
+  castle/commands/track
+  castle/commands/review
+  castle/commands/impersonate
+  castle/configuration
+  castle/failover_auth_response
+  castle/client
+  castle/header_formatter
+  castle/secure_mode
+  castle/extractors/client_id
+  castle/extractors/headers
+  castle/extractors/ip
+  castle/api/response
+  castle/api/request
+  castle/api/request/build
+  castle/review
+  castle/api
+].each(&method(:require))
 
 # main sdk module
 module Castle

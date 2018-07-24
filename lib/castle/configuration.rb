@@ -3,6 +3,10 @@
 module Castle
   # manages configuration variables
   class Configuration
+    HOST = 'api.castle.io'
+    PORT = 443
+    URL_PREFIX = 'v1'
+    FAILOVER_STRATEGY = :allow
     REQUEST_TIMEOUT = 500 # in milliseconds
     FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
     WHITELISTED = [
@@ -20,7 +24,6 @@ module Castle
       'X-Forwarded-For',
       'CF_CONNECTING_IP'
     ].freeze
-
     BLACKLISTED = ['HTTP_COOKIE'].freeze
 
     attr_accessor :host, :port, :request_timeout, :url_prefix
@@ -29,10 +32,10 @@ module Castle
     def initialize
       @formatter = Castle::HeaderFormatter.new
       @request_timeout = REQUEST_TIMEOUT
-      self.failover_strategy = :allow
-      self.host = 'api.castle.io'
-      self.port = 443
-      self.url_prefix = 'v1'
+      self.failover_strategy = FAILOVER_STRATEGY
+      self.host = HOST
+      self.port = PORT
+      self.url_prefix = URL_PREFIX
       self.whitelisted = WHITELISTED
       self.blacklisted = BLACKLISTED
       self.api_secret = ''
