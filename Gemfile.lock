@@ -21,7 +21,7 @@ GEM
     docile (1.3.1)
     hashdiff (0.3.7)
     json (2.1.0)
-    public_suffix (3.0.2)
+    public_suffix (3.0.3)
     rack (2.0.5)
     rake (12.3.1)
     rspec (3.8.0)
