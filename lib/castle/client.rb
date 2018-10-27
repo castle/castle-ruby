@@ -27,7 +27,7 @@ module Castle
       end
     end
 
-    attr_accessor :api
+    attr_accessor :context
 
     def initialize(context, options = {})
       @do_not_track = options.fetch(:do_not_track, false)
