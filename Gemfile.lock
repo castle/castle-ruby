@@ -23,7 +23,7 @@ GEM
     json (2.1.0)
     public_suffix (3.0.3)
     rack (2.0.6)
-    rake (12.3.1)
+    rake (12.3.2)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -68,4 +68,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.17.1
+   1.17.2
