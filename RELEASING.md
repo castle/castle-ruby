@@ -1,11 +1,13 @@
 Releasing
 =========
 
-1. Update `VERSION` in `lib/castle/version.rb` to the new version
-2. Update the `CHANGELOG.md` for the impending release
-3. `git commit -am "prepare for release X.Y.Z."` (where X.Y.Z is the new version)
-4. `git tag -a vX.Y.Z -m "release X.Y.Z"` (where X.Y.Z is the new version)
-5. `git push --tags`
-6. New release on github
-7. `gem build castle-rb.gemspec`
-8. `gem push castle-rb-X.Y.Z.gem`
+1. Create branch `release X.Y.Z`.
+2. Update `VERSION` in `lib/castle/version.rb` to the new version
+3. Run `bundle`
+4. Update the `CHANGELOG.md` for the impending release
+5. `git commit -am "release X.Y.Z."` (where X.Y.Z is the new version)
+6. Push to Github, make PR, and when ok, merge.
+7. Make a release on Github, specify tag as `vX.Y.Z` to create a tag.
+8. `git checkout master && git pull`
+9. `gem build castle-rb.gemspec`
+10. `gem push castle-rb-X.Y.Z.gem`
