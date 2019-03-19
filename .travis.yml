@@ -1,25 +1,55 @@
+services:
+  - docker
+
 dist: trusty
 sudo: false
-language: ruby
 cache: bundler
-rvm:
-  - 2.3.8
-  - 2.4.5
-  - 2.5.3
-  - ruby-head
 
-before_install:
-  - gem install bundler
-  - gem update --system
+git:
+  depth: false
 
-matrix:
-  allow_failures:
-    - rvm: ruby-head
+test: &test
+  stage: Test
+  language: ruby
+  before_install:
+    - gem install bundler
+    - gem update --system
+  script: bundle exec rspec
+
+jobs:
+  include:
+    - <<: *test
+      rvm: 2.6.2
+    - <<: *test
+      rvm: 2.5.5
+    - <<: *test
+      rvm: 2.4.5
+    - <<: *test
+      rvm: 2.3.8
+
+    - stage: coditsu
+      language: ruby
+      rvm: 2.6.2
+      before_install:
+        - gem update --system
+        - gem install bundler
+      before_script:
+        - docker create -v /sources --name sources alpine:3.4 /bin/true
+        - docker cp ./ sources:/sources
+      script: >
+        docker run
+        -e CODITSU_API_KEY
+        -e CODITSU_API_SECRET
+        -e CODITSU_REPOSITORY_ID
+        --volumes-from sources
+        coditsu/build-runner:latest
+
+stages:
+  - coditsu
+  - test
 
 notifications:
   slack:
     secure: JVXUf9/+m3mRZU6WnJxgskpSbDY6tHRTQwFeUtq7eYFdXYr/BTCprS2RsANLr8K5eLBgOJeEILAZW/plwpBfa9TnWQxknL/OqY4nyrrtUdc+i7TfBNEwO/I6owvELKSYjgxjClJXkcPS8pg6UTr+wYpbQ+7ToVnPdHf6J3Hy7X4=
     on_success: change
     on_failure: always
-
-script: bundle exec rspec
