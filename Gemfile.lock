@@ -22,7 +22,7 @@ GEM
     hashdiff (0.3.8)
     json (2.2.0)
     public_suffix (3.0.3)
-    rack (2.0.6)
+    rack (2.0.7)
     rake (12.3.2)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
