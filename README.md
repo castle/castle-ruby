@@ -67,6 +67,7 @@ Castle.configure do |config|
 
   # Whitelisted and Blacklisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
   # Whitelisted headers
+  # @note In case of the whitelist, we won't send the values of other headers but we will send their names
   config.whitelisted = ['X_HEADER']
   # or append to default
   config.whitelisted += ['http-x-header']

@@ -2,6 +2,11 @@
 
 ## master
 
+**Enhancements:**
+
+- (https://github.com/castle/castle-ruby/pull/163) scrub headers instead of dropping them
+
+
 ## 3.5.2 (2019-01-09)
 
 **Enhancements:**

@@ -20,14 +20,24 @@ describe Castle::Client do
   end
   let(:client_with_no_timestamp) { described_class.new(request_to_context) }
 
-  let(:headers) { { 'X-Forwarded-For' => ip.to_s, 'User-Agent' => ua } }
+  let(:headers) do
+    {
+      'Rack.version': true, 'Rack.input': true, 'Rack.errors': true,
+      'Rack.multithread': true, 'Rack.multiprocess': true, 'Rack.run-Once': true,
+      'Request-Method': true, 'Server-Name': true, 'Server-Port': true,
+      'Query-String': true, 'Path-Info': true, 'Rack.url-Scheme': true,
+      'Https': true, 'Script-Name': true, 'Content-Length': true,
+      'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Rack.request.cookie-Hash': true,
+      'Rack.request.cookie-String': true, 'Cookie': true
+    }
+  end
   let(:context) do
     {
       client_id: 'abcd',
       active: true,
       origin: 'web',
       user_agent: ua,
-      headers: { 'X-Forwarded-For': ip.to_s, 'User-Agent': ua },
+      headers: headers,
       ip: ip,
       library: { name: 'castle-rb', version: '2.2.0' }
     }

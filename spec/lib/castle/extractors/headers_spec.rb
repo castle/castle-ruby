@@ -19,7 +19,13 @@ describe Castle::Extractors::Headers do
     end
     it do
       expect(extractor.call).to eql(
-        'X-Forwarded-For' => '1.2.3.4', 'Test' => '1'
+        'Test' => '1', 'Ok' => true, 'Rack.version' => true,
+        'Rack.input' => true, 'Rack.errors' => true, 'Rack.multithread' => true,
+        'Rack.multiprocess' => true, 'Rack.run-Once' => true, 'Request-Method' => true,
+        'Server-Name' => true, 'Server-Port' => true, 'Query-String' => true,
+        'Path-Info' => true, 'Rack.url-Scheme' => true, 'Https' => true,
+        'Script-Name' => true, 'Content-Length' => true, 'X-Forwarded-For' => '1.2.3.4',
+        'Cookie' => true
       )
     end
   end
