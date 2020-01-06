@@ -18,5 +18,5 @@ Gem::Specification.new do |s|
   s.test_files  = Dir['spec/**/*']
   s.require_paths = ['lib']
 
-  s.required_ruby_version = '>= 2.2.6'
+  s.required_ruby_version = '>= 2.4'
 end
