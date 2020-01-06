@@ -25,7 +25,14 @@ describe Castle::Context::Default do
   it { expect(default_context[:origin]).to be_eql('web') }
   it {
     expect(default_context[:headers]).to be_eql(
-      'X-Forwarded-For' => '1.2.3.4', 'Accept-Language' => 'en', 'User-Agent' => 'test'
+      'Rack.version' => true, 'Rack.input' => true, 'Rack.errors' => true,
+      'Rack.multithread' => true, 'Rack.multiprocess' => true, 'Rack.run-Once' => true,
+      'Request-Method' => true, 'Server-Name' => true, 'Server-Port' => true,
+      'Query-String' => true, 'Path-Info' => true, 'Rack.url-Scheme' => true,
+      'Https' => true, 'Script-Name' => true, 'Content-Length' => true,
+      'X-Forwarded-For' => '1.2.3.4', 'Accept-Language' => 'en', 'User-Agent' => 'test',
+      'Rack.request.cookie-Hash' => true, 'Rack.request.cookie-String' => true,
+      'Cookie' => true
     )
   }
   it { expect(default_context[:ip]).to be_eql(ip) }

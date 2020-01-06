@@ -14,9 +14,14 @@ module Castle
       def call
         @request_env.keys.each_with_object({}) do |header, acc|
           name = @formatter.call(header)
-          next unless Castle.config.whitelisted.include?(name)
-          next if Castle.config.blacklisted.include?(name)
-          acc[name] = @request_env[header]
+
+          if Castle.config.whitelisted.include?(name) && !Castle.config.blacklisted.include?(name)
+            acc[name] = @request_env[header]
+          else
+            # When a header is not whitelisted or blacklisted, we're not suppose to send
+            # it's value but we should send it's name to indicate it's presence
+            acc[name] = true
+          end
         end
       end
     end
