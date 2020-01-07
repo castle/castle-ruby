@@ -2,6 +2,8 @@
 
 ## master
 
+## 3.6.0 (2020-01-07)
+
 **BREAKING CHANGES:**
 
 - [#165](https://github.com/castle/castle-ruby/pull/165) support ruby >= 2.4
