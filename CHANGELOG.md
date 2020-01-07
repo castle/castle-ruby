@@ -2,9 +2,13 @@
 
 ## master
 
+**BREAKING CHANGES:**
+
+- [#165](https://github.com/castle/castle-ruby/pull/165) support ruby >= 2.4
+
 **Enhancements:**
 
-- (https://github.com/castle/castle-ruby/pull/163) scrub headers instead of dropping them
+- [#163](https://github.com/castle/castle-ruby/pull/163) scrub headers instead of dropping them
 
 
 ## 3.5.2 (2019-01-09)
