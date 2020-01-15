@@ -23,6 +23,7 @@ describe Castle::Context::Default do
 
   it { expect(default_context[:active]).to be_eql(true) }
   it { expect(default_context[:origin]).to be_eql('web') }
+
   it do
     expect(default_context[:headers]).to be_eql(
       'X-Forwarded-For' => '1.2.3.4',
@@ -32,6 +33,7 @@ describe Castle::Context::Default do
       'Cookie' => true
     )
   end
+
   it { expect(default_context[:ip]).to be_eql(ip) }
   it { expect(default_context[:library][:name]).to be_eql('castle-rb') }
   it { expect(default_context[:library][:version]).to be_eql(version) }

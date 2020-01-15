@@ -15,7 +15,7 @@ require 'castle'
 WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.configure do |config|
-  config.before(:each) do
+  config.before do
     Castle.instance_variable_set(:@configuration, Castle::Configuration.new)
 
     Castle.configure do |cfg|

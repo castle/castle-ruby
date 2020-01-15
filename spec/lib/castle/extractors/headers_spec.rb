@@ -14,22 +14,20 @@ describe Castle::Extractors::Headers do
       'HTTP_ACCEPT' => 'application/json',
       'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
       'HTTP_USER_AGENT' => 'Mozilla 1234',
-      'TEST' => '1',
+      'TEST' => '1'
     )
   end
   let(:request) { Rack::Request.new(env) }
 
   context 'when whitelist is not set in the configuration' do
     it do
-      is_expected.to eq(
-                       'Accept' => 'application/json',
-                       'Authorization' => true,
-                       'Cookie' => true,
-                       'Content-Length' => '0',
-                       'Ok' => 'OK',
-                       'User-Agent' => 'Mozilla 1234',
-                       'X-Forwarded-For' => '1.2.3.4'
-                     )
+      is_expected.to eq('Accept' => 'application/json',
+                        'Authorization' => true,
+                        'Cookie' => true,
+                        'Content-Length' => '0',
+                        'Ok' => 'OK',
+                        'User-Agent' => 'Mozilla 1234',
+                        'X-Forwarded-For' => '1.2.3.4')
     end
   end
 
@@ -37,48 +35,42 @@ describe Castle::Extractors::Headers do
     before { Castle.config.whitelisted = %w[Accept OK] }
 
     it do
-      is_expected.to eq(
-                       'Accept' => 'application/json',
-                       'Authorization' => true,
-                       'Cookie' => true,
-                       'Content-Length' => true,
-                       'Ok' => 'OK',
-                       'User-Agent' => 'Mozilla 1234',
-                       'X-Forwarded-For' => true
-                     )
+      is_expected.to eq('Accept' => 'application/json',
+                        'Authorization' => true,
+                        'Cookie' => true,
+                        'Content-Length' => true,
+                        'Ok' => 'OK',
+                        'User-Agent' => 'Mozilla 1234',
+                        'X-Forwarded-For' => true)
     end
   end
 
   context 'when blacklist is set in the configuration' do
-    context 'and includes User-Agent' do
+    context 'with a User-Agent' do
       before { Castle.config.blacklisted = %w[User-Agent] }
 
       it do
-        is_expected.to eq(
-                         'Accept' => 'application/json',
-                         'Authorization' => true,
-                         'Cookie' => true,
-                         'Content-Length' => '0',
-                         'Ok' => 'OK',
-                         'User-Agent' => 'Mozilla 1234',
-                         'X-Forwarded-For' => '1.2.3.4'
-                       )
+        is_expected.to eq('Accept' => 'application/json',
+                          'Authorization' => true,
+                          'Cookie' => true,
+                          'Content-Length' => '0',
+                          'Ok' => 'OK',
+                          'User-Agent' => 'Mozilla 1234',
+                          'X-Forwarded-For' => '1.2.3.4')
       end
     end
 
-    context 'and includes a different header' do
+    context 'with a different header' do
       before { Castle.config.blacklisted = %w[Accept] }
 
       it do
-        is_expected.to eq(
-                         'Accept' => true,
-                         'Authorization' => true,
-                         'Cookie' => true,
-                         'Content-Length' => '0',
-                         'Ok' => 'OK',
-                         'User-Agent' => 'Mozilla 1234',
-                         'X-Forwarded-For' => '1.2.3.4'
-                       )
+        is_expected.to eq('Accept' => true,
+                          'Authorization' => true,
+                          'Cookie' => true,
+                          'Content-Length' => '0',
+                          'Ok' => 'OK',
+                          'User-Agent' => 'Mozilla 1234',
+                          'X-Forwarded-For' => '1.2.3.4')
       end
     end
   end

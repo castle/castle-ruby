@@ -5,13 +5,15 @@ module Castle
     # used for extraction of cookies and headers from the request
     class Headers
       # Headers that we will never scrub, even if they land on the configuration blacklist.
-      ALWAYS_INCLUDED_HEADERS = %w[User-Agent]
+      ALWAYS_INCLUDED_HEADERS = %w[User-Agent].freeze
 
       # Headers that will always be scrubbed, even if whitelisted.
-      ALWAYS_SCRUBBED_HEADERS = %w[Cookie Authorization]
+      ALWAYS_SCRUBBED_HEADERS = %w[Cookie Authorization].freeze
 
+      # Rack does not add the HTTP_ prefix to Content-Length for some reason
       CONTENT_LENGTH = 'CONTENT_LENGTH'
 
+      # Prefix that Rack adds for HTTP headers
       HTTP_HEADER_PREFIX = 'HTTP_'
 
       private_constant :ALWAYS_INCLUDED_HEADERS, :ALWAYS_SCRUBBED_HEADERS,
