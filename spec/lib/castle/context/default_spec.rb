@@ -9,8 +9,8 @@ describe Castle::Context::Default do
   let(:env) do
     Rack::MockRequest.env_for('/',
                               'HTTP_X_FORWARDED_FOR' => ip,
-                              'HTTP-Accept-Language' => 'en',
-                              'HTTP-User-Agent' => 'test',
+                              'HTTP_ACCEPT_LANGUAGE' => 'en',
+                              'HTTP_USER_AGENT' => 'test',
                               'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh")
   end
   let(:request) { Rack::Request.new(env) }
@@ -23,18 +23,15 @@ describe Castle::Context::Default do
 
   it { expect(default_context[:active]).to be_eql(true) }
   it { expect(default_context[:origin]).to be_eql('web') }
-  it {
+  it do
     expect(default_context[:headers]).to be_eql(
-      'Rack.version' => true, 'Rack.input' => true, 'Rack.errors' => true,
-      'Rack.multithread' => true, 'Rack.multiprocess' => true, 'Rack.run-Once' => true,
-      'Request-Method' => true, 'Server-Name' => true, 'Server-Port' => true,
-      'Query-String' => true, 'Path-Info' => true, 'Rack.url-Scheme' => true,
-      'Https' => true, 'Script-Name' => true, 'Content-Length' => true,
-      'X-Forwarded-For' => '1.2.3.4', 'Accept-Language' => 'en', 'User-Agent' => 'test',
-      'Rack.request.cookie-Hash' => true, 'Rack.request.cookie-String' => true,
+      'X-Forwarded-For' => '1.2.3.4',
+      'Accept-Language' => 'en',
+      'User-Agent' => 'test',
+      'Content-Length' => '0',
       'Cookie' => true
     )
-  }
+  end
   it { expect(default_context[:ip]).to be_eql(ip) }
   it { expect(default_context[:library][:name]).to be_eql('castle-rb') }
   it { expect(default_context[:library][:version]).to be_eql(version) }

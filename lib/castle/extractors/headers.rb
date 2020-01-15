@@ -4,23 +4,43 @@ module Castle
   module Extractors
     # used for extraction of cookies and headers from the request
     class Headers
+      # Headers that we will never scrub, even if they land on the configuration blacklist.
+      ALWAYS_INCLUDED_HEADERS = %w[User-Agent]
+
+      # Headers that will always be scrubbed, even if whitelisted.
+      ALWAYS_SCRUBBED_HEADERS = %w[Cookie Authorization]
+
+      CONTENT_LENGTH = 'CONTENT_LENGTH'
+
+      HTTP_HEADER_PREFIX = 'HTTP_'
+
+      private_constant :ALWAYS_INCLUDED_HEADERS, :ALWAYS_SCRUBBED_HEADERS,
+                       :CONTENT_LENGTH, :HTTP_HEADER_PREFIX
+
+      # @param request [Rack::Request]
       def initialize(request)
-        @request = request
-        @request_env = @request.env
+        @request_env = request.env
         @formatter = HeaderFormatter.new
       end
 
       # Serialize HTTP headers
+      # @return [Hash]
       def call
-        @request_env.keys.each_with_object({}) do |header, acc|
-          name = @formatter.call(header)
+        @request_env.keys.each_with_object({}) do |env_header, acc|
+          next unless env_header.start_with?(HTTP_HEADER_PREFIX) || env_header == CONTENT_LENGTH
 
-          if Castle.config.whitelisted.include?(name) && !Castle.config.blacklisted.include?(name)
-            acc[name] = @request_env[header]
+          header = @formatter.call(env_header)
+
+          if ALWAYS_SCRUBBED_HEADERS.include?(header)
+            acc[header] = true
+          elsif ALWAYS_INCLUDED_HEADERS.include?(header)
+            acc[header] = @request_env[env_header]
+          elsif Castle.config.blacklisted.include?(header)
+            acc[header] = true
+          elsif Castle.config.whitelisted.empty? || Castle.config.whitelisted.include?(header)
+            acc[header] = @request_env[env_header]
           else
-            # When a header is not whitelisted or blacklisted, we're not suppose to send
-            # it's value but we should send it's name to indicate it's presence
-            acc[name] = true
+            acc[header] = true
           end
         end
       end

@@ -9,6 +9,9 @@ module Castle
     FAILOVER_STRATEGY = :allow
     REQUEST_TIMEOUT = 500 # in milliseconds
     FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
+    # @note this value is not assigned anymore.
+    #   If you want to customize which headers you send to Castle,
+    #   we suggest using these values as a good default.
     WHITELISTED = [
       'User-Agent',
       'Accept-Language',
@@ -24,7 +27,6 @@ module Castle
       'X-Forwarded-For',
       'CF_CONNECTING_IP'
     ].freeze
-    BLACKLISTED = ['HTTP_COOKIE'].freeze
 
     attr_accessor :host, :port, :request_timeout, :url_prefix
     attr_reader :api_secret, :whitelisted, :blacklisted, :failover_strategy
@@ -36,8 +38,8 @@ module Castle
       self.host = HOST
       self.port = PORT
       self.url_prefix = URL_PREFIX
-      self.whitelisted = WHITELISTED
-      self.blacklisted = BLACKLISTED
+      self.whitelisted = []
+      self.blacklisted = []
       self.api_secret = ''
     end
 

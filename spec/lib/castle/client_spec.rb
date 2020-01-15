@@ -22,13 +22,7 @@ describe Castle::Client do
 
   let(:headers) do
     {
-      'Rack.version': true, 'Rack.input': true, 'Rack.errors': true,
-      'Rack.multithread': true, 'Rack.multiprocess': true, 'Rack.run-Once': true,
-      'Request-Method': true, 'Server-Name': true, 'Server-Port': true,
-      'Query-String': true, 'Path-Info': true, 'Rack.url-Scheme': true,
-      'Https': true, 'Script-Name': true, 'Content-Length': true,
-      'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Rack.request.cookie-Hash': true,
-      'Rack.request.cookie-String': true, 'Cookie': true
+      'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true
     }
   end
   let(:context) do
