@@ -15,6 +15,7 @@ module Castle
     DEFAULT_WHITELIST = %w[
       Accept
       Accept-Charset
+      Accept-Datetime
       Accept-Encoding
       Accept-Language
       Cache-Control
@@ -25,6 +26,8 @@ module Castle
       Origin
       Pragma
       Referer
+      TE
+      Upgrade-Insecure-Requests
       X-Castle-Client-Id
     ].freeze
 
