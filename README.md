@@ -67,15 +67,26 @@ Castle.configure do |config|
 
   # Whitelisted and Blacklisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
   # Whitelisted headers
-  # @note In case of the whitelist, we won't send the values of other headers but we will send their names
-  config.whitelisted = ['X_HEADER']
-  # or append to default
-  config.whitelisted += ['http-x-header']
+  # By default, the SDK sends all HTTP headers, except for Cookie and Authorization.
+  # If you decide to use a whitelist, the SDK will:
+  # - always send the User-Agent header
+  # - send scrubbed values of non-whitelisted headers
+  # - send proper values of whitelisted headers.
+  # @example
+  #   config.whitelisted = ['X_HEADER']
+  #   # will send { 'User-Agent' => 'Chrome', 'X_HEADER' => 'proper value', 'Any-Other-Header' => true }
+  #
+  # We highly suggest using blacklist instead of whitelist, so that Castle can use as many data points
+  # as possible to secure your users. If you want to use the whitelist, this is the minimal
+  # amount of headers we recommend:
+  config.whitelisted = %w[Accept Accept-Charset Accept-Datetime Accept-Encoding Accept-Language
+                          Cache-Control Connection Content-Length Content-Type Cookie Host Origin
+                          Pragma Referer TE Upgrade-Insecure-Requests User-Agent X-Castle-Client-Id]
 
-  # Blacklisted headers take advantage over whitelisted elements
+  # Blacklisted headers take precedence over whitelisted elements
+  # We always blacklist Cookie and Authentication headers. If you use any other headers that
+  # might contain sensitive information, you should blacklist them.
   config.blacklisted = ['HTTP-X-header']
-  # or append to default
-  config.blacklisted += ['X_HEADER']
 end
 ```
 

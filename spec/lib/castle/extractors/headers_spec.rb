@@ -82,4 +82,15 @@ describe Castle::Extractors::Headers do
       end
     end
   end
+
+  context 'when a header is both whitelisted and blacklisted' do
+    before do
+      Castle.config.whitelisted = %w[Accept]
+      Castle.config.blacklisted = %w[Accept]
+    end
+
+    it do
+      expect(headers['Accept']).to eq(true)
+    end
+  end
 end
