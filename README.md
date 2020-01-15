@@ -79,9 +79,7 @@ Castle.configure do |config|
   # We highly suggest using blacklist instead of whitelist, so that Castle can use as many data points
   # as possible to secure your users. If you want to use the whitelist, this is the minimal
   # amount of headers we recommend:
-  config.whitelisted = %w[Accept Accept-Charset Accept-Datetime Accept-Encoding Accept-Language
-                          Cache-Control Connection Content-Length Content-Type Cookie Host Origin
-                          Pragma Referer TE Upgrade-Insecure-Requests User-Agent X-Castle-Client-Id]
+  config.whitelisted = Castle::Configuration::DEFAULT_WHITELIST
 
   # Blacklisted headers take precedence over whitelisted elements
   # We always blacklist Cookie and Authentication headers. If you use any other headers that

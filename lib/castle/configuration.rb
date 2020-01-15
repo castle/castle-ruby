@@ -10,6 +10,24 @@ module Castle
     REQUEST_TIMEOUT = 500 # in milliseconds
     FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
 
+    # @note this value is not assigned as we don't recommend using a whitelist. If you need to use
+    #   one, this constant is provided as a good default.
+    DEFAULT_WHITELIST = %w[
+      Accept
+      Accept-Charset
+      Accept-Encoding
+      Accept-Language
+      Cache-Control
+      Connection
+      Content-Length
+      Content-Type
+      Host
+      Origin
+      Pragma
+      Referer
+      X-Castle-Client-Id
+    ].freeze
+
     attr_accessor :host, :port, :request_timeout, :url_prefix
     attr_reader :api_secret, :whitelisted, :blacklisted, :failover_strategy
 
