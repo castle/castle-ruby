@@ -41,8 +41,8 @@ module Castle
       self.host = HOST
       self.port = PORT
       self.url_prefix = URL_PREFIX
-      self.whitelisted = []
-      self.blacklisted = []
+      self.whitelisted = [].freeze
+      self.blacklisted = [].freeze
       self.api_secret = ''
     end
 
