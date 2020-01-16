@@ -2,6 +2,10 @@
 
 ## master
 
+**Enhancements:**
+
+- [#171](https://github.com/castle/castle-ruby/pull/171) test against Rails 5 and Rails 6
+
 ## 3.6.1 (2020-01-16)
 
 **Bug fixes**:

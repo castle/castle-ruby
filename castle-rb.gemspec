@@ -19,4 +19,6 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.required_ruby_version = '>= 2.4'
+
+  s.add_development_dependency 'appraisal'
 end
