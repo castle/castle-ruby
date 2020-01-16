@@ -1,3 +1,4 @@
+language: ruby
 services:
   - docker
 
@@ -8,28 +9,26 @@ cache: bundler
 git:
   depth: false
 
-test: &test
-  stage: Test
-  language: ruby
-  before_install:
-    - yes | gem update --system
-  script: bundle exec rspec
+before_install:
+  - yes | gem update --system
+
+rvm:
+  - 2.6.5
+  - 2.5.7
+  - 2.4.9
+
+gemfile:
+  - gemfiles/rails_5.gemfile
+  - gemfiles/rails_6.gemfile
 
 jobs:
   include:
-    - <<: *test
-      rvm: 2.6.5
-    - <<: *test
-      rvm: 2.5.7
-    - <<: *test
-      rvm: 2.4.9
-
     - stage: coditsu
-      language: ruby
       rvm: 2.6.5
-      before_install:
-        - yes | gem update --system
       script: \curl -sSL https://api.coditsu.io/run/ci | bash
+  exclude:
+    - rvm: 2.4.9
+      gemfile: gemfiles/rails_6.gemfile
 
 stages:
   - test
