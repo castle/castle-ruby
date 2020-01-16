@@ -9,22 +9,27 @@ module Castle
     FAILOVER_STRATEGY = :allow
     REQUEST_TIMEOUT = 500 # in milliseconds
     FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
-    WHITELISTED = [
-      'User-Agent',
-      'Accept-Language',
-      'Accept-Encoding',
-      'Accept-Charset',
-      'Accept',
-      'Accept-Datetime',
-      'X-Forwarded-For',
-      'Forwarded',
-      'X-Forwarded',
-      'X-Real-IP',
-      'REMOTE_ADDR',
-      'X-Forwarded-For',
-      'CF_CONNECTING_IP'
+
+    # @note this value is not assigned as we don't recommend using a whitelist. If you need to use
+    #   one, this constant is provided as a good default.
+    DEFAULT_WHITELIST = %w[
+      Accept
+      Accept-Charset
+      Accept-Datetime
+      Accept-Encoding
+      Accept-Language
+      Cache-Control
+      Connection
+      Content-Length
+      Content-Type
+      Host
+      Origin
+      Pragma
+      Referer
+      TE
+      Upgrade-Insecure-Requests
+      X-Castle-Client-Id
     ].freeze
-    BLACKLISTED = ['HTTP_COOKIE'].freeze
 
     attr_accessor :host, :port, :request_timeout, :url_prefix
     attr_reader :api_secret, :whitelisted, :blacklisted, :failover_strategy
@@ -36,8 +41,8 @@ module Castle
       self.host = HOST
       self.port = PORT
       self.url_prefix = URL_PREFIX
-      self.whitelisted = WHITELISTED
-      self.blacklisted = BLACKLISTED
+      self.whitelisted = [].freeze
+      self.blacklisted = [].freeze
       self.api_secret = ''
     end
 

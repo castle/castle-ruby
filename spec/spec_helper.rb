@@ -12,11 +12,14 @@ Coveralls.wear!
 
 require 'castle'
 
-Castle.configure do |config|
-  config.api_secret = 'secret'
-end
-
 WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.configure do |config|
+  config.before do
+    Castle.instance_variable_set(:@configuration, Castle::Configuration.new)
+
+    Castle.configure do |cfg|
+      cfg.api_secret = 'secret'
+    end
+  end
 end

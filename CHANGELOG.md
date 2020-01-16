@@ -2,6 +2,10 @@
 
 ## master
 
+**Bug fixes**:
+
+- [#168](https://github.com/castle/castle-ruby/pull/168) do not apply whitelisting by default
+
 ## 3.6.0 (2020-01-07)
 
 **BREAKING CHANGES:**
