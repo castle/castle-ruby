@@ -146,7 +146,7 @@ CastleTrackingWorker.perform_async(request_context, track_options)
 
 ## Impersonation mode
 
-https://castle.io/docs/impersonation
+https://castle.io/docs/impersonation_mode
 
 ## Exceptions
 
