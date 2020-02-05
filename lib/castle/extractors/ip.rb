@@ -9,7 +9,6 @@ module Castle
       end
 
       def call
-        return @request.env['HTTP_CF_CONNECTING_IP'] if @request.env['HTTP_CF_CONNECTING_IP']
         return @request.remote_ip if @request.respond_to?(:remote_ip)
         @request.ip
       end
