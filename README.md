@@ -88,12 +88,33 @@ Castle.configure do |config|
 end
 ```
 
+## Event Context
+
 The client will automatically configure the context for each request.
+
+**Note:** double-check that the context IP address received at Castle matches the *client* address, and not the address of a reverse proxy server. The SDK does not take into account the `X-Forwarded-For` or any other headers which specify an unverified client IP address. If you need to modify the event context IP property in order to send the true client IP, see the next section for an example.
+
+### Overriding Default Context Properties
+
+If you need to modify the event context properties or if you desire to add additional properties such as user traits to the context, you can pass the properties in as options to the method of interest. An example:
+```ruby
+request_context = ::Castle::Client.to_context(request)
+track_options = ::Castle::Client.to_options({
+  event: '$login.succeeded',
+  user_id: user.id,
+  ip: request_context.headers["x-forwarded-for"].split(',')[0]
+  properties: {
+    key: 'value'
+  },
+  user_traits: {
+    key: 'value'
+  }
+})
+```
 
 ## Tracking
 
 Here is a simple example of a track event.
-
 
 ```ruby
 begin
