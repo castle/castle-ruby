@@ -5,46 +5,49 @@ module Castle
     # used for extraction of cookies and headers from the request
     class Headers
       # Headers that we will never scrub, even if they land on the configuration blacklist.
-      ALWAYS_INCLUDED_HEADERS = %w[User-Agent].freeze
+      ALWAYS_WHITELISTED = %w[User-Agent].freeze
 
       # Headers that will always be scrubbed, even if whitelisted.
-      ALWAYS_SCRUBBED_HEADERS = %w[Cookie Authorization].freeze
+      ALWAYS_BLACKLISTED = %w[Cookie Authorization].freeze
 
-      # Rack does not add the HTTP_ prefix to Content-Length for some reason
-      CONTENT_LENGTH = 'CONTENT_LENGTH'
+      # Valubable headers prefixed with HTTP or listed
+      VALUABLE_HEADERS = /^(HTTP_.*|CONTENT_LENGTH|REMOTE_ADDR)$/
 
-      # Prefix that Rack adds for HTTP headers
-      HTTP_HEADER_PREFIX = 'HTTP_'
-
-      private_constant :ALWAYS_INCLUDED_HEADERS, :ALWAYS_SCRUBBED_HEADERS,
-                       :CONTENT_LENGTH, :HTTP_HEADER_PREFIX
+      private_constant :ALWAYS_WHITELISTED, :ALWAYS_BLACKLISTED, :VALUABLE_HEADERS
 
       # @param request [Rack::Request]
       def initialize(request)
         @request_env = request.env
         @formatter = HeaderFormatter.new
+        @no_whitelist = Castle.config.whitelisted.empty?
       end
 
       # Serialize HTTP headers
       # @return [Hash]
       def call
-        @request_env.keys.each_with_object({}) do |env_header, acc|
-          next unless env_header.start_with?(HTTP_HEADER_PREFIX) || env_header == CONTENT_LENGTH
+        @request_env.keys.each_with_object({}) do |header_name, acc|
+          next unless header_name.match(VALUABLE_HEADERS)
 
-          header = @formatter.call(env_header)
+          formatted_header_name = @formatter.call(header_name)
+          value = @request_env[header_name]
 
-          if ALWAYS_SCRUBBED_HEADERS.include?(header)
-            acc[header] = true
-          elsif ALWAYS_INCLUDED_HEADERS.include?(header)
-            acc[header] = @request_env[env_header]
-          elsif Castle.config.blacklisted.include?(header)
-            acc[header] = true
-          elsif Castle.config.whitelisted.empty? || Castle.config.whitelisted.include?(header)
-            acc[header] = @request_env[env_header]
-          else
-            acc[header] = true
-          end
+          acc[formatted_header_name] = header_value(formatted_header_name, value)
         end
+      end
+
+      private
+
+      # scrub header value
+      # @param header [String]
+      # @param value [String]
+      # @return [TrueClass | FalseClass | String]
+      def header_value(header_name, value)
+         return true if ALWAYS_BLACKLISTED.include?(header_name)
+         return value if ALWAYS_WHITELISTED.include?(header_name)
+         return true if Castle.config.blacklisted.include?(header_name)
+         return value if @no_whitelist || Castle.config.whitelisted.include?(header_name)
+
+         true
       end
     end
   end
