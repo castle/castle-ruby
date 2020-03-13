@@ -43,11 +43,11 @@ module Castle
       self.url_prefix = URL_PREFIX
       self.whitelisted = [].freeze
       self.blacklisted = [].freeze
-      self.api_secret = ''
+      self.api_secret = ENV.fetch('CASTLE_API_SECRET', '')
     end
 
     def api_secret=(value)
-      @api_secret = ENV.fetch('CASTLE_API_SECRET', value).to_s
+      @api_secret = value.to_s
     end
 
     def whitelisted=(value)
