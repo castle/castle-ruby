@@ -20,59 +20,80 @@ describe Castle::Extractors::Headers do
   end
   let(:request) { Rack::Request.new(env) }
 
+  after do
+    Castle.config.whitelisted = %w[]
+    Castle.config.blacklisted = %w[]
+  end
+
   context 'when whitelist is not set in the configuration' do
-    it do
-      is_expected.to eq('Accept' => 'application/json',
-                        'Authorization' => true,
-                        'Cookie' => true,
-                        'Content-Length' => '0',
-                        'Ok' => 'OK',
-                        'User-Agent' => 'Mozilla 1234',
-                        'X-Forwarded-For' => '1.2.3.4')
+    let(:result) do
+      {
+        'Accept' => 'application/json',
+        'Authorization' => true,
+        'Cookie' => true,
+        'Content-Length' => '0',
+        'Ok' => 'OK',
+        'User-Agent' => 'Mozilla 1234',
+        'X-Forwarded-For' => '1.2.3.4'
+      }
     end
+
+    it { expect(headers).to eq(result) }
   end
 
   context 'when whitelist is set in the configuration' do
     before { Castle.config.whitelisted = %w[Accept OK] }
 
-    it do
-      is_expected.to eq('Accept' => 'application/json',
-                        'Authorization' => true,
-                        'Cookie' => true,
-                        'Content-Length' => true,
-                        'Ok' => 'OK',
-                        'User-Agent' => 'Mozilla 1234',
-                        'X-Forwarded-For' => true)
+    let(:result) do
+      {
+        'Accept' => 'application/json',
+        'Authorization' => true,
+        'Cookie' => true,
+        'Content-Length' => true,
+        'Ok' => 'OK',
+        'User-Agent' => 'Mozilla 1234',
+        'X-Forwarded-For' => true
+      }
     end
+
+    it { expect(headers).to eq(result) }
   end
 
   context 'when blacklist is set in the configuration' do
     context 'with a User-Agent' do
+      let(:result) do
+        {
+          'Accept' => 'application/json',
+          'Authorization' => true,
+          'Cookie' => true,
+          'Content-Length' => '0',
+          'Ok' => 'OK',
+          'User-Agent' => 'Mozilla 1234',
+          'X-Forwarded-For' => '1.2.3.4'
+        }
+      end
+
       before { Castle.config.blacklisted = %w[User-Agent] }
 
-      it do
-        is_expected.to eq('Accept' => 'application/json',
-                          'Authorization' => true,
-                          'Cookie' => true,
-                          'Content-Length' => '0',
-                          'Ok' => 'OK',
-                          'User-Agent' => 'Mozilla 1234',
-                          'X-Forwarded-For' => '1.2.3.4')
-      end
+      it { expect(headers).to eq(result) }
     end
 
     context 'with a different header' do
+      let(:result) do
+        {
+          'Accept' => true,
+          'Authorization' => true,
+          'Cookie' => true,
+          'Content-Length' => '0',
+          'Ok' => 'OK',
+          'User-Agent' => 'Mozilla 1234',
+          'X-Forwarded-For' => '1.2.3.4'
+        }
+      end
+
       before { Castle.config.blacklisted = %w[Accept] }
 
-      it do
-        is_expected.to eq('Accept' => true,
-                          'Authorization' => true,
-                          'Cookie' => true,
-                          'Content-Length' => '0',
-                          'Ok' => 'OK',
-                          'User-Agent' => 'Mozilla 1234',
-                          'X-Forwarded-For' => '1.2.3.4')
-      end
+      it { expect(headers).to eq(result) }
     end
   end
 

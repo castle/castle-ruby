@@ -24,6 +24,7 @@ describe Castle::API::Request do
       expect(Castle::API::Request::Build).to have_received(:call)
         .with(command, expected_headers, api_secret)
     end
+
     it { expect(http).to have_received(:request).with(request_build) }
   end
 

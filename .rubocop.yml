@@ -1,28 +1,37 @@
-AllCops:
-  TargetRubyVersion: 2.4
-  Exclude:
-    - 'lib/castle/core_ext/hash/keys.rb'
+require:
+  - rubocop-performance
+  - rubocop-rspec
 
-Style/FileName:
+Naming/FileName:
   Exclude:
     - "lib/castle-rb.rb"
 
-Style/MethodMissing:
-  Enabled: false
+AllCops:
+  TargetRubyVersion: 2.4
 
 Style/Documentation:
   Enabled: false
 
-Metrics/ModuleLength:
+Style/MethodMissingSuper:
   Exclude:
-    - "**/*_spec.rb"
+    - "lib/castle/configuration.rb"
 
 Metrics/BlockLength:
-  Exclude:
-    - "**/*_spec.rb"
+  ExcludedMethods: ['describe', 'context', 'let']
 
-Metrics/LineLength:
+Metrics/MethodLength:
+  Max: 20
+
+Layout/LineLength:
   Max: 100
+  Exclude:
+    - "lib/castle/configuration.rb"
+    - "spec/integration/rails/rails_spec.rb"
 
 RSpec/NestedGroups:
   Max: 4
+
+RSpec/FilePath:
+  Exclude:
+    - "spec/integration/rails/rails_spec.rb"
+

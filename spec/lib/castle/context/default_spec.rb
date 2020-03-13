@@ -16,6 +16,15 @@ describe Castle::Context::Default do
   let(:request) { Rack::Request.new(env) }
   let(:default_context) { subject.call }
   let(:version) { '2.2.0' }
+  let(:result_headers) do
+    {
+      'X-Forwarded-For' => '1.2.3.4',
+      'Accept-Language' => 'en',
+      'User-Agent' => 'test',
+      'Content-Length' => '0',
+      'Cookie' => true
+    }
+  end
 
   before do
     stub_const('Castle::VERSION', version)
@@ -23,17 +32,7 @@ describe Castle::Context::Default do
 
   it { expect(default_context[:active]).to be_eql(true) }
   it { expect(default_context[:origin]).to be_eql('web') }
-
-  it do
-    expect(default_context[:headers]).to be_eql(
-      'X-Forwarded-For' => '1.2.3.4',
-      'Accept-Language' => 'en',
-      'User-Agent' => 'test',
-      'Content-Length' => '0',
-      'Cookie' => true
-    )
-  end
-
+  it { expect(default_context[:headers]).to be_eql(result_headers) }
   it { expect(default_context[:ip]).to be_eql(ip) }
   it { expect(default_context[:library][:name]).to be_eql('castle-rb') }
   it { expect(default_context[:library][:version]).to be_eql(version) }

@@ -23,6 +23,7 @@ module Castle
 
       def failover_response_or_raise(failover_response, error)
         return failover_response.generate unless Castle.config.failover_strategy == :throw
+
         raise error
       end
     end
@@ -38,21 +39,16 @@ module Castle
     def authenticate(options = {})
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
-      if tracked?
-        add_timestamp_if_necessary(options)
-        command = Castle::Commands::Authenticate.new(@context).build(options)
-        begin
-          Castle::API.request(command).merge(failover: false, failover_reason: nil)
-        rescue Castle::RequestError, Castle::InternalServerError => e
-          self.class.failover_response_or_raise(
-            FailoverAuthResponse.new(options[:user_id], reason: e.to_s), e
-          )
-        end
-      else
-        FailoverAuthResponse.new(
-          options[:user_id],
-          strategy: :allow, reason: 'Castle set to do not track.'
-        ).generate
+      return generate_do_not_track_response(options[:user_id]) unless tracked?
+
+      add_timestamp_if_necessary(options)
+      command = Castle::Commands::Authenticate.new(@context).build(options)
+      begin
+        Castle::API.request(command).merge(failover: false, failover_reason: nil)
+      rescue Castle::RequestError, Castle::InternalServerError => e
+        self.class.failover_response_or_raise(
+          FailoverAuthResponse.new(options[:user_id], reason: e.to_s), e
+        )
       end
     end
 
@@ -60,6 +56,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
+
       add_timestamp_if_necessary(options)
 
       command = Castle::Commands::Identify.new(@context).build(options)
@@ -70,6 +67,7 @@ module Castle
       options = Castle::Utils.deep_symbolize_keys(options || {})
 
       return unless tracked?
+
       add_timestamp_if_necessary(options)
 
       command = Castle::Commands::Track.new(@context).build(options)
@@ -98,6 +96,13 @@ module Castle
     end
 
     private
+
+    def generate_do_not_track_response(user_id)
+      FailoverAuthResponse.new(
+        user_id,
+        strategy: :allow, reason: 'Castle is set to do not track.'
+      ).generate
+    end
 
     def add_timestamp_if_necessary(options)
       options[:timestamp] ||= @timestamp if @timestamp

@@ -4,7 +4,7 @@ module Castle
   # used for preparing valuable headers list
   class HeaderFilter
     # headers filter
-    VALUABLE_HEADERS = /^(HTTP_.*|CONTENT_LENGTH|REMOTE_ADDR)$/
+    VALUABLE_HEADERS = /^(HTTP_.*|CONTENT_LENGTH|REMOTE_ADDR)$/.freeze
 
     private_constant :VALUABLE_HEADERS
 

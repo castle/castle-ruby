@@ -15,6 +15,7 @@ module Castle
           return unless context
           return context unless context.key?(:active)
           return context if [true, false].include?(context[:active])
+
           context.reject { |key| key == :active }
         end
       end

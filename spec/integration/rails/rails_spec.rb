@@ -18,8 +18,7 @@ RSpec.describe HomeController, type: :request do
           'active' => true,
           'origin' => 'web',
           'headers' => {
-            'Accept' =>
-              'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+            'Accept' => 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
             'Authorization' => true,
             'Content-Length' => '0',
             'Cookie' => true,

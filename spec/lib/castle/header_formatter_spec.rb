@@ -19,7 +19,7 @@ describe Castle::HeaderFormatter do
     expect(formatter.call('httpX_teST')).to be_eql('Httpx-Test')
   end
 
-  it 'removes HTTP_' do
+  it 'capitalizes' do
     expect(formatter.call(:clearance)).to be_eql('Clearance')
   end
 end
