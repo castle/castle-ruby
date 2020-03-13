@@ -2,6 +2,10 @@
 
 ## master
 
+**Features
+
+- [#178](https://github.com/castle/castle-ruby/pull/178) ip_headers and trusted_proxies configuration options
+
 **Enhancements:**
 
 - [#171](https://github.com/castle/castle-ruby/pull/171) test against Rails 5 and Rails 6
