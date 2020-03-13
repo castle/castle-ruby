@@ -31,14 +31,25 @@ describe Castle::Configuration do
 
   describe 'api_secret' do
     context 'with env' do
+      let(:secret_key_env) { 'secret_key_env' }
+      let(:secret_key) { 'secret_key' }
+
       before do
         allow(ENV).to receive(:fetch).with(
           'CASTLE_API_SECRET', ''
-        ).and_return('secret_key')
+        ).and_return(secret_key_env)
       end
 
       it do
-        expect(config.api_secret).to be_eql('secret_key')
+        expect(config.api_secret).to be_eql(secret_key_env)
+      end
+
+      context 'when key is overwritten' do
+        before { config.api_secret = secret_key }
+
+        it do
+          expect(config.api_secret).to be_eql(secret_key)
+        end
       end
     end
 
