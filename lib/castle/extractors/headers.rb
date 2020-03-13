@@ -29,16 +29,16 @@ module Castle
       private
 
       # scrub header value
-      # @param header [String]
+      # @param name [String]
       # @param value [String]
       # @return [TrueClass | FalseClass | String]
       def header_value(name, value)
-         return true if ALWAYS_BLACKLISTED.include?(name)
-         return value if ALWAYS_WHITELISTED.include?(name)
-         return true if Castle.config.blacklisted.include?(name)
-         return value if @no_whitelist || Castle.config.whitelisted.include?(name)
+        return true if ALWAYS_BLACKLISTED.include?(name)
+        return value if ALWAYS_WHITELISTED.include?(name)
+        return true if Castle.config.blacklisted.include?(name)
+        return value if @no_whitelist || Castle.config.whitelisted.include?(name)
 
-         true
+        true
       end
     end
   end

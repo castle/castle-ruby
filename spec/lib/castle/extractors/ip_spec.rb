@@ -45,15 +45,18 @@ describe Castle::Extractors::IP do
     end
 
     context 'with all the trusted proxies' do
+      let(:http_x_header) do
+        '127.0.0.1,10.0.0.1,172.31.0.1,192.168.0.1,::1,fd00::,localhost,unix,unix:/tmp/sock'
+      end
       let(:env) do
         Rack::MockRequest.env_for(
           '/',
-          'HTTP_X_FORWARDED_FOR' => '127.0.0.1,10.0.0.1,172.16.0.1,172.20.0.1,172.31.0.1,192.168.0.1,::1,fd00::,localhost,unix,unix:/tmp/sock',
+          'HTTP_X_FORWARDED_FOR' => http_x_header,
           'REMOTE_ADDR' => '127.0.0.1'
         )
       end
 
-      it 'should fallback to remote_addr even if trusted proxy' do
+      it 'fallbacks to remote_addr even if trusted proxy' do
         expect(extractor.call).to eql('127.0.0.1')
       end
     end
@@ -67,7 +70,7 @@ describe Castle::Extractors::IP do
         )
       end
 
-      it 'should not allow to spoof ip' do
+      it 'does not allow to spoof ip' do
         expect(extractor.call).to eql('2.2.2.3')
       end
 

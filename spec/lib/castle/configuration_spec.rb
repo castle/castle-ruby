@@ -59,6 +59,7 @@ describe Castle::Configuration do
       before do
         config.api_secret = value
       end
+
       it do
         expect(config.api_secret).to be_eql(value)
       end
@@ -80,6 +81,7 @@ describe Castle::Configuration do
       before do
         config.request_timeout = value
       end
+
       it do
         expect(config.request_timeout).to be_eql(value)
       end
@@ -95,6 +97,7 @@ describe Castle::Configuration do
       before do
         config.whitelisted = ['header']
       end
+
       it do
         expect(config.whitelisted).to be_eql(['Header'])
       end
@@ -110,6 +113,7 @@ describe Castle::Configuration do
       before do
         config.blacklisted = ['header']
       end
+
       it do
         expect(config.blacklisted).to be_eql(['Header'])
       end
@@ -125,6 +129,7 @@ describe Castle::Configuration do
       before do
         config.failover_strategy = :deny
       end
+
       it do
         expect(config.failover_strategy).to be_eql(:deny)
       end

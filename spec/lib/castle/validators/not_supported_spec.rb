@@ -8,9 +8,7 @@ describe Castle::Validators::NotSupported do
       let(:keys) { %i[first second] }
 
       it do
-        expect do
-          call
-        end.to raise_error(
+        expect { call }.to raise_error(
           Castle::InvalidParametersError,
           'first is/are not supported'
         )

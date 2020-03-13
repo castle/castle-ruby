@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-true
+
 describe Castle::HeaderFilter do
   subject(:headers) { described_class.new(request).call }
 
@@ -18,18 +18,21 @@ describe Castle::HeaderFilter do
       'REMOTE_ADDR' => '1.2.3.4'
     )
   end
+  let(:filtered) do
+    {
+      'Accept' => 'application/json',
+      'Authorization' => 'Basic 123456',
+      'Cookie' => "__cid=#{client_id};other=efgh",
+      'Content-Length' => '0',
+      'Ok' => 'OK',
+      'User-Agent' => 'Mozilla 1234',
+      'Remote-Addr' => '1.2.3.4',
+      'X-Forwarded-For' => '1.2.3.4'
+    }
+  end
   let(:request) { Rack::Request.new(env) }
 
   context 'with list of header' do
-    it do
-      is_expected.to eq('Accept' => 'application/json',
-                        'Authorization' => 'Basic 123456',
-                        'Cookie' => "__cid=#{client_id};other=efgh",
-                        'Content-Length' => '0',
-                        'Ok' => 'OK',
-                        'User-Agent' => 'Mozilla 1234',
-                        'Remote-Addr' => '1.2.3.4',
-                        'X-Forwarded-For' => '1.2.3.4')
-    end
+    it { expect(headers).to eq(filtered) }
   end
 end

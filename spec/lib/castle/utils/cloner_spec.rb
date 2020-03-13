@@ -10,6 +10,7 @@ describe Castle::Utils::Cloner do
     let(:cloned) { cloner.call(first) }
 
     before { cloned }
+
     it do
       nested[:test] = 'sample'
       expect(cloned).to be_eql(result)
