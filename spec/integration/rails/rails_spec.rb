@@ -24,7 +24,8 @@ RSpec.describe HomeController, type: :request do
             'Content-Length' => '0',
             'Cookie' => true,
             'Host' => 'www.example.com',
-            'X-Forwarded-For' => '5.5.5.5, 1.2.3.4'
+            'X-Forwarded-For' => '5.5.5.5, 1.2.3.4',
+            'Remote-Addr' => '127.0.0.1'
           },
           'ip' => '1.2.3.4',
           'library' => {

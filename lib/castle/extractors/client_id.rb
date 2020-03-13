@@ -4,13 +4,13 @@ module Castle
   module Extractors
     # used for extraction of cookies and headers from the request
     class ClientId
-      def initialize(request, cookies)
-        @request = request
+      def initialize(headers, cookies)
+        @headers = headers
         @cookies = cookies || {}
       end
 
       def call
-        @request.env['HTTP_X_CASTLE_CLIENT_ID'] || @cookies['__cid'] || ''
+        @headers['X-Castle-Client-Id'] || @cookies['__cid'] || ''
       end
     end
   end

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 describe Castle::Extractors::Headers do
-  subject(:headers) { described_class.new(request).call }
+  subject(:headers) { described_class.new(formatted_headers).call }
 
+  let(:formatted_headers) { Castle::HeaderFilter.new(request).call }
   let(:client_id) { 'abcd' }
   let(:env) do
     Rack::MockRequest.env_for(

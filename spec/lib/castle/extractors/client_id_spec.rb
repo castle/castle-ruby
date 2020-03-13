@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 describe Castle::Extractors::ClientId do
-  subject(:extractor) { described_class.new(request, cookies) }
+  subject(:extractor) { described_class.new(formatted_headers, cookies) }
 
+  let(:formatted_headers) { Castle::HeaderFilter.new(request).call }
   let(:client_id_cookie) { 'abcd' }
   let(:client_id_header) { 'abcde' }
   let(:cookies) { request.cookies }
