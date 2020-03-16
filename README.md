@@ -100,7 +100,7 @@ If you need to modify the event context properties or if you desire to add addit
 ```ruby
 request_context = ::Castle::Client.to_context(request)
 track_options = ::Castle::Client.to_options({
-  event: '$login.succeeded',
+  event: ::Castle::Events::LOGIN_SUCCEEDED,
   user_id: user.id,
   ip: request_context.headers["x-forwarded-for"].split(',')[0]
   properties: {
@@ -119,7 +119,7 @@ Here is a simple example of a track event.
 ```ruby
 begin
   castle.track(
-    event: '$login.succeeded',
+    event: ::Castle::Events::LOGIN_SUCCEEDED,
     user_id: user.id
   )
 rescue Castle::Error => e
@@ -153,7 +153,7 @@ end
 ```ruby
 request_context = ::Castle::Client.to_context(request)
 track_options = ::Castle::Client.to_options({
-  event: '$login.succeeded',
+  event: ::Castle::Events::LOGIN_SUCCEEDED,
   user_id: user.id,
   properties: {
     key: 'value'
@@ -164,6 +164,10 @@ track_options = ::Castle::Client.to_options({
 })
 CastleTrackingWorker.perform_async(request_context, track_options)
 ```
+
+## Events
+
+List of Recognized Events can be found [here](https://github.com/castle/castle-ruby/tree/master/lib/castle/events.rb) or in the [docs](https://docs.castle.io/api_reference/#list-of-recognized-events)
 
 ## Impersonation mode
 
