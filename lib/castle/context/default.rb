@@ -28,25 +28,21 @@ module Castle
 
       private
 
-      # locale
       # @return [String]
       def locale
         @pre_headers['Accept-Language']
       end
 
-      # user agent
       # @return [String]
       def user_agent
         @pre_headers['User-Agent']
       end
 
-      # ip
       # @return [String]
       def ip
         Extractors::IP.new(@pre_headers).call
       end
 
-      # client id
       # @return [String]
       def client_id
         Extractors::ClientId.new(@pre_headers, @cookies).call

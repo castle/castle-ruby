@@ -4,7 +4,14 @@ module Castle
   # used for preparing valuable headers list
   class HeaderFilter
     # headers filter
-    VALUABLE_HEADERS = /^(HTTP_.*|CONTENT_LENGTH|REMOTE_ADDR)$/.freeze
+    # HTTP_ - this is how Rack prefixes incoming HTTP headers
+    # CONTENT_LENGTH - for responses without Content-Length or Transfer-Encoding header
+    # REMOTE_ADDR - ip address header returned by web server
+    VALUABLE_HEADERS = /^(
+      HTTP_.*|
+      CONTENT_LENGTH|
+      REMOTE_ADDR
+    )$/x.freeze
 
     private_constant :VALUABLE_HEADERS
 
