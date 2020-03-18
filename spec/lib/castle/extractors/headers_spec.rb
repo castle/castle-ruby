@@ -3,22 +3,18 @@
 describe Castle::Extractors::Headers do
   subject(:headers) { described_class.new(formatted_headers).call }
 
-  let(:formatted_headers) { Castle::HeaderFilter.new(request).call }
   let(:client_id) { 'abcd' }
-  let(:env) do
-    Rack::MockRequest.env_for(
-      '/',
-      'Action-Dispatch.request.content-Type' => 'application/json',
-      'HTTP_AUTHORIZATION' => 'Basic 123456',
-      'HTTP_COOKIE' => "__cid=#{client_id};other=efgh",
-      'HTTP_OK' => 'OK',
-      'HTTP_ACCEPT' => 'application/json',
-      'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
-      'HTTP_USER_AGENT' => 'Mozilla 1234',
-      'TEST' => '1'
-    )
+  let(:formatted_headers) do
+    {
+      'Content-Length' => '0',
+      'Authorization' => 'Basic 123456',
+      'Cookie' => '__cid=abcd;other=efgh',
+      'Ok' => 'OK',
+      'Accept' => 'application/json',
+      'X-Forwarded-For' => '1.2.3.4',
+      'User-Agent' => 'Mozilla 1234'
+    }
   end
-  let(:request) { Rack::Request.new(env) }
 
   after do
     Castle.config.whitelisted = %w[]
