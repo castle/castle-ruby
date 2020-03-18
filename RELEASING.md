@@ -1,7 +1,7 @@
 Releasing
 =========
 
-1. Create branch `release X.Y.Z`.
+1. Create branch `X.Y.Z`.
 2. Update `VERSION` in `lib/castle/version.rb` to the new version
 3. Run `bundle`
 4. Update the `CHANGELOG.md` for the impending release
