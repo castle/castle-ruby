@@ -89,8 +89,7 @@ Castle.configure do |config|
   # Castle needs the original IP of the client, not the IP of your proxy or load balancer.
   # we try to fetch proper ip based on X-Forwarded-For, X-Client-Id or Remote-Addr headers in that order
   # but sometimes proper ip may be stored in different header or order could be different.
-  # SDK can extract ip automatically in that case too, but you have to configure it ip_headers 
-  # which you would like to use in the first place
+  # SDK can extract ip automatically for you, but you must configure which ip_headers you would like to use
   configuration.ip_headers = []
 
   # Additionally to make X-Forwarded-For or X-Client-Id work better discovering client ip address,
@@ -182,7 +181,8 @@ https://castle.io/docs/impersonation_mode
 
 ## Exceptions
 
-`Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response. You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
+`Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response.
+You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
 
 ## Documentation
 
