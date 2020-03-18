@@ -10,6 +10,7 @@ describe Castle::Commands::Track do
   let(:time_auto) { time_now.utc.iso8601(3) }
 
   before { Timecop.freeze(time_now) }
+
   after { Timecop.return }
 
   describe '#build' do

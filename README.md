@@ -85,14 +85,25 @@ Castle.configure do |config|
   # We always blacklist Cookie and Authentication headers. If you use any other headers that
   # might contain sensitive information, you should blacklist them.
   config.blacklisted = ['HTTP-X-header']
+
+  # Castle needs the original IP of the client, not the IP of your proxy or load balancer.
+  # we try to fetch proper ip based on X-Forwarded-For, X-Client-Id or Remote-Addr headers in that order
+  # but sometimes proper ip may be stored in different header or order could be different.
+  # SDK can extract ip automatically for you, but you must configure which ip_headers you would like to use
+  configuration.ip_headers = []
+
+  # Additionally to make X-Forwarded-For or X-Client-Id work better discovering client ip address,
+  # and not the address of a reverse proxy server, you can define trusted proxies
+  # which will help to fetch proper ip from those headers
+  configuration.trusted_proxies = []
+  # *Note: proxies list can be provided as an array of regular expressions
+  # *Note: default always marked as trusty list is here: Castle::Configuration::TRUSTED_PROXIES
 end
 ```
 
 ## Event Context
 
 The client will automatically configure the context for each request.
-
-**Note:** double-check that the context IP address received at Castle matches the *client* address, and not the address of a reverse proxy server. The SDK does not take into account the `X-Forwarded-For` or any other headers which specify an unverified client IP address. If you need to modify the event context IP property in order to send the true client IP, see the next section for an example.
 
 ### Overriding Default Context Properties
 
@@ -102,7 +113,6 @@ request_context = ::Castle::Client.to_context(request)
 track_options = ::Castle::Client.to_options({
   event: ::Castle::Events::LOGIN_SUCCEEDED,
   user_id: user.id,
-  ip: request_context.headers["x-forwarded-for"].split(',')[0]
   properties: {
     key: 'value'
   },
@@ -175,7 +185,8 @@ https://castle.io/docs/impersonation_mode
 
 ## Exceptions
 
-`Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response. You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
+`Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response.
+You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
 
 ## Documentation
 

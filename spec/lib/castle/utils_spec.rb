@@ -48,7 +48,7 @@ describe Castle::Utils do
     end
   end
 
-  describe '#deep_symbolize_keys' do
+  describe '#cloner' do
     subject { described_class.deep_symbolize_keys!(Castle::Utils::Cloner.call(hash)) }
 
     context 'when nested_symbols' do

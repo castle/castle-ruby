@@ -4,36 +4,54 @@ module Castle
   module Context
     class Default
       def initialize(request, cookies = nil)
-        @client_id = Extractors::ClientId.new(request, cookies || request.cookies).call
-        @headers = Extractors::Headers.new(request).call
-        @request_ip = Extractors::IP.new(request).call
+        @pre_headers = HeaderFilter.new(request).call
+        @cookies = cookies || request.cookies
+        @request = request
       end
 
       def call
-        defaults.merge!(additional_defaults)
-      end
-
-      private
-
-      def defaults
         {
-          client_id: @client_id,
+          client_id: client_id,
           active: true,
           origin: 'web',
-          headers: @headers,
-          ip: @request_ip,
+          headers: headers,
+          ip: ip,
           library: {
             name: 'castle-rb',
             version: Castle::VERSION
           }
-        }
+        }.tap do |result|
+          result[:locale] = locale if locale
+          result[:user_agent] = user_agent if user_agent
+        end
       end
 
-      def additional_defaults
-        {}.tap do |result|
-          result[:locale] = @headers['Accept-Language'] if @headers['Accept-Language']
-          result[:user_agent] = @headers['User-Agent'] if @headers['User-Agent']
-        end
+      private
+
+      # @return [String]
+      def locale
+        @pre_headers['Accept-Language']
+      end
+
+      # @return [String]
+      def user_agent
+        @pre_headers['User-Agent']
+      end
+
+      # @return [String]
+      def ip
+        Extractors::IP.new(@pre_headers).call
+      end
+
+      # @return [String]
+      def client_id
+        Extractors::ClientId.new(@pre_headers, @cookies).call
+      end
+
+      # formatted and filtered headers
+      # @return [Hash]
+      def headers
+        Extractors::Headers.new(@pre_headers).call
       end
     end
   end

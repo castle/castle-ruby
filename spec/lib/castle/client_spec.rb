@@ -244,11 +244,13 @@ describe Castle::Client do
       it { expect(request_response[:action]).to be_eql('allow') }
       it { expect(request_response[:user_id]).to be_eql('1234') }
       it { expect(request_response[:failover]).to be true }
-      it { expect(request_response[:failover_reason]).to be_eql('Castle set to do not track.') }
+      it { expect(request_response[:failover_reason]).to be_eql('Castle is set to do not track.') }
     end
 
     context 'when request with fail' do
-      before { allow(Castle::API).to receive(:request).and_raise(Castle::RequestError.new(Timeout::Error)) }
+      before do
+        allow(Castle::API).to receive(:request).and_raise(Castle::RequestError.new(Timeout::Error))
+      end
 
       context 'with request error and throw strategy' do
         before { allow(Castle.config).to receive(:failover_strategy).and_return(:throw) }
@@ -274,7 +276,7 @@ describe Castle::Client do
         it { expect { request_response }.to raise_error(Castle::InternalServerError) }
       end
 
-      context 'not throw on eg deny strategy' do
+      describe 'not throw on eg deny strategy' do
         it { assert_not_requested :post, 'https://:secret@api.castle.io/v1/authenticate' }
         it { expect(request_response[:action]).to be_eql('allow') }
         it { expect(request_response[:user_id]).to be_eql('1234') }

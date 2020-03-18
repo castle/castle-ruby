@@ -5,46 +5,40 @@ module Castle
     # used for extraction of cookies and headers from the request
     class Headers
       # Headers that we will never scrub, even if they land on the configuration blacklist.
-      ALWAYS_INCLUDED_HEADERS = %w[User-Agent].freeze
+      ALWAYS_WHITELISTED = %w[User-Agent].freeze
 
       # Headers that will always be scrubbed, even if whitelisted.
-      ALWAYS_SCRUBBED_HEADERS = %w[Cookie Authorization].freeze
+      ALWAYS_BLACKLISTED = %w[Cookie Authorization].freeze
 
-      # Rack does not add the HTTP_ prefix to Content-Length for some reason
-      CONTENT_LENGTH = 'CONTENT_LENGTH'
+      private_constant :ALWAYS_WHITELISTED, :ALWAYS_BLACKLISTED
 
-      # Prefix that Rack adds for HTTP headers
-      HTTP_HEADER_PREFIX = 'HTTP_'
-
-      private_constant :ALWAYS_INCLUDED_HEADERS, :ALWAYS_SCRUBBED_HEADERS,
-                       :CONTENT_LENGTH, :HTTP_HEADER_PREFIX
-
-      # @param request [Rack::Request]
-      def initialize(request)
-        @request_env = request.env
-        @formatter = HeaderFormatter.new
+      # @param headers [Hash]
+      def initialize(headers)
+        @headers = headers
+        @no_whitelist = Castle.config.whitelisted.empty?
       end
 
       # Serialize HTTP headers
       # @return [Hash]
       def call
-        @request_env.keys.each_with_object({}) do |env_header, acc|
-          next unless env_header.start_with?(HTTP_HEADER_PREFIX) || env_header == CONTENT_LENGTH
-
-          header = @formatter.call(env_header)
-
-          if ALWAYS_SCRUBBED_HEADERS.include?(header)
-            acc[header] = true
-          elsif ALWAYS_INCLUDED_HEADERS.include?(header)
-            acc[header] = @request_env[env_header]
-          elsif Castle.config.blacklisted.include?(header)
-            acc[header] = true
-          elsif Castle.config.whitelisted.empty? || Castle.config.whitelisted.include?(header)
-            acc[header] = @request_env[env_header]
-          else
-            acc[header] = true
-          end
+        @headers.each_with_object({}) do |(name, value), acc|
+          acc[name] = header_value(name, value)
         end
+      end
+
+      private
+
+      # scrub header value
+      # @param name [String]
+      # @param value [String]
+      # @return [TrueClass | FalseClass | String]
+      def header_value(name, value)
+        return true if ALWAYS_BLACKLISTED.include?(name)
+        return value if ALWAYS_WHITELISTED.include?(name)
+        return true if Castle.config.blacklisted.include?(name)
+        return value if @no_whitelist || Castle.config.whitelisted.include?(name)
+
+        true
       end
     end
   end

@@ -21,11 +21,13 @@ describe Castle::API::Request::Build do
 
     context 'when post' do
       let(:time) { Time.now.utc.iso8601(3) }
-      let(:command) { Castle::Commands::Track.new({}).build(event: '$login.succeeded', name: "\xC4") }
+      let(:command) do
+        Castle::Commands::Track.new({}).build(event: '$login.succeeded', name: "\xC4")
+      end
       let(:expected_body) do
         {
           event: '$login.succeeded',
-          name: "�",
+          name: '�',
           context: {},
           sent_at: time
         }

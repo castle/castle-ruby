@@ -29,6 +29,7 @@
   castle/configuration
   castle/failover_auth_response
   castle/client
+  castle/header_filter
   castle/header_formatter
   castle/secure_mode
   castle/extractors/client_id
@@ -53,7 +54,7 @@ module Castle
     end
 
     def config
-      @configuration ||= Castle::Configuration.new
+      @config ||= Castle::Configuration.new
     end
 
     def api_secret=(api_secret)
