@@ -9,7 +9,7 @@ describe Castle::HeadersFilter do
       'Action-Dispatch.request.content-Type' => 'application/json',
       'HTTP_AUTHORIZATION' => 'Basic 123456',
       'HTTP_COOKIE' => '__cid=abcd;other=efgh',
-      'HTTP_OK' => 'OK',
+      'http-ok' => 'OK',
       'HTTP_ACCEPT' => 'application/json',
       'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
       'HTTP_USER_AGENT' => 'Mozilla 1234',

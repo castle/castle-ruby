@@ -7,11 +7,11 @@ module Castle
     # HTTP_ - this is how Rack prefixes incoming HTTP headers
     # CONTENT_LENGTH - for responses without Content-Length or Transfer-Encoding header
     # REMOTE_ADDR - ip address header returned by web server
-    VALUABLE_HEADERS = /^(
-      HTTP_.*|
-      CONTENT_LENGTH|
-      REMOTE_ADDR
-    )$/x.freeze
+    VALUABLE_HEADERS = /^
+      HTTP(?:_|-).*|
+      CONTENT(?:_|-)LENGTH|
+      REMOTE(?:_|-)ADDR
+    $/xi.freeze
 
     private_constant :VALUABLE_HEADERS
 
