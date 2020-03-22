@@ -44,7 +44,7 @@ module Castle
     attr_reader :api_secret, :whitelisted, :blacklisted, :failover_strategy, :ip_headers, :trusted_proxies
 
     def initialize
-      @formatter = Castle::HeaderFormatter.new
+      @formatter = Castle::HeaderFormatter
       @request_timeout = REQUEST_TIMEOUT
       self.failover_strategy = FAILOVER_STRATEGY
       self.host = HOST

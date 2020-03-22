@@ -18,7 +18,7 @@ module Castle
     # @param request [Rack::Request]
     def initialize(request)
       @request_env = request.env
-      @formatter = HeaderFormatter.new
+      @formatter = HeaderFormatter
     end
 
     # Serialize HTTP headers
