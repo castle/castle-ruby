@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::HeaderFilter do
+describe Castle::HeadersFilter do
   subject(:headers) { described_class.new(request).call }
 
   let(:env) do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::HeaderFormatter do
+describe Castle::HeadersFormatter do
   subject(:formatter) { described_class }
 
   it 'removes HTTP_' do

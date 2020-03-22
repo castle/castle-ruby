@@ -2,7 +2,7 @@
 
 module Castle
   # used for preparing valuable headers list
-  class HeaderFilter
+  class HeadersFilter
     # headers filter
     # HTTP_ - this is how Rack prefixes incoming HTTP headers
     # CONTENT_LENGTH - for responses without Content-Length or Transfer-Encoding header
@@ -18,7 +18,7 @@ module Castle
     # @param request [Rack::Request]
     def initialize(request)
       @request_env = request.env
-      @formatter = HeaderFormatter
+      @formatter = HeadersFormatter
     end
 
     # Serialize HTTP headers

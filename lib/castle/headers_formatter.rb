@@ -2,7 +2,7 @@
 
 module Castle
   # formats header name
-  class HeaderFormatter
+  class HeadersFormatter
     class << self
       # @param header [String]
       # @return [String]
