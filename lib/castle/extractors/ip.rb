@@ -45,7 +45,13 @@ module Castle
       # @param ips [Array<String>]
       # @return [Array<String>]
       def remove_proxies(ips)
-        ips.reject { |ip| @proxies.any? { |proxy| proxy.match(ip) } }
+        ips.reject { |ip| proxy?(ip) }
+      end
+
+      # @param ip [String]
+      # @return [Boolean]
+      def proxy?(ip)
+        @proxies.any? { |proxy| proxy.match(ip) }
       end
 
       # @param header [String]
