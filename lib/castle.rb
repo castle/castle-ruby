@@ -37,7 +37,7 @@
   castle/extractors/ip
   castle/api/response
   castle/api/request
-  castle/api/request/build
+  castle/api/session_sharer
   castle/review
   castle/api
 ].each(&method(:require))

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Castle
-  # this class is responsible for making requests to api
   module API
+    # this class is responsible for making requests to api
     module Request
       # Default headers that we add to passed ones
       DEFAULT_HEADERS = {
@@ -13,8 +13,8 @@ module Castle
 
       class << self
         def call(command, api_secret, headers)
-          http.request(
-            Castle::API::Request::Build.call(
+          Castle::API::SessionSharer.get.request(
+            build(
               command,
               headers.merge(DEFAULT_HEADERS),
               api_secret
@@ -22,14 +22,19 @@ module Castle
           )
         end
 
-        def http
-          http = Net::HTTP.new(Castle.config.host, Castle.config.port)
-          http.read_timeout = Castle.config.request_timeout / 1000.0
-          if Castle.config.port == 443
-            http.use_ssl = true
-            http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        def build(command, headers, api_secret)
+          request_obj = Net::HTTP.const_get(
+            command.method.to_s.capitalize
+          ).new("#{Castle.config.url_prefix}/#{command.path}", headers)
+
+          unless command.method == :get
+            request_obj.body = ::Castle::Utils.replace_invalid_characters(
+              command.data
+            ).to_json
           end
-          http
+
+          request_obj.basic_auth('', api_secret)
+          request_obj
         end
       end
     end
