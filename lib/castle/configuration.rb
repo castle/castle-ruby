@@ -5,7 +5,7 @@ module Castle
   class Configuration
     HOST = 'api.castle.io'
     PORT = 443
-    URL_PREFIX = 'v1'
+    URL_PREFIX = '/v1'
     FAILOVER_STRATEGY = :allow
     REQUEST_TIMEOUT = 500 # in milliseconds
     FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
