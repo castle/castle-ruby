@@ -17,16 +17,16 @@ module Castle
     private_constant :HANDLED_ERRORS
 
     class << self
+      # @param command [String]
+      # @param headers [Hash]
       def request(command, headers = {})
         raise Castle::ConfigurationError, 'configuration is not valid' unless Castle.config.valid?
 
         begin
-          Castle::API::Response.call(
-            Castle::API::Request.call(
-              command,
-              Castle.config.api_secret,
-              headers
-            )
+          Castle::API::Request.call(
+            command,
+            Castle.config.api_secret,
+            headers
           )
         rescue *HANDLED_ERRORS => e
           # @note We need to initialize the error, as the original error is a cause for this
@@ -34,6 +34,12 @@ module Castle
           # would get converted into a string
           raise Castle::RequestError.new(e) # rubocop:disable Style/RaiseArgs
         end
+      end
+
+      # @param command [String]
+      # @param headers [Hash]
+      def call(command, headers = {})
+        Castle::API::Response.call(request(command, headers))
       end
     end
   end

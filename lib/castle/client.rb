@@ -44,7 +44,7 @@ module Castle
       add_timestamp_if_necessary(options)
       command = Castle::Commands::Authenticate.new(@context).build(options)
       begin
-        Castle::API.request(command).merge(failover: false, failover_reason: nil)
+        Castle::API.call(command).merge(failover: false, failover_reason: nil)
       rescue Castle::RequestError, Castle::InternalServerError => e
         self.class.failover_response_or_raise(
           FailoverAuthResponse.new(options[:user_id], reason: e.to_s), e
@@ -60,7 +60,7 @@ module Castle
       add_timestamp_if_necessary(options)
 
       command = Castle::Commands::Identify.new(@context).build(options)
-      Castle::API.request(command)
+      Castle::API.call(command)
     end
 
     def track(options = {})
@@ -71,14 +71,14 @@ module Castle
       add_timestamp_if_necessary(options)
 
       command = Castle::Commands::Track.new(@context).build(options)
-      Castle::API.request(command)
+      Castle::API.call(command)
     end
 
     def impersonate(options = {})
       options = Castle::Utils.deep_symbolize_keys(options || {})
       add_timestamp_if_necessary(options)
       command = Castle::Commands::Impersonate.new(@context).build(options)
-      Castle::API.request(command).tap do |response|
+      Castle::API.call(command).tap do |response|
         raise Castle::ImpersonationFailed unless response[:success]
       end
     end
