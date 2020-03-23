@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
-describe Castle::HeaderFilter do
+describe Castle::HeadersFilter do
   subject(:headers) { described_class.new(request).call }
 
-  let(:client_id) { 'abcd' }
   let(:env) do
     Rack::MockRequest.env_for(
       '/',
       'Action-Dispatch.request.content-Type' => 'application/json',
       'HTTP_AUTHORIZATION' => 'Basic 123456',
-      'HTTP_COOKIE' => "__cid=#{client_id};other=efgh",
-      'HTTP_OK' => 'OK',
+      'HTTP_COOKIE' => '__cid=abcd;other=efgh',
+      'http-ok' => 'OK',
       'HTTP_ACCEPT' => 'application/json',
       'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
       'HTTP_USER_AGENT' => 'Mozilla 1234',
@@ -22,7 +21,7 @@ describe Castle::HeaderFilter do
     {
       'Accept' => 'application/json',
       'Authorization' => 'Basic 123456',
-      'Cookie' => "__cid=#{client_id};other=efgh",
+      'Cookie' => '__cid=abcd;other=efgh',
       'Content-Length' => '0',
       'Ok' => 'OK',
       'User-Agent' => 'Mozilla 1234',

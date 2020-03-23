@@ -4,6 +4,11 @@ describe Castle::Extractors::IP do
   subject(:extractor) { described_class.new(headers) }
 
   describe 'ip' do
+    after do
+      Castle.config.ip_headers = []
+      Castle.config.trusted_proxies = []
+    end
+
     context 'when regular ip' do
       let(:headers) { { 'X-Forwarded-For' => '1.2.3.5' } }
 

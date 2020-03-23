@@ -2,23 +2,23 @@
 
 module Castle
   # used for preparing valuable headers list
-  class HeaderFilter
+  class HeadersFilter
     # headers filter
     # HTTP_ - this is how Rack prefixes incoming HTTP headers
     # CONTENT_LENGTH - for responses without Content-Length or Transfer-Encoding header
     # REMOTE_ADDR - ip address header returned by web server
-    VALUABLE_HEADERS = /^(
-      HTTP_.*|
-      CONTENT_LENGTH|
-      REMOTE_ADDR
-    )$/x.freeze
+    VALUABLE_HEADERS = /^
+      HTTP(?:_|-).*|
+      CONTENT(?:_|-)LENGTH|
+      REMOTE(?:_|-)ADDR
+    $/xi.freeze
 
     private_constant :VALUABLE_HEADERS
 
     # @param request [Rack::Request]
     def initialize(request)
       @request_env = request.env
-      @formatter = HeaderFormatter.new
+      @formatter = HeadersFormatter
     end
 
     # Serialize HTTP headers

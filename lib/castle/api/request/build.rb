@@ -9,7 +9,7 @@ module Castle
           def call(command, headers, api_secret)
             request = Net::HTTP.const_get(
               command.method.to_s.capitalize
-            ).new("/#{Castle.config.url_prefix}/#{command.path}", headers)
+            ).new("#{Castle.config.url_prefix}/#{command.path}", headers)
 
             unless command.method == :get
               request.body = ::Castle::Utils.replace_invalid_characters(

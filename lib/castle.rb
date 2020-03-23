@@ -29,8 +29,8 @@
   castle/configuration
   castle/failover_auth_response
   castle/client
-  castle/header_filter
-  castle/header_formatter
+  castle/headers_filter
+  castle/headers_formatter
   castle/secure_mode
   castle/extractors/client_id
   castle/extractors/headers

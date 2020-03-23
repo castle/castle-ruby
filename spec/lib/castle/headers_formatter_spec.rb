@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Castle::HeaderFormatter do
-  subject(:formatter) { described_class.new }
+describe Castle::HeadersFormatter do
+  subject(:formatter) { described_class }
 
   it 'removes HTTP_' do
     expect(formatter.call('HTTP_X_TEST')).to be_eql('X-Test')

@@ -4,7 +4,7 @@ module Castle
   module Context
     class Default
       def initialize(request, cookies = nil)
-        @pre_headers = HeaderFilter.new(request).call
+        @pre_headers = HeadersFilter.new(request).call
         @cookies = cookies || request.cookies
         @request = request
       end

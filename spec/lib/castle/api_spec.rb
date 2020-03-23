@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Castle::API do
-  subject(:request) { described_class.request(command) }
+  subject(:call) { described_class.call(command) }
 
   let(:command) { Castle::Commands::Track.new({}).build(event: '$login.succeeded') }
 
@@ -10,7 +10,7 @@ describe Castle::API do
 
     it do
       expect do
-        request
+        call
       end.to raise_error(Castle::RequestError)
     end
   end
@@ -20,7 +20,7 @@ describe Castle::API do
 
     it do
       expect do
-        request
+        call
       end.to raise_error(Castle::BadRequestError)
     end
   end
@@ -30,7 +30,7 @@ describe Castle::API do
 
     it do
       expect do
-        request
+        call
       end.to raise_error(Castle::ConfigurationError)
     end
   end

@@ -3,7 +3,6 @@
 describe Castle::Extractors::Headers do
   subject(:headers) { described_class.new(formatted_headers).call }
 
-  let(:client_id) { 'abcd' }
   let(:formatted_headers) do
     {
       'Content-Length' => '0',
