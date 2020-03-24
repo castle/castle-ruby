@@ -13,7 +13,7 @@ module Castle
 
       class << self
         def call(command, api_secret, headers)
-          Castle::API::SessionSharer.get.request(
+          Castle::API::Session.get.request(
             build(
               command,
               headers.merge(DEFAULT_HEADERS),

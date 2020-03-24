@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-describe Castle::API::SessionSharer do
+describe Castle::API::Session do
   describe '#get' do
     it { expect(described_class.get).to eql(described_class.get) }
-    it { expect(described_class.get).to eql(described_class.instance.session) }
+    it { expect(described_class.get).to eql(described_class.instance.http) }
   end
 
   describe '#initialize' do
     subject(:session) { described_class.instance.session }
 
     after do
-      Castle::API::SessionSharer.instance.setup
+      Castle::API::Session.reset
     end
 
     context 'when ssl false' do

@@ -4,8 +4,8 @@ describe Castle::API::Request do
   describe '#call' do
     subject(:call) { described_class.call(command, api_secret, headers) }
 
-    let(:session_sharer) { instance_double('Castle::API::SessionSharer') }
-    let(:session) { instance_double('Net::HTTP') }
+    let(:session) { instance_double('Castle::API::Session') }
+    let(:http) { instance_double('Net::HTTP') }
     let(:command) { Castle::Commands::Track.new({}).build(event: '$login.succeeded') }
     let(:headers) { {} }
     let(:api_secret) { 'secret' }
@@ -13,9 +13,9 @@ describe Castle::API::Request do
     let(:expected_headers) { { 'Content-Type' => 'application/json' } }
 
     before do
-      allow(Castle::API::SessionSharer).to receive(:instance).and_return(session_sharer)
-      allow(session_sharer).to receive(:session).and_return(session)
-      allow(session).to receive(:request)
+      allow(Castle::API::Session).to receive(:instance).and_return(session)
+      allow(session).to receive(:http).and_return(http)
+      allow(http).to receive(:request)
       allow(described_class).to receive(:build).and_return(request_build)
       call
     end
@@ -24,7 +24,7 @@ describe Castle::API::Request do
       expect(described_class).to have_received(:build).with(command, expected_headers, api_secret)
     end
 
-    it { expect(session).to have_received(:request).with(request_build) }
+    it { expect(http).to have_received(:request).with(request_build) }
   end
 
   describe '#build' do
