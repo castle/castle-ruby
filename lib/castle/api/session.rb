@@ -35,21 +35,6 @@ module Castle
         def get
           instance.http
         end
-
-        def start
-          session = get
-          session.start unless session.started?
-        end
-
-        def finish
-          session = get
-          session.finish if session.started?
-        end
-
-        def reset
-          finish
-          instance.setup
-        end
       end
     end
   end
