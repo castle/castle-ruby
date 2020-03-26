@@ -13,12 +13,10 @@ module Castle
       attr_accessor :http
 
       def initialize
-        setup
+        reset
       end
 
-      private
-
-      def setup
+      def reset
         @http = Net::HTTP.new(Castle.config.host, Castle.config.port)
         @http.read_timeout = Castle.config.request_timeout / 1000.0
 
