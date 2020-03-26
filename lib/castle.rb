@@ -54,7 +54,7 @@ module Castle
     end
 
     def config
-      @config ||= Castle::Configuration.new
+      Configuration.instance
     end
 
     def api_secret=(api_secret)

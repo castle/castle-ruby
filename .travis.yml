@@ -1,9 +1,8 @@
 language: ruby
 services:
   - docker
-
+os: linux
 dist: trusty
-sudo: false
 cache: bundler
 
 git:
@@ -13,6 +12,7 @@ before_install:
   - yes | gem update --system
 
 rvm:
+  - 2.7.0
   - 2.6.5
   - 2.5.7
   - 2.4.9
