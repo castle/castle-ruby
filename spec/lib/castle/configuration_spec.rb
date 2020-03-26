@@ -2,7 +2,7 @@
 
 describe Castle::Configuration do
   subject(:config) do
-    described_class.new
+    described_class.instance
   end
 
   describe 'host' do
@@ -38,6 +38,7 @@ describe Castle::Configuration do
         allow(ENV).to receive(:fetch).with(
           'CASTLE_API_SECRET', ''
         ).and_return(secret_key_env)
+        config.reset
       end
 
       it do
@@ -66,7 +67,7 @@ describe Castle::Configuration do
     end
 
     it do
-      expect(config.api_secret).to be_eql('')
+      expect(config.api_secret).to be_eql('secret')
     end
   end
 

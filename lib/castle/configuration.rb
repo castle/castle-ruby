@@ -3,6 +3,8 @@
 module Castle
   # manages configuration variables
   class Configuration
+    include Singleton
+
     HOST = 'api.castle.io'
     PORT = 443
     URL_PREFIX = '/v1'
@@ -46,6 +48,10 @@ module Castle
     def initialize
       @formatter = Castle::HeadersFormatter
       @request_timeout = REQUEST_TIMEOUT
+      reset
+    end
+
+    def reset
       self.failover_strategy = FAILOVER_STRATEGY
       self.host = HOST
       self.port = PORT

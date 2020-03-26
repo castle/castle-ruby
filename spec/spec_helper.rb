@@ -16,8 +16,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.configure do |config|
   config.before do
-    Castle.instance_variable_set(:@configuration, Castle::Configuration.new)
-
+    Castle.config.reset
     Castle.configure do |cfg|
       cfg.api_secret = 'secret'
     end
