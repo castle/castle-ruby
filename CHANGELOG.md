@@ -2,6 +2,8 @@
 
 ## master
 
+## 4.1.0 (2020-03-27)
+
 - [#184](https://github.com/castle/castle-ruby/pull/184) added Castle::API::Session which exposes Net:Http instance for reuse
 - [#183](https://github.com/castle/castle-ruby/pull/183) change format of url_prefix config and renamed internal classes/variables
 
