@@ -5,42 +5,38 @@ module Castle
     # used for extraction of ip from the request
     class IP
       # ordered list of ip headers for ip extraction
-      DEFAULT = %w[X-Forwarded-For Client-Ip Remote-Addr].freeze
-      # default header fallback when ip is not found
-      FALLBACK = 'Remote-Addr'
+      DEFAULT = %w[X-Forwarded-For Remote-Addr].freeze
 
-      private_constant :FALLBACK, :DEFAULT
+      private_constant :DEFAULT
 
       # @param headers [Hash]
       def initialize(headers)
         @headers = headers
-        @ip_headers = Castle.config.ip_headers + DEFAULT
+        @ip_headers = Castle.config.ip_headers.empty? ? DEFAULT : Castle.config.ip_headers
         @proxies = Castle.config.trusted_proxies + Castle::Configuration::TRUSTED_PROXIES
       end
 
       # Order of headers:
       #   .... list of headers defined by ip_headers
       #   X-Forwarded-For
-      #   Client-Ip is
       #   Remote-Addr
       # @return [String]
       def call
+        all_ips = []
+
         @ip_headers.each do |ip_header|
-          ip_value = calculate_ip(ip_header)
+          ips = ips_from(ip_header)
+          ip_value = remove_proxies(ips).last
           return ip_value if ip_value
+
+          all_ips.push(*ips)
         end
 
-        @headers[FALLBACK]
+        # fallback to first whatever ip
+        all_ips.first
       end
 
       private
-
-      # @param header [String]
-      # @return [String]
-      def calculate_ip(header)
-        ips = ips_from(header)
-        remove_proxies(ips).first
-      end
 
       # @param ips [Array<String>]
       # @return [Array<String>]
@@ -61,7 +57,7 @@ module Castle
 
         return [] unless value
 
-        value.strip.split(/[,\s]+/).reverse
+        value.strip.split(/[,\s]+/)
       end
     end
   end

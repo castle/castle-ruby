@@ -21,20 +21,20 @@ describe Castle::Extractors::IP do
       end
 
       context 'with uppercase format' do
-        before { Castle.config.ip_headers = %w[CF_CONNECTING_IP] }
+        before { Castle.config.ip_headers = %w[CF_CONNECTING_IP X-Forwarded-For] }
 
         it { expect(extractor.call).to eql('1.2.3.4') }
       end
 
       context 'with regular format' do
-        before { Castle.config.ip_headers = %w[Cf-Connecting-Ip] }
+        before { Castle.config.ip_headers = %w[Cf-Connecting-Ip X-Forwarded-For] }
 
         it { expect(extractor.call).to eql('1.2.3.4') }
       end
 
-      context 'with value from trusted proxies' do
+      context 'with value from trusted proxies it get seconds header' do
         before do
-          Castle.config.ip_headers = %w[Cf-Connecting-Ip]
+          Castle.config.ip_headers = %w[Cf-Connecting-Ip X-Forwarded-For]
           Castle.config.trusted_proxies = %w[1.2.3.4]
         end
 
@@ -49,7 +49,7 @@ describe Castle::Extractors::IP do
 
       let(:headers) { { 'Remote-Addr' => '127.0.0.1', 'X-Forwarded-For' => http_x_header } }
 
-      it 'fallbacks to remote_addr even if trusted proxy' do
+      it 'fallbacks to first available header when all headers are marked trusted proxy' do
         expect(extractor.call).to eql('127.0.0.1')
       end
     end

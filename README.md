@@ -87,12 +87,12 @@ Castle.configure do |config|
   config.blacklisted = ['HTTP-X-header']
 
   # Castle needs the original IP of the client, not the IP of your proxy or load balancer.
-  # we try to fetch proper ip based on X-Forwarded-For, X-Client-Id or Remote-Addr headers in that order
+  # we try to fetch proper ip based on X-Forwarded-For or Remote-Addr headers in that order
   # but sometimes proper ip may be stored in different header or order could be different.
   # SDK can extract ip automatically for you, but you must configure which ip_headers you would like to use
   configuration.ip_headers = []
 
-  # Additionally to make X-Forwarded-For or X-Client-Id work better discovering client ip address,
+  # Additionally to make X-Forwarded-For and other headers work better discovering client ip address,
   # and not the address of a reverse proxy server, you can define trusted proxies
   # which will help to fetch proper ip from those headers
   configuration.trusted_proxies = []
