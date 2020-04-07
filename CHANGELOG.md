@@ -2,6 +2,10 @@
 
 ## master
 
+## 4.2.1 (2020-04-07)
+
+- [#189](https://github.com/castle/castle-ruby/pull/189) added missing require
+
 ## 4.2.0 (2020-03-31)
 
 - [#187](https://github.com/castle/castle-ruby/pull/187) dropped X-Client-Id from calculation of ip, drop appending default ip headers to the ip_header list config when config is provided (in that case default headers have to explicitly provided)
