@@ -4,18 +4,19 @@ describe Castle::HeadersFilter do
   subject(:headers) { described_class.new(request).call }
 
   let(:env) do
-    Rack::MockRequest.env_for(
+    result = Rack::MockRequest.env_for(
       '/',
       'Action-Dispatch.request.content-Type' => 'application/json',
       'HTTP_AUTHORIZATION' => 'Basic 123456',
       'HTTP_COOKIE' => '__cid=abcd;other=efgh',
-      'http-ok' => 'OK',
       'HTTP_ACCEPT' => 'application/json',
       'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
       'HTTP_USER_AGENT' => 'Mozilla 1234',
       'TEST' => '1',
       'REMOTE_ADDR' => '1.2.3.4'
     )
+    result[:HTTP_OK] = 'OK'
+    result
   end
   let(:filtered) do
     {
