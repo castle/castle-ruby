@@ -29,7 +29,7 @@ module Castle
       # @return [Hash]
       def call
         @request_env.keys.each_with_object({}) do |env_header, acc|
-          next unless env_header.start_with?(HTTP_HEADER_PREFIX) || env_header == CONTENT_LENGTH
+          next unless env_header.to_s.start_with?(HTTP_HEADER_PREFIX) || env_header == CONTENT_LENGTH
 
           header = @formatter.call(env_header)
 
