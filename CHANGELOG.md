@@ -2,6 +2,10 @@
 
 ## master
 
+## 3.6.2 (2020-04-24)
+
+- [#192](https://github.com/castle/castle-ruby/pull/192) fixed problem with symbols in env
+
 ## 3.6.1 (2020-01-16)
 
 **Bug fixes**:
