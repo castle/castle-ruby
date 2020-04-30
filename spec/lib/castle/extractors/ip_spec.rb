@@ -15,6 +15,28 @@ describe Castle::Extractors::IP do
       it { expect(extractor.call).to eql('1.2.3.5') }
     end
 
+    context 'when proxy chain is all private' do
+      let(:headers) { { 'X-Forwarded-For' => '1.2.3.5, 10.10.10.10, 192.168.1.1'} }
+
+      it { expect(extractor.call).to eql('1.2.3.5') }
+    end
+
+    context 'when trusted proxies trusts all' do
+      before { Castle.config.trusted_proxies = [/^.+$/] }
+
+      let(:headers) { { 'X-Forwarded-For' => '1.1.2.3, 5.8.13.21, 34.55.89.144'} }
+
+      it { expect(extractor.call).to eql ('1.1.2.3') }
+    end
+    
+    context 'when multiple IP addresses specified' do
+      before { Castle.config.trusted_proxies = ['5.8.13.21', '34.55.89.144'] }
+
+      let(:headers) { { 'X-Forwarded-For' => '1.1.2.3, 5.8.13.21, 34.55.89.144'} }
+
+      it { expect(extractor.call).to eql ('1.1.2.3') }
+    end
+
     context 'when we need to use other ip header' do
       let(:headers) do
         { 'Cf-Connecting-Ip' => '1.2.3.4', 'X-Forwarded-For' => '1.1.1.1, 1.2.2.2, 1.2.3.5' }
@@ -34,7 +56,7 @@ describe Castle::Extractors::IP do
 
       context 'with value from trusted proxies it get seconds header' do
         before do
-          Castle.config.ip_headers = %w[Cf-Connecting-Ip X-Forwarded-For]
+          Castle.config.ip_headers = %w[X-Forwarded-For Cf-Connecting-Ip]
           Castle.config.trusted_proxies = %w[1.2.3.4]
         end
 

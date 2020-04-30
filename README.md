@@ -87,17 +87,23 @@ Castle.configure do |config|
   config.blacklisted = ['HTTP-X-header']
 
   # Castle needs the original IP of the client, not the IP of your proxy or load balancer.
-  # we try to fetch proper ip based on X-Forwarded-For or Remote-Addr headers in that order
-  # but sometimes proper ip may be stored in different header or order could be different.
-  # SDK can extract ip automatically for you, but you must configure which ip_headers you would like to use
+  # The SDK will only trust the proxy chain as defined in the configuration.
+  # we try to fetch the client IP based on X-Forwarded-For or Remote-Addr headers in that order,
+  # but sometimes the client IP may be stored in a different header or order.
+  # The SDK can be configured to look for the client IP address in headers that you specify.
+  # If the specified header or X-Forwarded-For default contains a proxy chain with public IP addresses, 
+  # then the trusted_proxies setting must include the trusted proxy IP addresses (see below).
   configuration.ip_headers = []
 
-  # Additionally to make X-Forwarded-For and other headers work better discovering client ip address,
-  # and not the address of a reverse proxy server, you can define trusted proxies
-  # which will help to fetch proper ip from those headers
-  configuration.trusted_proxies = []
+  # In order to extract the client IP of the X-Forwarded-For or other header with multiple IP addresses,
+  # and not the address of a reverse proxy server, you must define all trusted public proxies.
+  # If you are sure that the integrity of the IP address chain of X-Forwarded-For or of
+  # configuration.ip_headers can be trusted, then you may use a greedy regular expression 
+  # to extract the left-most IP address in the X-Forwarded-For header
+  configuration.trusted_proxies = [/^.+$/]
+
   # *Note: proxies list can be provided as an array of regular expressions
-  # *Note: default always marked as trusty list is here: Castle::Configuration::TRUSTED_PROXIES
+  # *Note: default always marked as trusted list is here: Castle::Configuration::TRUSTED_PROXIES
 end
 ```
 
