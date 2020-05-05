@@ -7,17 +7,17 @@ describe Castle::API::Session do
   end
 
   describe '#initialize' do
-    subject(:session) { described_class.instance.session }
+    subject(:session) { described_class.get }
 
     after do
-      Castle::API::Session.reset
+      described_class.instance.reset
     end
 
     context 'when ssl false' do
       before do
         Castle.config.host = 'localhost'
         Castle.config.port = 3002
-        described_class.instance.setup
+        described_class.instance.reset
       end
 
       after do
@@ -34,7 +34,7 @@ describe Castle::API::Session do
 
     context 'when ssl true' do
       before do
-        described_class.instance.setup
+        described_class.instance.reset
       end
 
       it { expect(session).to be_instance_of(Net::HTTP) }
