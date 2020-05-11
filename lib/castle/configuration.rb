@@ -46,7 +46,7 @@ module Castle
 
     attr_accessor :host, :port, :request_timeout, :url_prefix, :trust_proxy_chain
     attr_reader :api_secret, :whitelisted, :blacklisted, :failover_strategy, :ip_headers,
-                :trusted_proxies
+                :trusted_proxies, :trusted_proxy_depth
 
     def initialize
       @formatter = Castle::HeadersFormatter
@@ -65,6 +65,7 @@ module Castle
       self.ip_headers = [].freeze
       self.trusted_proxies = [].freeze
       self.trust_proxy_chain = false
+      self.trusted_proxy_depth = nil
     end
 
     def api_secret=(value)
@@ -88,11 +89,16 @@ module Castle
     end
 
     # sets trusted proxies
-    # @param value [Array<String|Regexp>]
+    # @param value [Array<String,Regexp>]
     def trusted_proxies=(value)
       raise Castle::ConfigurationError, 'trusted proxies must be an Array' unless value.is_a?(Array)
 
       @trusted_proxies = value
+    end
+
+    # @param value [String,Number,NilClass]
+    def trusted_proxy_depth=(value)
+      @trusted_proxy_depth = value.to_i
     end
 
     def valid?

@@ -68,6 +68,20 @@ describe Castle::Extractors::IP do
       end
     end
 
+    context 'with trusted_proxy_depth option' do
+      let(:http_x_header) do
+        '6.6.6.6, 2.2.2.3, 6.6.6.5'
+      end
+
+      let(:headers) { { 'Remote-Addr' => '6.6.6.4', 'X-Forwarded-For' => http_x_header } }
+
+      before { Castle.config.trusted_proxy_depth = 1 }
+
+      it 'selects first available header' do
+        expect(extractor.call).to eql('2.2.2.3')
+      end
+    end
+
     context 'when list of not trusted ips provided in X_FORWARDED_FOR' do
       let(:headers) do
         {
