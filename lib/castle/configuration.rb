@@ -44,8 +44,9 @@ module Castle
       X-Castle-Client-Id
     ].freeze
 
-    attr_accessor :host, :port, :request_timeout, :url_prefix
-    attr_reader :api_secret, :whitelisted, :blacklisted, :failover_strategy, :ip_headers, :trusted_proxies
+    attr_accessor :host, :port, :request_timeout, :url_prefix, :trust_proxy_chain
+    attr_reader :api_secret, :whitelisted, :blacklisted, :failover_strategy, :ip_headers,
+                :trusted_proxies
 
     def initialize
       @formatter = Castle::HeadersFormatter
@@ -63,6 +64,7 @@ module Castle
       self.api_secret = ENV.fetch('CASTLE_API_SECRET', '')
       self.ip_headers = [].freeze
       self.trusted_proxies = [].freeze
+      self.trust_proxy_chain = false
     end
 
     def api_secret=(value)

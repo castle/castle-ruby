@@ -44,13 +44,27 @@ describe Castle::Extractors::IP do
 
     context 'with all the trusted proxies' do
       let(:http_x_header) do
-        '127.0.0.1,10.0.0.1,172.31.0.1,192.168.0.1,::1,fd00::,localhost,unix,unix:/tmp/sock'
+        '127.0.0.1,10.0.0.1,172.31.0.1,192.168.0.1'
       end
 
       let(:headers) { { 'Remote-Addr' => '127.0.0.1', 'X-Forwarded-For' => http_x_header } }
 
       it 'fallbacks to first available header when all headers are marked trusted proxy' do
         expect(extractor.call).to eql('127.0.0.1')
+      end
+    end
+
+    context 'with trust_proxy_chain option' do
+      let(:http_x_header) do
+        '6.6.6.6, 2.2.2.3, 6.6.6.5'
+      end
+
+      let(:headers) { { 'Remote-Addr' => '6.6.6.4', 'X-Forwarded-For' => http_x_header } }
+
+      before { Castle.config.trust_proxy_chain = true }
+
+      it 'selects first available header' do
+        expect(extractor.call).to eql('6.6.6.6')
       end
     end
 

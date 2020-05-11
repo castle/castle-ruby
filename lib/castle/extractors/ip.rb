@@ -14,6 +14,7 @@ module Castle
         @headers = headers
         @ip_headers = Castle.config.ip_headers.empty? ? DEFAULT : Castle.config.ip_headers
         @proxies = Castle.config.trusted_proxies + Castle::Configuration::TRUSTED_PROXIES
+        @trust_proxy_chain = Castle.config.trust_proxy_chain
       end
 
       # Order of headers:
@@ -26,13 +27,13 @@ module Castle
 
         @ip_headers.each do |ip_header|
           ips = ips_from(ip_header)
-          ip_value = remove_proxies(ips).last
+          ip_value = remove_proxies(ips)
           return ip_value if ip_value
 
           all_ips.push(*ips)
         end
 
-        # fallback to first whatever ip
+        # fallback to first listed ip
         all_ips.first
       end
 
@@ -41,7 +42,9 @@ module Castle
       # @param ips [Array<String>]
       # @return [Array<String>]
       def remove_proxies(ips)
-        ips.reject { |ip| proxy?(ip) }
+        return ips.first if @trust_proxy_chain
+
+        ips.reject { |ip| proxy?(ip) }.last
       end
 
       # @param ip [String]
