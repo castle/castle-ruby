@@ -87,17 +87,32 @@ Castle.configure do |config|
   config.blacklisted = ['HTTP-X-header']
 
   # Castle needs the original IP of the client, not the IP of your proxy or load balancer.
-  # we try to fetch proper ip based on X-Forwarded-For or Remote-Addr headers in that order
-  # but sometimes proper ip may be stored in different header or order could be different.
-  # SDK can extract ip automatically for you, but you must configure which ip_headers you would like to use
+  # The SDK will only trust the proxy chain as defined in the configuration.
+  # we try to fetch the client IP based on X-Forwarded-For or Remote-Addr headers in that order,
+  # but sometimes the client IP may be stored in a different header or order.
+  # The SDK can be configured to look for the client IP address in headers that you specify.
+  # If the specified header or X-Forwarded-For default contains a proxy chain with public IP addresses,
+  # then the trusted_proxies setting must include the trusted proxy IP addresses or trusted_proxy_depth setting
+  # must include number of known trusted proxies in the chain (see below)
   configuration.ip_headers = []
 
   # Additionally to make X-Forwarded-For and other headers work better discovering client ip address,
   # and not the address of a reverse proxy server, you can define trusted proxies
   # which will help to fetch proper ip from those headers
+
+  # In order to extract the client IP of the X-Forwarded-For header
+  # and not the address of a reverse proxy server, you must define all trusted public proxies
+  # you can achieve this by listing all the proxies ip defined by string or regular expressions
+  # in trusted_proxies setting
   configuration.trusted_proxies = []
-  # *Note: proxies list can be provided as an array of regular expressions
-  # *Note: default always marked as trusty list is here: Castle::Configuration::TRUSTED_PROXIES
+  # or by providing number of trusted proxies used in the chain
+  configuration.trusted_proxy_depth = 0
+
+  # If there is no possibility to define options above and there is no other header which can have client ip
+  # then you may set trust_proxy_chain setting which will fetch first,left-most IP address in the X-Forwarded-For header
+  configuration.trust_proxy_chain = false
+
+  # *Note: default, always marked as trusted list is here: Castle::Configuration::TRUSTED_PROXIES
 end
 ```
 
