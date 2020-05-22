@@ -2,6 +2,10 @@
 
 ## master
 
+## 4.3.0 (2020-05-22)
+
+- [#197](https://github.com/castle/castle-ruby/pull/197) add `trusted_proxy_depth` and `trust_proxy_chain` configuration options
+
 ## 4.2.1 (2020-04-07)
 
 - [#189](https://github.com/castle/castle-ruby/pull/189) added missing require
