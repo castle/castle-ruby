@@ -6,6 +6,8 @@ module Castle
     class IP
       # ordered list of ip headers for ip extraction
       DEFAULT = %w[X-Forwarded-For Remote-Addr].freeze
+      # list of header which are used with proxy depth setting
+      DEPTH_RELATED = %w[X-Forwarded-For].freeze
 
       private_constant :DEFAULT
 
@@ -14,6 +16,8 @@ module Castle
         @headers = headers
         @ip_headers = Castle.config.ip_headers.empty? ? DEFAULT : Castle.config.ip_headers
         @proxies = Castle.config.trusted_proxies + Castle::Configuration::TRUSTED_PROXIES
+        @trust_proxy_chain = Castle.config.trust_proxy_chain
+        @trusted_proxy_depth = Castle.config.trusted_proxy_depth
       end
 
       # Order of headers:
@@ -26,13 +30,14 @@ module Castle
 
         @ip_headers.each do |ip_header|
           ips = ips_from(ip_header)
-          ip_value = remove_proxies(ips).last
+          ip_value = remove_proxies(ips)
+
           return ip_value if ip_value
 
           all_ips.push(*ips)
         end
 
-        # fallback to first whatever ip
+        # fallback to first listed ip
         all_ips.first
       end
 
@@ -41,7 +46,9 @@ module Castle
       # @param ips [Array<String>]
       # @return [Array<String>]
       def remove_proxies(ips)
-        ips.reject { |ip| proxy?(ip) }
+        return ips.first if @trust_proxy_chain
+
+        ips.reject { |ip| proxy?(ip) }.last
       end
 
       # @param ip [String]
@@ -57,7 +64,18 @@ module Castle
 
         return [] unless value
 
-        value.strip.split(/[,\s]+/)
+        ips = value.strip.split(/[,\s]+/)
+
+        limit_proxy_depth(ips, header)
+      end
+
+      # @param ips [Array<String>]
+      # @param ip_header [String]
+      # @return [Array<String>]
+      def limit_proxy_depth(ips, ip_header)
+        ips.pop(@trusted_proxy_depth) if DEPTH_RELATED.include?(ip_header)
+
+        ips
       end
     end
   end
