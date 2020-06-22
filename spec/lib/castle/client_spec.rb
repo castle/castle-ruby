@@ -82,10 +82,10 @@ describe Castle::Client do
     let(:impersonator) { 'test@castle.io' }
     let(:request_body) do
       { user_id: '1234', timestamp: time_auto, sent_at: time_auto,
-        impersonator: impersonator, context: context }
+        properties: { impersonator: impersonator }, context: context }
     end
     let(:response_body) { { success: true }.to_json }
-    let(:options) { { user_id: '1234', impersonator: impersonator } }
+    let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
 
     context 'when used with symbol keys' do
       before { client.impersonate(options) }

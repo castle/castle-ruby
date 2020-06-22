@@ -36,9 +36,9 @@ describe Castle::Commands::Impersonate do
     end
 
     context 'with impersonator' do
-      let(:payload) { default_payload.merge(impersonator: impersonator) }
+      let(:payload) { default_payload.merge(properties: { impersonator: impersonator }) }
       let(:command_data) do
-        default_payload.merge(impersonator: impersonator, context: context)
+        default_payload.merge(properties: { impersonator: impersonator }, context: context)
       end
 
       it { expect(command.method).to be_eql(:post) }
