@@ -1,21 +1,20 @@
 version: 2.1
 
-.coditsu: &coditsu
-  docker:
-    - image: circleci/ruby:2.6.5
-  steps:
-    - setup_remote_docker
-    - checkout
-    - run: |
-        docker create -v /sources --name sources alpine:3.4 /bin/true
-        docker cp ./ sources:/sources
-        docker run \
-          -e CODITSU_API_KEY \
-          -e CODITSU_API_SECRET \
-          -e CODITSU_REPOSITORY_ID \
-          --volumes-from sources coditsu/coditsu:latest
-
 aliases:
+  - &coditsu
+    docker:
+      - image: circleci/ruby:2.6.5
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run: |
+          docker create -v /sources --name sources alpine:3.4 /bin/true
+          docker cp ./ sources:/sources
+          docker run \
+            -e CODITSU_API_KEY \
+            -e CODITSU_API_SECRET \
+            -e CODITSU_REPOSITORY_ID \
+            --volumes-from sources coditsu/coditsu:latest
   - &rails-5
     environment:
       BUNDLE_GEMFILE: gemfiles/rails_5.gemfile
