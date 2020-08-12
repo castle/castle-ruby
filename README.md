@@ -91,11 +91,17 @@ Castle.configure do |config|
   # We try to fetch the client IP based on X-Forwarded-For or Remote-Addr headers in that order,
   # but sometimes the client IP may be stored in a different header or order.
   # The SDK can be configured to look for the client IP address in headers that you specify.
+  
+  # Sometimes, Cloud providers do not use consistent IP addresses to proxy requests.
+  # In this case, the client IP is usually preserved in a custom header. Example:
+  # Cloudflare preserves the client request in the 'Cf-Connecting-Ip' header.
+  # It would be used like so: configuration.ip_headers=['Cf-Connecting-Ip']
+  configuration.ip_headers = []
+
   # If the specified header or X-Forwarded-For default contains a proxy chain with public IP addresses,
   # then one of the following must be set
   # 1. The trusted_proxies value must match the known proxy IP's
   # 2. The trusted_proxy_depth value must be set to the number of known trusted proxies in the chain (see below)
-  configuration.ip_headers = []
 
   # Additionally to make X-Forwarded-For and other headers work better discovering client ip address,
   # and not the address of a reverse proxy server, you can define trusted proxies
