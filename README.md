@@ -1,6 +1,6 @@
 # Ruby SDK for Castle
 
-[![Build Status](https://travis-ci.org/castle/castle-ruby.svg?branch=master)](https://travis-ci.org/castle/castle-ruby)
+[![Build Status](https://circleci.com/gh/castle/castle-ruby.svg?style=shield&branch=master)](https://circleci.com/gh/castle/castle-ruby)
 [![Coverage Status](https://coveralls.io/repos/github/castle/castle-ruby/badge.svg?branch=coveralls)](https://coveralls.io/github/castle/castle-ruby?branch=coveralls)
 [![Gem Version](https://badge.fury.io/rb/castle-rb.svg)](https://badge.fury.io/rb/castle-rb)
 
