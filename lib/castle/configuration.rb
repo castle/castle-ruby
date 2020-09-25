@@ -35,13 +35,20 @@ module Castle
       Connection
       Content-Length
       Content-Type
+      Dnt
       Host
       Origin
       Pragma
       Referer
-      TE
+      Sec-Fetch-Dest
+      Sec-Fetch-Mode
+      Sec-Fetch-Site
+      Sec-Fetch-User
+      Te
       Upgrade-Insecure-Requests
+      User-Agent
       X-Castle-Client-Id
+      X-Requested-With
     ].freeze
 
     attr_accessor :host, :port, :request_timeout, :url_prefix, :trust_proxy_chain
