@@ -17,10 +17,10 @@ module Castle
       end
 
       def reset
-        @http = Net::HTTP.new(Castle.config.host, Castle.config.port)
+        @http = Net::HTTP.new(Castle.config.url.host, Castle.config.url.port)
         @http.read_timeout = Castle.config.request_timeout / 1000.0
 
-        if Castle.config.port == 443
+        if Castle.config.url.scheme == "https"
           @http.use_ssl = true
           @http.verify_mode = OpenSSL::SSL::VERIFY_PEER
         end

@@ -25,7 +25,7 @@ module Castle
         def build(command, headers, api_secret)
           request_obj = Net::HTTP.const_get(
             command.method.to_s.capitalize
-          ).new("#{Castle.config.url_prefix}/#{command.path}", headers)
+          ).new("#{Castle.config.url.path}/#{command.path}", headers)
 
           unless command.method == :get
             request_obj.body = ::Castle::Utils.replace_invalid_characters(

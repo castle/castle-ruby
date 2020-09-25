@@ -2,6 +2,8 @@
 
 ## master
 
+- [#204](https://github.com/castle/castle-ruby/pull/204) drop configuration `host`, `port`, `url_prefix` options in favor of `url`
+
 ## 4.3.0 (2020-05-22)
 
 - [#197](https://github.com/castle/castle-ruby/pull/197) add `trusted_proxy_depth` and `trust_proxy_chain` configuration options
