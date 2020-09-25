@@ -23,9 +23,9 @@ module Castle
       \Aunix:
     /ix].freeze
 
-    # @note this value is not assigned as we don't recommend using a whitelist. If you need to use
+    # @note this value is not assigned as we don't recommend using a allowlist. If you need to use
     #   one, this constant is provided as a good default.
-    DEFAULT_WHITELIST = %w[
+    DEFAULT_ALLOWLIST = %w[
       Accept
       Accept-Charset
       Accept-Datetime
@@ -45,7 +45,7 @@ module Castle
     ].freeze
 
     attr_accessor :host, :port, :request_timeout, :url_prefix, :trust_proxy_chain
-    attr_reader :api_secret, :whitelisted, :blacklisted, :failover_strategy, :ip_headers,
+    attr_reader :api_secret, :allowlisted, :denylisted, :failover_strategy, :ip_headers,
                 :trusted_proxies, :trusted_proxy_depth
 
     def initialize
@@ -59,8 +59,8 @@ module Castle
       self.host = HOST
       self.port = PORT
       self.url_prefix = URL_PREFIX
-      self.whitelisted = [].freeze
-      self.blacklisted = [].freeze
+      self.allowlisted = [].freeze
+      self.denylisted = [].freeze
       self.api_secret = ENV.fetch('CASTLE_API_SECRET', '')
       self.ip_headers = [].freeze
       self.trusted_proxies = [].freeze
@@ -72,12 +72,12 @@ module Castle
       @api_secret = value.to_s
     end
 
-    def whitelisted=(value)
-      @whitelisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
+    def allowlisted=(value)
+      @allowlisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
     end
 
-    def blacklisted=(value)
-      @blacklisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
+    def denylisted=(value)
+      @denylisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
     end
 
     # sets ip headers
