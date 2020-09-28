@@ -18,7 +18,7 @@ describe Castle::API::Session do
         before do
           allow(Net::HTTP)
             .to receive(:new)
-            .with(localhost, port, { read_timeout: 0.5 })
+            .with(localhost, port)
             .and_call_original
 
           described_class.call do |http|
@@ -29,7 +29,7 @@ describe Castle::API::Session do
         it do
           expect(Net::HTTP)
             .to have_received(:new)
-            .with(localhost, port, { read_timeout: 0.5 })
+            .with(localhost, port)
         end
 
         it do
@@ -54,23 +54,20 @@ describe Castle::API::Session do
 
       before do
         Castle.config.url = 'https://localhost'
+        stub_request(:get, 'https://localhost/test').to_return(status: 200, body: '{}', headers: {})
       end
 
       context 'with block' do
         let(:api_url) { '/test' }
         let(:request) { Net::HTTP::Get.new(api_url) }
-        let(:http) { instance_double('Net::HTTP') }
-        let(:conn_options) do
-          { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_PEER, read_timeout: 0.5 }
-        end
 
         before do
           allow(Net::HTTP)
             .to receive(:new)
-            .with(localhost, port, conn_options)
-            .and_return(http)
+            .with(localhost, port)
+            .and_call_original
 
-          allow(http)
+          allow(Net::HTTP)
             .to receive(:start)
 
           described_class.call do |http|
@@ -81,7 +78,7 @@ describe Castle::API::Session do
         it do
           expect(Net::HTTP)
             .to have_received(:new)
-            .with(localhost, port, conn_options)
+            .with(localhost, port)
         end
       end
     end

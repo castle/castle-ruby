@@ -7,16 +7,15 @@ module Castle
 
       class << self
         def call
-          conn_options = {
-            read_timeout: Castle.config.request_timeout / 1000.0
-          }
+          http = Net::HTTP.new(Castle.config.url.host, Castle.config.url.port)
+          http.read_timeout = Castle.config.request_timeout / 1000.0
 
           if Castle.config.url.scheme == HTTPS_SCHEME
-            conn_options[:use_ssl] = true
-            conn_options[:verify_mode] = OpenSSL::SSL::VERIFY_PEER
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_PEER
           end
 
-          Net::HTTP.new(Castle.config.url.host, Castle.config.url.port, conn_options)
+          http
         end
       end
     end
