@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require 'singleton'
+require 'uri'
 
 module Castle
   # manages configuration variables
   class Configuration
     include Singleton
 
-    HOST = 'api.castle.io'
-    PORT = 443
-    URL_PREFIX = '/v1'
+    # API endpoint
+    URL = 'https://api.castle.io/v1'
     FAILOVER_STRATEGY = :allow
     REQUEST_TIMEOUT = 500 # in milliseconds
     FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
@@ -23,9 +23,9 @@ module Castle
       \Aunix:
     /ix].freeze
 
-    # @note this value is not assigned as we don't recommend using a whitelist. If you need to use
+    # @note this value is not assigned as we don't recommend using a allowlist. If you need to use
     #   one, this constant is provided as a good default.
-    DEFAULT_WHITELIST = %w[
+    DEFAULT_ALLOWLIST = %w[
       Accept
       Accept-Charset
       Accept-Datetime
@@ -51,8 +51,8 @@ module Castle
       X-Requested-With
     ].freeze
 
-    attr_accessor :host, :port, :request_timeout, :url_prefix, :trust_proxy_chain
-    attr_reader :api_secret, :whitelisted, :blacklisted, :failover_strategy, :ip_headers,
+    attr_accessor :request_timeout, :url, :trust_proxy_chain
+    attr_reader :api_secret, :allowlisted, :denylisted, :failover_strategy, :ip_headers,
                 :trusted_proxies, :trusted_proxy_depth
 
     def initialize
@@ -63,11 +63,9 @@ module Castle
 
     def reset
       self.failover_strategy = FAILOVER_STRATEGY
-      self.host = HOST
-      self.port = PORT
-      self.url_prefix = URL_PREFIX
-      self.whitelisted = [].freeze
-      self.blacklisted = [].freeze
+      self.url = URL
+      self.allowlisted = [].freeze
+      self.denylisted = [].freeze
       self.api_secret = ENV.fetch('CASTLE_API_SECRET', '')
       self.ip_headers = [].freeze
       self.trusted_proxies = [].freeze
@@ -75,16 +73,20 @@ module Castle
       self.trusted_proxy_depth = nil
     end
 
+    def url=(value)
+      @url = URI(value)
+    end
+
     def api_secret=(value)
       @api_secret = value.to_s
     end
 
-    def whitelisted=(value)
-      @whitelisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
+    def allowlisted=(value)
+      @allowlisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
     end
 
-    def blacklisted=(value)
-      @blacklisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
+    def denylisted=(value)
+      @denylisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
     end
 
     # sets ip headers
@@ -109,7 +111,7 @@ module Castle
     end
 
     def valid?
-      !api_secret.to_s.empty? && !host.to_s.empty? && !port.to_s.empty?
+      !api_secret.to_s.empty? && !url.host.to_s.empty? && !url.port.to_s.empty?
     end
 
     def failover_strategy=(value)

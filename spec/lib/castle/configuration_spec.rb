@@ -7,25 +7,25 @@ describe Castle::Configuration do
 
   describe 'host' do
     context 'with default' do
-      it { expect(config.host).to be_eql('api.castle.io') }
+      it { expect(config.url.host).to be_eql('api.castle.io') }
     end
 
     context 'with setter' do
-      before { config.host = 'api.castle.dev' }
+      before { config.url = 'http://api.castle.dev/v2' }
 
-      it { expect(config.host).to be_eql('api.castle.dev') }
+      it { expect(config.url.host).to be_eql('api.castle.dev') }
     end
   end
 
   describe 'post' do
     context 'with default' do
-      it { expect(config.port).to be_eql(443) }
+      it { expect(config.url.port).to be_eql(443) }
     end
 
     context 'with setter' do
-      before { config.port = 3001 }
+      before { config.url = 'http://api.castle.dev:3001/v2' }
 
-      it { expect(config.port).to be_eql(3001) }
+      it { expect(config.url.port).to be_eql(3001) }
     end
   end
 
@@ -89,34 +89,34 @@ describe Castle::Configuration do
     end
   end
 
-  describe 'whitelisted' do
+  describe 'allowlisted' do
     it do
-      expect(config.whitelisted.size).to be_eql(0)
+      expect(config.allowlisted.size).to be_eql(0)
     end
 
     context 'with setter' do
       before do
-        config.whitelisted = ['header']
+        config.allowlisted = ['header']
       end
 
       it do
-        expect(config.whitelisted).to be_eql(['Header'])
+        expect(config.allowlisted).to be_eql(['Header'])
       end
     end
   end
 
-  describe 'blacklisted' do
+  describe 'denylisted' do
     it do
-      expect(config.blacklisted.size).to be_eql(0)
+      expect(config.denylisted.size).to be_eql(0)
     end
 
     context 'with setter' do
       before do
-        config.blacklisted = ['header']
+        config.denylisted = ['header']
       end
 
       it do
-        expect(config.blacklisted).to be_eql(['Header'])
+        expect(config.denylisted).to be_eql(['Header'])
       end
     end
   end

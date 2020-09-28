@@ -10,6 +10,8 @@ module Castle
     class Session
       include Singleton
 
+      HTTPS_SCHEME = 'https'
+
       attr_accessor :http
 
       def initialize
@@ -17,10 +19,10 @@ module Castle
       end
 
       def reset
-        @http = Net::HTTP.new(Castle.config.host, Castle.config.port)
+        @http = Net::HTTP.new(Castle.config.url.host, Castle.config.url.port)
         @http.read_timeout = Castle.config.request_timeout / 1000.0
 
-        if Castle.config.port == 443
+        if Castle.config.url.scheme === HTTPS_SCHEME
           @http.use_ssl = true
           @http.verify_mode = OpenSSL::SSL::VERIFY_PEER
         end
