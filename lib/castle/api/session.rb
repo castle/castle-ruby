@@ -2,7 +2,7 @@
 
 module Castle
   module API
-    # this class keeps http config object
+    # this module uses the Connection object
     # and provides start method for persistent connection usage
     # when there is a need of sending multiple requests at once
     module Session

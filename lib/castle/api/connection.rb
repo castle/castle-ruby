@@ -2,6 +2,7 @@
 
 module Castle
   module API
+    # this module returns a new configured Net::HTTP object
     module Connection
       HTTPS_SCHEME = 'https'
 
