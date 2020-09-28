@@ -89,34 +89,34 @@ describe Castle::Configuration do
     end
   end
 
-  describe 'whitelisted' do
+  describe 'allowlisted' do
     it do
-      expect(config.whitelisted.size).to be_eql(0)
+      expect(config.allowlisted.size).to be_eql(0)
     end
 
     context 'with setter' do
       before do
-        config.whitelisted = ['header']
+        config.allowlisted = ['header']
       end
 
       it do
-        expect(config.whitelisted).to be_eql(['Header'])
+        expect(config.allowlisted).to be_eql(['Header'])
       end
     end
   end
 
-  describe 'blacklisted' do
+  describe 'denylisted' do
     it do
-      expect(config.blacklisted.size).to be_eql(0)
+      expect(config.denylisted.size).to be_eql(0)
     end
 
     context 'with setter' do
       before do
-        config.blacklisted = ['header']
+        config.denylisted = ['header']
       end
 
       it do
-        expect(config.blacklisted).to be_eql(['Header'])
+        expect(config.denylisted).to be_eql(['Header'])
       end
     end
   end

@@ -4,18 +4,18 @@ module Castle
   module Extractors
     # used for extraction of cookies and headers from the request
     class Headers
-      # Headers that we will never scrub, even if they land on the configuration blacklist.
-      ALWAYS_WHITELISTED = %w[User-Agent].freeze
+      # Headers that we will never scrub, even if they land on the configuration denylist.
+      ALWAYS_ALLOWLISTED = %w[User-Agent].freeze
 
-      # Headers that will always be scrubbed, even if whitelisted.
-      ALWAYS_BLACKLISTED = %w[Cookie Authorization].freeze
+      # Headers that will always be scrubbed, even if allowlisted.
+      ALWAYS_DENYLISTED = %w[Cookie Authorization].freeze
 
-      private_constant :ALWAYS_WHITELISTED, :ALWAYS_BLACKLISTED
+      private_constant :ALWAYS_ALLOWLISTED, :ALWAYS_DENYLISTED
 
       # @param headers [Hash]
       def initialize(headers)
         @headers = headers
-        @no_whitelist = Castle.config.whitelisted.empty?
+        @no_allowlist = Castle.config.allowlisted.empty?
       end
 
       # Serialize HTTP headers
@@ -33,10 +33,10 @@ module Castle
       # @param value [String]
       # @return [TrueClass | FalseClass | String]
       def header_value(name, value)
-        return true if ALWAYS_BLACKLISTED.include?(name)
-        return value if ALWAYS_WHITELISTED.include?(name)
-        return true if Castle.config.blacklisted.include?(name)
-        return value if @no_whitelist || Castle.config.whitelisted.include?(name)
+        return true if ALWAYS_DENYLISTED.include?(name)
+        return value if ALWAYS_ALLOWLISTED.include?(name)
+        return true if Castle.config.denylisted.include?(name)
+        return value if @no_allowlist || Castle.config.allowlisted.include?(name)
 
         true
       end

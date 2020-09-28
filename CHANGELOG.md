@@ -3,6 +3,7 @@
 ## master
 
 - [#204](https://github.com/castle/castle-ruby/pull/204) drop configuration `host`, `port`, `url_prefix` options in favor of `url`
+- [#203](https://github.com/castle/castle-ruby/pull/203) switch to denylist and allowlist
 
 ## 4.3.0 (2020-05-22)
 

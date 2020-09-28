@@ -16,11 +16,11 @@ describe Castle::Extractors::Headers do
   end
 
   after do
-    Castle.config.whitelisted = %w[]
-    Castle.config.blacklisted = %w[]
+    Castle.config.allowlisted = %w[]
+    Castle.config.denylisted = %w[]
   end
 
-  context 'when whitelist is not set in the configuration' do
+  context 'when allowlist is not set in the configuration' do
     let(:result) do
       {
         'Accept' => 'application/json',
@@ -36,8 +36,8 @@ describe Castle::Extractors::Headers do
     it { expect(headers).to eq(result) }
   end
 
-  context 'when whitelist is set in the configuration' do
-    before { Castle.config.whitelisted = %w[Accept OK] }
+  context 'when allowlist is set in the configuration' do
+    before { Castle.config.allowlisted = %w[Accept OK] }
 
     let(:result) do
       {
@@ -54,7 +54,7 @@ describe Castle::Extractors::Headers do
     it { expect(headers).to eq(result) }
   end
 
-  context 'when blacklist is set in the configuration' do
+  context 'when denylist is set in the configuration' do
     context 'with a User-Agent' do
       let(:result) do
         {
@@ -68,7 +68,7 @@ describe Castle::Extractors::Headers do
         }
       end
 
-      before { Castle.config.blacklisted = %w[User-Agent] }
+      before { Castle.config.denylisted = %w[User-Agent] }
 
       it { expect(headers).to eq(result) }
     end
@@ -86,16 +86,16 @@ describe Castle::Extractors::Headers do
         }
       end
 
-      before { Castle.config.blacklisted = %w[Accept] }
+      before { Castle.config.denylisted = %w[Accept] }
 
       it { expect(headers).to eq(result) }
     end
   end
 
-  context 'when a header is both whitelisted and blacklisted' do
+  context 'when a header is both allowlisted and denylisted' do
     before do
-      Castle.config.whitelisted = %w[Accept]
-      Castle.config.blacklisted = %w[Accept]
+      Castle.config.allowlisted = %w[Accept]
+      Castle.config.denylisted = %w[Accept]
     end
 
     it do
