@@ -13,7 +13,7 @@ module Castle
 
       class << self
         def call(command, api_secret, headers)
-          Castle::API::Session.get.request(
+          Castle::API::Session.new.http.request(
             build(
               command,
               headers.merge(DEFAULT_HEADERS),

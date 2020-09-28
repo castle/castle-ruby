@@ -13,7 +13,7 @@ describe Castle::API::Request do
     let(:expected_headers) { { 'Content-Type' => 'application/json' } }
 
     before do
-      allow(Castle::API::Session).to receive(:instance).and_return(session)
+      allow(Castle::API::Session).to receive(:new).and_return(session)
       allow(session).to receive(:http).and_return(http)
       allow(http).to receive(:request)
       allow(described_class).to receive(:build).and_return(request_build)

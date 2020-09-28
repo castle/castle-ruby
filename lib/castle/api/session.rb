@@ -1,17 +1,14 @@
 # frozen_string_literal: true
 
-require 'singleton'
-
 module Castle
   module API
     # this class keeps http config object
     # and provides start/finish methods for persistent connection usage
     # when there is a need of sending multiple requests at once
     class Session
-      include Singleton
-
       attr_accessor :http
 
+      # @return [Net::HTTP]
       def initialize
         reset
       end
@@ -26,13 +23,6 @@ module Castle
         end
 
         @http
-      end
-
-      class << self
-        # @return [Net::HTTP]
-        def get
-          instance.http
-        end
       end
     end
   end
