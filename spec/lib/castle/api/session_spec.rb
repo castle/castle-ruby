@@ -1,20 +1,15 @@
 # frozen_string_literal: true
 
 describe Castle::API::Session do
-  subject(:instance) { described_class.new }
-
-  describe '#initialize' do
-    subject(:session) { described_class.new }
-
-    after do
-      session.reset
-    end
-
+  describe '.call' do
     context 'when ssl false' do
+      let(:localhost) { 'localhost' }
+      let(:port) { 3002 }
+
       before do
-        Castle.config.host = 'localhost'
-        Castle.config.port = 3002
-        session.reset
+        Castle.config.host = localhost
+        Castle.config.port = port
+        stub_request(:get, 'localhost:3002/test').to_return(status: 200, body: '{}', headers: {})
       end
 
       after do
@@ -22,23 +17,80 @@ describe Castle::API::Session do
         Castle.config.port = Castle::Configuration::PORT
       end
 
-      it { expect(session.http).to be_instance_of(Net::HTTP) }
-      it { expect(session.http.address).to eq('localhost') }
-      it { expect(session.http.port).to eq(3002) }
-      it { expect(session.http.use_ssl?).to be false }
-      it { expect(session.http.verify_mode).to be_nil }
+      context 'with block' do
+        let(:api_url) { '/test' }
+        let(:request) { Net::HTTP::Get.new(api_url) }
+
+        before do
+          allow(Net::HTTP)
+            .to receive(:start)
+            .with(localhost, port, { read_timeout: 0.5 })
+            .and_call_original
+
+          described_class.call do |http|
+            http.request(request)
+          end
+        end
+
+        it do
+          expect(Net::HTTP)
+            .to have_received(:start)
+            .with(localhost, port, { read_timeout: 0.5 })
+        end
+
+        it do
+          expect(a_request(:get, 'localhost:3002/test'))
+            .to have_been_made.once
+        end
+      end
+
+      context 'without block' do
+        before { described_class.call }
+
+        it do
+          expect(a_request(:get, 'localhost:3002/test'))
+            .not_to have_been_made
+        end
+      end
     end
 
     context 'when ssl true' do
+      let(:localhost) { 'localhost' }
+      let(:port) { 443 }
+
       before do
-        session.reset
+        Castle.config.host = localhost
+        Castle.config.port = port
       end
 
-      it { expect(session.http).to be_instance_of(Net::HTTP) }
-      it { expect(session.http.address).to eq(Castle.config.host) }
-      it { expect(session.http.port).to eq(Castle.config.port) }
-      it { expect(session.http.use_ssl?).to be true }
-      it { expect(session.http.verify_mode).to eq(OpenSSL::SSL::VERIFY_PEER) }
+      after do
+        Castle.config.host = Castle::Configuration::HOST
+        Castle.config.port = Castle::Configuration::PORT
+      end
+
+      context 'with block' do
+        let(:api_url) { '/test' }
+        let(:request) { Net::HTTP::Get.new(api_url) }
+        let(:conn_options) do
+          { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_PEER, read_timeout: 0.5 }
+        end
+
+        before do
+          allow(Net::HTTP)
+            .to receive(:start)
+            .with(localhost, port, conn_options)
+
+          described_class.call do |http|
+            http.request(request)
+          end
+        end
+
+        it do
+          expect(Net::HTTP)
+            .to have_received(:start)
+            .with(localhost, port, conn_options)
+        end
+      end
     end
   end
 end

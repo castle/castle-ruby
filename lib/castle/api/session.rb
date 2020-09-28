@@ -10,6 +10,8 @@ module Castle
 
       class << self
         def call
+          return unless block_given?
+
           conn_options = {
             read_timeout: Castle.config.request_timeout / 1000.0
           }
@@ -20,7 +22,7 @@ module Castle
           end
 
           Net::HTTP.start(Castle.config.host, Castle.config.port, conn_options) do |http|
-            yield(http) if block_given?
+            yield(http)
           end
         end
       end
