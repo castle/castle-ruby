@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require 'singleton'
+require 'uri'
 
 module Castle
   # manages configuration variables
   class Configuration
     include Singleton
 
-    HOST = 'api.castle.io'
-    PORT = 443
-    URL_PREFIX = '/v1'
+    # API endpoint
+    URL = 'https://api.castle.io/v1'
     FAILOVER_STRATEGY = :allow
     REQUEST_TIMEOUT = 500 # in milliseconds
     FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
@@ -35,16 +35,23 @@ module Castle
       Connection
       Content-Length
       Content-Type
+      Dnt
       Host
       Origin
       Pragma
       Referer
-      TE
+      Sec-Fetch-Dest
+      Sec-Fetch-Mode
+      Sec-Fetch-Site
+      Sec-Fetch-User
+      Te
       Upgrade-Insecure-Requests
+      User-Agent
       X-Castle-Client-Id
+      X-Requested-With
     ].freeze
 
-    attr_accessor :host, :port, :request_timeout, :url_prefix, :trust_proxy_chain
+    attr_accessor :request_timeout, :url, :trust_proxy_chain
     attr_reader :api_secret, :allowlisted, :denylisted, :failover_strategy, :ip_headers,
                 :trusted_proxies, :trusted_proxy_depth
 
@@ -56,9 +63,7 @@ module Castle
 
     def reset
       self.failover_strategy = FAILOVER_STRATEGY
-      self.host = HOST
-      self.port = PORT
-      self.url_prefix = URL_PREFIX
+      self.url = URL
       self.allowlisted = [].freeze
       self.denylisted = [].freeze
       self.api_secret = ENV.fetch('CASTLE_API_SECRET', '')
@@ -66,6 +71,10 @@ module Castle
       self.trusted_proxies = [].freeze
       self.trust_proxy_chain = false
       self.trusted_proxy_depth = nil
+    end
+
+    def url=(value)
+      @url = URI(value)
     end
 
     def api_secret=(value)
@@ -102,7 +111,7 @@ module Castle
     end
 
     def valid?
-      !api_secret.to_s.empty? && !host.to_s.empty? && !port.to_s.empty?
+      !api_secret.to_s.empty? && !url.host.to_s.empty? && !url.port.to_s.empty?
     end
 
     def failover_strategy=(value)

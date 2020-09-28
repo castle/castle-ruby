@@ -7,8 +7,7 @@ describe Castle::API::Session do
       let(:port) { 3002 }
 
       before do
-        Castle.config.host = localhost
-        Castle.config.port = port
+        Castle.config.url = 'http://localhost:3002'
         stub_request(:get, 'localhost:3002/test').to_return(status: 200, body: '{}', headers: {})
       end
 
