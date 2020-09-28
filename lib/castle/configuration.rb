@@ -51,9 +51,9 @@ module Castle
       X-Requested-With
     ].freeze
 
-    attr_accessor :request_timeout, :url, :trust_proxy_chain
+    attr_accessor :request_timeout, :trust_proxy_chain
     attr_reader :api_secret, :allowlisted, :denylisted, :failover_strategy, :ip_headers,
-                :trusted_proxies, :trusted_proxy_depth
+                :trusted_proxies, :trusted_proxy_depth, :url
 
     def initialize
       @formatter = Castle::HeadersFormatter
