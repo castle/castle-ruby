@@ -45,6 +45,7 @@ module Castle
 
     attr_accessor  :request_timeout, :url, :trust_proxy_chain
     attr_reader :api_secret, :allowlisted, :denylisted, :failover_strategy, :ip_headers,
+      :trusted_proxies, :trusted_proxy_depth
 
     def initialize
       @formatter = Castle::HeadersFormatter
