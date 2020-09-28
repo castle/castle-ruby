@@ -3,11 +3,9 @@
 module Castle
   module API
     # this class keeps http config object
-    # and provides start/finish methods for persistent connection usage
+    # and provides start method for persistent connection usage
     # when there is a need of sending multiple requests at once
     class Session
-      attr_accessor :http
-
       class << self
         def call
           return unless block_given?
@@ -22,7 +20,7 @@ module Castle
           end
 
           Net::HTTP.start(Castle.config.host, Castle.config.port, conn_options) do |http|
-            yield(http)
+            return yield(http)
           end
         end
       end
