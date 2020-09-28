@@ -10,14 +10,16 @@ module Castle
 
       class << self
         def call
-          Net::HTTP.start(Castle.config.host, Castle.config.port) do |http|
-            http.read_timeout = Castle.config.request_timeout / 1000.0
+          conn_options = {
+            read_timeout: Castle.config.request_timeout / 1000.0
+          }
 
-            if Castle.config.port == 443
-              http.use_ssl = true
-              http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-            end
+          if Castle.config.port == 443
+            conn_options[:use_ssl] = true
+            conn_options[:verify_mode] = OpenSSL::SSL::VERIFY_PEER
+          end
 
+          Net::HTTP.start(Castle.config.host, Castle.config.port, conn_options) do |http|
             yield(http) if block_given?
           end
         end

@@ -13,13 +13,15 @@ module Castle
 
       class << self
         def call(command, api_secret, headers)
-          Castle::API::Session.new.http.request(
-            build(
-              command,
-              headers.merge(DEFAULT_HEADERS),
-              api_secret
+          Castle::API::Session.call do |http|
+            http.request(
+              build(
+                command,
+                headers.merge(DEFAULT_HEADERS),
+                api_secret
+              )
             )
-          )
+          end
         end
 
         def build(command, headers, api_secret)
