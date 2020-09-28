@@ -8,6 +8,7 @@ module Castle
   class Configuration
     include Singleton
 
+    # API endpoint
     URL = 'https://api.castle.io/v1'
     FAILOVER_STRATEGY = :allow
     REQUEST_TIMEOUT = 500 # in milliseconds
@@ -43,9 +44,9 @@ module Castle
       X-Castle-Client-Id
     ].freeze
 
-    attr_accessor  :request_timeout, :url, :trust_proxy_chain
+    attr_accessor :request_timeout, :url, :trust_proxy_chain
     attr_reader :api_secret, :allowlisted, :denylisted, :failover_strategy, :ip_headers,
-      :trusted_proxies, :trusted_proxy_depth
+                :trusted_proxies, :trusted_proxy_depth
 
     def initialize
       @formatter = Castle::HeadersFormatter
