@@ -8,21 +8,19 @@ module Castle
     class Session
       attr_accessor :http
 
-      # @return [Net::HTTP]
-      def initialize
-        reset
-      end
+      class << self
+        def call
+          Net::HTTP.start(Castle.config.host, Castle.config.port) do |http|
+            http.read_timeout = Castle.config.request_timeout / 1000.0
 
-      def reset
-        @http = Net::HTTP.new(Castle.config.host, Castle.config.port)
-        @http.read_timeout = Castle.config.request_timeout / 1000.0
+            if Castle.config.port == 443
+              http.use_ssl = true
+              http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+            end
 
-        if Castle.config.port == 443
-          @http.use_ssl = true
-          @http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+            yield(http) if block_given?
+          end
         end
-
-        @http
       end
     end
   end
