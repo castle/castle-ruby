@@ -65,26 +65,26 @@ Castle.configure do |config|
   # Castle::RequestError is raised when timing out in milliseconds (default: 500 milliseconds)
   config.request_timeout = 2000
 
-  # Whitelisted and Blacklisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
-  # Whitelisted headers
+  # Allowlisted and Denylisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
+  # Allowlisted headers
   # By default, the SDK sends all HTTP headers, except for Cookie and Authorization.
-  # If you decide to use a whitelist, the SDK will:
+  # If you decide to use a allowlist, the SDK will:
   # - always send the User-Agent header
-  # - send scrubbed values of non-whitelisted headers
-  # - send proper values of whitelisted headers.
+  # - send scrubbed values of non-allowlisted headers
+  # - send proper values of allowlisted headers.
   # @example
-  #   config.whitelisted = ['X_HEADER']
+  #   config.allowlisted = ['X_HEADER']
   #   # will send { 'User-Agent' => 'Chrome', 'X_HEADER' => 'proper value', 'Any-Other-Header' => true }
   #
-  # We highly suggest using blacklist instead of whitelist, so that Castle can use as many data points
-  # as possible to secure your users. If you want to use the whitelist, this is the minimal
+  # We highly suggest using denylist instead of allowlist, so that Castle can use as many data points
+  # as possible to secure your users. If you want to use the allowlist, this is the minimal
   # amount of headers we recommend:
-  config.whitelisted = Castle::Configuration::DEFAULT_WHITELIST
+  config.allowlisted = Castle::Configuration::DEFAULT_ALLOWLIST
 
-  # Blacklisted headers take precedence over whitelisted elements
-  # We always blacklist Cookie and Authentication headers. If you use any other headers that
-  # might contain sensitive information, you should blacklist them.
-  config.blacklisted = ['HTTP-X-header']
+  # Denylisted headers take precedence over allowlisted elements
+  # We always denylist Cookie and Authentication headers. If you use any other headers that
+  # might contain sensitive information, you should denylist them.
+  config.denylisted = ['HTTP-X-header']
 
   # Castle needs the original IP of the client, not the IP of your proxy or load balancer.
   # The SDK will only trust the proxy chain as defined in the configuration.
