@@ -15,14 +15,11 @@ describe Castle::API::Session do
 
     context 'when ssl false' do
       before do
-        Castle.config.host = 'localhost'
-        Castle.config.port = 3002
+        Castle.config.url = 'http://localhost:3002'
         described_class.instance.reset
       end
 
       after do
-        Castle.config.host = Castle::Configuration::HOST
-        Castle.config.port = Castle::Configuration::PORT
       end
 
       it { expect(session).to be_instance_of(Net::HTTP) }
@@ -38,8 +35,8 @@ describe Castle::API::Session do
       end
 
       it { expect(session).to be_instance_of(Net::HTTP) }
-      it { expect(session.address).to eq(Castle.config.host) }
-      it { expect(session.port).to eq(Castle.config.port) }
+      it { expect(session.address).to eq(Castle.config.url.host) }
+      it { expect(session.port).to eq(Castle.config.url.port) }
       it { expect(session.use_ssl?).to be true }
       it { expect(session.verify_mode).to eq(OpenSSL::SSL::VERIFY_PEER) }
     end
