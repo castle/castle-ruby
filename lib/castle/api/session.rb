@@ -11,12 +11,12 @@ module Castle
       class << self
         def call
           return unless block_given?
-          
+
           conn_options = {
             read_timeout: Castle.config.request_timeout / 1000.0
           }
-        
-          if Castle.config.url.scheme === HTTPS_SCHEME
+
+          if Castle.config.url.scheme == HTTPS_SCHEME
             conn_options[:use_ssl] = true
             conn_options[:verify_mode] = OpenSSL::SSL::VERIFY_PEER
           end

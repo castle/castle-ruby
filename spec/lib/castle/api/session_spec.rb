@@ -11,11 +11,6 @@ describe Castle::API::Session do
         stub_request(:get, 'localhost:3002/test').to_return(status: 200, body: '{}', headers: {})
       end
 
-      after do
-        Castle.config.host = Castle::Configuration::HOST
-        Castle.config.port = Castle::Configuration::PORT
-      end
-
       context 'with block' do
         let(:api_url) { '/test' }
         let(:request) { Net::HTTP::Get.new(api_url) }
@@ -58,13 +53,7 @@ describe Castle::API::Session do
       let(:port) { 443 }
 
       before do
-        Castle.config.host = localhost
-        Castle.config.port = port
-      end
-
-      after do
-        Castle.config.host = Castle::Configuration::HOST
-        Castle.config.port = Castle::Configuration::PORT
+        Castle.config.url = 'https://localhost'
       end
 
       context 'with block' do
