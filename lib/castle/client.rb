@@ -2,15 +2,6 @@
 
 module Castle
   class Client
-    # Authenticate request
-    AUTHENTICATE = 'authenticate'
-    # Identify request
-    IDENTIFY     = 'identify'
-    # Impersonate request
-    IMPERSONATE  = 'impersonate'
-    # Track request
-    TRACK        = 'track'
-
     class << self
       def from_request(request, options = {})
         new(
@@ -54,7 +45,7 @@ module Castle
 
       begin
         Castle::API
-          .call(command(AUTHENTICATE, options), {}, options[:http])
+          .call(authenticate_command(options), {}, options[:http])
           .merge(failover: false, failover_reason: nil)
       rescue Castle::RequestError, Castle::InternalServerError => e
         self.class.failover_response_or_raise(
@@ -70,7 +61,7 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
-      Castle::API.call(command(IDENTIFY, options), {}, options[:http])
+      Castle::API.call(identify_command(options), {}, options[:http])
     end
 
     def track(options = {})
@@ -80,7 +71,7 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
-      Castle::API.call(command(TRACK, options), {}, options[:http])
+      Castle::API.call(track_command(options), {}, options[:http])
     end
 
     def impersonate(options = {})
@@ -88,7 +79,7 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
-      Castle::API.call(command(IMPERSONATE, options), {}, options[:http]).tap do |response|
+      Castle::API.call(impersonate_command(options), {}, options[:http]).tap do |response|
         raise Castle::ImpersonationFailed unless response[:success]
       end
     end
@@ -114,19 +105,24 @@ module Castle
       ).generate
     end
 
-    # @param type [String]
     # @param options [Hash]
-    def command(type, options)
-      case type
-      when AUTHENTICATE
-        Castle::Commands::Authenticate.new(@context).build(options)
-      when IDENTIFY
-        Castle::Commands::Identify.new(@context).build(options)
-      when IMPERSONATE
-        Castle::Commands::Impersonate.new(@context).build(options)
-      else
-        Castle::Commands::Track.new(@context).build(options)
-      end
+    def authenticate_command(options)
+      Castle::Commands::Authenticate.new(@context).build(options)
+    end
+
+    # @param options [Hash]
+    def identify_command(options)
+      Castle::Commands::Identify.new(@context).build(options)
+    end
+
+    # @param options [Hash]
+    def impersonate_command(options)
+      Castle::Commands::Impersonate.new(@context).build(options)
+    end
+
+    # @param options [Hash]
+    def track_command(options)
+      Castle::Commands::Track.new(@context).build(options)
     end
 
     def add_timestamp_if_necessary(options)
