@@ -117,11 +117,12 @@ module Castle
     # @param type [String]
     # @param options [Hash]
     def command(type, options)
-      if type == AUTHENTICATE
+      case type
+      when AUTHENTICATE
         Castle::Commands::Authenticate.new(@context).build(options)
-      elsif type == IDENTIFY
+      when IDENTIFY
         Castle::Commands::Identify.new(@context).build(options)
-      elsif type == IMPERSONATE
+      when IMPERSONATE
         Castle::Commands::Impersonate.new(@context).build(options)
       else
         Castle::Commands::Track.new(@context).build(options)

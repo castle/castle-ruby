@@ -91,7 +91,7 @@ Castle.configure do |config|
   # We try to fetch the client IP based on X-Forwarded-For or Remote-Addr headers in that order,
   # but sometimes the client IP may be stored in a different header or order.
   # The SDK can be configured to look for the client IP address in headers that you specify.
-  
+
   # Sometimes, Cloud providers do not use consistent IP addresses to proxy requests.
   # In this case, the client IP is usually preserved in a custom header. Example:
   # Cloudflare preserves the client request in the 'Cf-Connecting-Ip' header.
@@ -195,6 +195,25 @@ track_options = ::Castle::Client.to_options({
   }
 })
 CastleTrackingWorker.perform_async(request_context, track_options)
+```
+
+## Connection reuse
+
+If you want to reuse the connection to send multiple events:
+
+```ruby
+Castle::API::Session.call do |http|
+  castle.track(
+    event: ::Castle::Events::LOGOUT_SUCCEEDED,
+    user_id: user2.id
+    http: http
+  )
+  castle.track(
+    event: ::Castle::Events::LOGIN_SUCCEEDED,
+    user_id: user1.id
+    http: http
+  )
+end
 ```
 
 ## Events
