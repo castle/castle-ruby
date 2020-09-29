@@ -1,10 +1,19 @@
-# Change Log
+# Changelog
 
 ## master
 
-- [#205](https://github.com/castle/castle-ruby/pull/205) extended DEFAULT_ALLOWLIST
-- [#204](https://github.com/castle/castle-ruby/pull/204) drop configuration `host`, `port`, `url_prefix` options in favor of `url`
-- [#203](https://github.com/castle/castle-ruby/pull/203) switch to denylist and allowlist
+## 5.0.0 (2020-09-29)
+
+**BREAKING CHANGES:**
+
+- [#207](https://github.com/castle/castle-ruby/pull/207) allow to reuse the connection (https://github.com/castle/castle-ruby#connection-reuse)
+- [#204](https://github.com/castle/castle-ruby/pull/204) drop the configuration `host`, `port`, `url_prefix` options in favor of `url`
+- [#203](https://github.com/castle/castle-ruby/pull/203) rename the `whitelist/blacklist` configuration option to `allowlist/denylist`
+
+**Enhancements:**
+
+- [#208](https://github.com/castle/castle-ruby/pull/208) bump the dependencies
+- [#205](https://github.com/castle/castle-ruby/pull/205) extend DEFAULT_ALLOWLIST
 
 ## 4.3.0 (2020-05-22)
 
