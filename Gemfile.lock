@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    castle-rb (4.3.0)
+    castle-rb (5.0.0)
 
 GEM
   remote: https://rubygems.org/
