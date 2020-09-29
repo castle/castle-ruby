@@ -19,14 +19,16 @@ module Castle
     class << self
       # @param command [String]
       # @param headers [Hash]
-      def request(command, headers = {})
+      # @param http [Net::HTTP]
+      def request(command, headers = {}, http = nil)
         raise Castle::ConfigurationError, 'configuration is not valid' unless Castle.config.valid?
 
         begin
           Castle::API::Request.call(
             command,
             Castle.config.api_secret,
-            headers
+            headers,
+            http
           )
         rescue *HANDLED_ERRORS => e
           # @note We need to initialize the error, as the original error is a cause for this
@@ -38,8 +40,9 @@ module Castle
 
       # @param command [String]
       # @param headers [Hash]
-      def call(command, headers = {})
-        Castle::API::Response.call(request(command, headers))
+      # @param http [Net::HTTP]
+      def call(command, headers = {}, http = nil)
+        Castle::API::Response.call(request(command, headers, http))
       end
     end
   end

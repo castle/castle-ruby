@@ -12,8 +12,8 @@ module Castle
       private_constant :DEFAULT_HEADERS
 
       class << self
-        def call(command, api_secret, headers)
-          Castle::API::Session.get.request(
+        def call(command, api_secret, headers, http = nil)
+          (http || Castle::API::Connection.call).request(
             build(
               command,
               headers.merge(DEFAULT_HEADERS),
