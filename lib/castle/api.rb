@@ -19,6 +19,7 @@ module Castle
     class << self
       # @param command [String]
       # @param headers [Hash]
+      # @param http [Net::HTTP]
       def request(command, headers = {}, http = nil)
         raise Castle::ConfigurationError, 'configuration is not valid' unless Castle.config.valid?
 

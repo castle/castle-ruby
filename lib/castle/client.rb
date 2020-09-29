@@ -2,9 +2,13 @@
 
 module Castle
   class Client
+    # Authenticate request
     AUTHENTICATE = 'authenticate'
+    # Identify request
     IDENTIFY     = 'identify'
+    # Impersonate request
     IMPERSONATE  = 'impersonate'
+    # Track request
     TRACK        = 'track'
 
     class << self
@@ -110,6 +114,8 @@ module Castle
       ).generate
     end
 
+    # @param type [String]
+    # @param options [Hash]
     def command(type, options)
       if type == AUTHENTICATE
         Castle::Commands::Authenticate.new(@context).build(options)
