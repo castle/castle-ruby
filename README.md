@@ -95,8 +95,8 @@ Castle.configure do |config|
   # Sometimes, Cloud providers do not use consistent IP addresses to proxy requests.
   # In this case, the client IP is usually preserved in a custom header. Example:
   # Cloudflare preserves the client request in the 'Cf-Connecting-Ip' header.
-  # It would be used like so: configuration.ip_headers=['Cf-Connecting-Ip']
-  configuration.ip_headers = []
+  # It would be used like so: config.ip_headers=['Cf-Connecting-Ip']
+  config.ip_headers = []
 
   # If the specified header or X-Forwarded-For default contains a proxy chain with public IP addresses,
   # then you must choose only one of the following (but not both):
@@ -112,14 +112,14 @@ Castle.configure do |config|
   # and not the address of a reverse proxy server, you must define all trusted public proxies
   # you can achieve this by listing all the proxies ip defined by string or regular expressions
   # in the trusted_proxies setting
-  configuration.trusted_proxies = []
+  config.trusted_proxies = []
   # or by providing number of trusted proxies used in the chain
-  configuration.trusted_proxy_depth = 0
+  config.trusted_proxy_depth = 0
   # note that you must pick one approach over the other.
 
   # If there is no possibility to define options above and there is no other header that holds the client IP,
   # then you may set trust_proxy_chain = true to trust all of the proxy IPs in X-Forwarded-For
-  configuration.trust_proxy_chain = false
+  config.trust_proxy_chain = false
   # *Warning*: this mode is highly promiscuous and could lead to wrongly trusting a spoofed IP if the request passes through a malicious proxy
 
   # *Note: the default list of proxies that are always marked as "trusted" can be found in: Castle::Configuration::TRUSTED_PROXIES
