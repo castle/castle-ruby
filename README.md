@@ -95,13 +95,14 @@ Castle.configure do |config|
   # Sometimes, Cloud providers do not use consistent IP addresses to proxy requests.
   # In this case, the client IP is usually preserved in a custom header. Example:
   # Cloudflare preserves the client request in the 'Cf-Connecting-Ip' header.
-  # It would be used like so: configuration.ip_headers=['Cf-Connecting-Ip']
+  # It would be used like so: config.ip_headers=['Cf-Connecting-Ip']
   config.ip_headers = []
 
   # If the specified header or X-Forwarded-For default contains a proxy chain with public IP addresses,
-  # then one of the following must be set
-  # 1. The trusted_proxies value must match the known proxy IP's
-  # 2. The trusted_proxy_depth value must be set to the number of known trusted proxies in the chain (see below)
+  # then you must choose only one of the following (but not both):
+  # 1. The trusted_proxies value must match the known proxy IPs. This option is preferable if the IP is static.
+  # 2. The trusted_proxy_depth value must be set to the number of known trusted proxies in the chain (see below). 
+  # This option is preferable if the IPs are ephemeral, but the depth is consistent.
 
   # Additionally to make X-Forwarded-For and other headers work better discovering client ip address,
   # and not the address of a reverse proxy server, you can define trusted proxies
@@ -110,16 +111,18 @@ Castle.configure do |config|
   # In order to extract the client IP of the X-Forwarded-For header
   # and not the address of a reverse proxy server, you must define all trusted public proxies
   # you can achieve this by listing all the proxies ip defined by string or regular expressions
-  # in trusted_proxies setting
+  # in the trusted_proxies setting
   config.trusted_proxies = []
   # or by providing number of trusted proxies used in the chain
   config.trusted_proxy_depth = 0
+  # note that you must pick one approach over the other.
 
-  # If there is no possibility to define options above and there is no other header which can have client ip
-  # then you may set trust_proxy_chain = true to trust all of the proxy IP's in X-Forwarded-For
+  # If there is no possibility to define options above and there is no other header that holds the client IP,
+  # then you may set trust_proxy_chain = true to trust all of the proxy IPs in X-Forwarded-For
   config.trust_proxy_chain = false
+  # *Warning*: this mode is highly promiscuous and could lead to wrongly trusting a spoofed IP if the request passes through a malicious proxy
 
-  # *Note: default list of proxies which is always marked as trusted: Castle::Configuration::TRUSTED_PROXIES
+  # *Note: the default list of proxies that are always marked as "trusted" can be found in: Castle::Configuration::TRUSTED_PROXIES
 end
 ```
 
