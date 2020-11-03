@@ -31,7 +31,6 @@ describe Castle::Context::Default do
   end
 
   it { expect(default_context[:active]).to be_eql(true) }
-  it { expect(default_context[:origin]).to be_eql('web') }
   it { expect(default_context[:headers]).to be_eql(result_headers) }
   it { expect(default_context[:ip]).to be_eql(ip) }
   it { expect(default_context[:client_id]).to be_eql(client_id) }

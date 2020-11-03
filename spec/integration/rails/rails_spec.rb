@@ -16,7 +16,6 @@ RSpec.describe HomeController, type: :request do
         'context' => {
           'client_id' => '',
           'active' => true,
-          'origin' => 'web',
           'headers' => {
             'Accept' => 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
             'Authorization' => true,

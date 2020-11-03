@@ -13,7 +13,6 @@ module Castle
         {
           client_id: client_id,
           active: true,
-          origin: 'web',
           headers: headers,
           ip: ip,
           library: {
