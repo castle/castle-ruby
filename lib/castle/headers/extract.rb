@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Castle
-  module Extractors
+  module Headers
     # used for extraction of cookies and headers from the request
-    class Headers
+    class Extract
       # Headers that we will never scrub, even if they land on the configuration denylist.
       ALWAYS_ALLOWLISTED = %w[User-Agent].freeze
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Castle::Extractors::Headers do
-  subject(:headers) { described_class.new(formatted_headers).call }
+describe Castle::Headers::Extract do
+  subject(:extract_call) { described_class.new(formatted_headers).call }
 
   let(:formatted_headers) do
     {
@@ -33,7 +33,7 @@ describe Castle::Extractors::Headers do
       }
     end
 
-    it { expect(headers).to eq(result) }
+    it { expect(extract_call).to eq(result) }
   end
 
   context 'when allowlist is set in the configuration' do
@@ -51,7 +51,7 @@ describe Castle::Extractors::Headers do
       }
     end
 
-    it { expect(headers).to eq(result) }
+    it { expect(extract_call).to eq(result) }
   end
 
   context 'when denylist is set in the configuration' do
@@ -70,7 +70,7 @@ describe Castle::Extractors::Headers do
 
       before { Castle.config.denylisted = %w[User-Agent] }
 
-      it { expect(headers).to eq(result) }
+      it { expect(extract_call).to eq(result) }
     end
 
     context 'with a different header' do
@@ -88,7 +88,7 @@ describe Castle::Extractors::Headers do
 
       before { Castle.config.denylisted = %w[Accept] }
 
-      it { expect(headers).to eq(result) }
+      it { expect(extract_call).to eq(result) }
     end
   end
 
@@ -99,7 +99,7 @@ describe Castle::Extractors::Headers do
     end
 
     it do
-      expect(headers['Accept']).to eq(true)
+      expect(extract_call['Accept']).to eq(true)
     end
   end
 end

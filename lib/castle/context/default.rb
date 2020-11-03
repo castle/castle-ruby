@@ -4,7 +4,7 @@ module Castle
   module Context
     class Default
       def initialize(request, cookies = nil)
-        @pre_headers = HeadersFilter.new(request).call
+        @pre_headers = Castle::Headers::Filter.new(request).call
         @cookies = cookies || request.cookies
         @request = request
       end
@@ -50,7 +50,7 @@ module Castle
       # formatted and filtered headers
       # @return [Hash]
       def headers
-        Extractors::Headers.new(@pre_headers).call
+        Castle::Headers::Extract.new(@pre_headers).call
       end
     end
   end

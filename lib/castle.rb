@@ -29,11 +29,11 @@
   castle/configuration
   castle/failover_auth_response
   castle/client
-  castle/headers_filter
-  castle/headers_formatter
+  castle/headers/filter
+  castle/headers/format
+  castle/headers/extract
   castle/secure_mode
   castle/extractors/client_id
-  castle/extractors/headers
   castle/extractors/ip
   castle/api/connection
   castle/api/response

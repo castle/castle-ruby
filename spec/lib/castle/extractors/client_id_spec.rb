@@ -3,7 +3,7 @@
 describe Castle::Extractors::ClientId do
   subject(:extractor) { described_class.new(formatted_headers, cookies) }
 
-  let(:formatted_headers) { Castle::HeadersFilter.new(request).call }
+  let(:formatted_headers) { Castle::Headers::Filter.new(request).call }
   let(:client_id_cookie) { 'abcd' }
   let(:client_id_header) { 'abcde' }
   let(:cookies) { request.cookies }

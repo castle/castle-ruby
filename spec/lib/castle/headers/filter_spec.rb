@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Castle::HeadersFilter do
-  subject(:headers) { described_class.new(request).call }
+describe Castle::Headers::Filter do
+  subject(:filter_call) { described_class.new(request).call }
 
   let(:env) do
     result = Rack::MockRequest.env_for(
@@ -33,6 +33,6 @@ describe Castle::HeadersFilter do
   let(:request) { Rack::Request.new(env) }
 
   context 'with list of header' do
-    it { expect(headers).to eq(filtered) }
+    it { expect(filter_call).to eq(filtered) }
   end
 end
