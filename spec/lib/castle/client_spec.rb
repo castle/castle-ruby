@@ -29,7 +29,6 @@ describe Castle::Client do
     {
       client_id: 'abcd',
       active: true,
-      origin: 'web',
       user_agent: ua,
       headers: headers,
       ip: ip,
