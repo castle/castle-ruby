@@ -2,6 +2,8 @@
 
 ## master
 
+- [213](https://github.com/castle/castle-ruby/pull/213) allow to configure the base url
+
 ## 5.0.0 (2020-09-29)
 
 **BREAKING CHANGES:**
