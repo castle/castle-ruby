@@ -65,8 +65,8 @@ Castle.configure do |config|
   # Castle::RequestError is raised when timing out in milliseconds (default: 500 milliseconds)
   config.request_timeout = 2000
 
-  # Base Castle Api url.
-  # config.base_url = "https://api.castle.io"
+  # Base Castle API url
+  # config.base_url = "https://api.castle.io/v1"
 
   # Allowlisted and Denylisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
   # Allowlisted headers
