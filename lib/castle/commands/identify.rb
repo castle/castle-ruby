@@ -9,12 +9,12 @@ module Castle
 
       def build(options = {})
         Castle::Validators::NotSupported.call(options, %i[properties])
-        context = Castle::Context::Merger.call(@context, options[:context])
-        context = Castle::Context::Sanitizer.call(context)
+        context = Castle::Context::Merge.call(@context, options[:context])
+        context = Castle::Context::Sanitize.call(context)
 
         Castle::Command.new(
           'identify',
-          options.merge(context: context, sent_at: Castle::Utils::GenerateTimestamp.call),
+          options.merge(context: context, sent_at: Castle::Utils::GetTimestamp.call),
           :post
         )
       end

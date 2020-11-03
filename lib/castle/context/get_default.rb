@@ -2,7 +2,7 @@
 
 module Castle
   module Context
-    class Default
+    class GetDefault
       def initialize(request, cookies = nil)
         @pre_headers = Castle::Headers::Filter.new(request).call
         @cookies = cookies || request.cookies

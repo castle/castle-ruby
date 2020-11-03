@@ -3,7 +3,7 @@
 module Castle
   module Utils
     # generates proper timestamp
-    class GenerateTimestamp
+    class GetTimestamp
       def self.call
         Time.now.utc.iso8601(3)
       end

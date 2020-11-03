@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Utils::GenerateTimestamp do
+describe Castle::Utils::GetTimestamp do
   subject(:timestamp) { described_class.call }
 
   let(:time_string) { '2018-01-10T14:14:24.407Z' }

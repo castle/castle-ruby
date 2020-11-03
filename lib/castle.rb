@@ -16,12 +16,12 @@
   castle/utils/clean_invalid_chars
   castle/utils/merge
   castle/utils/clone
-  castle/utils/generate_timestamp
+  castle/utils/get_timestamp
   castle/validators/present
   castle/validators/not_supported
-  castle/context/merger
-  castle/context/sanitizer
-  castle/context/default
+  castle/context/merge
+  castle/context/sanitize
+  castle/context/get_default
   castle/commands/identify
   castle/commands/authenticate
   castle/commands/track

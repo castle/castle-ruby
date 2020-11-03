@@ -2,7 +2,7 @@
 
 module Castle
   module Context
-    class Merger
+    class Merge
       class << self
         def call(initial_context, request_context)
           main_context = Castle::Utils::Clone.call(initial_context)

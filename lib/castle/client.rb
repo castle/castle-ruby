@@ -11,12 +11,12 @@ module Castle
       end
 
       def to_context(request, options = {})
-        default_context = Castle::Context::Default.new(request, options[:cookies]).call
-        Castle::Context::Merger.call(default_context, options[:context])
+        default_context = Castle::Context::GetDefault.new(request, options[:cookies]).call
+        Castle::Context::Merge.call(default_context, options[:context])
       end
 
       def to_options(options = {})
-        options[:timestamp] ||= Castle::Utils::GenerateTimestamp.call
+        options[:timestamp] ||= Castle::Utils::GetTimestamp.call
         warn '[DEPRECATION] use user_traits instead of traits key' if options.key?(:traits)
         options
       end

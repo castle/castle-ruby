@@ -3,7 +3,7 @@
 module Castle
   module Context
     # removes not proper active flag values
-    class Sanitizer
+    class Sanitize
       class << self
         def call(context)
           sanitized_active_mode(context) || {}
