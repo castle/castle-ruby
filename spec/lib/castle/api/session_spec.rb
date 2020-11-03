@@ -53,7 +53,7 @@ describe Castle::API::Session do
       let(:port) { 443 }
 
       before do
-        Castle.config.base_url= 'https://localhost'
+        Castle.config.base_url = 'https://localhost'
         stub_request(:get, 'https://localhost/test').to_return(status: 200, body: '{}', headers: {})
       end
 

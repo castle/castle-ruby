@@ -12,7 +12,7 @@ AllCops:
 Style/Documentation:
   Enabled: false
 
-Style/MethodMissingSuper:
+Lint/MissingSuper:
   Exclude:
     - "lib/castle/configuration.rb"
 
@@ -34,4 +34,3 @@ RSpec/NestedGroups:
 RSpec/FilePath:
   Exclude:
     - "spec/integration/rails/rails_spec.rb"
-
