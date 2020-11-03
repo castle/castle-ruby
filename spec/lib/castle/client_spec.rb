@@ -53,12 +53,12 @@ describe Castle::Client do
 
   describe 'parses the request' do
     before do
-      allow(Castle::API).to receive(:request).and_call_original
+      allow(Castle::Core).to receive(:request).and_call_original
     end
 
     it do
       client.authenticate(event: '$login.succeeded', user_id: '1234')
-      expect(Castle::API).to have_received(:request)
+      expect(Castle::Core).to have_received(:request)
     end
   end
 
@@ -248,7 +248,7 @@ describe Castle::Client do
 
     context 'when request with fail' do
       before do
-        allow(Castle::API).to receive(:request).and_raise(Castle::RequestError.new(Timeout::Error))
+        allow(Castle::Core).to receive(:request).and_raise(Castle::RequestError.new(Timeout::Error))
       end
 
       context 'with request error and throw strategy' do
@@ -267,7 +267,7 @@ describe Castle::Client do
     end
 
     context 'when request is internal server error' do
-      before { allow(Castle::API).to receive(:request).and_raise(Castle::InternalServerError) }
+      before { allow(Castle::Core).to receive(:request).and_raise(Castle::InternalServerError) }
 
       describe 'throw strategy' do
         before { allow(Castle.config).to receive(:failover_strategy).and_return(:throw) }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::API::Connection do
+describe Castle::Core::Connection do
   describe '.call' do
     subject(:class_call) { described_class.call }
 

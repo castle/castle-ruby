@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Castle
-  module API
+  module Core
     # parses api response
     module Response
       RESPONSE_ERRORS = {

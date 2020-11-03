@@ -2,7 +2,7 @@
 
 module Castle
   # this class is responsible for making requests to api
-  module API
+  module Core
     # Errors we handle internally
     HANDLED_ERRORS = [
       Timeout::Error,
@@ -20,11 +20,19 @@ module Castle
       # @param command [String]
       # @param headers [Hash]
       # @param http [Net::HTTP]
+      def call(command, headers = {}, http = nil)
+        Castle::Core::Response.call(request(command, headers, http))
+      end
+
+
+      # @param command [String]
+      # @param headers [Hash]
+      # @param http [Net::HTTP]
       def request(command, headers = {}, http = nil)
         raise Castle::ConfigurationError, 'configuration is not valid' unless Castle.config.valid?
 
         begin
-          Castle::API::Request.call(
+          Castle::Core::Request.call(
             command,
             Castle.config.api_secret,
             headers,
@@ -38,12 +46,7 @@ module Castle
         end
       end
 
-      # @param command [String]
-      # @param headers [Hash]
-      # @param http [Net::HTTP]
-      def call(command, headers = {}, http = nil)
-        Castle::API::Response.call(request(command, headers, http))
-      end
+
     end
   end
 end

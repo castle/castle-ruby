@@ -36,12 +36,12 @@
   castle/secure_mode
   castle/extractors/client_id
   castle/extractors/ip
-  castle/api/connection
-  castle/api/response
-  castle/api/request
-  castle/api/session
+  castle/core/connection
+  castle/core/response
+  castle/core/request
+  castle/core/session
   castle/review
-  castle/api
+  castle/core
 ].each(&method(:require))
 
 # main sdk module

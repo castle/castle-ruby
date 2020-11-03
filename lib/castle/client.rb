@@ -44,7 +44,7 @@ module Castle
       add_timestamp_if_necessary(options)
 
       begin
-        Castle::API
+        Castle::Core
           .call(authenticate_command(options), {}, options[:http])
           .merge(failover: false, failover_reason: nil)
       rescue Castle::RequestError, Castle::InternalServerError => e
@@ -61,7 +61,7 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
-      Castle::API.call(identify_command(options), {}, options[:http])
+      Castle::Core.call(identify_command(options), {}, options[:http])
     end
 
     def track(options = {})
@@ -71,7 +71,7 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
-      Castle::API.call(track_command(options), {}, options[:http])
+      Castle::Core.call(track_command(options), {}, options[:http])
     end
 
     def impersonate(options = {})
@@ -79,7 +79,7 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
-      Castle::API.call(impersonate_command(options), {}, options[:http]).tap do |response|
+      Castle::Core.call(impersonate_command(options), {}, options[:http]).tap do |response|
         raise Castle::ImpersonationFailed unless response[:success]
       end
     end

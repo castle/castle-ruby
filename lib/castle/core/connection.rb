@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Castle
-  module API
+  module Core
     # this module returns a new configured Net::HTTP object
     module Connection
       HTTPS_SCHEME = 'https'

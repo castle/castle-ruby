@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::API::Session do
+describe Castle::Core::Session do
   describe '.call' do
     context 'when ssl false' do
       let(:localhost) { 'localhost' }

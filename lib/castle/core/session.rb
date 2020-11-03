@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Castle
-  module API
+  module Core
     # this module uses the Connection object
     # and provides start method for persistent connection usage
     # when there is a need of sending multiple requests at once

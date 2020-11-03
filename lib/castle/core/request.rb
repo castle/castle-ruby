@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Castle
-  module API
+  module Core
     # this class is responsible for making requests to api
     module Request
       # Default headers that we add to passed ones
@@ -13,7 +13,7 @@ module Castle
 
       class << self
         def call(command, api_secret, headers, http = nil)
-          (http || Castle::API::Connection.call).request(
+          (http || Castle::Core::Connection.call).request(
             build(
               command,
               headers.merge(DEFAULT_HEADERS),
