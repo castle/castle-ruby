@@ -66,7 +66,7 @@ Castle.configure do |config|
   config.request_timeout = 2000
 
   # Base Castle Api url.
-  config.base_url = "https://api.castle.io"
+  # config.base_url = "https://api.castle.io"
 
   # Allowlisted and Denylisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
   # Allowlisted headers
