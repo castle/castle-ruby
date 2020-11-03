@@ -63,7 +63,7 @@ module Castle
 
     def reset
       self.failover_strategy = FAILOVER_STRATEGY
-      self.base_url = URL
+      self.base_url = BASE_URL
       self.allowlisted = [].freeze
       self.denylisted = [].freeze
       self.api_secret = ENV.fetch('CASTLE_API_SECRET', '')
