@@ -10,7 +10,7 @@ describe Castle::API::Connection do
       let(:api_url) { '/test' }
 
       before do
-        Castle.config.url = 'http://localhost:3002'
+        Castle.config.base_url = 'http://localhost:3002'
 
         allow(Net::HTTP)
           .to receive(:new)
@@ -36,7 +36,7 @@ describe Castle::API::Connection do
       let(:port) { 443 }
 
       before do
-        Castle.config.url = 'https://localhost'
+        Castle.config.base_url = 'https://localhost'
       end
 
       context 'with block' do

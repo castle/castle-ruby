@@ -9,7 +9,7 @@ module Castle
     include Singleton
 
     # API endpoint
-    URL = 'https://api.castle.io/v1'
+    BASE_URL = 'https://api.castle.io/v1'
     FAILOVER_STRATEGY = :allow
     REQUEST_TIMEOUT = 500 # in milliseconds
     FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
@@ -53,7 +53,7 @@ module Castle
 
     attr_accessor :request_timeout, :trust_proxy_chain
     attr_reader :api_secret, :allowlisted, :denylisted, :failover_strategy, :ip_headers,
-                :trusted_proxies, :trusted_proxy_depth, :url
+                :trusted_proxies, :trusted_proxy_depth, :base_url
 
     def initialize
       @formatter = Castle::HeadersFormatter
@@ -63,7 +63,7 @@ module Castle
 
     def reset
       self.failover_strategy = FAILOVER_STRATEGY
-      self.url = URL
+      self.base_url = BASE_URL
       self.allowlisted = [].freeze
       self.denylisted = [].freeze
       self.api_secret = ENV.fetch('CASTLE_API_SECRET', '')
@@ -73,8 +73,8 @@ module Castle
       self.trusted_proxy_depth = nil
     end
 
-    def url=(value)
-      @url = URI(value)
+    def base_url=(value)
+      @base_url = URI(value)
     end
 
     def api_secret=(value)
@@ -111,7 +111,7 @@ module Castle
     end
 
     def valid?
-      !api_secret.to_s.empty? && !url.host.to_s.empty? && !url.port.to_s.empty?
+      !api_secret.to_s.empty? && !base_url.host.to_s.empty? && !base_url.port.to_s.empty?
     end
 
     def failover_strategy=(value)

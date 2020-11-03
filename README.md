@@ -65,6 +65,9 @@ Castle.configure do |config|
   # Castle::RequestError is raised when timing out in milliseconds (default: 500 milliseconds)
   config.request_timeout = 2000
 
+  # Base Castle Api url.
+  # config.base_url = "https://api.castle.io"
+
   # Allowlisted and Denylisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
   # Allowlisted headers
   # By default, the SDK sends all HTTP headers, except for Cookie and Authorization.
@@ -101,7 +104,7 @@ Castle.configure do |config|
   # If the specified header or X-Forwarded-For default contains a proxy chain with public IP addresses,
   # then you must choose only one of the following (but not both):
   # 1. The trusted_proxies value must match the known proxy IPs. This option is preferable if the IP is static.
-  # 2. The trusted_proxy_depth value must be set to the number of known trusted proxies in the chain (see below). 
+  # 2. The trusted_proxy_depth value must be set to the number of known trusted proxies in the chain (see below).
   # This option is preferable if the IPs are ephemeral, but the depth is consistent.
 
   # Additionally to make X-Forwarded-For and other headers work better discovering client ip address,
