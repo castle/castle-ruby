@@ -12,10 +12,11 @@
   castle/events
   castle/errors
   castle/command
-  castle/utils
-  castle/utils/merger
-  castle/utils/cloner
-  castle/utils/timestamp
+  castle/utils/deep_symbolize_keys
+  castle/utils/clean_invalid_chars
+  castle/utils/merge
+  castle/utils/clone
+  castle/utils/generate_timestamp
   castle/validators/present
   castle/validators/not_supported
   castle/context/merger

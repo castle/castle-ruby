@@ -2,10 +2,10 @@
 
 module Castle
   module Utils
-    class Merger
+    class Merge
       def self.call(base, extra)
-        base_s = Castle::Utils.deep_symbolize_keys(base)
-        extra_s = Castle::Utils.deep_symbolize_keys(extra)
+        base_s = Castle::Utils::DeepSymbolizeKeys.call(base)
+        extra_s = Castle::Utils::DeepSymbolizeKeys.call(extra)
 
         extra_s.each do |name, value|
           if value.nil?

@@ -2,7 +2,7 @@
 
 module Castle
   module Utils
-    class Cloner
+    class Clone
       def self.call(object)
         Marshal.load(Marshal.dump(object))
       end

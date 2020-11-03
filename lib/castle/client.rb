@@ -16,7 +16,7 @@ module Castle
       end
 
       def to_options(options = {})
-        options[:timestamp] ||= Castle::Utils::Timestamp.call
+        options[:timestamp] ||= Castle::Utils::GenerateTimestamp.call
         warn '[DEPRECATION] use user_traits instead of traits key' if options.key?(:traits)
         options
       end
@@ -37,7 +37,7 @@ module Castle
     end
 
     def authenticate(options = {})
-      options = Castle::Utils.deep_symbolize_keys(options || {})
+      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
       return generate_do_not_track_response(options[:user_id]) unless tracked?
 
@@ -55,7 +55,7 @@ module Castle
     end
 
     def identify(options = {})
-      options = Castle::Utils.deep_symbolize_keys(options || {})
+      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
       return unless tracked?
 
@@ -65,7 +65,7 @@ module Castle
     end
 
     def track(options = {})
-      options = Castle::Utils.deep_symbolize_keys(options || {})
+      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
       return unless tracked?
 
@@ -75,7 +75,7 @@ module Castle
     end
 
     def impersonate(options = {})
-      options = Castle::Utils.deep_symbolize_keys(options || {})
+      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
       add_timestamp_if_necessary(options)
 

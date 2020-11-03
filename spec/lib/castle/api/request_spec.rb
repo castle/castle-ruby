@@ -85,7 +85,7 @@ describe Castle::API::Request do
         }
       end
 
-      before { allow(Castle::Utils::Timestamp).to receive(:call).and_return(time) }
+      before { allow(Castle::Utils::GenerateTimestamp).to receive(:call).and_return(time) }
 
       it { expect(build.body).to be_eql(expected_body.to_json) }
       it { expect(build.method).to eql('POST') }

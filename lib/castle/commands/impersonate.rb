@@ -17,7 +17,7 @@ module Castle
 
         Castle::Command.new(
           'impersonate',
-          options.merge(context: context, sent_at: Castle::Utils::Timestamp.call),
+          options.merge(context: context, sent_at: Castle::Utils::GenerateTimestamp.call),
           options[:reset] ? :delete : :post
         )
       end

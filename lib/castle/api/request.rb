@@ -28,7 +28,7 @@ module Castle
           ).new("#{Castle.config.base_url.path}/#{command.path}", headers)
 
           unless command.method == :get
-            request_obj.body = ::Castle::Utils.replace_invalid_characters(
+            request_obj.body = ::Castle::Utils::CleanInvalidChars.call(
               command.data
             ).to_json
           end
