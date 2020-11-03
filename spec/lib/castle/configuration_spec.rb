@@ -7,25 +7,25 @@ describe Castle::Configuration do
 
   describe 'host' do
     context 'with default' do
-      it { expect(config.url.host).to be_eql('api.castle.io') }
+      it { expect(config.base_url.host).to be_eql('api.castle.io') }
     end
 
     context 'with setter' do
-      before { config.url = 'http://api.castle.dev/v2' }
+      before { config.base_url = 'http://api.castle.dev/v2' }
 
-      it { expect(config.url.host).to be_eql('api.castle.dev') }
+      it { expect(config.base_url.host).to be_eql('api.castle.dev') }
     end
   end
 
   describe 'post' do
     context 'with default' do
-      it { expect(config.url.port).to be_eql(443) }
+      it { expect(config.base_url.port).to be_eql(443) }
     end
 
     context 'with setter' do
-      before { config.url = 'http://api.castle.dev:3001/v2' }
+      before { config.base_url = 'http://api.castle.dev:3001/v2' }
 
-      it { expect(config.url.port).to be_eql(3001) }
+      it { expect(config.base_url.port).to be_eql(3001) }
     end
   end
 
