@@ -27,21 +27,25 @@
   castle/commands/track
   castle/commands/review
   castle/commands/impersonate
+  castle/api/identify
+  castle/api/authenticate
+  castle/api/track
+  castle/api/review
+  castle/api/impersonate
   castle/configuration
-  castle/failover_auth_response
+  castle/failover/prepare_response
   castle/client
   castle/headers/filter
   castle/headers/format
   castle/headers/extract
   castle/secure_mode
-  castle/extractors/client_id
-  castle/extractors/ip
-  castle/core/connection
-  castle/core/response
-  castle/core/request
-  castle/core/session
-  castle/review
-  castle/core
+  castle/client_id/extract
+  castle/ip/extract
+  castle/core/get_connection
+  castle/core/process_response
+  castle/core/send_request
+  castle/session
+  castle/api
 ].each(&method(:require))
 
 # main sdk module

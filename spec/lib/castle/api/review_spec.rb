@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-describe Castle::Review do
+describe Castle::API::Review do
   before do
     stub_request(:any, /api.castle.io/).with(
       basic_auth: ['', 'secret']
     ).to_return(status: 200, body: '{}', headers: {})
   end
 
-  describe '#retrieve' do
-    subject(:retrieve) { described_class.retrieve(review_id) }
+  describe '.call' do
+    subject(:retrieve) { described_class.call(review_id) }
 
     let(:review_id) { '1234' }
 

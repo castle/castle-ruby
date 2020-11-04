@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Core::Response do
+describe Castle::Core::ProcessResponse do
   describe '#call' do
     subject(:call) { described_class.call(response) }
 

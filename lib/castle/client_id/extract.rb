@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Castle
-  module Extractors
+  module ClientId
     # used for extraction of cookies and headers from the request
-    class ClientId
+    class Extract
       # @param headers [Hash]
       # @param cookies [NilClass|Hash]
       def initialize(headers, cookies)

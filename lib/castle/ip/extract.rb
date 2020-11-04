@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Castle
-  module Extractors
+  module IP
     # used for extraction of ip from the request
-    class IP
+    class Extract
       # ordered list of ip headers for ip extraction
       DEFAULT = %w[X-Forwarded-For Remote-Addr].freeze
       # list of header which are used with proxy depth setting

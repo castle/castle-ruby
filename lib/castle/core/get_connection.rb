@@ -3,7 +3,7 @@
 module Castle
   module Core
     # this module returns a new configured Net::HTTP object
-    module Connection
+    module GetConnection
       HTTPS_SCHEME = 'https'
 
       class << self

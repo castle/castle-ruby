@@ -39,12 +39,12 @@ module Castle
 
       # @return [String]
       def ip
-        Extractors::IP.new(@pre_headers).call
+        Castle::IP::Extract.new(@pre_headers).call
       end
 
       # @return [String]
       def client_id
-        Extractors::ClientId.new(@pre_headers, @cookies).call
+        Castle::ClientId::Extract.new(@pre_headers, @cookies).call
       end
 
       # formatted and filtered headers

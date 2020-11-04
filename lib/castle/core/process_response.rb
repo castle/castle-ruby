@@ -3,7 +3,7 @@
 module Castle
   module Core
     # parses api response
-    module Response
+    module ProcessResponse
       RESPONSE_ERRORS = {
         400 => Castle::BadRequestError,
         401 => Castle::UnauthorizedError,

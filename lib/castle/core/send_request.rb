@@ -3,7 +3,7 @@
 module Castle
   module Core
     # this class is responsible for making requests to api
-    module Request
+    module SendRequest
       # Default headers that we add to passed ones
       DEFAULT_HEADERS = {
         'Content-Type' => 'application/json'
@@ -13,7 +13,7 @@ module Castle
 
       class << self
         def call(command, api_secret, headers, http = nil)
-          (http || Castle::Core::Connection.call).request(
+          (http || Castle::Core::GetConnection.call).request(
             build(
               command,
               headers.merge(DEFAULT_HEADERS),

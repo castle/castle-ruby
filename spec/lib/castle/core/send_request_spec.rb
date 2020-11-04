@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Core::Request do
+describe Castle::Core::SendRequest do
   describe '#call' do
     let(:command) { Castle::Commands::Track.new({}).build(event: '$login.succeeded') }
     let(:headers) { {} }
@@ -20,7 +20,7 @@ describe Castle::Core::Request do
       let(:expected_headers) { { 'Content-Type' => 'application/json' } }
 
       before do
-        allow(Castle::Core::Connection).to receive(:call).and_return(http)
+        allow(Castle::Core::GetConnection).to receive(:call).and_return(http)
         allow(http).to receive(:request)
         allow(described_class).to receive(:build).and_return(request_build)
         call
@@ -37,13 +37,13 @@ describe Castle::Core::Request do
       subject(:call) { described_class.call(command, api_secret, headers, http) }
 
       before do
-        allow(Castle::Core::Connection).to receive(:call)
+        allow(Castle::Core::GetConnection).to receive(:call)
         allow(http).to receive(:request)
         allow(described_class).to receive(:build).and_return(request_build)
         call
       end
 
-      it { expect(Castle::Core::Connection).not_to have_received(:call) }
+      it { expect(Castle::Core::GetConnection).not_to have_received(:call) }
 
       it do
         expect(described_class).to have_received(:build).with(command, expected_headers, api_secret)
@@ -60,7 +60,7 @@ describe Castle::Core::Request do
     let(:api_secret) { 'secret' }
 
     context 'when get' do
-      let(:command) { Castle::Commands::Review.build(review_id) }
+      let(:command) { Castle::Commands::Review.new.build(review_id) }
       let(:review_id) { SecureRandom.uuid }
 
       it { expect(build.body).to be_nil }

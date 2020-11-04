@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Core do
+describe Castle::API do
   subject(:call) { described_class.call(command) }
 
   let(:command) { Castle::Commands::Track.new({}).build(event: '$login.succeeded') }
