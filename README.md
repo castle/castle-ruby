@@ -135,10 +135,9 @@ The client will automatically configure the context for each request.
 
 ### Overriding Default Context Properties
 
-If you need to modify the event context properties or if you desire to add additional properties such as user traits to the context, you can pass the properties in as options to the method of interest. An example:
+If you need to modify the event context properties or if you desire to add additional properties such as user traits to the context, you can pass the properties along with the other data . For example:
 ```ruby
-request_context = ::Castle::Client.to_context(request)
-track_options = ::Castle::Client.to_options({
+{
   event: ::Castle::Events::LOGIN_SUCCEEDED,
   user_id: user.id,
   properties: {
@@ -146,8 +145,11 @@ track_options = ::Castle::Client.to_options({
   },
   user_traits: {
     key: 'value'
+  },
+  context: {
+    section: 'mobile'
   }
-})
+}
 ```
 
 ## Tracking
@@ -158,7 +160,7 @@ Here is a simple example of a track event.
 begin
   castle.track(
     event: ::Castle::Events::LOGIN_SUCCEEDED,
-    user_id: user.id
+    user_id: user.id,
   )
 rescue Castle::Error => e
   puts e.message
@@ -180,7 +182,7 @@ class CastleTrackingWorker
   include Sidekiq::Worker
 
   def perform(payload = {})
-    ::Castle::Client::API.track(payload)
+    ::Castle::API::Track.call(payload)
   end
 end
 ```
