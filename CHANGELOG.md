@@ -2,6 +2,7 @@
 
 ## master
 
+- [#218](https://github.com/castle/castle-ruby/pull/218) added logger config option
 - [#212](https://github.com/castle/castle-ruby/pull/212) dropped origin from the default context
 
 **BREAKING CHANGES:**
