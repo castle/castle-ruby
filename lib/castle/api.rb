@@ -46,7 +46,9 @@ module Castle
           # @note We need to initialize the error, as the original error is a cause for this
           # custom exception. If we would do it the default Ruby way, the original error
           # would get converted into a string
-          raise Castle::RequestError, e
+          # rubocop:disable Style/RaiseArgs
+          raise Castle::RequestError.new(e)
+          # rubocop:enable Style/RaiseArgs
         end
       end
     end
