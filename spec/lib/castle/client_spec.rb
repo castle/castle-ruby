@@ -225,7 +225,7 @@ describe Castle::Client do
       end
 
       it { assert_not_requested :post, 'https://api.castle.io/v1/authenticate' }
-      it { expect(request_response[:action]).to be_eql('allow') }
+      it { expect(request_response[:action]).to be_eql(Castle::Verdict::ALLOW) }
       it { expect(request_response[:user_id]).to be_eql('1234') }
       it { expect(request_response[:failover]).to be true }
       it { expect(request_response[:failover_reason]).to be_eql('Castle is set to do not track.') }

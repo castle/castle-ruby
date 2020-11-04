@@ -123,16 +123,16 @@ describe Castle::Configuration do
 
   describe 'failover_strategy' do
     it do
-      expect(config.failover_strategy).to be_eql(:allow)
+      expect(config.failover_strategy).to be_eql(Castle::Failover::Strategy::ALLOW)
     end
 
     context 'with setter' do
       before do
-        config.failover_strategy = :deny
+        config.failover_strategy = Castle::Failover::Strategy::DENY
       end
 
       it do
-        expect(config.failover_strategy).to be_eql(:deny)
+        expect(config.failover_strategy).to be_eql(Castle::Failover::Strategy::DENY)
       end
     end
 

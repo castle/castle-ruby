@@ -9,6 +9,7 @@
 
 %w[
   castle/version
+  castle/verdict
   castle/events
   castle/errors
   castle/command
