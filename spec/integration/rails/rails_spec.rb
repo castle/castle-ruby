@@ -4,7 +4,7 @@ require 'spec_helper'
 require_relative 'support/all'
 
 RSpec.describe HomeController, type: :request do
-  describe '#index' do
+  context 'with index pages' do
     let(:request) do
       {
         'event' => '$login.succeeded',
@@ -44,17 +44,44 @@ RSpec.describe HomeController, type: :request do
     before do
       Timecop.freeze(now)
       stub_request(:post, 'https://api.castle.io/v1/track')
-      get '/', headers: headers
     end
 
     after { Timecop.return }
 
-    it do
-      assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
-        JSON.parse(req.body) == request
+    describe '#index1' do
+      before { get '/index1', headers: headers }
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+          JSON.parse(req.body) == request
+        end
       end
+
+      it { expect(response).to be_successful }
     end
 
-    it { expect(response).to be_successful }
+    describe '#index2' do
+      before { get '/index2', headers: headers }
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+          JSON.parse(req.body) == request
+        end
+      end
+
+      it { expect(response).to be_successful }
+    end
+
+    describe '#index3' do
+      before { get '/index3', headers: headers }
+
+      it do
+        assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+          JSON.parse(req.body) == request
+        end
+      end
+
+      it { expect(response).to be_successful }
+    end
   end
 end

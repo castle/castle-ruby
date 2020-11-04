@@ -16,7 +16,7 @@ module Castle
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
       @do_not_track = options.fetch(:do_not_track, false)
       @timestamp = options.fetch(:timestamp, Castle::Utils::GetTimestamp.call)
-      @context = options[:context]
+      @context = options.fetch(:context, {})
     end
 
     def authenticate(options = {})
