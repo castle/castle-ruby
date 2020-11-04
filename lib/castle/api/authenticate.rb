@@ -4,14 +4,19 @@ module Castle
   module API
     module Authenticate
       class << self
-        # @param context [Hash]
         # @param options [Hash]
         # return [Hash]
-        def call(context, options = {})
+        def call(options = {})
+          unless options[:no_symbolize]
+            options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
+          end
+          options.delete(:no_symbolize)
+          http = options.delete(:http)
+
           response = Castle::API.call(
-            Castle::Commands::Authenticate.new(context).build(options),
+            Castle::Commands::Authenticate.build(options),
             {},
-            options[:http]
+            http
           )
           response.merge(failover: false, failover_reason: nil)
         rescue Castle::RequestError, Castle::InternalServerError => e

@@ -4,13 +4,18 @@ module Castle
   module API
     module Identify
       class << self
-        # @param context [Hash]
         # @param options [Hash]
-        def call(context, options = {})
+        def call(options = {})
+          unless options[:no_symbolize]
+            options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
+          end
+          options.delete(:no_symbolize)
+          http = options.delete(:http)
+
           Castle::API.call(
-            Castle::Commands::Identify.new(context).build(options),
+            Castle::Commands::Identify.build(options),
             {},
-            options[:http]
+            http
           )
         end
       end

@@ -2,8 +2,8 @@
 
 class HomeController < ActionController::Base
   def index
-    request_context = ::Castle::Client.to_context(request)
-    track_options = ::Castle::Client.to_options(
+    request_context = ::Castle::Context::Prepare.call(request)
+    payload = ::Castle::Client.to_options(
       event: '$login.succeeded',
       user_id: '123',
       properties: {
@@ -13,8 +13,8 @@ class HomeController < ActionController::Base
         key: 'value'
       }
     )
-    client = ::Castle::Client.new(request_context)
-    client.track(track_options)
+    client = ::Castle::Client.new(context: request_context)
+    client.track(payload)
 
     render inline: 'hello'
   end

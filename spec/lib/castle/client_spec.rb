@@ -14,11 +14,11 @@ describe Castle::Client do
   end
   let(:request) { Rack::Request.new(env) }
   let(:client) { described_class.from_request(request) }
-  let(:request_to_context) { described_class.to_context(request) }
+  let(:request_to_context) { Castle::Context::Prepare.call(request) }
   let(:client_with_user_timestamp) do
-    described_class.new(request_to_context, timestamp: time_user)
+    described_class.new(context: request_to_context, timestamp: time_user)
   end
-  let(:client_with_no_timestamp) { described_class.new(request_to_context) }
+  let(:client_with_no_timestamp) { described_class.new(context: request_to_context) }
 
   let(:headers) do
     {
@@ -59,21 +59,6 @@ describe Castle::Client do
     it do
       client.authenticate(event: '$login.succeeded', user_id: '1234')
       expect(Castle::API).to have_received(:send_request)
-    end
-  end
-
-  describe 'to_context' do
-    it do
-      expect(described_class.to_context(request)).to eql(context)
-    end
-  end
-
-  describe 'to_options' do
-    let(:options) { { user_id: '1234', user_traits: { name: 'Jo' } } }
-    let(:result) { { user_id: '1234', user_traits: { name: 'Jo' }, timestamp: time_auto } }
-
-    it do
-      expect(described_class.to_options(options)).to eql(result)
     end
   end
 

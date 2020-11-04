@@ -179,9 +179,8 @@ By default Castle sends requests synchronously. To eg. use Sidekiq to send reque
 class CastleTrackingWorker
   include Sidekiq::Worker
 
-  def perform(context, track_options = {})
-    client = ::Castle::Client.new(context)
-    client.track(track_options)
+  def perform(payload = {})
+    ::Castle::Client::API.track(payload)
   end
 end
 ```
@@ -189,18 +188,20 @@ end
 #### tracking_controller.rb
 
 ```ruby
-request_context = ::Castle::Client.to_context(request)
-track_options = ::Castle::Client.to_options({
-  event: ::Castle::Events::LOGIN_SUCCEEDED,
-  user_id: user.id,
-  properties: {
-    key: 'value'
+payload = ::Castle::Payload::Prepare.call(
+  {
+    event: ::Castle::Events::LOGIN_SUCCEEDED,
+    user_id: user.id,
+    properties: {
+      key: 'value'
+    },
+    user_traits: {
+      key: 'value'
+    }
   },
-  user_traits: {
-    key: 'value'
-  }
-})
-CastleTrackingWorker.perform_async(request_context, track_options)
+  request
+)
+CastleTrackingWorker.perform_async(payload)
 ```
 
 ## Connection reuse

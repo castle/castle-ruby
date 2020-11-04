@@ -2,7 +2,7 @@
 
 describe Castle::Core::SendRequest do
   describe '#call' do
-    let(:command) { Castle::Commands::Track.new({}).build(event: '$login.succeeded') }
+    let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
     let(:headers) { {} }
     let(:api_secret) { 'secret' }
     let(:request_build) { {} }
@@ -13,7 +13,7 @@ describe Castle::Core::SendRequest do
       subject(:call) { described_class.call(command, api_secret, headers) }
 
       let(:http) { instance_double('Net::HTTP') }
-      let(:command) { Castle::Commands::Track.new({}).build(event: '$login.succeeded') }
+      let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
       let(:headers) { {} }
       let(:api_secret) { 'secret' }
       let(:request_build) { {} }
@@ -60,7 +60,7 @@ describe Castle::Core::SendRequest do
     let(:api_secret) { 'secret' }
 
     context 'when get' do
-      let(:command) { Castle::Commands::Review.new.build(review_id) }
+      let(:command) { Castle::Commands::Review.build({ review_id: review_id }) }
       let(:review_id) { SecureRandom.uuid }
 
       it { expect(build.body).to be_nil }
@@ -74,7 +74,7 @@ describe Castle::Core::SendRequest do
     context 'when post' do
       let(:time) { Time.now.utc.iso8601(3) }
       let(:command) do
-        Castle::Commands::Track.new({}).build(event: '$login.succeeded', name: "\xC4")
+        Castle::Commands::Track.build(event: '$login.succeeded', name: "\xC4")
       end
       let(:expected_body) do
         {

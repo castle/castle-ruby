@@ -34,3 +34,6 @@ RSpec/NestedGroups:
 RSpec/FilePath:
   Exclude:
     - "spec/integration/rails/rails_spec.rb"
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false

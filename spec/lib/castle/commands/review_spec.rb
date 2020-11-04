@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 describe Castle::Commands::Review do
-  subject(:instance) { described_class.new }
+  subject(:instance) { described_class }
 
   let(:context) { {} }
   let(:review_id) { '1234' }
 
   describe '.build' do
-    subject(:command) { instance.build(review_id) }
+    subject(:command) { instance.build(review_id: review_id) }
 
     context 'without review_id' do
       let(:review_id) { '' }
