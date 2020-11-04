@@ -25,6 +25,9 @@ Layout/LineLength:
   Exclude:
     - "spec/integration/rails/rails_spec.rb"
 
+Metrics/AbcSize:
+ Max: 20
+
 Metrics/MethodLength:
   CountComments: false
   Max: 20

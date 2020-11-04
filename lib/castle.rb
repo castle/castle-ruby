@@ -36,6 +36,7 @@
   castle/api/impersonate
   castle/payload/prepare
   castle/configuration
+  castle/logger
   castle/failover/prepare_response
   castle/failover/strategy
   castle/client

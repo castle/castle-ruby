@@ -49,7 +49,7 @@ module Castle
       X-Requested-With
     ].freeze
 
-    attr_accessor :request_timeout, :trust_proxy_chain
+    attr_accessor :request_timeout, :trust_proxy_chain, :logger
     attr_reader :api_secret, :allowlisted, :denylisted, :failover_strategy, :ip_headers,
                 :trusted_proxies, :trusted_proxy_depth, :base_url
 
@@ -69,6 +69,7 @@ module Castle
       self.trusted_proxies = [].freeze
       self.trust_proxy_chain = false
       self.trusted_proxy_depth = nil
+      self.logger = nil
     end
 
     def base_url=(value)
