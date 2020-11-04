@@ -12,34 +12,39 @@
   castle/events
   castle/errors
   castle/command
-  castle/utils
-  castle/utils/merger
-  castle/utils/cloner
-  castle/utils/timestamp
+  castle/utils/deep_symbolize_keys
+  castle/utils/clean_invalid_chars
+  castle/utils/merge
+  castle/utils/clone
+  castle/utils/get_timestamp
   castle/validators/present
   castle/validators/not_supported
-  castle/context/merger
-  castle/context/sanitizer
-  castle/context/default
+  castle/context/merge
+  castle/context/sanitize
+  castle/context/get_default
   castle/commands/identify
   castle/commands/authenticate
   castle/commands/track
   castle/commands/review
   castle/commands/impersonate
+  castle/api/identify
+  castle/api/authenticate
+  castle/api/track
+  castle/api/review
+  castle/api/impersonate
   castle/configuration
-  castle/failover_auth_response
+  castle/failover/prepare_response
   castle/client
-  castle/headers_filter
-  castle/headers_formatter
+  castle/headers/filter
+  castle/headers/format
+  castle/headers/extract
   castle/secure_mode
-  castle/extractors/client_id
-  castle/extractors/headers
-  castle/extractors/ip
-  castle/api/connection
-  castle/api/response
-  castle/api/request
-  castle/api/session
-  castle/review
+  castle/client_id/extract
+  castle/ip/extract
+  castle/core/get_connection
+  castle/core/process_response
+  castle/core/send_request
+  castle/session
   castle/api
 ].each(&method(:require))
 

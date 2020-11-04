@@ -10,14 +10,14 @@ module Castle
 
       def build(options = {})
         Castle::Validators::Present.call(options, %i[user_id])
-        context = Castle::Context::Merger.call(@context, options[:context])
-        context = Castle::Context::Sanitizer.call(context)
+        context = Castle::Context::Merge.call(@context, options[:context])
+        context = Castle::Context::Sanitize.call(context)
 
         Castle::Validators::Present.call(context, %i[user_agent ip])
 
         Castle::Command.new(
           'impersonate',
-          options.merge(context: context, sent_at: Castle::Utils::Timestamp.call),
+          options.merge(context: context, sent_at: Castle::Utils::GetTimestamp.call),
           options[:reset] ? :delete : :post
         )
       end

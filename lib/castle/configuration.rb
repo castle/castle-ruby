@@ -56,7 +56,7 @@ module Castle
                 :trusted_proxies, :trusted_proxy_depth, :base_url
 
     def initialize
-      @formatter = Castle::HeadersFormatter
+      @header_format = Castle::Headers::Format
       @request_timeout = REQUEST_TIMEOUT
       reset
     end
@@ -82,11 +82,11 @@ module Castle
     end
 
     def allowlisted=(value)
-      @allowlisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
+      @allowlisted = (value ? value.map { |header| @header_format.call(header) } : []).freeze
     end
 
     def denylisted=(value)
-      @denylisted = (value ? value.map { |header| @formatter.call(header) } : []).freeze
+      @denylisted = (value ? value.map { |header| @header_format.call(header) } : []).freeze
     end
 
     # sets ip headers
@@ -94,7 +94,7 @@ module Castle
     def ip_headers=(value)
       raise Castle::ConfigurationError, 'ip headers must be an Array' unless value.is_a?(Array)
 
-      @ip_headers = value.map { |header| @formatter.call(header) }.freeze
+      @ip_headers = value.map { |header| @header_format.call(header) }.freeze
     end
 
     # sets trusted proxies

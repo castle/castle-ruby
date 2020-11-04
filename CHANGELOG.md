@@ -2,7 +2,12 @@
 
 ## master
 
-- [213](https://github.com/castle/castle-ruby/pull/213) allow to configure the base url
+- [#212](https://github.com/castle/castle-ruby/pull/212) dropped origin from the default context
+
+**BREAKING CHANGES:**
+
+- [#213](https://github.com/castle/castle-ruby/pull/213) rename config.url to config.base_url
+- [#214](https://github.com/castle/castle-ruby/pull/214) reorganize structure of the SDK, Castle::API::Session renamed to Castle::Session
 
 ## 5.0.0 (2020-09-29)
 

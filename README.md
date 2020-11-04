@@ -208,7 +208,7 @@ CastleTrackingWorker.perform_async(request_context, track_options)
 If you want to reuse the connection to send multiple events:
 
 ```ruby
-Castle::API::Session.call do |http|
+Castle::Session.call do |http|
   castle.track(
     event: ::Castle::Events::LOGOUT_SUCCEEDED,
     user_id: user2.id

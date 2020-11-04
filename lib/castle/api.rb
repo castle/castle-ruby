@@ -20,11 +20,23 @@ module Castle
       # @param command [String]
       # @param headers [Hash]
       # @param http [Net::HTTP]
-      def request(command, headers = {}, http = nil)
+      # @return [Hash]
+      def call(command, headers = {}, http = nil)
+        Castle::Core::ProcessResponse.call(
+          send_request(command, headers, http)
+        )
+      end
+
+      private
+
+      # @param command [String]
+      # @param headers [Hash]
+      # @param http [Net::HTTP]
+      def send_request(command, headers = {}, http = nil)
         raise Castle::ConfigurationError, 'configuration is not valid' unless Castle.config.valid?
 
         begin
-          Castle::API::Request.call(
+          Castle::Core::SendRequest.call(
             command,
             Castle.config.api_secret,
             headers,
@@ -34,15 +46,10 @@ module Castle
           # @note We need to initialize the error, as the original error is a cause for this
           # custom exception. If we would do it the default Ruby way, the original error
           # would get converted into a string
-          raise Castle::RequestError.new(e) # rubocop:disable Style/RaiseArgs
+          # rubocop:disable Style/RaiseArgs
+          raise Castle::RequestError.new(e)
+          # rubocop:enable Style/RaiseArgs
         end
-      end
-
-      # @param command [String]
-      # @param headers [Hash]
-      # @param http [Net::HTTP]
-      def call(command, headers = {}, http = nil)
-        Castle::API::Response.call(request(command, headers, http))
       end
     end
   end
