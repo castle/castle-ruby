@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# tmp logger for testing
+class TmpLogger
+  def info(_message); end
+end
+
 describe Castle::Logger do
   subject(:log) do
     described_class.call(message, data)
@@ -9,10 +14,6 @@ describe Castle::Logger do
   let(:integration_logger) { TmpLogger.new }
   let(:data) { { a: 1 }.to_json }
   let(:logger_message) { "[CASTLE] #{message} #{data}" }
-
-  class TmpLogger
-    def info(_message); end
-  end
 
   before do
     allow(integration_logger).to receive(:info).and_call_original
