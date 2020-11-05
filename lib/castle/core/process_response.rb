@@ -17,6 +17,8 @@ module Castle
         def call(response)
           verify!(response)
 
+          Castle::Logger.call('response:', response.body.to_s)
+
           return {} if response.body.nil? || response.body.empty?
 
           begin

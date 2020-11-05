@@ -68,6 +68,9 @@ Castle.configure do |config|
   # Base Castle API url
   # config.base_url = "https://api.castle.io/v1"
 
+  # Logger (need to respond to info method) - logs Castle API requests and responses
+  # config.logger = Logger.new(STDOUT)
+
   # Allowlisted and Denylisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
   # Allowlisted headers
   # By default, the SDK sends all HTTP headers, except for Cookie and Authorization.
