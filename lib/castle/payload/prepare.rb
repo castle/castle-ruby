@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Castle
-  # this prepare payload based on the request
   module Payload
+    # this prepare payload based on the request
     module Prepare
       class << self
         # @param payload_options [Hash]

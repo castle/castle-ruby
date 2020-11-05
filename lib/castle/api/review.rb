@@ -4,7 +4,6 @@ module Castle
   module API
     module Review
       class << self
-        # @param review_id [String]
         # @param options [Hash]
         # return [Hash]
         def call(options = {})

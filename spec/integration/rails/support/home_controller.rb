@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class HomeController < ActionController::Base
+  # prepare context and calling track with client example
   def index1
     request_context = ::Castle::Context::Prepare.call(request)
     payload = {
@@ -19,6 +20,7 @@ class HomeController < ActionController::Base
     render inline: 'hello'
   end
 
+  # prepare payload and calling track with client example
   def index2
     payload = ::Castle::Payload::Prepare.call(
       {
@@ -39,6 +41,7 @@ class HomeController < ActionController::Base
     render inline: 'hello'
   end
 
+  # prepare payload and calling track with direct API::Track service
   def index3
     payload = ::Castle::Payload::Prepare.call(
       {

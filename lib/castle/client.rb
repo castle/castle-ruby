@@ -12,13 +12,15 @@ module Castle
 
     attr_accessor :context
 
+    # @param options [Hash]
     def initialize(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
       @do_not_track = options.fetch(:do_not_track, false)
-      @timestamp = options.fetch(:timestamp, Castle::Utils::GetTimestamp.call)
-      @context = options.fetch(:context, {})
+      @timestamp = options.fetch(:timestamp) { Castle::Utils::GetTimestamp.call }
+      @context = options.fetch(:context) { {} }
     end
 
+    # @param options [Hash]
     def authenticate(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -31,6 +33,7 @@ module Castle
       Castle::API::Authenticate.call(options.merge(context: new_context, no_symbolize: true))
     end
 
+    # @param options [Hash]
     def identify(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -43,6 +46,7 @@ module Castle
       Castle::API::Identify.call(options.merge(context: new_context, no_symbolize: true))
     end
 
+    # @param options [Hash]
     def track(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -55,6 +59,7 @@ module Castle
       Castle::API::Track.call(options.merge(context: new_context, no_symbolize: true))
     end
 
+    # @param options [Hash]
     def impersonate(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -65,6 +70,7 @@ module Castle
       Castle::API::Impersonate.call(options.merge(context: new_context, no_symbolize: true))
     end
 
+    # @param options [Hash]
     def review(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -85,6 +91,7 @@ module Castle
 
     private
 
+    # @param user_id [String|Boolean]
     def generate_do_not_track_response(user_id)
       Castle::Failover::PrepareResponse.new(
         user_id,
@@ -92,6 +99,7 @@ module Castle
       ).call
     end
 
+    # @param options [Hash]
     def add_timestamp_if_necessary(options)
       options[:timestamp] ||= @timestamp if @timestamp
     end

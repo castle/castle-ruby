@@ -27,7 +27,9 @@ describe Castle::Core::SendRequest do
       end
 
       it do
-        expect(described_class).to have_received(:build).with(command, expected_headers, api_secret)
+        expect(described_class).to have_received(:build).with(
+          command, expected_headers, api_secret
+        )
       end
 
       it { expect(http).to have_received(:request).with(request_build) }
@@ -46,7 +48,9 @@ describe Castle::Core::SendRequest do
       it { expect(Castle::Core::GetConnection).not_to have_received(:call) }
 
       it do
-        expect(described_class).to have_received(:build).with(command, expected_headers, api_secret)
+        expect(described_class).to have_received(:build).with(
+          command, expected_headers, api_secret
+        )
       end
 
       it { expect(http).to have_received(:request).with(request_build) }
