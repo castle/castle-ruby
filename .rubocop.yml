@@ -2,38 +2,56 @@ require:
   - rubocop-performance
   - rubocop-rspec
 
-Naming/FileName:
-  Exclude:
-    - "lib/castle-rb.rb"
-
 AllCops:
   TargetRubyVersion: 2.4
-
-Style/Documentation:
-  Enabled: false
-
-Lint/MissingSuper:
   Exclude:
-    - "lib/castle/configuration.rb"
+    - bin/**/*
+    - db/schema.rb
+    - .gemspec/**/*
+    - gemfiles/**/*
+    - .bundle/**/*
+    - vendor/**/*
+    - db/migrate/**/*
+    - '**/dummy**/*'
+    - Appraisals
+    - !ruby/regexp /old_and_unused\.rb$/
+
+Metrics/ClassLength:
+  CountComments: false
+  Max: 200
+
+Layout/LineLength:
+  Max: 99
+  Exclude:
+    - "spec/integration/rails/rails_spec.rb"
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 25
 
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'let']
 
-Metrics/MethodLength:
-  Max: 20
-
-Layout/LineLength:
-  Max: 100
+Naming/FileName:
   Exclude:
-    - "lib/castle/configuration.rb"
-    - "spec/integration/rails/rails_spec.rb"
-
-RSpec/NestedGroups:
-  Max: 4
+    - '*.gemspec'
+    - 'lib/castle-rb.rb'
 
 RSpec/FilePath:
   Exclude:
-    - "spec/integration/rails/rails_spec.rb"
-
+    - spec/integration/
+  CustomTransform:
+    RuboCop: rubo_cop
+    Rspec: r_spec
+RSpec/MultipleExpectations:
+  Enabled: true
+  Max: 3
+RSpec/NestedGroups:
+  Enabled: true
+  Max: 4
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
+
