@@ -135,7 +135,7 @@ The client will automatically configure the context for each request.
 
 ### Overriding Default Context Properties
 
-If you need to modify the event context properties or if you desire to add additional properties such as user traits to the context, you can pass the properties along with the other data . For example:
+If you need to modify the event context properties or if you desire to add additional properties such as user traits to the context, you can pass the properties along with the other data. For example:
 ```ruby
 {
   event: ::Castle::Events::LOGIN_SUCCEEDED,
