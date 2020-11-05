@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 describe Castle::Commands::Authenticate do
-  subject(:instance) { described_class.new(context) }
+  subject(:instance) { described_class }
 
   let(:context) { { test: { test1: '1' } } }
-  let(:default_payload) { { event: '$login.authenticate', user_id: '1234', sent_at: time_auto } }
+  let(:default_payload) do
+    { event: '$login.authenticate', user_id: '1234', sent_at: time_auto, context: context }
+  end
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
@@ -15,17 +17,6 @@ describe Castle::Commands::Authenticate do
 
   describe '.build' do
     subject(:command) { instance.build(payload) }
-
-    context 'with simple merger' do
-      let(:payload) { default_payload.merge(context: { test: { test2: '1' } }) }
-      let(:command_data) do
-        default_payload.merge(context: { test: { test1: '1', test2: '1' } })
-      end
-
-      it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('authenticate') }
-      it { expect(command.data).to be_eql(command_data) }
-    end
 
     context 'with properties' do
       let(:payload) { default_payload.merge(properties: { test: '1' }) }
@@ -50,7 +41,7 @@ describe Castle::Commands::Authenticate do
     end
 
     context 'when active true' do
-      let(:payload) { default_payload.merge(context: { active: true }) }
+      let(:payload) { default_payload.merge(context: context.merge(active: true)) }
       let(:command_data) do
         default_payload.merge(context: context.merge(active: true))
       end
@@ -61,7 +52,7 @@ describe Castle::Commands::Authenticate do
     end
 
     context 'when active false' do
-      let(:payload) { default_payload.merge(context: { active: false }) }
+      let(:payload) { default_payload.merge(context: context.merge(active: false)) }
       let(:command_data) do
         default_payload.merge(context: context.merge(active: false))
       end
@@ -72,7 +63,7 @@ describe Castle::Commands::Authenticate do
     end
 
     context 'when active string' do
-      let(:payload) { default_payload.merge(context: { active: 'string' }) }
+      let(:payload) { default_payload.merge(context: context.merge(active: 'string')) }
       let(:command_data) { default_payload.merge(context: context) }
 
       it { expect(command.method).to be_eql(:post) }

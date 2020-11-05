@@ -100,7 +100,9 @@ module Castle
     # sets trusted proxies
     # @param value [Array<String,Regexp>]
     def trusted_proxies=(value)
-      raise Castle::ConfigurationError, 'trusted proxies must be an Array' unless value.is_a?(Array)
+      unless value.is_a?(Array)
+        raise Castle::ConfigurationError, 'trusted proxies must be an Array'
+      end
 
       @trusted_proxies = value
     end

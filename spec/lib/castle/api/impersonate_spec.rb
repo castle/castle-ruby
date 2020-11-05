@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Castle::API::Impersonate do
-  subject(:call) { described_class.call(context, options) }
+  subject(:call) { described_class.call(options) }
 
   let(:ip) { '1.2.3.4' }
   let(:cookie_id) { 'abcd' }
@@ -15,7 +15,7 @@ describe Castle::API::Impersonate do
     )
   end
   let(:request) { Rack::Request.new(env) }
-  let(:context) { Castle::Client.to_context(request) }
+  let(:context) { Castle::Context::Prepare.call(request) }
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
 
@@ -36,7 +36,9 @@ describe Castle::API::Impersonate do
         properties: { impersonator: impersonator }, context: context }
     end
     let(:response_body) { { success: true }.to_json }
-    let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
+    let(:options) do
+      { user_id: '1234', properties: { impersonator: impersonator }, context: context }
+    end
 
     context 'when used with symbol keys' do
       before { call }

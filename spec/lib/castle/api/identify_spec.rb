@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Castle::API::Identify do
-  subject(:call) { described_class.call(context, options) }
+  subject(:call) { described_class.call(options) }
 
   let(:ip) { '1.2.3.4' }
   let(:cookie_id) { 'abcd' }
@@ -15,7 +15,7 @@ describe Castle::API::Identify do
     )
   end
   let(:request) { Rack::Request.new(env) }
-  let(:context) { Castle::Client.to_context(request) }
+  let(:context) { Castle::Context::Prepare.call(request) }
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
   let(:time_user) { (Time.now - 10_000).utc.iso8601(3) }
@@ -40,7 +40,7 @@ describe Castle::API::Identify do
     before { call }
 
     context 'when used with symbol keys' do
-      let(:options) { { event: '$login.succeeded', user_id: '1234' } }
+      let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
@@ -49,7 +49,9 @@ describe Castle::API::Identify do
       end
 
       context 'when passed timestamp in options and no defined timestamp' do
-        let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user } }
+        let(:options) do
+          { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context }
+        end
         let(:request_body) do
           { event: '$login.succeeded', user_id: '1234', context: context,
             timestamp: time_user, sent_at: time_auto }

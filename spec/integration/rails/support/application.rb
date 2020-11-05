@@ -10,6 +10,8 @@ class TestApp < Rails::Application
   Rails.logger = config.logger
 
   routes.draw do
-    get '/' => 'home#index'
+    get '/index1' => 'home#index1'
+    get '/index2' => 'home#index2'
+    get '/index3' => 'home#index3'
   end
 end

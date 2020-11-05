@@ -8,7 +8,7 @@ describe Castle::API::Review do
   end
 
   describe '.call' do
-    subject(:retrieve) { described_class.call(review_id) }
+    subject(:retrieve) { described_class.call(review_id: review_id) }
 
     let(:review_id) { '1234' }
 

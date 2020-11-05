@@ -22,6 +22,7 @@
   castle/context/merge
   castle/context/sanitize
   castle/context/get_default
+  castle/context/prepare
   castle/commands/identify
   castle/commands/authenticate
   castle/commands/track
@@ -32,6 +33,7 @@
   castle/api/track
   castle/api/review
   castle/api/impersonate
+  castle/payload/prepare
   castle/configuration
   castle/failover/prepare_response
   castle/client

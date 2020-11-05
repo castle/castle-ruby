@@ -135,10 +135,9 @@ The client will automatically configure the context for each request.
 
 ### Overriding Default Context Properties
 
-If you need to modify the event context properties or if you desire to add additional properties such as user traits to the context, you can pass the properties in as options to the method of interest. An example:
+If you need to modify the event context properties or if you desire to add additional properties such as user traits to the context, you can pass the properties along with the other data. For example:
 ```ruby
-request_context = ::Castle::Client.to_context(request)
-track_options = ::Castle::Client.to_options({
+{
   event: ::Castle::Events::LOGIN_SUCCEEDED,
   user_id: user.id,
   properties: {
@@ -146,8 +145,11 @@ track_options = ::Castle::Client.to_options({
   },
   user_traits: {
     key: 'value'
+  },
+  context: {
+    section: 'mobile'
   }
-})
+}
 ```
 
 ## Tracking
@@ -179,9 +181,8 @@ By default Castle sends requests synchronously. To eg. use Sidekiq to send reque
 class CastleTrackingWorker
   include Sidekiq::Worker
 
-  def perform(context, track_options = {})
-    client = ::Castle::Client.new(context)
-    client.track(track_options)
+  def perform(payload = {})
+    ::Castle::API::Track.call(payload)
   end
 end
 ```
@@ -189,18 +190,20 @@ end
 #### tracking_controller.rb
 
 ```ruby
-request_context = ::Castle::Client.to_context(request)
-track_options = ::Castle::Client.to_options({
-  event: ::Castle::Events::LOGIN_SUCCEEDED,
-  user_id: user.id,
-  properties: {
-    key: 'value'
+payload = ::Castle::Payload::Prepare.call(
+  {
+    event: ::Castle::Events::LOGIN_SUCCEEDED,
+    user_id: user.id,
+    properties: {
+      key: 'value'
+    },
+    user_traits: {
+      key: 'value'
+    }
   },
-  user_traits: {
-    key: 'value'
-  }
-})
-CastleTrackingWorker.perform_async(request_context, track_options)
+  request
+)
+CastleTrackingWorker.perform_async(payload)
 ```
 
 ## Connection reuse

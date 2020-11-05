@@ -5,32 +5,22 @@ module Castle
     class << self
       def from_request(request, options = {})
         new(
-          to_context(request, options),
-          to_options(options)
+          options.merge(context: Castle::Context::Prepare.call(request, options))
         )
-      end
-
-      def to_context(request, options = {})
-        default_context = Castle::Context::GetDefault.new(request, options[:cookies]).call
-        Castle::Context::Merge.call(default_context, options[:context])
-      end
-
-      def to_options(options = {})
-        options[:timestamp] ||= Castle::Utils::GetTimestamp.call
-        warn '[DEPRECATION] use user_traits instead of traits key' if options.key?(:traits)
-        options
       end
     end
 
     attr_accessor :context
 
-    def initialize(context, options = {})
+    # @param options [Hash]
+    def initialize(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
       @do_not_track = options.fetch(:do_not_track, false)
-      @timestamp = options[:timestamp]
-      @context = context
+      @timestamp = options.fetch(:timestamp) { Castle::Utils::GetTimestamp.call }
+      @context = options.fetch(:context) { {} }
     end
 
+    # @param options [Hash]
     def authenticate(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -38,9 +28,12 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
-      Castle::API::Authenticate.call(@context, options)
+      new_context = Castle::Context::Merge.call(@context, options[:context])
+
+      Castle::API::Authenticate.call(options.merge(context: new_context, no_symbolize: true))
     end
 
+    # @param options [Hash]
     def identify(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -48,9 +41,12 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
-      Castle::API::Identify.call(@context, options)
+      new_context = Castle::Context::Merge.call(@context, options[:context])
+
+      Castle::API::Identify.call(options.merge(context: new_context, no_symbolize: true))
     end
 
+    # @param options [Hash]
     def track(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -58,23 +54,27 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
-      Castle::API::Track.call(@context, options)
+      new_context = Castle::Context::Merge.call(@context, options[:context])
+
+      Castle::API::Track.call(options.merge(context: new_context, no_symbolize: true))
     end
 
+    # @param options [Hash]
     def impersonate(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
       add_timestamp_if_necessary(options)
 
-      Castle::API::Impersonate.call(@context, options)
+      new_context = Castle::Context::Merge.call(@context, options[:context])
+
+      Castle::API::Impersonate.call(options.merge(context: new_context, no_symbolize: true))
     end
 
+    # @param options [Hash]
     def review(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
-      add_timestamp_if_necessary(options)
-
-      Castle::API::Review.call(@context, options)
+      Castle::API::Review.call(options.merge(no_symbolize: true))
     end
 
     def disable_tracking
@@ -91,6 +91,7 @@ module Castle
 
     private
 
+    # @param user_id [String|Boolean]
     def generate_do_not_track_response(user_id)
       Castle::Failover::PrepareResponse.new(
         user_id,
@@ -98,6 +99,7 @@ module Castle
       ).call
     end
 
+    # @param options [Hash]
     def add_timestamp_if_necessary(options)
       options[:timestamp] ||= @timestamp if @timestamp
     end

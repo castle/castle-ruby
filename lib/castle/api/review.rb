@@ -4,12 +4,13 @@ module Castle
   module API
     module Review
       class << self
-        # @param review_id [String]
         # @param options [Hash]
         # return [Hash]
-        def call(review_id, options = {})
+        def call(options = {})
+          options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
+
           Castle::API.call(
-            Castle::Commands::Review.new.build(review_id),
+            Castle::Commands::Review.build(options),
             {},
             options[:http]
           )
