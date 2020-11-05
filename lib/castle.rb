@@ -9,6 +9,7 @@
 
 %w[
   castle/version
+  castle/verdict
   castle/events
   castle/errors
   castle/command
@@ -36,6 +37,7 @@
   castle/payload/prepare
   castle/configuration
   castle/failover/prepare_response
+  castle/failover/strategy
   castle/client
   castle/headers/filter
   castle/headers/format

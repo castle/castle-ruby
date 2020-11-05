@@ -10,9 +10,7 @@ module Castle
 
     # API endpoint
     BASE_URL = 'https://api.castle.io/v1'
-    FAILOVER_STRATEGY = :allow
     REQUEST_TIMEOUT = 500 # in milliseconds
-    FAILOVER_STRATEGIES = %i[allow deny challenge throw].freeze
     # regexp of trusted proxies which is always appended to the trusted proxy list
     TRUSTED_PROXIES = [/
       \A127\.0\.0\.1\Z|
@@ -62,7 +60,7 @@ module Castle
     end
 
     def reset
-      self.failover_strategy = FAILOVER_STRATEGY
+      self.failover_strategy = Castle::Failover::Strategy::ALLOW
       self.base_url = BASE_URL
       self.allowlisted = [].freeze
       self.denylisted = [].freeze
@@ -117,7 +115,9 @@ module Castle
     end
 
     def failover_strategy=(value)
-      @failover_strategy = FAILOVER_STRATEGIES.detect { |strategy| strategy == value.to_sym }
+      @failover_strategy = Castle::Failover::STRATEGIES.detect do |strategy|
+        strategy == value.to_sym
+      end
       raise Castle::ConfigurationError, 'unrecognized failover strategy' if @failover_strategy.nil?
     end
 
