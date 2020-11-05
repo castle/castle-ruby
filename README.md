@@ -160,7 +160,7 @@ Here is a simple example of a track event.
 begin
   castle.track(
     event: ::Castle::Events::LOGIN_SUCCEEDED,
-    user_id: user.id,
+    user_id: user.id
   )
 rescue Castle::Error => e
   puts e.message
