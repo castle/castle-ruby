@@ -62,8 +62,8 @@ Castle.configure do |config|
   # For authenticate method you can set failover strategies: allow(default), deny, challenge, throw
   config.failover_strategy = :deny
 
-  # Castle::RequestError is raised when timing out in milliseconds (default: 500 milliseconds)
-  config.request_timeout = 2000
+  # Castle::RequestError is raised when timing out in milliseconds (default: 1000 milliseconds)
+  config.request_timeout = 1500
 
   # Base Castle API url
   # config.base_url = "https://api.castle.io/v1"
