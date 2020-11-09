@@ -73,7 +73,7 @@ describe Castle::Configuration do
 
   describe 'request_timeout' do
     it do
-      expect(config.request_timeout).to be_eql(500)
+      expect(config.request_timeout).to be_eql(1000)
     end
 
     context 'with setter' do
