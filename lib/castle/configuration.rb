@@ -10,7 +10,7 @@ module Castle
 
     # API endpoint
     BASE_URL = 'https://api.castle.io/v1'
-    REQUEST_TIMEOUT = 500 # in milliseconds
+    REQUEST_TIMEOUT = 1000 # in milliseconds
     # regexp of trusted proxies which is always appended to the trusted proxy list
     TRUSTED_PROXIES = [/
       \A127\.0\.0\.1\Z|
