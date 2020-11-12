@@ -24,9 +24,9 @@ module Castle
 
         def build(command, headers, api_secret)
           url = "#{Castle.config.base_url.path}/#{command.path}"
-          request_obj = Net::HTTP.const_get(command.method_name.to_s.capitalize).new(url, headers)
+          request_obj = Net::HTTP.const_get(command.method.to_s.capitalize).new(url, headers)
 
-          unless command.method_name == :get
+          unless command.method == :get
             request_obj.body = ::Castle::Utils::CleanInvalidChars.call(
               command.data
             ).to_json

@@ -68,7 +68,7 @@ describe Castle::Core::SendRequest do
       let(:review_id) { SecureRandom.uuid }
 
       it { expect(build.body).to be_nil }
-      it { expect(build.method_name).to eql('GET') }
+      it { expect(build.method).to eql('GET') }
       it { expect(build.path).to eql("/v1/#{command.path}") }
       it { expect(build.to_hash).to have_key('authorization') }
       it { expect(build.to_hash).to have_key('sample-header') }
@@ -92,7 +92,7 @@ describe Castle::Core::SendRequest do
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 
       it { expect(build.body).to be_eql(expected_body.to_json) }
-      it { expect(build.method_name).to eql('POST') }
+      it { expect(build.method).to eql('POST') }
       it { expect(build.path).to eql("/v1/#{command.path}") }
       it { expect(build.to_hash).to have_key('authorization') }
       it { expect(build.to_hash).to have_key('sample-header') }

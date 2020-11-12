@@ -24,7 +24,7 @@ describe Castle::Commands::Authenticate do
         default_payload.merge(properties: { test: '1' }, context: context)
       end
 
-      it { expect(command.method_name).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('authenticate') }
       it { expect(command.data).to be_eql(command_data) }
     end
@@ -35,7 +35,7 @@ describe Castle::Commands::Authenticate do
         default_payload.merge(user_traits: { test: '1' }, context: context)
       end
 
-      it { expect(command.method_name).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('authenticate') }
       it { expect(command.data).to be_eql(command_data) }
     end
@@ -46,7 +46,7 @@ describe Castle::Commands::Authenticate do
         default_payload.merge(context: context.merge(active: true))
       end
 
-      it { expect(command.method_name).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('authenticate') }
       it { expect(command.data).to be_eql(command_data) }
     end
@@ -57,7 +57,7 @@ describe Castle::Commands::Authenticate do
         default_payload.merge(context: context.merge(active: false))
       end
 
-      it { expect(command.method_name).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('authenticate') }
       it { expect(command.data).to be_eql(command_data) }
     end
@@ -66,7 +66,7 @@ describe Castle::Commands::Authenticate do
       let(:payload) { default_payload.merge(context: context.merge(active: 'string')) }
       let(:command_data) { default_payload.merge(context: context) }
 
-      it { expect(command.method_name).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('authenticate') }
       it { expect(command.data).to be_eql(command_data) }
     end

@@ -23,7 +23,7 @@ describe Castle::Commands::Impersonate do
         default_payload.merge(properties: { impersonator: impersonator }, context: context)
       end
 
-      it { expect(command.method_name).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('impersonate') }
       it { expect(command.data).to be_eql(command_data) }
     end
@@ -34,7 +34,7 @@ describe Castle::Commands::Impersonate do
         default_payload.merge(context: context.merge(active: true))
       end
 
-      it { expect(command.method_name).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('impersonate') }
       it { expect(command.data).to be_eql(command_data) }
     end
@@ -45,7 +45,7 @@ describe Castle::Commands::Impersonate do
         default_payload.merge(context: context.merge(active: false))
       end
 
-      it { expect(command.method_name).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('impersonate') }
       it { expect(command.data).to be_eql(command_data) }
     end
