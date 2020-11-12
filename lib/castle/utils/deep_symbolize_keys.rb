@@ -28,7 +28,7 @@ module Castle
         def call!(object, &block)
           case object
           when Hash
-            object.keys.each do |key|
+            object.each_key do |key|
               value = object.delete(key)
               object[key.to_sym] = Castle::Utils::DeepSymbolizeKeys.call!(value, &block)
             end

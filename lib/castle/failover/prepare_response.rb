@@ -4,7 +4,7 @@ module Castle
   module Failover
     # generate failover authentication response
     class PrepareResponse
-      def initialize(user_id, strategy: Castle.config.failover_strategy, reason:)
+      def initialize(user_id, reason:, strategy: Castle.config.failover_strategy)
         @strategy = strategy
         @reason = reason
         @user_id = user_id
