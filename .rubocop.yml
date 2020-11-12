@@ -16,6 +16,7 @@ Style/Documentation:
 Lint/MissingSuper:
   Exclude:
     - "lib/castle/configuration.rb"
+    - "lib/castle/errors.rb"
 
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'let']

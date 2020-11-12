@@ -5,5 +5,5 @@ describe Castle::Command do
 
   it { expect(command.path).to be_eql('go') }
   it { expect(command.data).to be_eql(id: '1') }
-  it { expect(command.method).to be_eql(:post) }
+  it { expect(command.method_name).to be_eql(:post) }
 end
