@@ -70,18 +70,17 @@ describe Castle::API::Authenticate do
     context 'when denied' do
       let(:failover_appendix) { { failover: false, failover_reason: nil } }
 
-      let(:deny_response_without_rp) do
-        {
-          action: 'deny',
-          user_id: '12345',
-          device_token: 'abcdefg1234'
-        }
-      end
-
       let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
 
       context 'when denied without any risk policy' do
         let(:response_body) { deny_response_without_rp.to_json }
+        let(:deny_response_without_rp) do
+          {
+            action: 'deny',
+            user_id: '12345',
+            device_token: 'abcdefg1234'
+          }
+        end
         let(:deny_without_rp_failover_result) do
           deny_response_without_rp.merge(failover_appendix)
         end
@@ -103,8 +102,11 @@ describe Castle::API::Authenticate do
       end
 
       context 'when denied with risk policy' do
-        let(:risk_policy) do
+        let(:deny_response_with_rp) do
           {
+            action: 'deny',
+            user_id: '12345',
+            device_token: 'abcdefg1234',
             risk_policy: {
               id: 'q-rbeMzBTdW2Fd09sbz55A',
               revision_id: 'pke4zqO2TnqVr-NHJOAHEg',
@@ -113,7 +115,6 @@ describe Castle::API::Authenticate do
             }
           }
         end
-        let(:deny_response_with_rp) { deny_response_without_rp.merge(risk_policy) }
         let(:response_body) { deny_response_with_rp.to_json }
         let(:deny_with_rp_failover_result) do
           deny_response_with_rp.merge(failover_appendix)
