@@ -18,6 +18,10 @@ Lint/MissingSuper:
     - "lib/castle/configuration.rb"
     - "lib/castle/errors.rb"
 
+Lint/StructNewOverride:
+  Exclude:
+    - "lib/castle/command.rb"
+
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'let']
 
