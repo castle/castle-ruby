@@ -5,13 +5,14 @@ module Castle
     module CleanInvalidChars
       class << self
         def call(arg)
-          if arg.is_a?(::String)
+          case arg
+          when ::String
             arg.encode('UTF-8', invalid: :replace, undef: :replace)
-          elsif arg.is_a?(::Hash)
-            arg.each_with_object({}) do |(k, v), h|
-              h[k] = Castle::Utils::CleanInvalidChars.call(v)
+          when ::Hash
+            arg.transform_values do |v|
+              Castle::Utils::CleanInvalidChars.call(v)
             end
-          elsif arg.is_a?(::Array)
+          when ::Array
             arg.map { |el| Castle::Utils::CleanInvalidChars.call(el) }
           else
             arg
