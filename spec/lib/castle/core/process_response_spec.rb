@@ -10,6 +10,61 @@ describe Castle::Core::ProcessResponse do
       it { expect(call).to eql(user: 1) }
     end
 
+    describe 'authenticate' do
+      context 'when allow without any additional props' do
+        let(:response) { OpenStruct.new(body: '{"action":"allow","user_id":"12345"}', code: 200) }
+
+        it { expect(call).to eql({ action: 'allow', user_id: '12345' }) }
+      end
+
+      context 'when allow with additional props' do
+        let(:response) do
+          OpenStruct.new(body: '{"action":"allow","user_id":"12345","internal":{}}', code: 200)
+        end
+
+        it { expect(call).to eql({ action: 'allow', user_id: '12345', internal: {} }) }
+      end
+
+      context 'when deny without risk policy' do
+        let(:response) do
+          OpenStruct.new(body: '{"action":"deny","user_id":"1","device_token":"abc"}', code: 200)
+        end
+
+        it { expect(call).to eql({ action: 'deny', user_id: '1', device_token: 'abc' }) }
+      end
+
+      context 'when deny with risk policy' do
+        let(:body) do
+          '{"action":"deny","user_id":"1","device_token":"abc",
+          "risk_policy":{"id":"123","revision_id":"abc","name":"def","type":"bot"}}'
+        end
+        let(:response) do
+          OpenStruct.new(
+            {
+              body: body,
+              code: 200
+            }
+          )
+        end
+
+        let(:result) do
+          {
+            action: 'deny',
+            user_id: '1',
+            device_token: 'abc',
+            risk_policy: {
+              id: '123',
+              revision_id: 'abc',
+              name: 'def',
+              type: 'bot'
+            }
+          }
+        end
+
+        it { expect(call).to eql(result) }
+      end
+    end
+
     context 'when response empty' do
       let(:response) { OpenStruct.new(body: '', code: 200) }
 
