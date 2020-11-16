@@ -24,20 +24,24 @@
   castle/context/sanitize
   castle/context/get_default
   castle/context/prepare
-  castle/commands/identify
+  castle/commands/approve_device
   castle/commands/authenticate
   castle/commands/get_device
   castle/commands/get_devices
-  castle/commands/track
-  castle/commands/review
+  castle/commands/identify
   castle/commands/impersonate
-  castle/api/identify
+  castle/commands/report_device
+  castle/commands/review
+  castle/commands/track
+  castle/api/approve_device
   castle/api/authenticate
-  castle/api/track
-  castle/api/review
-  castle/api/impersonate
   castle/api/get_device
   castle/api/get_devices
+  castle/api/identify
+  castle/api/impersonate
+  castle/api/report_device
+  castle/api/review
+  castle/api/track
   castle/payload/prepare
   castle/configuration
   castle/logger
