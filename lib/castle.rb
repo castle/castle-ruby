@@ -26,6 +26,7 @@
   castle/context/prepare
   castle/commands/identify
   castle/commands/authenticate
+  castle/commands/get_devices
   castle/commands/track
   castle/commands/review
   castle/commands/impersonate
@@ -34,6 +35,7 @@
   castle/api/track
   castle/api/review
   castle/api/impersonate
+  castle/api/get_devices
   castle/payload/prepare
   castle/configuration
   castle/logger
