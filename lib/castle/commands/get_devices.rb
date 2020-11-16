@@ -2,6 +2,7 @@
 
 module Castle
   module Commands
+    # Generated the payload for the GET #{user_id}/devices request
     class GetDevices
       class << self
         # @param options [Hash]
