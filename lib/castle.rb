@@ -26,6 +26,7 @@
   castle/context/prepare
   castle/commands/identify
   castle/commands/authenticate
+  castle/commands/get_devices
   castle/commands/track
   castle/commands/review
   castle/commands/impersonate
