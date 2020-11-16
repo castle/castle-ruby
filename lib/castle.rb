@@ -35,6 +35,7 @@
   castle/api/track
   castle/api/review
   castle/api/impersonate
+  castle/api/get_devices
   castle/payload/prepare
   castle/configuration
   castle/logger
