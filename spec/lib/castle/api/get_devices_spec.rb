@@ -14,6 +14,6 @@ describe Castle::API::GetDevices do
 
     before { retrieve }
 
-    it { assert_requested :get, "https://api.castle.io/v1/#{user_id}/devices", times: 1 }
+    it { assert_requested :get, "https://api.castle.io/v1/users/#{user_id}/devices", times: 1 }
   end
 end
