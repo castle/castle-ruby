@@ -2,7 +2,7 @@
 
 module Castle
   module API
-    # Sends GET #{user_id}/devices request
+    # Sends GET users/#{user_id}/devices request
     module GetDevices
       class << self
         # @param options [Hash]

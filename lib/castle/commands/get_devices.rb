@@ -2,7 +2,7 @@
 
 module Castle
   module Commands
-    # Generated the payload for the GET #{user_id}/devices request
+    # Generated the payload for the GET users/#{user_id}/devices request
     class GetDevices
       class << self
         # @param options [Hash]
@@ -10,7 +10,7 @@ module Castle
         def build(options = {})
           Castle::Validators::Present.call(options, %i[user_id])
           Castle::Command.new(
-            "#{options[:user_id]}/devices",
+            "users/#{options[:user_id]}/devices",
             nil,
             :get
           )

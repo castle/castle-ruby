@@ -17,7 +17,7 @@ describe Castle::Commands::GetDevices do
 
     context 'with user_id' do
       it { expect(command.method).to be_eql(:get) }
-      it { expect(command.path).to be_eql("#{user_id}/devices") }
+      it { expect(command.path).to be_eql("users/#{user_id}/devices") }
       it { expect(command.data).to be_nil }
     end
   end
