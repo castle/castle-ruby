@@ -3,7 +3,7 @@
 module Castle
   module API
     # Sends GET users/#{user_id}/devices request
-    module GetDevices
+    module GetDevicesForUser
       class << self
         # @param options [Hash]
         # return [Hash]
@@ -11,7 +11,7 @@ module Castle
           options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
           Castle::API.call(
-            Castle::Commands::GetDevices.build(options),
+            Castle::Commands::GetDevicesForUser.build(options),
             {},
             options[:http]
           )

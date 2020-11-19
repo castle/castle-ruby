@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::API::GetDevices do
+describe Castle::API::GetDevicesForUser do
   before do
     stub_request(:any, /api.castle.io/).with(
       basic_auth: ['', 'secret']

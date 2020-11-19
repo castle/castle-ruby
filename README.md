@@ -232,6 +232,64 @@ end
 
 List of Recognized Events can be found [here](https://github.com/castle/castle-ruby/tree/master/lib/castle/events.rb) or in the [docs](https://docs.castle.io/api_reference/#list-of-recognized-events)
 
+## Device management
+
+This SDK allows issuing requests to [Castle's Device Management Endpoints](https://docs.castle.io/device_management_tool/). Use these endpoints for admin-level management of end-user devices (i.e., for an internal dashboard).
+
+Fetching device data, approving a device, reporting a device requires a valid `device_token`.
+
+```ruby
+# Get device data
+::Castle::API::GetDevice.call(payload)
+# Approve a device
+::Castle::API::ApproveDevice.call(payload)
+# Report a device
+::Castle::API::ReportDevice.call(payload)
+```
+
+#### castle_device_reporting_worker.rb
+
+```ruby
+class CastleDeviceReportingWorker
+  include Sidekiq::Worker
+
+  def perform(payload = {})
+    ::Castle::API::ReportDevice.call(payload)
+  end
+end
+```
+
+#### device_reporting_controller.rb
+
+```ruby
+payload = ::Castle::Payload::Prepare.call(
+  {
+    device_token: device.token
+  },
+  request
+)
+CastleDeviceReportingWorker.perform_async(payload)
+```
+
+Fetching available devices that belong to a given user requires a valid `user_id`.
+
+```ruby
+# Get user's devices data
+::Castle::API::GetDevicesForUser.call(payload)
+```
+
+#### device_fetching_controller.rb
+
+```ruby
+payload = ::Castle::Payload::Prepare.call(
+  {
+    user_id: user.id
+  },
+  request
+)
+CastleDeviceReportingWorker.perform_async(payload)
+```
+
 ## Impersonation mode
 
 https://castle.io/docs/impersonation_mode
