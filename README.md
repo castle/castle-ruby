@@ -287,7 +287,7 @@ payload = ::Castle::Payload::Prepare.call(
   },
   request
 )
-CastleDeviceReportingWorker.perform_async(payload)
+CastleDeviceFetchingWorker.perform_async(payload)
 ```
 
 ## Impersonation mode
