@@ -240,11 +240,11 @@ Fetching device data, approving a device, reporting a device requires a valid `d
 
 ```ruby
 # Get device data
-::Castle::API::GetDevice.call(payload)
+::Castle::API::GetDevice.call({ device_token: device_token })
 # Approve a device
-::Castle::API::ApproveDevice.call(payload)
+::Castle::API::ApproveDevice.call({ device_token: device_token })
 # Report a device
-::Castle::API::ReportDevice.call(payload)
+::Castle::API::ReportDevice.call({ device_token: device_token })
 ```
 
 #### castle_device_reporting_worker.rb
@@ -253,41 +253,17 @@ Fetching device data, approving a device, reporting a device requires a valid `d
 class CastleDeviceReportingWorker
   include Sidekiq::Worker
 
-  def perform(payload = {})
-    ::Castle::API::ReportDevice.call(payload)
+  def perform(device_token)
+    ::Castle::API::ReportDevice.call({ device_token: device_token })
   end
 end
-```
-
-#### device_reporting_controller.rb
-
-```ruby
-payload = ::Castle::Payload::Prepare.call(
-  {
-    device_token: device.token
-  },
-  request
-)
-CastleDeviceReportingWorker.perform_async(payload)
 ```
 
 Fetching available devices that belong to a given user requires a valid `user_id`.
 
 ```ruby
 # Get user's devices data
-::Castle::API::GetDevicesForUser.call(payload)
-```
-
-#### device_fetching_controller.rb
-
-```ruby
-payload = ::Castle::Payload::Prepare.call(
-  {
-    user_id: user.id
-  },
-  request
-)
-CastleDeviceFetchingWorker.perform_async(payload)
+::Castle::API::GetDevicesForUser.call({ user_id: user.id })
 ```
 
 ## Impersonation mode
