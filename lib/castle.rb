@@ -27,7 +27,7 @@
   castle/commands/approve_device
   castle/commands/authenticate
   castle/commands/get_device
-  castle/commands/get_devices
+  castle/commands/get_devices_for_user
   castle/commands/identify
   castle/commands/impersonate
   castle/commands/report_device
@@ -36,7 +36,7 @@
   castle/api/approve_device
   castle/api/authenticate
   castle/api/get_device
-  castle/api/get_devices
+  castle/api/get_devices_for_user
   castle/api/identify
   castle/api/impersonate
   castle/api/report_device

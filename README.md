@@ -232,6 +232,40 @@ end
 
 List of Recognized Events can be found [here](https://github.com/castle/castle-ruby/tree/master/lib/castle/events.rb) or in the [docs](https://docs.castle.io/api_reference/#list-of-recognized-events)
 
+## Device management
+
+This SDK allows issuing requests to [Castle's Device Management Endpoints](https://docs.castle.io/device_management_tool/). Use these endpoints for admin-level management of end-user devices (i.e., for an internal dashboard).
+
+Fetching device data, approving a device, reporting a device requires a valid `device_token`.
+
+```ruby
+# Get device data
+::Castle::API::GetDevice.call(device_token: device_token)
+# Approve a device
+::Castle::API::ApproveDevice.call(device_token: device_token)
+# Report a device
+::Castle::API::ReportDevice.call(device_token: device_token)
+```
+
+#### castle_device_reporting_worker.rb
+
+```ruby
+class CastleDeviceReportingWorker
+  include Sidekiq::Worker
+
+  def perform(device_token)
+    ::Castle::API::ReportDevice.call(device_token: device_token)
+  end
+end
+```
+
+Fetching available devices that belong to a given user requires a valid `user_id`.
+
+```ruby
+# Get user's devices data
+::Castle::API::GetDevicesForUser.call(user_id: user.id)
+```
+
 ## Impersonation mode
 
 https://castle.io/docs/impersonation_mode

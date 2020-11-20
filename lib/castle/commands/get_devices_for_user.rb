@@ -3,7 +3,7 @@
 module Castle
   module Commands
     # Generated the payload for the GET users/#{user_id}/devices request
-    class GetDevices
+    class GetDevicesForUser
       class << self
         # @param options [Hash]
         # @return [Castle::Command]

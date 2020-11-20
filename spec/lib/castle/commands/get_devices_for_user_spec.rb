@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Commands::GetDevices do
+describe Castle::Commands::GetDevicesForUser do
   subject(:instance) { described_class }
 
   let(:context) { {} }
