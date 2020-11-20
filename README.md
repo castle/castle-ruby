@@ -240,11 +240,11 @@ Fetching device data, approving a device, reporting a device requires a valid `d
 
 ```ruby
 # Get device data
-::Castle::API::GetDevice.call({ device_token: device_token })
+::Castle::API::GetDevice.call(device_token: device_token)
 # Approve a device
-::Castle::API::ApproveDevice.call({ device_token: device_token })
+::Castle::API::ApproveDevice.call(device_token: device_token)
 # Report a device
-::Castle::API::ReportDevice.call({ device_token: device_token })
+::Castle::API::ReportDevice.call(device_token: device_token)
 ```
 
 #### castle_device_reporting_worker.rb
@@ -254,7 +254,7 @@ class CastleDeviceReportingWorker
   include Sidekiq::Worker
 
   def perform(device_token)
-    ::Castle::API::ReportDevice.call({ device_token: device_token })
+    ::Castle::API::ReportDevice.call(device_token: device_token)
   end
 end
 ```
@@ -263,7 +263,7 @@ Fetching available devices that belong to a given user requires a valid `user_id
 
 ```ruby
 # Get user's devices data
-::Castle::API::GetDevicesForUser.call({ user_id: user.id })
+::Castle::API::GetDevicesForUser.call(user_id: user.id)
 ```
 
 ## Impersonation mode
