@@ -3,7 +3,7 @@
 module Castle
   module Commands
     # builder for impersonate command
-    class Impersonate
+    class EndImpersonation
       class << self
         # @param options [Hash]
         # @return [Castle::Command]
@@ -16,7 +16,7 @@ module Castle
           Castle::Command.new(
             'impersonate',
             options.merge(context: context, sent_at: Castle::Utils::GetTimestamp.call),
-            options[:reset] ? :delete : :post
+            :delete
           )
         end
   end

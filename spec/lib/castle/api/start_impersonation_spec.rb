@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::API::Impersonate do
+describe Castle::API::StartImpersonation do
   subject(:call) { described_class.call(options) }
 
   let(:ip) { '1.2.3.4' }

@@ -2,7 +2,7 @@
 
 module Castle
   module API
-    module Impersonate
+    module StartImpersonation
       class << self
         # @param options [Hash]
         def call(options = {})
@@ -13,7 +13,7 @@ module Castle
           http = options.delete(:http)
 
           Castle::API.call(
-            Castle::Commands::Impersonate.build(options),
+            Castle::Commands::StartImpersonation.build(options),
             {},
             http
           ).tap do |response|

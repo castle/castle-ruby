@@ -62,7 +62,7 @@ describe Castle::Client do
     end
   end
 
-  describe 'impersonate' do
+  describe 'end impersonation' do
     let(:impersonator) { 'test@castle.io' }
     let(:request_body) do
       { user_id: '1234', timestamp: time_auto, sent_at: time_auto,
@@ -72,7 +72,33 @@ describe Castle::Client do
     let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
 
     context 'when used with symbol keys' do
-      before { client.impersonate(options) }
+      before { client.end_impersonation(options) }
+
+      it do
+        assert_requested :delete, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
+          JSON.parse(req.body) == JSON.parse(request_body.to_json)
+        end
+      end
+    end
+
+    context 'when request is not successful' do
+      let(:response_body) { {}.to_json }
+
+      it { expect { client.end_impersonation(options) }.to raise_error(Castle::ImpersonationFailed) }
+    end
+  end
+
+  describe 'start impersonation' do
+    let(:impersonator) { 'test@castle.io' }
+    let(:request_body) do
+      { user_id: '1234', timestamp: time_auto, sent_at: time_auto,
+        properties: { impersonator: impersonator }, context: context }
+    end
+    let(:response_body) { { success: true }.to_json }
+    let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
+
+    context 'when used with symbol keys' do
+      before { client.start_impersonation(options) }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
@@ -84,7 +110,7 @@ describe Castle::Client do
     context 'when request is not successful' do
       let(:response_body) { {}.to_json }
 
-      it { expect { client.impersonate(options) }.to raise_error(Castle::ImpersonationFailed) }
+      it { expect { client.start_impersonation(options) }.to raise_error(Castle::ImpersonationFailed) }
     end
   end
 

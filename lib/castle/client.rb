@@ -60,14 +60,25 @@ module Castle
     end
 
     # @param options [Hash]
-    def impersonate(options = {})
+    def start_impersonation(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
       add_timestamp_if_necessary(options)
 
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
-      Castle::API::Impersonate.call(options.merge(context: new_context, no_symbolize: true))
+      Castle::API::StartImpersonation.call(options.merge(context: new_context, no_symbolize: true))
+    end
+
+    # @param options [Hash]
+    def end_impersonation(options = {})
+      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
+
+      add_timestamp_if_necessary(options)
+
+      new_context = Castle::Context::Merge.call(@context, options[:context])
+
+      Castle::API::EndImpersonation.call(options.merge(context: new_context, no_symbolize: true))
     end
 
     # @param options [Hash]

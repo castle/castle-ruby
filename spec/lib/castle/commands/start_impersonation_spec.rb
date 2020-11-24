@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Commands::Impersonate do
+describe Castle::Commands::StartImpersonation do
   subject(:instance) { described_class }
 
   let(:context) { { user_agent: 'test', ip: '127.0.0.1', client_id: 'test' } }
@@ -57,13 +57,6 @@ describe Castle::Commands::Impersonate do
       it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('impersonate') }
       it { expect(command.data).to be_eql(command_data) }
-    end
-
-    context 'when reset' do
-      let(:payload) { default_payload.merge(reset: true) }
-
-      it { expect(command.method).to be_eql(:delete) }
-      it { expect(command.path).to be_eql('impersonate') }
     end
   end
 
