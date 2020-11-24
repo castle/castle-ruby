@@ -84,7 +84,9 @@ describe Castle::Client do
     context 'when request is not successful' do
       let(:response_body) { {}.to_json }
 
-      it { expect { client.end_impersonation(options) }.to raise_error(Castle::ImpersonationFailed) }
+      it do
+        expect { client.end_impersonation(options) }.to raise_error(Castle::ImpersonationFailed)
+      end
     end
   end
 
@@ -110,7 +112,9 @@ describe Castle::Client do
     context 'when request is not successful' do
       let(:response_body) { {}.to_json }
 
-      it { expect { client.start_impersonation(options) }.to raise_error(Castle::ImpersonationFailed) }
+      it do
+        expect { client.start_impersonation(options) }.to raise_error(Castle::ImpersonationFailed)
+      end
     end
   end
 
