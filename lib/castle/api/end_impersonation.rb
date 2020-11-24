@@ -2,7 +2,8 @@
 
 module Castle
   module API
-    module Impersonate
+    # Sends DELETE impersonate request
+    module EndImpersonation
       class << self
         # @param options [Hash]
         def call(options = {})
@@ -13,7 +14,7 @@ module Castle
           http = options.delete(:http)
 
           Castle::API.call(
-            Castle::Commands::Impersonate.build(options),
+            Castle::Commands::EndImpersonation.build(options),
             {},
             http
           ).tap do |response|

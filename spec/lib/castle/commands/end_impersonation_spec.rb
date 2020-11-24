@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Commands::Impersonate do
+describe Castle::Commands::EndImpersonation do
   subject(:instance) { described_class }
 
   let(:context) { { user_agent: 'test', ip: '127.0.0.1', client_id: 'test' } }
@@ -23,7 +23,7 @@ describe Castle::Commands::Impersonate do
         default_payload.merge(properties: { impersonator: impersonator }, context: context)
       end
 
-      it { expect(command.method).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:delete) }
       it { expect(command.path).to be_eql('impersonate') }
       it { expect(command.data).to be_eql(command_data) }
     end
@@ -34,7 +34,7 @@ describe Castle::Commands::Impersonate do
         default_payload.merge(context: context.merge(active: true))
       end
 
-      it { expect(command.method).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:delete) }
       it { expect(command.path).to be_eql('impersonate') }
       it { expect(command.data).to be_eql(command_data) }
     end
@@ -45,7 +45,7 @@ describe Castle::Commands::Impersonate do
         default_payload.merge(context: context.merge(active: false))
       end
 
-      it { expect(command.method).to be_eql(:post) }
+      it { expect(command.method).to be_eql(:delete) }
       it { expect(command.path).to be_eql('impersonate') }
       it { expect(command.data).to be_eql(command_data) }
     end
@@ -54,16 +54,9 @@ describe Castle::Commands::Impersonate do
       let(:payload) { default_payload.merge(context: context.merge(active: 'string')) }
       let(:command_data) { default_payload.merge(context: context) }
 
-      it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('impersonate') }
-      it { expect(command.data).to be_eql(command_data) }
-    end
-
-    context 'when reset' do
-      let(:payload) { default_payload.merge(reset: true) }
-
       it { expect(command.method).to be_eql(:delete) }
       it { expect(command.path).to be_eql('impersonate') }
+      it { expect(command.data).to be_eql(command_data) }
     end
   end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::API::Impersonate do
+describe Castle::API::EndImpersonation do
   subject(:call) { described_class.call(options) }
 
   let(:ip) { '1.2.3.4' }
@@ -44,7 +44,7 @@ describe Castle::API::Impersonate do
       before { call }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
+        assert_requested :delete, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
