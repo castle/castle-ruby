@@ -2,6 +2,7 @@
 
 module Castle
   module API
+    # Sends DELETE impersonate request
     module EndImpersonation
       class << self
         # @param options [Hash]

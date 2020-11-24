@@ -2,6 +2,7 @@
 
 module Castle
   module API
+    # Sends POST impersonate request
     module StartImpersonation
       class << self
         # @param options [Hash]
