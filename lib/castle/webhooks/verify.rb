@@ -9,7 +9,7 @@ module Castle
         # @param webhook [Request]
         def call(webhook)
           expected_signature = compute_signature(webhook)
-          signature = webhook.env['X-Castle-Signature']
+          signature = webhook.env['X-CASTLE-SIGNATURE']
           verify_signature(signature, expected_signature)
         end
 
@@ -19,7 +19,12 @@ module Castle
         # @param webhook [Request]
         def compute_signature(webhook)
           user_id = user_id_from_webhook(webhook)
-          Base64.encode64(Castle::SecureMode.signature(user_id))
+          Base64.encode64(
+            OpenSSL::HMAC.digest(
+              OpenSSL::Digest.new('sha256'),
+              Castle.config.api_secret, user_id.to_s
+            )
+          ).strip
         end
 
         # Check if the signatures are matching
@@ -37,7 +42,7 @@ module Castle
           payload = Castle::Core::ProcessWebhook.call(webhook)
           return '' if payload.nil? || payload.empty?
 
-          payload&.data&.user_id
+          payload[:data][:user_id]
         end
       end
     end
