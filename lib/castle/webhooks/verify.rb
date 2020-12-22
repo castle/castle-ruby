@@ -2,9 +2,10 @@
 
 module Castle
   module Webhooks
+    # Verify a webhook
     class Verify
       class << self
-        # Checks if incoming webhook is valid
+        # Checks if webhook is valid
         # @param webhook [Request]
         def call(webhook)
           expected_signature = compute_signature(webhook)
@@ -18,7 +19,7 @@ module Castle
         # @param webhook [Request]
         def compute_signature(webhook)
           user_id = user_id_from_webhook(webhook)
-          Castle::SecureMode.signature(user_id)
+          Base64.encode64(Castle::SecureMode.signature(user_id))
         end
 
         # Check if the signatures are matching

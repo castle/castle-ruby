@@ -2,9 +2,11 @@
 
 module Castle
   module Core
-    # parses webhook
+    # Parses a webhook
     module ProcessWebhook
       class << self
+        # Checks if webhook is valid
+        # @param webhook [Request]
         def call(webhook)
           Castle::Logger.call('webhook:', webhook.body.to_s)
 
