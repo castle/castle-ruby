@@ -2,6 +2,7 @@
 
 module Castle
   module Validators
+    # Checks if required keys are supported
     class NotSupported
       class << self
         def call(options, keys)

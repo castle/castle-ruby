@@ -2,7 +2,7 @@
 
 module Castle
   module Commands
-    # Generated the payload for the GET users/#{user_id}/devices request
+    # Generates the payload for the GET users/#{user_id}/devices request
     class GetDevicesForUser
       class << self
         # @param options [Hash]

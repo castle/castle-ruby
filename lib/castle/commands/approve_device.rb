@@ -2,7 +2,7 @@
 
 module Castle
   module Commands
-    # Generated the payload for the PUT devices/#{device_token}/approve request
+    # Generates the payload for the PUT devices/#{device_token}/approve request
     class ApproveDevice
       class << self
         # @param options [Hash]

@@ -2,6 +2,7 @@
 
 module Castle
   module Validators
+    # Checks if required keys are present
     class Present
       class << self
         def call(options, keys)

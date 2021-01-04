@@ -2,6 +2,7 @@
 
 module Castle
   module Commands
+    # Generates the payload for the GET reviews/#{review_id} request
     class Review
       class << self
         # @param options [Hash]

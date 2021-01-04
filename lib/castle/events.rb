@@ -3,7 +3,7 @@
 module Castle
   # list of events based on https://docs.castle.io/api_reference/#list-of-recognized-events
   module Events
-    # Record when a user succesfully logs in.
+    # Record when a user successfully logs in.
     LOGIN_SUCCEEDED = '$login.succeeded'
     # Record when a user failed to log in.
     LOGIN_FAILED = '$login.failed'
