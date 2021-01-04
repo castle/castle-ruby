@@ -7,9 +7,10 @@ describe Castle::Webhooks::Verify do
     let(:env) do
       Rack::MockRequest.env_for(
         '/',
-        'X-CASTLE-SIGNATURE' => signature
+        'HTTP_X_CASTLE_SIGNATURE' => signature
       )
     end
+
     let(:webhook) { Rack::Request.new(env) }
     let(:user_id) { '12345' }
     let(:webhook_body) do
@@ -30,11 +31,11 @@ describe Castle::Webhooks::Verify do
         user_traits: {},
         properties: {},
         policy: {}
-      }
+      }.to_json
     end
 
     context 'when success' do
-      let(:signature) { '+Ix+vkdA21nIc87PXh8Y43JqGtZAaKE9dkt5AoQwqw4=' }
+      let(:signature) { '3ptx3rUOBnGEqPjMrbcJn2UUfzwTKP54dFyP5uyPY+Y=' }
 
       before do
         allow(Castle::Core::ProcessWebhook)
@@ -42,20 +43,9 @@ describe Castle::Webhooks::Verify do
           .and_return(webhook_body)
       end
 
-      it { expect { call }.not_to raise_error }
-    end
-
-    context 'when user_id empty' do
-      let(:user_id) { nil }
-      let(:signature) { '+eZuF5tnR65UEI+C+K3os8Jddv0wr95sOVgixTAZYWk=' }
-
-      before do
-        allow(Castle::Core::ProcessWebhook)
-          .to receive(:call)
-          .and_return(webhook_body)
+      it do
+        expect { call }.not_to raise_error
       end
-
-      it { expect { call }.not_to raise_error }
     end
 
     context 'when signature is malformed' do

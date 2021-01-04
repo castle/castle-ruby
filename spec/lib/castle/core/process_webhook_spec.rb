@@ -22,29 +22,23 @@ describe Castle::Core::ProcessWebhook do
         user_traits: {},
         properties: {},
         policy: {}
-      }
+      }.to_json
     end
 
-    let(:webhook) { OpenStruct.new(body: webhook_body.to_json) }
+    let(:webhook) { OpenStruct.new(body: StringIO.new(webhook_body)) }
 
     context 'when success' do
       it { expect(call).to eql(webhook_body) }
     end
 
     context 'when webhook empty' do
-      let(:webhook) { OpenStruct.new(body: '') }
+      let(:webhook) { OpenStruct.new(body: StringIO.new('')) }
 
-      it { expect(call).to eql({}) }
+      it { expect { call }.to raise_error(Castle::ApiError, 'Invalid webhook from Castle API') }
     end
 
     context 'when webhook nil' do
-      let(:webhook) { OpenStruct.new }
-
-      it { expect(call).to eql({}) }
-    end
-
-    context 'when json is malformed' do
-      let(:webhook) { OpenStruct.new(body: '{a') }
+      let(:webhook) { OpenStruct.new(body: StringIO.new) }
 
       it { expect { call }.to raise_error(Castle::ApiError, 'Invalid webhook from Castle API') }
     end
