@@ -12,7 +12,7 @@ module Castle
       private_constant :DEFAULT_HEADERS
 
       class << self
-        def call(command, config, headers, http = nil)
+        def call(command, headers, http = nil, config: Castle.config)
           (http || Castle::Core::GetConnection.call).request(
             build(
               command,

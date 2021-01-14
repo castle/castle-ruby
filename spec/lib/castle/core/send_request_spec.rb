@@ -11,12 +11,11 @@ describe Castle::Core::SendRequest do
     let(:http) { instance_double('Net::HTTP') }
 
     context 'without http arg provided' do
-      subject(:call) { described_class.call(command, config, headers) }
+      subject(:call) { described_class.call(command, headers, config: config) }
 
       let(:http) { instance_double('Net::HTTP') }
       let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
       let(:headers) { {} }
-      let(:config) { 'secret' }
       let(:request_build) { {} }
       let(:expected_headers) { { 'Content-Type' => 'application/json' } }
 
@@ -37,7 +36,7 @@ describe Castle::Core::SendRequest do
     end
 
     context 'with http arg provided' do
-      subject(:call) { described_class.call(command, config, headers, http) }
+      subject(:call) { described_class.call(command, headers, http, config: config) }
 
       before do
         allow(Castle::Core::GetConnection).to receive(:call)
