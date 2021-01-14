@@ -11,7 +11,7 @@ describe Castle::Core::SendRequest do
     let(:http) { instance_double('Net::HTTP') }
 
     context 'without http arg provided' do
-      subject(:call) { described_class.call(command, headers, config: config) }
+      subject(:call) { described_class.call(command, headers, nil, config) }
 
       let(:http) { instance_double('Net::HTTP') }
       let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
@@ -28,7 +28,7 @@ describe Castle::Core::SendRequest do
 
       it do
         expect(described_class).to have_received(:build).with(
-          command, expected_headers, config: config
+          command, expected_headers, config
         )
       end
 
@@ -36,7 +36,7 @@ describe Castle::Core::SendRequest do
     end
 
     context 'with http arg provided' do
-      subject(:call) { described_class.call(command, headers, http, config: config) }
+      subject(:call) { described_class.call(command, headers, http, config) }
 
       before do
         allow(Castle::Core::GetConnection).to receive(:call)
@@ -49,7 +49,7 @@ describe Castle::Core::SendRequest do
 
       it do
         expect(described_class).to have_received(:build).with(
-          command, expected_headers, config: config
+          command, expected_headers, config
         )
       end
 
@@ -58,7 +58,7 @@ describe Castle::Core::SendRequest do
   end
 
   describe '#build' do
-    subject(:build) { described_class.build(command, headers, config: config) }
+    subject(:build) { described_class.build(command, headers, config) }
 
     let(:headers) { { 'SAMPLE-HEADER' => '1' } }
     let(:api_secret) { 'secret' }

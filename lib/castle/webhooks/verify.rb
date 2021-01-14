@@ -7,7 +7,7 @@ module Castle
       class << self
         # Checks if webhook is valid
         # @param webhook [Request]
-        def call(webhook, config: Castle.config)
+        def call(webhook, config = Castle.config)
           expected_signature = compute_signature(webhook, config.api_secret)
           signature = webhook.env['HTTP_X_CASTLE_SIGNATURE']
           verify_signature(signature, expected_signature)

@@ -12,7 +12,7 @@ module Castle
       private_constant :DEFAULT
 
       # @param headers [Hash]
-      def initialize(headers, config: Castle.config)
+      def initialize(headers, config = Castle.config)
         @headers = headers
         @ip_headers = config.ip_headers.empty? ? DEFAULT : config.ip_headers
         @proxies = config.trusted_proxies + Castle::Configuration::TRUSTED_PROXIES

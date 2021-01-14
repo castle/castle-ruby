@@ -13,7 +13,7 @@ module Castle
       private_constant :ALWAYS_ALLOWLISTED, :ALWAYS_DENYLISTED
 
       # @param headers [Hash]
-      def initialize(headers, config: Castle.config)
+      def initialize(headers, config = Castle.config)
         @headers = headers
         @no_allowlist = config.allowlisted.empty?
       end

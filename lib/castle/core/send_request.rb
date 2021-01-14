@@ -12,17 +12,17 @@ module Castle
       private_constant :DEFAULT_HEADERS
 
       class << self
-        def call(command, headers, http = nil, config: Castle.config)
+        def call(command, headers, http = nil, config = Castle.config)
           (http || Castle::Core::GetConnection.call).request(
             build(
               command,
               headers.merge(DEFAULT_HEADERS),
-              config: config
+              config
             )
           )
         end
 
-        def build(command, headers, config: Castle.config)
+        def build(command, headers, config = Castle.config)
           url = "#{config.base_url.path}/#{command.path}"
           request_obj = Net::HTTP.const_get(command.method.to_s.capitalize).new(url, headers)
 
