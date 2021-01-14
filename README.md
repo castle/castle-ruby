@@ -132,6 +132,23 @@ Castle.configure do |config|
 end
 ```
 
+### Multi-environment configuration
+
+It is also possible to define multiple configs within one application.
+
+```ruby
+# Initialize new instance of Castle::Configuration
+config = Castle::Configuration.new
+# and set any attribute
+config.api_secret = 'YOUR_API_SECRET'
+```
+
+After a successful setup, you can pass the config to any API command as follows:
+
+```ruby
+::Castle::API::GetDevice.call(device_token: device_token, config: config)
+```
+
 ## Event Context
 
 The client will automatically configure the context for each request.
