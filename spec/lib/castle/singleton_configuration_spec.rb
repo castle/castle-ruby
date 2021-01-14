@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-describe Castle::Configuration do
+describe Castle::SingletonConfiguration do
   subject(:config) do
-    described_class.new
+    described_class.instance
   end
 
   it_behaves_like 'configuration_host'
@@ -13,6 +13,6 @@ describe Castle::Configuration do
   it_behaves_like 'configuration_api_secret'
 
   it do
-    expect(config.api_secret).to be_eql('')
+    expect(config.api_secret).to be_eql('secret')
   end
 end
