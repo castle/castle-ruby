@@ -32,7 +32,7 @@ module Castle
       # @param command [String]
       # @param headers [Hash]
       # @param http [Net::HTTP]
-      def send_request(command, headers = {}, http = nil, config =Castle.config)
+      def send_request(command, headers = {}, http = nil, config = Castle.config)
         raise Castle::ConfigurationError, 'configuration is not valid' unless config.valid?
 
         begin

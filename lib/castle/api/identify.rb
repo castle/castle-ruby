@@ -11,11 +11,13 @@ module Castle
           end
           options.delete(:no_symbolize)
           http = options.delete(:http)
+          config = options.delete(:config) || Castle.config
 
           Castle::API.call(
             Castle::Commands::Identify.build(options),
             {},
-            http
+            http,
+            config
           )
         end
       end

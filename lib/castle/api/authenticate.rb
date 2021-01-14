@@ -6,17 +6,19 @@ module Castle
       class << self
         # @param options [Hash]
         # return [Hash]
-        def call(options = {}, config = Castle.config)
+        def call(options = {})
           unless options[:no_symbolize]
             options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
           end
           options.delete(:no_symbolize)
           http = options.delete(:http)
+          config = options.delete(:config) || Castle.config
 
           response = Castle::API.call(
             Castle::Commands::Authenticate.build(options),
             {},
-            http
+            http,
+            config
           )
           response.merge(failover: false, failover_reason: nil)
         rescue Castle::RequestError, Castle::InternalServerError => e
