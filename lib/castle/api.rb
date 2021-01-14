@@ -20,6 +20,7 @@ module Castle
       # @param command [String]
       # @param headers [Hash]
       # @param http [Net::HTTP]
+      # @param config [Castle::Configuration, Castle::SingletonConfiguration]
       # @return [Hash]
       def call(command, headers = {}, http = nil, config = Castle.config)
         Castle::Core::ProcessResponse.call(
@@ -32,6 +33,7 @@ module Castle
       # @param command [String]
       # @param headers [Hash]
       # @param http [Net::HTTP]
+      # @param config [Castle::Configuration, Castle::SingletonConfiguration]
       def send_request(command, headers = {}, http = nil, config = Castle.config)
         raise Castle::ConfigurationError, 'configuration is not valid' unless config.valid?
 

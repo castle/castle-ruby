@@ -12,6 +12,7 @@ module Castle
       private_constant :DEFAULT
 
       # @param headers [Hash]
+      # @param config [Castle::Configuration, Castle::SingletonConfiguration]
       def initialize(headers, config = Castle.config)
         @headers = headers
         @ip_headers = config.ip_headers.empty? ? DEFAULT : config.ip_headers

@@ -12,6 +12,10 @@ module Castle
       private_constant :DEFAULT_HEADERS
 
       class << self
+        # @param command [String]
+        # @param headers [Hash]
+        # @param http [Net::HTTP]
+        # @param config [Castle::Configuration, Castle::SingletonConfiguration]
         def call(command, headers, http = nil, config = Castle.config)
           (http || Castle::Core::GetConnection.call).request(
             build(
@@ -22,6 +26,9 @@ module Castle
           )
         end
 
+        # @param command [String]
+        # @param headers [Hash]
+        # @param config [Castle::Configuration, Castle::SingletonConfiguration]
         def build(command, headers, config = Castle.config)
           url = "#{config.base_url.path}/#{command.path}"
           request_obj = Net::HTTP.const_get(command.method.to_s.capitalize).new(url, headers)
