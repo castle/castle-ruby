@@ -1,21 +1,22 @@
 # frozen_string_literal: true
 
 describe Castle::Core::SendRequest do
+  let(:config) { Castle.config }
+
   describe '#call' do
     let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
     let(:headers) { {} }
-    let(:api_secret) { 'secret' }
     let(:request_build) { {} }
     let(:expected_headers) { { 'Content-Type' => 'application/json' } }
     let(:http) { instance_double('Net::HTTP') }
 
     context 'without http arg provided' do
-      subject(:call) { described_class.call(command, api_secret, headers) }
+      subject(:call) { described_class.call(command, config, headers) }
 
       let(:http) { instance_double('Net::HTTP') }
       let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
       let(:headers) { {} }
-      let(:api_secret) { 'secret' }
+      let(:config) { 'secret' }
       let(:request_build) { {} }
       let(:expected_headers) { { 'Content-Type' => 'application/json' } }
 
@@ -28,7 +29,7 @@ describe Castle::Core::SendRequest do
 
       it do
         expect(described_class).to have_received(:build).with(
-          command, expected_headers, api_secret
+          command, expected_headers, config: config
         )
       end
 
@@ -36,7 +37,7 @@ describe Castle::Core::SendRequest do
     end
 
     context 'with http arg provided' do
-      subject(:call) { described_class.call(command, api_secret, headers, http) }
+      subject(:call) { described_class.call(command, config, headers, http) }
 
       before do
         allow(Castle::Core::GetConnection).to receive(:call)
@@ -49,7 +50,7 @@ describe Castle::Core::SendRequest do
 
       it do
         expect(described_class).to have_received(:build).with(
-          command, expected_headers, api_secret
+          command, expected_headers, config: config
         )
       end
 
@@ -58,7 +59,7 @@ describe Castle::Core::SendRequest do
   end
 
   describe '#build' do
-    subject(:build) { described_class.build(command, headers, api_secret) }
+    subject(:build) { described_class.build(command, headers, config: config) }
 
     let(:headers) { { 'SAMPLE-HEADER' => '1' } }
     let(:api_secret) { 'secret' }

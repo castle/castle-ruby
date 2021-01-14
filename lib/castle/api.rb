@@ -38,7 +38,7 @@ module Castle
         begin
           Castle::Core::SendRequest.call(
             command,
-            config.api_secret,
+            config,
             headers,
             http
           )
