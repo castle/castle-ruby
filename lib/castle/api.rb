@@ -21,9 +21,9 @@ module Castle
       # @param headers [Hash]
       # @param http [Net::HTTP]
       # @return [Hash]
-      def call(command, headers = {}, http = nil)
+      def call(command, headers = {}, http = nil, config = Castle.config)
         Castle::Core::ProcessResponse.call(
-          send_request(command, headers, http)
+          send_request(command, headers, http, config)
         )
       end
 
@@ -32,13 +32,13 @@ module Castle
       # @param command [String]
       # @param headers [Hash]
       # @param http [Net::HTTP]
-      def send_request(command, headers = {}, http = nil)
-        raise Castle::ConfigurationError, 'configuration is not valid' unless Castle.config.valid?
+      def send_request(command, headers = {}, http = nil, config = Castle.config)
+        raise Castle::ConfigurationError, 'configuration is not valid' unless config.valid?
 
         begin
           Castle::Core::SendRequest.call(
             command,
-            Castle.config.api_secret,
+            config.api_secret,
             headers,
             http
           )
