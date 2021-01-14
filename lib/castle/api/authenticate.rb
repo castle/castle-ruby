@@ -6,7 +6,7 @@ module Castle
       class << self
         # @param options [Hash]
         # return [Hash]
-        def call(options = {})
+        def call(options = {}, config = Castle.config)
           unless options[:no_symbolize]
             options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
           end
@@ -20,7 +20,7 @@ module Castle
           )
           response.merge(failover: false, failover_reason: nil)
         rescue Castle::RequestError, Castle::InternalServerError => e
-          unless Castle.config.failover_strategy == :throw
+          unless config.failover_strategy == :throw
             return Castle::Failover::PrepareResponse.new(options[:user_id], reason: e.to_s).call
           end
 
