@@ -1,13 +1,10 @@
 # frozen_string_literal: true
 
-require 'singleton'
 require 'uri'
 
 module Castle
   # manages configuration variables
   class Configuration
-    include Singleton
-
     # API endpoint
     BASE_URL = 'https://api.castle.io/v1'
     REQUEST_TIMEOUT = 1000 # in milliseconds

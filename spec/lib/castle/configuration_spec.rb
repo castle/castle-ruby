@@ -2,7 +2,7 @@
 
 describe Castle::Configuration do
   subject(:config) do
-    described_class.instance
+    described_class.new
   end
 
   describe 'host' do
@@ -67,7 +67,7 @@ describe Castle::Configuration do
     end
 
     it do
-      expect(config.api_secret).to be_eql('secret')
+      expect(config.api_secret).to be_eql('')
     end
   end
 

@@ -48,6 +48,7 @@
   castle/api/track
   castle/payload/prepare
   castle/configuration
+  castle/singleton_configuration
   castle/logger
   castle/failover/prepare_response
   castle/failover/strategy
@@ -78,7 +79,7 @@ module Castle
     end
 
     def config
-      Configuration.instance
+      SingletonConfiguration.instance
     end
 
     def api_secret=(api_secret)
