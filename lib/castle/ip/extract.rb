@@ -12,12 +12,12 @@ module Castle
       private_constant :DEFAULT
 
       # @param headers [Hash]
-      def initialize(headers)
+      def initialize(headers, config: Castle.config)
         @headers = headers
-        @ip_headers = Castle.config.ip_headers.empty? ? DEFAULT : Castle.config.ip_headers
-        @proxies = Castle.config.trusted_proxies + Castle::Configuration::TRUSTED_PROXIES
-        @trust_proxy_chain = Castle.config.trust_proxy_chain
-        @trusted_proxy_depth = Castle.config.trusted_proxy_depth
+        @ip_headers = config.ip_headers.empty? ? DEFAULT : config.ip_headers
+        @proxies = config.trusted_proxies + Castle::Configuration::TRUSTED_PROXIES
+        @trust_proxy_chain = config.trust_proxy_chain
+        @trusted_proxy_depth = config.trusted_proxy_depth
       end
 
       # Order of headers:
