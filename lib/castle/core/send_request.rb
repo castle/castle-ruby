@@ -12,18 +12,25 @@ module Castle
       private_constant :DEFAULT_HEADERS
 
       class << self
-        def call(command, api_secret, headers, http = nil)
+        # @param command [String]
+        # @param headers [Hash]
+        # @param http [Net::HTTP]
+        # @param config [Castle::Configuration, Castle::SingletonConfiguration]
+        def call(command, headers, http = nil, config = Castle.config)
           (http || Castle::Core::GetConnection.call).request(
             build(
               command,
               headers.merge(DEFAULT_HEADERS),
-              api_secret
+              config
             )
           )
         end
 
-        def build(command, headers, api_secret)
-          url = "#{Castle.config.base_url.path}/#{command.path}"
+        # @param command [String]
+        # @param headers [Hash]
+        # @param config [Castle::Configuration, Castle::SingletonConfiguration]
+        def build(command, headers, config = Castle.config)
+          url = "#{config.base_url.path}/#{command.path}"
           request_obj = Net::HTTP.const_get(command.method.to_s.capitalize).new(url, headers)
 
           unless command.method == :get
@@ -34,7 +41,7 @@ module Castle
 
           Castle::Logger.call("#{url}:", request_obj.body)
 
-          request_obj.basic_auth('', api_secret)
+          request_obj.basic_auth('', config.api_secret)
           request_obj
         end
       end

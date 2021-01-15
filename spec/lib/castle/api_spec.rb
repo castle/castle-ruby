@@ -34,4 +34,19 @@ describe Castle::API do
       end.to raise_error(Castle::ConfigurationError)
     end
   end
+
+  context 'when custom config' do
+    let(:config) { Castle::Configuration.new }
+
+    before do
+      config.api_secret = 'test'
+      stub_request(:any, /api.castle.io/)
+    end
+
+    it do
+      expect do
+        call
+      end.not_to raise_error
+    end
+  end
 end

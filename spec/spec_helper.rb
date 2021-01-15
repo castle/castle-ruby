@@ -14,6 +14,8 @@ require 'castle'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
+Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
+
 RSpec.configure do |config|
   config.before do
     Castle.config.reset

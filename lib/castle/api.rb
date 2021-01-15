@@ -20,10 +20,11 @@ module Castle
       # @param command [String]
       # @param headers [Hash]
       # @param http [Net::HTTP]
+      # @param config [Castle::Configuration, Castle::SingletonConfiguration]
       # @return [Hash]
-      def call(command, headers = {}, http = nil)
+      def call(command, headers = {}, http = nil, config = Castle.config)
         Castle::Core::ProcessResponse.call(
-          send_request(command, headers, http)
+          send_request(command, headers, http, config)
         )
       end
 
@@ -32,15 +33,16 @@ module Castle
       # @param command [String]
       # @param headers [Hash]
       # @param http [Net::HTTP]
-      def send_request(command, headers = {}, http = nil)
-        raise Castle::ConfigurationError, 'configuration is not valid' unless Castle.config.valid?
+      # @param config [Castle::Configuration, Castle::SingletonConfiguration]
+      def send_request(command, headers = {}, http = nil, config = Castle.config)
+        raise Castle::ConfigurationError, 'configuration is not valid' unless config.valid?
 
         begin
           Castle::Core::SendRequest.call(
             command,
-            Castle.config.api_secret,
             headers,
-            http
+            http,
+            config
           )
         rescue *HANDLED_ERRORS => e
           # @note We need to initialize the error, as the original error is a cause for this

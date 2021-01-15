@@ -6,8 +6,9 @@ module Castle
     class << self
       # @param message [String]
       # @param data [String]
-      def call(message, data = nil)
-        logger = Castle.config.logger
+      # @param config [Castle::Configuration, Castle::SingletonConfiguration]
+      def call(message, data = nil, config = Castle.config)
+        logger = config.logger
 
         return unless logger
 
