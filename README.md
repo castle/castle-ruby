@@ -138,9 +138,10 @@ It is also possible to define multiple configs within one application.
 
 ```ruby
 # Initialize new instance of Castle::Configuration
-config = Castle::Configuration.new
-# and set any attribute
-config.api_secret = 'YOUR_API_SECRET'
+config = Castle::Configuration.new.tap do |c|
+  # and set any attribute
+  c.api_secret = 'YOUR_API_SECRET'
+end
 ```
 
 After a successful setup, you can pass the config to any API command as follows:
