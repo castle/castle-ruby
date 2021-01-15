@@ -2,9 +2,13 @@
 
 module Castle
   module Utils
+    # Clones any object
     class Clone
-      def self.call(object)
-        Marshal.load(Marshal.dump(object))
+      class << self
+        # Returns a cloned object of any type
+        def call(object)
+          Marshal.load(Marshal.dump(object))
+        end
       end
     end
   end

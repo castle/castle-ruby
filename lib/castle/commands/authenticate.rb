@@ -2,6 +2,7 @@
 
 module Castle
   module Commands
+    # Generates the payload for the authenticate request
     class Authenticate
       class << self
         # @param options [Hash]

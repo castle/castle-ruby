@@ -18,8 +18,10 @@
   castle/utils/merge
   castle/utils/clone
   castle/utils/get_timestamp
+  castle/utils/secure_compare
   castle/validators/present
   castle/validators/not_supported
+  castle/webhooks/verify
   castle/context/merge
   castle/context/sanitize
   castle/context/get_default
@@ -59,6 +61,7 @@
   castle/core/get_connection
   castle/core/process_response
   castle/core/send_request
+  castle/core/process_webhook
   castle/session
   castle/api
 ].each(&method(:require))

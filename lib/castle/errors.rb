@@ -20,6 +20,8 @@ module Castle
   class ConfigurationError < Castle::Error; end
   # error returned by api
   class ApiError < Castle::Error; end
+  # webhook signature verification error
+  class WebhookVerificationError < Castle::Error; end
 
   # api error bad request 400
   class BadRequestError < Castle::ApiError; end

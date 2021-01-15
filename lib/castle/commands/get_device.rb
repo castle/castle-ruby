@@ -2,7 +2,7 @@
 
 module Castle
   module Commands
-    # Generated the payload for the GET devices/#{device_token} request
+    # Generates the payload for the GET devices/#{device_token} request
     class GetDevice
       class << self
         # @param options [Hash]

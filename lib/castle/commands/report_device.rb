@@ -2,7 +2,7 @@
 
 module Castle
   module Commands
-    # Generated the payload for the PUT devices/#{device_token}/report request
+    # Generates the payload for the PUT devices/#{device_token}/report request
     class ReportDevice
       class << self
         # @param options [Hash]
