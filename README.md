@@ -293,6 +293,16 @@ https://castle.io/docs/impersonation_mode
 `Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response.
 You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
 
+## Webhooks
+
+Castle uses webhooks to notify about `$inident.confirmed` or `$review.opened` events. Each webhook has `X-Castle-Signature` header that allows verifying webhook's source.
+
+```ruby
+# Castle::WebhookVerificationError is raised
+# when the signature is not matching
+::Castle::Webhooks::Verify.call(webhook)
+```
+
 ## Documentation
 
 [Official Castle docs](https://castle.io/docs)
