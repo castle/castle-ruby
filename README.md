@@ -298,8 +298,7 @@ You can also choose to catch a more [finegrained error](https://github.com/castl
 Castle uses webhooks to notify about `$inident.confirmed` or `$review.opened` events. Each webhook has `X-Castle-Signature` header that allows verifying webhook's source.
 
 ```ruby
-# Castle::WebhookVerificationError is raised
-# when the signature is not matching
+# Castle::WebhookVerificationError is raised when the signature is not matching
 ::Castle::Webhooks::Verify.call(webhook)
 ```
 
