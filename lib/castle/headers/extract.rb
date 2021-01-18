@@ -16,6 +16,7 @@ module Castle
       # @param config [Castle::Configuration, Castle::SingletonConfiguration]
       def initialize(headers, config = Castle.config)
         @headers = headers
+        @config = config
         @no_allowlist = config.allowlisted.empty?
       end
 
@@ -36,8 +37,8 @@ module Castle
       def header_value(name, value)
         return true if ALWAYS_DENYLISTED.include?(name)
         return value if ALWAYS_ALLOWLISTED.include?(name)
-        return true if Castle.config.denylisted.include?(name)
-        return value if @no_allowlist || Castle.config.allowlisted.include?(name)
+        return true if @config.denylisted.include?(name)
+        return value if @no_allowlist || @config.allowlisted.include?(name)
 
         true
       end
