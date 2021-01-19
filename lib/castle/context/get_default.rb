@@ -39,7 +39,7 @@ module Castle
 
       # @return [String]
       def ip
-        Castle::IP::Extract.new(@pre_headers).call
+        Castle::IPs::Extract.new(@pre_headers).call
       end
 
       # @return [String]

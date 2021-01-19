@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::IP::Extract do
+describe Castle::IPs::Extract do
   subject(:extractor) { described_class.new(headers) }
 
   describe 'ip' do

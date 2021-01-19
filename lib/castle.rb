@@ -58,7 +58,7 @@
   castle/headers/extract
   castle/secure_mode
   castle/client_id/extract
-  castle/ip/extract
+  castle/ips/extract
   castle/core/get_connection
   castle/core/process_response
   castle/core/send_request
