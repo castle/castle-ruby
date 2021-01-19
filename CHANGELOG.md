@@ -6,6 +6,8 @@
 
 **BREAKING CHANGES:**
 
+- [#231](https://github.com/castle/castle-ruby/pull/231) allow to instantiate the configuration
+- [#230](https://github.com/castle/castle-ruby/pull/230) add webhooks verification
 - [#228](https://github.com/castle/castle-ruby/pull/228) change the impersonation-related DSL
 - [#213](https://github.com/castle/castle-ruby/pull/213) rename config.url to config.base_url
 - [#214](https://github.com/castle/castle-ruby/pull/214) reorganize structure of the SDK, Castle::API::Session renamed to Castle::Session
