@@ -295,11 +295,12 @@ You can also choose to catch a more [finegrained error](https://github.com/castl
 
 ## Webhooks
 
-Castle uses webhooks to notify about `$inident.confirmed` or `$review.opened` events. Each webhook has `X-Castle-Signature` header that allows verifying webhook's source.
+Castle uses webhooks to notify about `$incident.confirmed` or `$review.opened` events. Each webhook has `X-Castle-Signature` header that allows verifying webhook's source.
 
 ```ruby
-# Castle::WebhookVerificationError is raised when the signature is not matching
+# Verify the webhook, passed as a Request object
 ::Castle::Webhooks::Verify.call(webhook)
+# Castle::WebhookVerificationError is raised when the signature is not matching
 ```
 
 ## Documentation
