@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Castle
+  # IPs-related module
   module IPs
     # used for extraction of ip from the request
     class Extract
