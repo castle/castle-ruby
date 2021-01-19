@@ -299,7 +299,7 @@ Castle uses webhooks to notify about `$incident.confirmed` or `$review.opened` e
 
 ```ruby
 # Verify the webhook, passed as a Request object
-::Castle::Webhooks::Verify.call(webhook)
+::Castle::Webhooks::Verify.call(webhook_request)
 # Castle::WebhookVerificationError is raised when the signature is not matching
 ```
 
