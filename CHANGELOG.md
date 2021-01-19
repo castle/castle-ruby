@@ -2,14 +2,23 @@
 
 ## master
 
-- [#218](https://github.com/castle/castle-ruby/pull/218) added logger config option
-- [#212](https://github.com/castle/castle-ruby/pull/212) dropped origin from the default context
+## 6.0.0 (2020-11-30)
 
 **BREAKING CHANGES:**
 
+- [#228](https://github.com/castle/castle-ruby/pull/228) change the impersonation-related DSL
 - [#213](https://github.com/castle/castle-ruby/pull/213) rename config.url to config.base_url
 - [#214](https://github.com/castle/castle-ruby/pull/214) reorganize structure of the SDK, Castle::API::Session renamed to Castle::Session
-- [#216](https://github.com/castle/castle-ruby/pull/216) added new context and payload builders, changed DSL
+- [#216](https://github.com/castle/castle-ruby/pull/216) add new context and payload builders, changed DSL
+
+**Enhancements:**
+- [#231](https://github.com/castle/castle-ruby/pull/231) allow to instantiate the configuration
+- [#230](https://github.com/castle/castle-ruby/pull/230) add webhooks verification
+- [#223](https://github.com/castle/castle-ruby/pull/223), [#224](https://github.com/castle/castle-ruby/pull/224), [#225](https://github.com/castle/castle-ruby/pull/225), [#226](https://github.com/castle/castle-ruby/pull/226), [#227](https://github.com/castle/castle-ruby/pull/227) allow to manage the devices
+- [#221](https://github.com/castle/castle-ruby/pull/221), [#222](https://github.com/castle/castle-ruby/pull/222) add more tests
+- [#220](https://github.com/castle/castle-ruby/pull/220) update the default timeout
+- [#218](https://github.com/castle/castle-ruby/pull/218) add logger config option
+- [#212](https://github.com/castle/castle-ruby/pull/212) drop origin from the default context
 
 ## 5.0.0 (2020-09-29)
 
