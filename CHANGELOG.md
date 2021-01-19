@@ -2,7 +2,13 @@
 
 ## master
 
-## 6.0.0 (2020-11-30)
+## 6.0.1 (2021-01-19)
+
+**Enhancements:**
+
+- [#234](https://github.com/castle/castle-ruby/pull/234) rename the namespace from `IP` to `IPs`
+
+## 6.0.0 (2021-01-19)
 
 **BREAKING CHANGES:**
 
