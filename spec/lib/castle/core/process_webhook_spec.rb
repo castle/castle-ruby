@@ -34,13 +34,23 @@ describe Castle::Core::ProcessWebhook do
     context 'when webhook empty' do
       let(:webhook) { OpenStruct.new(body: StringIO.new('')) }
 
-      it { expect { call }.to raise_error(Castle::ApiError, 'Invalid webhook from Castle API') }
+      it do
+        expect { call }.to raise_error(
+          Castle::ApiError,
+          'Invalid webhook from Castle API'
+        )
+      end
     end
 
     context 'when webhook nil' do
       let(:webhook) { OpenStruct.new(body: StringIO.new) }
 
-      it { expect { call }.to raise_error(Castle::ApiError, 'Invalid webhook from Castle API') }
+      it do
+        expect { call }.to raise_error(
+          Castle::ApiError,
+          'Invalid webhook from Castle API'
+        )
+      end
     end
   end
 end

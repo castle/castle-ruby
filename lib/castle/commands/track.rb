@@ -12,7 +12,10 @@ module Castle
 
           Castle::Command.new(
             'track',
-            options.merge(context: context, sent_at: Castle::Utils::GetTimestamp.call),
+            options.merge(
+              context: context,
+              sent_at: Castle::Utils::GetTimestamp.call
+            ),
             :post
           )
         end

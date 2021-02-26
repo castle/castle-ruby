@@ -5,7 +5,9 @@ describe Castle::Commands::StartImpersonation do
 
   let(:context) { { user_agent: 'test', ip: '127.0.0.1', client_id: 'test' } }
   let(:impersonator) { 'test@castle.io' }
-  let(:default_payload) { { user_id: '1234', sent_at: time_auto, context: context } }
+  let(:default_payload) do
+    { user_id: '1234', sent_at: time_auto, context: context }
+  end
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
@@ -18,9 +20,16 @@ describe Castle::Commands::StartImpersonation do
     subject(:command) { instance.build(payload) }
 
     context 'with impersonator' do
-      let(:payload) { default_payload.merge(properties: { impersonator: impersonator }) }
+      let(:payload) do
+        default_payload.merge(properties: { impersonator: impersonator })
+      end
       let(:command_data) do
-        default_payload.merge(properties: { impersonator: impersonator }, context: context)
+        default_payload.merge(
+          properties: {
+            impersonator: impersonator
+          },
+          context: context
+        )
       end
 
       it { expect(command.method).to be_eql(:post) }
@@ -29,7 +38,9 @@ describe Castle::Commands::StartImpersonation do
     end
 
     context 'when active true' do
-      let(:payload) { default_payload.merge(context: context.merge(active: true)) }
+      let(:payload) do
+        default_payload.merge(context: context.merge(active: true))
+      end
       let(:command_data) do
         default_payload.merge(context: context.merge(active: true))
       end
@@ -40,7 +51,9 @@ describe Castle::Commands::StartImpersonation do
     end
 
     context 'when active false' do
-      let(:payload) { default_payload.merge(context: context.merge(active: false)) }
+      let(:payload) do
+        default_payload.merge(context: context.merge(active: false))
+      end
       let(:command_data) do
         default_payload.merge(context: context.merge(active: false))
       end
@@ -51,7 +64,9 @@ describe Castle::Commands::StartImpersonation do
     end
 
     context 'when active string' do
-      let(:payload) { default_payload.merge(context: context.merge(active: 'string')) }
+      let(:payload) do
+        default_payload.merge(context: context.merge(active: 'string'))
+      end
       let(:command_data) { default_payload.merge(context: context) }
 
       it { expect(command.method).to be_eql(:post) }
@@ -67,9 +82,10 @@ describe Castle::Commands::StartImpersonation do
       let(:payload) { {} }
 
       it do
-        expect do
-          validate!
-        end.to raise_error(Castle::InvalidParametersError, 'user_id is missing or empty')
+        expect { validate! }.to raise_error(
+          Castle::InvalidParametersError,
+          'user_id is missing or empty'
+        )
       end
     end
 

@@ -5,8 +5,12 @@ describe Castle::Utils::Clone do
 
   describe 'call' do
     let(:nested) { { c: '3' } }
-    let(:first) { { test: { test1: { c: '4' }, test2: nested, a: '1', b: '2' } } }
-    let(:result) { { test: { test1: { c: '4' }, test2: { c: '3' }, a: '1', b: '2' } } }
+    let(:first) do
+      { test: { test1: { c: '4' }, test2: nested, a: '1', b: '2' } }
+    end
+    let(:result) do
+      { test: { test1: { c: '4' }, test2: { c: '3' }, a: '1', b: '2' } }
+    end
     let(:cloned) { clone.call(first) }
 
     before { cloned }

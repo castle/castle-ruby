@@ -2,15 +2,18 @@
 
 describe Castle::Validators::Present do
   describe '#call' do
-    subject(:call) { described_class.call({ first: 1, second: '2', invalid: '' }, keys) }
+    subject(:call) do
+      described_class.call({ first: 1, second: '2', invalid: '' }, keys)
+    end
 
     context 'when keys is not present' do
       let(:keys) { %i[second third] }
 
       it do
-        expect do
-          call
-        end.to raise_error(Castle::InvalidParametersError, 'third is missing or empty')
+        expect { call }.to raise_error(
+          Castle::InvalidParametersError,
+          'third is missing or empty'
+        )
       end
     end
 
@@ -18,9 +21,10 @@ describe Castle::Validators::Present do
       let(:keys) { %i[second invalid] }
 
       it do
-        expect do
-          call
-        end.to raise_error(Castle::InvalidParametersError, 'invalid is missing or empty')
+        expect { call }.to raise_error(
+          Castle::InvalidParametersError,
+          'invalid is missing or empty'
+        )
       end
     end
 

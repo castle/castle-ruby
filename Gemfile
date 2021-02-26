@@ -9,6 +9,7 @@ gem 'rake'
 
 group :development, :test do
   gem 'byebug'
+  gem 'prettier'
   gem 'rubocop'
   gem 'rubocop-performance'
   gem 'rubocop-rspec'

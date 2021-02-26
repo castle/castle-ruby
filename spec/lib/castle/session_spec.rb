@@ -8,7 +8,11 @@ describe Castle::Session do
 
       before do
         Castle.config.base_url = 'http://localhost:3002'
-        stub_request(:get, 'localhost:3002/test').to_return(status: 200, body: '{}', headers: {})
+        stub_request(:get, 'localhost:3002/test').to_return(
+          status: 200,
+          body: '{}',
+          headers: {}
+        )
       end
 
       context 'with block' do
@@ -16,25 +20,17 @@ describe Castle::Session do
         let(:request) { Net::HTTP::Get.new(api_url) }
 
         before do
-          allow(Net::HTTP)
-            .to receive(:new)
+          allow(Net::HTTP).to receive(:new)
             .with(localhost, port)
             .and_call_original
 
-          described_class.call do |http|
-            http.request(request)
-          end
+          described_class.call { |http| http.request(request) }
         end
 
-        it do
-          expect(Net::HTTP)
-            .to have_received(:new)
-            .with(localhost, port)
-        end
+        it { expect(Net::HTTP).to have_received(:new).with(localhost, port) }
 
         it do
-          expect(a_request(:get, 'localhost:3002/test'))
-            .to have_been_made.once
+          expect(a_request(:get, 'localhost:3002/test')).to have_been_made.once
         end
       end
 
@@ -42,8 +38,7 @@ describe Castle::Session do
         before { described_class.call }
 
         it do
-          expect(a_request(:get, 'localhost:3002/test'))
-            .not_to have_been_made
+          expect(a_request(:get, 'localhost:3002/test')).not_to have_been_made
         end
       end
     end
@@ -55,7 +50,9 @@ describe Castle::Session do
       before do
         Castle.config.base_url = 'https://localhost'
         stub_request(:get, 'https://localhost/test').to_return(
-          status: 200, body: '{}', headers: {}
+          status: 200,
+          body: '{}',
+          headers: {}
         )
       end
 
@@ -64,24 +61,16 @@ describe Castle::Session do
         let(:request) { Net::HTTP::Get.new(api_url) }
 
         before do
-          allow(Net::HTTP)
-            .to receive(:new)
+          allow(Net::HTTP).to receive(:new)
             .with(localhost, port)
             .and_call_original
 
-          allow(Net::HTTP)
-            .to receive(:start)
+          allow(Net::HTTP).to receive(:start)
 
-          described_class.call do |http|
-            http.request(request)
-          end
+          described_class.call { |http| http.request(request) }
         end
 
-        it do
-          expect(Net::HTTP)
-            .to have_received(:new)
-            .with(localhost, port)
-        end
+        it { expect(Net::HTTP).to have_received(:new).with(localhost, port) }
       end
     end
   end

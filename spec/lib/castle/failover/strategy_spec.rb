@@ -8,5 +8,9 @@ describe Castle::Failover::Strategy do
   it { expect(strategy::CHALLENGE).to be_eql(:challenge) }
   it { expect(strategy::THROW).to be_eql(:throw) }
 
-  it { expect(Castle::Failover::STRATEGIES).to be_eql(%i[allow deny challenge throw]) }
+  it do
+    expect(Castle::Failover::STRATEGIES).to be_eql(
+      %i[allow deny challenge throw]
+    )
+  end
 end

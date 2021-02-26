@@ -17,17 +17,24 @@ describe Castle::IPs::Extract do
 
     context 'when we need to use other ip header' do
       let(:headers) do
-        { 'Cf-Connecting-Ip' => '1.2.3.4', 'X-Forwarded-For' => '1.1.1.1, 1.2.2.2, 1.2.3.5' }
+        {
+          'Cf-Connecting-Ip' => '1.2.3.4',
+          'X-Forwarded-For' => '1.1.1.1, 1.2.2.2, 1.2.3.5'
+        }
       end
 
       context 'with uppercase format' do
-        before { Castle.config.ip_headers = %w[CF_CONNECTING_IP X-Forwarded-For] }
+        before do
+          Castle.config.ip_headers = %w[CF_CONNECTING_IP X-Forwarded-For]
+        end
 
         it { expect(extractor.call).to eql('1.2.3.4') }
       end
 
       context 'with regular format' do
-        before { Castle.config.ip_headers = %w[Cf-Connecting-Ip X-Forwarded-For] }
+        before do
+          Castle.config.ip_headers = %w[Cf-Connecting-Ip X-Forwarded-For]
+        end
 
         it { expect(extractor.call).to eql('1.2.3.4') }
       end
@@ -43,11 +50,11 @@ describe Castle::IPs::Extract do
     end
 
     context 'with all the trusted proxies' do
-      let(:http_x_header) do
-        '127.0.0.1,10.0.0.1,172.31.0.1,192.168.0.1'
-      end
+      let(:http_x_header) { '127.0.0.1,10.0.0.1,172.31.0.1,192.168.0.1' }
 
-      let(:headers) { { 'Remote-Addr' => '127.0.0.1', 'X-Forwarded-For' => http_x_header } }
+      let(:headers) do
+        { 'Remote-Addr' => '127.0.0.1', 'X-Forwarded-For' => http_x_header }
+      end
 
       it 'fallbacks to first available header when all headers are marked trusted proxy' do
         expect(extractor.call).to eql('127.0.0.1')
@@ -55,11 +62,11 @@ describe Castle::IPs::Extract do
     end
 
     context 'with trust_proxy_chain option' do
-      let(:http_x_header) do
-        '6.6.6.6, 2.2.2.3, 6.6.6.5'
-      end
+      let(:http_x_header) { '6.6.6.6, 2.2.2.3, 6.6.6.5' }
 
-      let(:headers) { { 'Remote-Addr' => '6.6.6.4', 'X-Forwarded-For' => http_x_header } }
+      let(:headers) do
+        { 'Remote-Addr' => '6.6.6.4', 'X-Forwarded-For' => http_x_header }
+      end
 
       before { Castle.config.trust_proxy_chain = true }
 
@@ -69,11 +76,11 @@ describe Castle::IPs::Extract do
     end
 
     context 'with trusted_proxy_depth option' do
-      let(:http_x_header) do
-        '6.6.6.6, 2.2.2.3, 6.6.6.5'
-      end
+      let(:http_x_header) { '6.6.6.6, 2.2.2.3, 6.6.6.5' }
 
-      let(:headers) { { 'Remote-Addr' => '6.6.6.4', 'X-Forwarded-For' => http_x_header } }
+      let(:headers) do
+        { 'Remote-Addr' => '6.6.6.4', 'X-Forwarded-For' => http_x_header }
+      end
 
       before { Castle.config.trusted_proxy_depth = 1 }
 

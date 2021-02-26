@@ -15,11 +15,14 @@ module Castle
 
           Castle::Command.new(
             'impersonate',
-            options.merge(context: context, sent_at: Castle::Utils::GetTimestamp.call),
+            options.merge(
+              context: context,
+              sent_at: Castle::Utils::GetTimestamp.call
+            ),
             :delete
           )
         end
-  end
+      end
     end
   end
 end

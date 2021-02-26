@@ -18,11 +18,16 @@ describe Castle::Client do
   let(:client_with_user_timestamp) do
     described_class.new(context: request_to_context, timestamp: time_user)
   end
-  let(:client_with_no_timestamp) { described_class.new(context: request_to_context) }
+  let(:client_with_no_timestamp) do
+    described_class.new(context: request_to_context)
+  end
 
   let(:headers) do
     {
-      'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true
+      'Content-Length': '0',
+      'User-Agent': ua,
+      'X-Forwarded-For': ip.to_s,
+      Cookie: true
     }
   end
   let(:context) do
@@ -32,7 +37,10 @@ describe Castle::Client do
       user_agent: ua,
       headers: headers,
       ip: ip,
-      library: { name: 'castle-rb', version: '2.2.0' }
+      library: {
+        name: 'castle-rb',
+        version: '2.2.0'
+      }
     }
   end
 
@@ -44,17 +52,15 @@ describe Castle::Client do
   before do
     Timecop.freeze(time_now)
     stub_const('Castle::VERSION', '2.2.0')
-    stub_request(:any, /api.castle.io/).with(
-      basic_auth: ['', 'secret']
-    ).to_return(status: 200, body: response_body, headers: {})
+    stub_request(:any, /api.castle.io/)
+      .with(basic_auth: ['', 'secret'])
+      .to_return(status: 200, body: response_body, headers: {})
   end
 
   after { Timecop.return }
 
   describe 'parses the request' do
-    before do
-      allow(Castle::API).to receive(:send_request).and_call_original
-    end
+    before { allow(Castle::API).to receive(:send_request).and_call_original }
 
     it do
       client.authenticate(event: '$login.succeeded', user_id: '1234')
@@ -65,17 +71,28 @@ describe Castle::Client do
   describe 'end impersonation' do
     let(:impersonator) { 'test@castle.io' }
     let(:request_body) do
-      { user_id: '1234', timestamp: time_auto, sent_at: time_auto,
-        properties: { impersonator: impersonator }, context: context }
+      {
+        user_id: '1234',
+        timestamp: time_auto,
+        sent_at: time_auto,
+        properties: {
+          impersonator: impersonator
+        },
+        context: context
+      }
     end
     let(:response_body) { { success: true }.to_json }
-    let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
+    let(:options) do
+      { user_id: '1234', properties: { impersonator: impersonator } }
+    end
 
     context 'when used with symbol keys' do
       before { client.end_impersonation(options) }
 
       it do
-        assert_requested :delete, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
+        assert_requested :delete,
+                         'https://api.castle.io/v1/impersonate',
+                         times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
@@ -85,7 +102,9 @@ describe Castle::Client do
       let(:response_body) { {}.to_json }
 
       it do
-        expect { client.end_impersonation(options) }.to raise_error(Castle::ImpersonationFailed)
+        expect { client.end_impersonation(options) }.to raise_error(
+          Castle::ImpersonationFailed
+        )
       end
     end
   end
@@ -93,17 +112,28 @@ describe Castle::Client do
   describe 'start impersonation' do
     let(:impersonator) { 'test@castle.io' }
     let(:request_body) do
-      { user_id: '1234', timestamp: time_auto, sent_at: time_auto,
-        properties: { impersonator: impersonator }, context: context }
+      {
+        user_id: '1234',
+        timestamp: time_auto,
+        sent_at: time_auto,
+        properties: {
+          impersonator: impersonator
+        },
+        context: context
+      }
     end
     let(:response_body) { { success: true }.to_json }
-    let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
+    let(:options) do
+      { user_id: '1234', properties: { impersonator: impersonator } }
+    end
 
     context 'when used with symbol keys' do
       before { client.start_impersonation(options) }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/impersonate', times: 1 do |req|
+        assert_requested :post,
+                         'https://api.castle.io/v1/impersonate',
+                         times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
@@ -113,15 +143,24 @@ describe Castle::Client do
       let(:response_body) { {}.to_json }
 
       it do
-        expect { client.start_impersonation(options) }.to raise_error(Castle::ImpersonationFailed)
+        expect { client.start_impersonation(options) }.to raise_error(
+          Castle::ImpersonationFailed
+        )
       end
     end
   end
 
   describe 'identify' do
     let(:request_body) do
-      { user_id: '1234', timestamp: time_auto,
-        sent_at: time_auto, context: context, user_traits: { name: 'Jo' } }
+      {
+        user_id: '1234',
+        timestamp: time_auto,
+        sent_at: time_auto,
+        context: context,
+        user_traits: {
+          name: 'Jo'
+        }
+      }
     end
 
     before { client.identify(options) }
@@ -130,21 +169,34 @@ describe Castle::Client do
       let(:options) { { user_id: '1234', user_traits: { name: 'Jo' } } }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
+        assert_requested :post,
+                         'https://api.castle.io/v1/identify',
+                         times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:client) { client_with_no_timestamp }
-        let(:options) { { user_id: '1234', user_traits: { name: 'Jo' }, timestamp: time_user } }
+        let(:options) do
+          { user_id: '1234', user_traits: { name: 'Jo' }, timestamp: time_user }
+        end
         let(:request_body) do
-          { user_id: '1234', user_traits: { name: 'Jo' }, context: context,
-            timestamp: time_user, sent_at: time_auto }
+          {
+            user_id: '1234',
+            user_traits: {
+              name: 'Jo'
+            },
+            context: context,
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do
-          assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
+          assert_requested :post,
+                           'https://api.castle.io/v1/identify',
+                           times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end
@@ -153,12 +205,21 @@ describe Castle::Client do
       context 'with client initialized with timestamp' do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
-          { user_id: '1234', timestamp: time_user, sent_at: time_auto,
-            context: context, user_traits: { name: 'Jo' } }
+          {
+            user_id: '1234',
+            timestamp: time_user,
+            sent_at: time_auto,
+            context: context,
+            user_traits: {
+              name: 'Jo'
+            }
+          }
         end
 
         it do
-          assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
+          assert_requested :post,
+                           'https://api.castle.io/v1/identify',
+                           times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end
@@ -166,10 +227,14 @@ describe Castle::Client do
     end
 
     context 'when used with string keys' do
-      let(:options) { { 'user_id' => '1234', 'user_traits' => { 'name' => 'Jo' } } }
+      let(:options) do
+        { 'user_id' => '1234', 'user_traits' => { 'name' => 'Jo' } }
+      end
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
+        assert_requested :post,
+                         'https://api.castle.io/v1/identify',
+                         times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
@@ -180,29 +245,45 @@ describe Castle::Client do
     let(:options) { { event: '$login.succeeded', user_id: '1234' } }
     let(:request_response) { client.authenticate(options) }
     let(:request_body) do
-      { event: '$login.succeeded', user_id: '1234', context: context,
-        timestamp: time_auto, sent_at: time_auto }
+      {
+        event: '$login.succeeded',
+        user_id: '1234',
+        context: context,
+        timestamp: time_auto,
+        sent_at: time_auto
+      }
     end
 
     context 'when used with symbol keys' do
       before { request_response }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
+        assert_requested :post,
+                         'https://api.castle.io/v1/authenticate',
+                         times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:client) { client_with_no_timestamp }
-        let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user } }
+        let(:options) do
+          { event: '$login.succeeded', user_id: '1234', timestamp: time_user }
+        end
         let(:request_body) do
-          { event: '$login.succeeded', user_id: '1234', context: context,
-            timestamp: time_user, sent_at: time_auto }
+          {
+            event: '$login.succeeded',
+            user_id: '1234',
+            context: context,
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do
-          assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
+          assert_requested :post,
+                           'https://api.castle.io/v1/authenticate',
+                           times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end
@@ -211,12 +292,19 @@ describe Castle::Client do
       context 'with client initialized with timestamp' do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
-          { event: '$login.succeeded', user_id: '1234', context: context,
-            timestamp: time_user, sent_at: time_auto }
+          {
+            event: '$login.succeeded',
+            user_id: '1234',
+            context: context,
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do
-          assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
+          assert_requested :post,
+                           'https://api.castle.io/v1/authenticate',
+                           times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end
@@ -229,7 +317,9 @@ describe Castle::Client do
       before { request_response }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
+        assert_requested :post,
+                         'https://api.castle.io/v1/authenticate',
+                         times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
@@ -239,7 +329,9 @@ describe Castle::Client do
       before { request_response }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
+        assert_requested :post,
+                         'https://api.castle.io/v1/authenticate',
+                         times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
@@ -258,7 +350,11 @@ describe Castle::Client do
       it { expect(request_response[:action]).to be_eql(Castle::Verdict::ALLOW) }
       it { expect(request_response[:user_id]).to be_eql('1234') }
       it { expect(request_response[:failover]).to be true }
-      it { expect(request_response[:failover_reason]).to be_eql('Castle is set to do not track.') }
+      it do
+        expect(request_response[:failover_reason]).to be_eql(
+          'Castle is set to do not track.'
+        )
+      end
     end
 
     context 'when request with fail' do
@@ -269,45 +365,74 @@ describe Castle::Client do
       end
 
       context 'with request error and throw strategy' do
-        before { allow(Castle.config).to receive(:failover_strategy).and_return(:throw) }
+        before do
+          allow(Castle.config).to receive(:failover_strategy).and_return(:throw)
+        end
 
         it { expect { request_response }.to raise_error(Castle::RequestError) }
       end
 
       context 'with request error and not throw on eg deny strategy' do
-        it { assert_not_requested :post, 'https://:secret@api.castle.io/v1/authenticate' }
+        it do
+          assert_not_requested :post,
+                               'https://:secret@api.castle.io/v1/authenticate'
+        end
         it { expect(request_response[:action]).to be_eql('allow') }
         it { expect(request_response[:user_id]).to be_eql('1234') }
         it { expect(request_response[:failover]).to be true }
-        it { expect(request_response[:failover_reason]).to be_eql('Castle::RequestError') }
+        it do
+          expect(request_response[:failover_reason]).to be_eql(
+            'Castle::RequestError'
+          )
+        end
       end
     end
 
     context 'when request is internal server error' do
       before do
-        allow(Castle::API).to receive(:send_request).and_raise(Castle::InternalServerError)
+        allow(Castle::API).to receive(:send_request).and_raise(
+          Castle::InternalServerError
+        )
       end
 
       describe 'throw strategy' do
-        before { allow(Castle.config).to receive(:failover_strategy).and_return(:throw) }
+        before do
+          allow(Castle.config).to receive(:failover_strategy).and_return(:throw)
+        end
 
-        it { expect { request_response }.to raise_error(Castle::InternalServerError) }
+        it do
+          expect { request_response }.to raise_error(
+            Castle::InternalServerError
+          )
+        end
       end
 
       describe 'not throw on eg deny strategy' do
-        it { assert_not_requested :post, 'https://:secret@api.castle.io/v1/authenticate' }
+        it do
+          assert_not_requested :post,
+                               'https://:secret@api.castle.io/v1/authenticate'
+        end
         it { expect(request_response[:action]).to be_eql('allow') }
         it { expect(request_response[:user_id]).to be_eql('1234') }
         it { expect(request_response[:failover]).to be true }
-        it { expect(request_response[:failover_reason]).to be_eql('Castle::InternalServerError') }
+        it do
+          expect(request_response[:failover_reason]).to be_eql(
+            'Castle::InternalServerError'
+          )
+        end
       end
     end
   end
 
   describe 'track' do
     let(:request_body) do
-      { event: '$login.succeeded', context: context, user_id: '1234',
-        timestamp: time_auto, sent_at: time_auto }
+      {
+        event: '$login.succeeded',
+        context: context,
+        user_id: '1234',
+        timestamp: time_auto,
+        sent_at: time_auto
+      }
     end
 
     before { client.track(options) }
@@ -316,21 +441,32 @@ describe Castle::Client do
       let(:options) { { event: '$login.succeeded', user_id: '1234' } }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+        assert_requested :post,
+                         'https://api.castle.io/v1/track',
+                         times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:client) { client_with_no_timestamp }
-        let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user } }
+        let(:options) do
+          { event: '$login.succeeded', user_id: '1234', timestamp: time_user }
+        end
         let(:request_body) do
-          { event: '$login.succeeded', user_id: '1234', context: context,
-            timestamp: time_user, sent_at: time_auto }
+          {
+            event: '$login.succeeded',
+            user_id: '1234',
+            context: context,
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do
-          assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+          assert_requested :post,
+                           'https://api.castle.io/v1/track',
+                           times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end
@@ -339,12 +475,19 @@ describe Castle::Client do
       context 'with client initialized with timestamp' do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
-          { event: '$login.succeeded', context: context, user_id: '1234',
-            timestamp: time_user, sent_at: time_auto }
+          {
+            event: '$login.succeeded',
+            context: context,
+            user_id: '1234',
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do
-          assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+          assert_requested :post,
+                           'https://api.castle.io/v1/track',
+                           times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end
@@ -355,7 +498,9 @@ describe Castle::Client do
       let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+        assert_requested :post,
+                         'https://api.castle.io/v1/track',
+                         times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end

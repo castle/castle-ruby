@@ -24,41 +24,61 @@ describe Castle::API::Identify do
   before do
     Timecop.freeze(time_now)
     stub_const('Castle::VERSION', '2.2.0')
-    stub_request(:any, /api.castle.io/).with(
-      basic_auth: ['', 'secret']
-    ).to_return(status: 200, body: response_body, headers: {})
+    stub_request(:any, /api.castle.io/)
+      .with(basic_auth: ['', 'secret'])
+      .to_return(status: 200, body: response_body, headers: {})
   end
 
   after { Timecop.return }
 
   describe '.call' do
     let(:request_body) do
-      { event: '$login.succeeded', context: context, user_id: '1234',
-        sent_at: time_auto }
+      {
+        event: '$login.succeeded',
+        context: context,
+        user_id: '1234',
+        sent_at: time_auto
+      }
     end
 
     before { call }
 
     context 'when used with symbol keys' do
-      let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
+      let(:options) do
+        { event: '$login.succeeded', user_id: '1234', context: context }
+      end
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
+        assert_requested :post,
+                         'https://api.castle.io/v1/identify',
+                         times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:options) do
-          { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context }
+          {
+            event: '$login.succeeded',
+            user_id: '1234',
+            timestamp: time_user,
+            context: context
+          }
         end
         let(:request_body) do
-          { event: '$login.succeeded', user_id: '1234', context: context,
-            timestamp: time_user, sent_at: time_auto }
+          {
+            event: '$login.succeeded',
+            user_id: '1234',
+            context: context,
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do
-          assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
+          assert_requested :post,
+                           'https://api.castle.io/v1/identify',
+                           times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end

@@ -12,25 +12,44 @@ describe Castle::Core::ProcessResponse do
 
     describe 'authenticate' do
       context 'when allow without any additional props' do
-        let(:response) { OpenStruct.new(body: '{"action":"allow","user_id":"12345"}', code: 200) }
+        let(:response) do
+          OpenStruct.new(
+            body: '{"action":"allow","user_id":"12345"}',
+            code: 200
+          )
+        end
 
         it { expect(call).to eql({ action: 'allow', user_id: '12345' }) }
       end
 
       context 'when allow with additional props' do
         let(:response) do
-          OpenStruct.new(body: '{"action":"allow","user_id":"12345","internal":{}}', code: 200)
+          OpenStruct.new(
+            body: '{"action":"allow","user_id":"12345","internal":{}}',
+            code: 200
+          )
         end
 
-        it { expect(call).to eql({ action: 'allow', user_id: '12345', internal: {} }) }
+        it do
+          expect(call).to eql(
+            { action: 'allow', user_id: '12345', internal: {} }
+          )
+        end
       end
 
       context 'when deny without risk policy' do
         let(:response) do
-          OpenStruct.new(body: '{"action":"deny","user_id":"1","device_token":"abc"}', code: 200)
+          OpenStruct.new(
+            body: '{"action":"deny","user_id":"1","device_token":"abc"}',
+            code: 200
+          )
         end
 
-        it { expect(call).to eql({ action: 'deny', user_id: '1', device_token: 'abc' }) }
+        it do
+          expect(call).to eql(
+            { action: 'deny', user_id: '1', device_token: 'abc' }
+          )
+        end
       end
 
       context 'when deny with risk policy' do
@@ -38,14 +57,7 @@ describe Castle::Core::ProcessResponse do
           '{"action":"deny","user_id":"1","device_token":"abc",
           "risk_policy":{"id":"123","revision_id":"abc","name":"def","type":"bot"}}'
         end
-        let(:response) do
-          OpenStruct.new(
-            {
-              body: body,
-              code: 200
-            }
-          )
-        end
+        let(:response) { OpenStruct.new({ body: body, code: 200 }) }
 
         let(:result) do
           {

@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
-%w[
-  openssl
-  net/http
-  json
-  time
-].each(&method(:require))
+%w[openssl net/http json time].each(&method(:require))
 
 %w[
   castle/version

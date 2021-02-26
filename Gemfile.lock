@@ -27,6 +27,7 @@ GEM
     parallel (1.20.1)
     parser (3.0.0.0)
       ast (~> 2.4.1)
+    prettier (1.5.2)
     public_suffix (4.0.6)
     rack (2.2.3)
     rainbow (3.0.0)
@@ -91,6 +92,7 @@ DEPENDENCIES
   byebug
   castle-rb!
   coveralls_reborn
+  prettier
   rack
   rake
   rspec

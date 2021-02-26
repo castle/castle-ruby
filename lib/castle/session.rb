@@ -9,7 +9,7 @@ module Castle
 
     class << self
       def call(&block)
-        return unless block_given?
+        return unless block
 
         Castle::Core::GetConnection.call.start(&block)
       end
