@@ -98,8 +98,6 @@ describe Castle::Headers::Extract do
       Castle.config.denylisted = %w[Accept]
     end
 
-    it do
-      expect(extract_call['Accept']).to eq(true)
-    end
+    it { expect(extract_call['Accept']).to eq(true) }
   end
 end

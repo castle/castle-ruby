@@ -27,9 +27,7 @@ describe Castle::Core::SendRequest do
       end
 
       it do
-        expect(described_class).to have_received(:build).with(
-          command, expected_headers, config
-        )
+        expect(described_class).to have_received(:build).with(command, expected_headers, config)
       end
 
       it { expect(http).to have_received(:request).with(request_build) }
@@ -48,9 +46,7 @@ describe Castle::Core::SendRequest do
       it { expect(Castle::Core::GetConnection).not_to have_received(:call) }
 
       it do
-        expect(described_class).to have_received(:build).with(
-          command, expected_headers, config
-        )
+        expect(described_class).to have_received(:build).with(command, expected_headers, config)
       end
 
       it { expect(http).to have_received(:request).with(request_build) }
@@ -77,17 +73,8 @@ describe Castle::Core::SendRequest do
 
     context 'when post' do
       let(:time) { Time.now.utc.iso8601(3) }
-      let(:command) do
-        Castle::Commands::Track.build(event: '$login.succeeded', name: "\xC4")
-      end
-      let(:expected_body) do
-        {
-          event: '$login.succeeded',
-          name: '�',
-          context: {},
-          sent_at: time
-        }
-      end
+      let(:command) { Castle::Commands::Track.build(event: '$login.succeeded', name: "\xC4") }
+      let(:expected_body) { { event: '$login.succeeded', name: '�', context: {}, sent_at: time } }
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 
