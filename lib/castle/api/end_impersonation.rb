@@ -14,16 +14,14 @@ module Castle
           http = options.delete(:http)
           config = options.delete(:config) || Castle.config
 
-          Castle::API
-            .call(
-              Castle::Commands::EndImpersonation.build(options),
-              {},
-              http,
-              config
-            )
-            .tap do |response|
-              raise Castle::ImpersonationFailed unless response[:success]
-            end
+          Castle::API.call(
+            Castle::Commands::EndImpersonation.build(options),
+            {},
+            http,
+            config
+          ).tap do |response|
+            raise Castle::ImpersonationFailed unless response[:success]
+          end
         end
       end
     end

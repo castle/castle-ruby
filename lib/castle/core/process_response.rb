@@ -31,9 +31,7 @@ module Castle
         def verify!(response)
           return if response.code.to_i.between?(200, 299)
 
-          if response.code.to_i.between?(500, 599)
-            raise Castle::InternalServerError
-          end
+          raise Castle::InternalServerError if response.code.to_i.between?(500, 599)
 
           error = RESPONSE_ERRORS.fetch(response.code.to_i, Castle::ApiError)
           raise error, response[:message]

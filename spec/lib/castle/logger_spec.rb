@@ -7,14 +7,18 @@ class TmpLogger
 end
 
 describe Castle::Logger do
-  subject(:log) { described_class.call(message, data) }
+  subject(:log) do
+    described_class.call(message, data)
+  end
 
   let(:message) { 'https://localhost/test:' }
   let(:integration_logger) { TmpLogger.new }
   let(:data) { { a: 1 }.to_json }
   let(:logger_message) { "[CASTLE] #{message} #{data}" }
 
-  before { allow(integration_logger).to receive(:info).and_call_original }
+  before do
+    allow(integration_logger).to receive(:info).and_call_original
+  end
 
   describe '.call' do
     context 'without logger' do
@@ -32,9 +36,7 @@ describe Castle::Logger do
         log
       end
 
-      it do
-        expect(integration_logger).to have_received(:info).with(logger_message)
-      end
+      it { expect(integration_logger).to have_received(:info).with(logger_message) }
     end
   end
 end

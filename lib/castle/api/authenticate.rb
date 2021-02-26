@@ -14,22 +14,16 @@ module Castle
           http = options.delete(:http)
           config = options.delete(:config) || Castle.config
 
-          response =
-            Castle::API.call(
-              Castle::Commands::Authenticate.build(options),
-              {},
-              http,
-              config
-            )
+          response = Castle::API.call(
+            Castle::Commands::Authenticate.build(options),
+            {},
+            http,
+            config
+          )
           response.merge(failover: false, failover_reason: nil)
         rescue Castle::RequestError, Castle::InternalServerError => e
           unless config.failover_strategy == :throw
-            return(
-              Castle::Failover::PrepareResponse.new(
-                options[:user_id],
-                reason: e.to_s
-              ).call
-            )
+            return Castle::Failover::PrepareResponse.new(options[:user_id], reason: e.to_s).call
           end
 
           raise e

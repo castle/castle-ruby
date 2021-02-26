@@ -6,13 +6,10 @@ module Castle
     module Strategy
       # allow
       ALLOW = :allow
-
       # deny
       DENY = :deny
-
       # challenge
       CHALLENGE = :challenge
-
       # throw an error
       THROW = :throw
     end

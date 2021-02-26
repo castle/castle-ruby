@@ -19,6 +19,8 @@ Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 RSpec.configure do |config|
   config.before do
     Castle.config.reset
-    Castle.configure { |cfg| cfg.api_secret = 'secret' }
+    Castle.configure do |cfg|
+      cfg.api_secret = 'secret'
+    end
   end
 end

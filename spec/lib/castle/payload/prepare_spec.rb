@@ -16,10 +16,7 @@ describe Castle::Payload::Prepare do
 
   let(:headers) do
     {
-      'Content-Length': '0',
-      'User-Agent': ua,
-      'X-Forwarded-For': ip.to_s,
-      Cookie: true
+      'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true
     }
   end
   let(:context) do
@@ -29,10 +26,7 @@ describe Castle::Payload::Prepare do
       user_agent: ua,
       headers: headers,
       ip: ip,
-      library: {
-        name: 'castle-rb',
-        version: '2.2.0'
-      }
+      library: { name: 'castle-rb', version: '2.2.0' }
     }
   end
 
@@ -40,14 +34,7 @@ describe Castle::Payload::Prepare do
   let(:time_formatted) { time_now.utc.iso8601(3) }
   let(:payload_options) { { user_id: '1234', user_traits: { name: 'Jo' } } }
   let(:result) do
-    {
-      user_id: '1234',
-      user_traits: {
-        name: 'Jo'
-      },
-      timestamp: time_formatted,
-      context: context
-    }
+    { user_id: '1234', user_traits: { name: 'Jo' }, timestamp: time_formatted, context: context }
   end
 
   before do

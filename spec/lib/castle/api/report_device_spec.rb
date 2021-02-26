@@ -2,9 +2,9 @@
 
 describe Castle::API::ReportDevice do
   before do
-    stub_request(:any, /api.castle.io/)
-      .with(basic_auth: ['', 'secret'])
-      .to_return(status: 200, body: '{}', headers: {})
+    stub_request(:any, /api.castle.io/).with(
+      basic_auth: ['', 'secret']
+    ).to_return(status: 200, body: '{}', headers: {})
   end
 
   describe '.call' do
@@ -15,9 +15,7 @@ describe Castle::API::ReportDevice do
     before { retrieve }
 
     it do
-      assert_requested :put,
-                       "https://api.castle.io/v1/devices/#{device_token}/report",
-                       times: 1
+      assert_requested :put, "https://api.castle.io/v1/devices/#{device_token}/report", times: 1
     end
   end
 end

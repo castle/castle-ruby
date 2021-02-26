@@ -33,12 +33,9 @@ module Castle
         # @param signature [String] first signature to be compared
         # @param expected_signature [String] second signature to be compared
         def verify_signature(signature, expected_signature)
-          if Castle::Utils::SecureCompare.call(signature, expected_signature)
-            return
-          end
+          return if Castle::Utils::SecureCompare.call(signature, expected_signature)
 
-          raise Castle::WebhookVerificationError,
-                'Signature not matching the expected signature'
+          raise Castle::WebhookVerificationError, 'Signature not matching the expected signature'
         end
       end
     end

@@ -56,13 +56,13 @@ describe Castle::Utils::CleanInvalidChars do
       context 'when input is an array' do
         let(:input) { ["inv\xC4lid"] * 2 }
 
-        it { is_expected.to eq(%w[inv�lid inv�lid]) }
+        it { is_expected.to eq(['inv�lid', 'inv�lid']) }
       end
 
       context 'when input is a hash with array in key' do
         let(:input) { { items: ["inv\xC4lid"] * 2 } }
 
-        it { is_expected.to eq(items: %w[inv�lid inv�lid]) }
+        it { is_expected.to eq(items: ['inv�lid', 'inv�lid']) }
       end
     end
   end

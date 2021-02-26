@@ -5,9 +5,7 @@ module Castle
     class << self
       def from_request(request, options = {})
         new(
-          options.merge(
-            context: Castle::Context::Prepare.call(request, options)
-          )
+          options.merge(context: Castle::Context::Prepare.call(request, options))
         )
       end
     end
@@ -18,8 +16,7 @@ module Castle
     def initialize(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
       @do_not_track = options.fetch(:do_not_track, false)
-      @timestamp =
-        options.fetch(:timestamp) { Castle::Utils::GetTimestamp.call }
+      @timestamp = options.fetch(:timestamp) { Castle::Utils::GetTimestamp.call }
       @context = options.fetch(:context) { {} }
     end
 
@@ -33,9 +30,7 @@ module Castle
 
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
-      Castle::API::Authenticate.call(
-        options.merge(context: new_context, no_symbolize: true)
-      )
+      Castle::API::Authenticate.call(options.merge(context: new_context, no_symbolize: true))
     end
 
     # @param options [Hash]
@@ -48,9 +43,7 @@ module Castle
 
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
-      Castle::API::Identify.call(
-        options.merge(context: new_context, no_symbolize: true)
-      )
+      Castle::API::Identify.call(options.merge(context: new_context, no_symbolize: true))
     end
 
     # @param options [Hash]
@@ -63,9 +56,7 @@ module Castle
 
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
-      Castle::API::Track.call(
-        options.merge(context: new_context, no_symbolize: true)
-      )
+      Castle::API::Track.call(options.merge(context: new_context, no_symbolize: true))
     end
 
     # @param options [Hash]
@@ -76,9 +67,7 @@ module Castle
 
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
-      Castle::API::StartImpersonation.call(
-        options.merge(context: new_context, no_symbolize: true)
-      )
+      Castle::API::StartImpersonation.call(options.merge(context: new_context, no_symbolize: true))
     end
 
     # @param options [Hash]
@@ -89,9 +78,7 @@ module Castle
 
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
-      Castle::API::EndImpersonation.call(
-        options.merge(context: new_context, no_symbolize: true)
-      )
+      Castle::API::EndImpersonation.call(options.merge(context: new_context, no_symbolize: true))
     end
 
     # @param options [Hash]
@@ -119,8 +106,7 @@ module Castle
     def generate_do_not_track_response(user_id)
       Castle::Failover::PrepareResponse.new(
         user_id,
-        strategy: :allow,
-        reason: 'Castle is set to do not track.'
+        strategy: :allow, reason: 'Castle is set to do not track.'
       ).call
     end
 

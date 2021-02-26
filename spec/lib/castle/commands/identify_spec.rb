@@ -4,9 +4,7 @@ describe Castle::Commands::Identify do
   subject(:instance) { described_class }
 
   let(:context) { { test: { test1: '1' } } }
-  let(:default_payload) do
-    { user_id: '1234', sent_at: time_auto, context: context }
-  end
+  let(:default_payload) { { user_id: '1234', sent_at: time_auto, context: context } }
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
@@ -30,9 +28,7 @@ describe Castle::Commands::Identify do
     end
 
     context 'when active true' do
-      let(:payload) do
-        default_payload.merge(context: context.merge(active: true))
-      end
+      let(:payload) { default_payload.merge(context: context.merge(active: true)) }
       let(:command_data) do
         default_payload.merge(context: context.merge(active: true))
       end
@@ -43,9 +39,7 @@ describe Castle::Commands::Identify do
     end
 
     context 'when active false' do
-      let(:payload) do
-        default_payload.merge(context: context.merge(active: false))
-      end
+      let(:payload) { default_payload.merge(context: context.merge(active: false)) }
       let(:command_data) do
         default_payload.merge(context: context.merge(active: false))
       end
@@ -56,9 +50,7 @@ describe Castle::Commands::Identify do
     end
 
     context 'when active string' do
-      let(:payload) do
-        default_payload.merge(context: context.merge(active: 'string'))
-      end
+      let(:payload) { default_payload.merge(context: context.merge(active: 'string')) }
       let(:command_data) { default_payload.merge(context: context) }
 
       it { expect(command.method).to be_eql(:post) }

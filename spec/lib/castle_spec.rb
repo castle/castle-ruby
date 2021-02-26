@@ -57,7 +57,9 @@ describe Castle do
 
     it do
       expect do
-        castle.configure { |config| config.wrong_config = value }
+        castle.configure do |config|
+          config.wrong_config = value
+        end
       end.to raise_error(Castle::ConfigurationError)
     end
   end

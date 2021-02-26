@@ -28,9 +28,7 @@ describe Castle::Core::SendRequest do
 
       it do
         expect(described_class).to have_received(:build).with(
-          command,
-          expected_headers,
-          config
+          command, expected_headers, config
         )
       end
 
@@ -51,9 +49,7 @@ describe Castle::Core::SendRequest do
 
       it do
         expect(described_class).to have_received(:build).with(
-          command,
-          expected_headers,
-          config
+          command, expected_headers, config
         )
       end
 
@@ -85,12 +81,15 @@ describe Castle::Core::SendRequest do
         Castle::Commands::Track.build(event: '$login.succeeded', name: "\xC4")
       end
       let(:expected_body) do
-        { event: '$login.succeeded', name: '�', context: {}, sent_at: time }
+        {
+          event: '$login.succeeded',
+          name: '�',
+          context: {},
+          sent_at: time
+        }
       end
 
-      before do
-        allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time)
-      end
+      before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 
       it { expect(build.body).to be_eql(expected_body.to_json) }
       it { expect(build.method).to eql('POST') }

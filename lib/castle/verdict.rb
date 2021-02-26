@@ -5,10 +5,8 @@ module Castle
   module Verdict
     # allow
     ALLOW = 'allow'
-
     # deny
     DENY = 'deny'
-
     # challenge
     CHALLENGE = 'challenge'
   end

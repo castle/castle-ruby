@@ -20,23 +20,19 @@ describe Castle::Context::Prepare do
       user_agent: ua,
       headers: headers,
       ip: ip,
-      library: {
-        name: 'castle-rb',
-        version: '6.0.0'
-      }
+      library: { name: 'castle-rb', version: '6.0.0' }
     }
   end
 
   let(:headers) do
     {
-      'Content-Length': '0',
-      'User-Agent': ua,
-      'X-Forwarded-For': ip.to_s,
-      Cookie: true
+      'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true
     }
   end
 
-  before { stub_const('Castle::VERSION', '6.0.0') }
+  before do
+    stub_const('Castle::VERSION', '6.0.0')
+  end
 
   describe '#call' do
     subject(:generated) { described_class.call(request) }

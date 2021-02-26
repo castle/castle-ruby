@@ -12,8 +12,7 @@ module Castle
       HTTP(?:_|-).*|
         CONTENT(?:_|-)LENGTH|
       REMOTE(?:_|-)ADDR
-      $/xi
-        .freeze
+      $/xi.freeze
 
       private_constant :VALUABLE_HEADERS
 
@@ -26,14 +25,12 @@ module Castle
       # Serialize HTTP headers
       # @return [Hash]
       def call
-        @request_env
-          .keys
-          .each_with_object({}) do |header_name, acc|
-            next unless header_name.match(VALUABLE_HEADERS)
+        @request_env.keys.each_with_object({}) do |header_name, acc|
+          next unless header_name.match(VALUABLE_HEADERS)
 
-            formatted_name = @header_format.call(header_name)
-            acc[formatted_name] = @request_env[header_name]
-          end
+          formatted_name = @header_format.call(header_name)
+          acc[formatted_name] = @request_env[header_name]
+        end
       end
     end
   end

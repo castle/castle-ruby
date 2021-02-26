@@ -1,5 +1,0 @@
-#!/bin/bash
-
-
-bundle exec rubocop -A
-bundle exec rbprettier -w ./

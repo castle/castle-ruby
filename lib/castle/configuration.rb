@@ -8,18 +8,15 @@ module Castle
     # API endpoint
     BASE_URL = 'https://api.castle.io/v1'
     REQUEST_TIMEOUT = 1000 # in milliseconds
-
     # regexp of trusted proxies which is always appended to the trusted proxy list
-    TRUSTED_PROXIES = [
-      /
+    TRUSTED_PROXIES = [/
       \A127\.0\.0\.1\Z|
       \A(10|172\.(1[6-9]|2[0-9]|30|31)|192\.168)\.|
       \A::1\Z|\Afd[0-9a-f]{2}:.+|
       \Alocalhost\Z|
       \Aunix\Z|
       \Aunix:
-    /ix
-    ].freeze
+    /ix].freeze
 
     # @note this value is not assigned as we don't recommend using a allowlist. If you need to use
     #   one, this constant is provided as a good default.
@@ -50,14 +47,8 @@ module Castle
     ].freeze
 
     attr_accessor :request_timeout, :trust_proxy_chain, :logger
-    attr_reader :api_secret,
-                :allowlisted,
-                :denylisted,
-                :failover_strategy,
-                :ip_headers,
-                :trusted_proxies,
-                :trusted_proxy_depth,
-                :base_url
+    attr_reader :api_secret, :allowlisted, :denylisted, :failover_strategy, :ip_headers,
+                :trusted_proxies, :trusted_proxy_depth, :base_url
 
     def initialize
       @header_format = Castle::Headers::Format
@@ -87,21 +78,17 @@ module Castle
     end
 
     def allowlisted=(value)
-      @allowlisted =
-        (value ? value.map { |header| @header_format.call(header) } : []).freeze
+      @allowlisted = (value ? value.map { |header| @header_format.call(header) } : []).freeze
     end
 
     def denylisted=(value)
-      @denylisted =
-        (value ? value.map { |header| @header_format.call(header) } : []).freeze
+      @denylisted = (value ? value.map { |header| @header_format.call(header) } : []).freeze
     end
 
     # sets ip headers
     # @param value [Array<String>]
     def ip_headers=(value)
-      unless value.is_a?(Array)
-        raise Castle::ConfigurationError, 'ip headers must be an Array'
-      end
+      raise Castle::ConfigurationError, 'ip headers must be an Array' unless value.is_a?(Array)
 
       @ip_headers = value.map { |header| @header_format.call(header) }.freeze
     end
@@ -109,9 +96,7 @@ module Castle
     # sets trusted proxies
     # @param value [Array<String,Regexp>]
     def trusted_proxies=(value)
-      unless value.is_a?(Array)
-        raise Castle::ConfigurationError, 'trusted proxies must be an Array'
-      end
+      raise Castle::ConfigurationError, 'trusted proxies must be an Array' unless value.is_a?(Array)
 
       @trusted_proxies = value
     end
@@ -122,18 +107,14 @@ module Castle
     end
 
     def valid?
-      !api_secret.to_s.empty? && !base_url.host.to_s.empty? &&
-        !base_url.port.to_s.empty?
+      !api_secret.to_s.empty? && !base_url.host.to_s.empty? && !base_url.port.to_s.empty?
     end
 
     def failover_strategy=(value)
-      @failover_strategy =
-        Castle::Failover::STRATEGIES.detect do |strategy|
-          strategy == value.to_sym
-        end
-      if @failover_strategy.nil?
-        raise Castle::ConfigurationError, 'unrecognized failover strategy'
+      @failover_strategy = Castle::Failover::STRATEGIES.detect do |strategy|
+        strategy == value.to_sym
       end
+      raise Castle::ConfigurationError, 'unrecognized failover strategy' if @failover_strategy.nil?
     end
 
     private

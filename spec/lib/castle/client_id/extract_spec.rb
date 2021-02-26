@@ -8,7 +8,9 @@ describe Castle::ClientId::Extract do
   let(:client_id_header) { 'abcde' }
   let(:cookies) { request.cookies }
   let(:request) { Rack::Request.new(env) }
-  let(:env) { Rack::MockRequest.env_for('/', headers) }
+  let(:env) do
+    Rack::MockRequest.env_for('/', headers)
+  end
 
   context 'with client_id' do
     let(:headers) do
@@ -18,7 +20,9 @@ describe Castle::ClientId::Extract do
       }
     end
 
-    it { expect(extractor.call).to eql(client_id_cookie) }
+    it do
+      expect(extractor.call).to eql(client_id_cookie)
+    end
   end
 
   context 'with X-Castle-Client-Id header' do
@@ -38,7 +42,9 @@ describe Castle::ClientId::Extract do
     let(:cookies) { nil }
     let(:headers) { {} }
 
-    it { expect(extractor.call).to eql('') }
+    it do
+      expect(extractor.call).to eql('')
+    end
   end
 
   context 'with X-Castle-Client-Id header and cookies client' do

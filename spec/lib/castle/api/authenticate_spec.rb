@@ -30,57 +30,37 @@ describe Castle::API::Authenticate do
 
   describe '.call' do
     let(:request_body) do
-      {
-        event: '$login.succeeded',
-        context: context,
-        user_id: '1234',
-        sent_at: time_auto
-      }
+      { event: '$login.succeeded', context: context, user_id: '1234',
+        sent_at: time_auto }
     end
 
     context 'when used with symbol keys' do
       before do
-        stub_request(:any, /api.castle.io/)
-          .with(basic_auth: ['', 'secret'])
-          .to_return(status: 200, body: response_body, headers: {})
+        stub_request(:any, /api.castle.io/).with(
+          basic_auth: ['', 'secret']
+        ).to_return(status: 200, body: response_body, headers: {})
         call_subject
       end
 
-      let(:options) do
-        { event: '$login.succeeded', user_id: '1234', context: context }
-      end
+      let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
 
       it do
-        assert_requested :post,
-                         'https://api.castle.io/v1/authenticate',
-                         times: 1 do |req|
+        assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:options) do
-          {
-            event: '$login.succeeded',
-            user_id: '1234',
-            timestamp: time_user,
-            context: context
-          }
+          { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context }
         end
         let(:request_body) do
-          {
-            event: '$login.succeeded',
-            user_id: '1234',
-            context: context,
-            timestamp: time_user,
-            sent_at: time_auto
-          }
+          { event: '$login.succeeded', user_id: '1234', context: context,
+            timestamp: time_user, sent_at: time_auto }
         end
 
         it do
-          assert_requested :post,
-                           'https://api.castle.io/v1/authenticate',
-                           times: 1 do |req|
+          assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end
@@ -90,34 +70,30 @@ describe Castle::API::Authenticate do
     context 'when denied' do
       let(:failover_appendix) { { failover: false, failover_reason: nil } }
 
-      let(:options) do
-        { event: '$login.succeeded', user_id: '1234', context: context }
-      end
+      let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
 
       context 'when denied without any risk policy' do
         let(:response_body) { deny_response_without_rp.to_json }
         let(:deny_response_without_rp) do
-          { action: 'deny', user_id: '12345', device_token: 'abcdefg1234' }
+          {
+            action: 'deny',
+            user_id: '12345',
+            device_token: 'abcdefg1234'
+          }
         end
         let(:deny_without_rp_failover_result) do
           deny_response_without_rp.merge(failover_appendix)
         end
 
         before do
-          stub_request(:any, /api.castle.io/)
-            .with(basic_auth: ['', 'secret'])
-            .to_return(
-              status: 200,
-              body: deny_response_without_rp.to_json,
-              headers: {}
-            )
+          stub_request(:any, /api.castle.io/).with(
+            basic_auth: ['', 'secret']
+          ).to_return(status: 200, body: deny_response_without_rp.to_json, headers: {})
           call_subject
         end
 
         it do
-          assert_requested :post,
-                           'https://api.castle.io/v1/authenticate',
-                           times: 1 do |req|
+          assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end
@@ -145,20 +121,14 @@ describe Castle::API::Authenticate do
         end
 
         before do
-          stub_request(:any, /api.castle.io/)
-            .with(basic_auth: ['', 'secret'])
-            .to_return(
-              status: 200,
-              body: deny_response_with_rp.to_json,
-              headers: {}
-            )
+          stub_request(:any, /api.castle.io/).with(
+            basic_auth: ['', 'secret']
+          ).to_return(status: 200, body: deny_response_with_rp.to_json, headers: {})
           call_subject
         end
 
         it do
-          assert_requested :post,
-                           'https://api.castle.io/v1/authenticate',
-                           times: 1 do |req|
+          assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end
