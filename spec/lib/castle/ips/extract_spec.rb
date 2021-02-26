@@ -43,9 +43,7 @@ describe Castle::IPs::Extract do
     end
 
     context 'with all the trusted proxies' do
-      let(:http_x_header) do
-        '127.0.0.1,10.0.0.1,172.31.0.1,192.168.0.1'
-      end
+      let(:http_x_header) { '127.0.0.1,10.0.0.1,172.31.0.1,192.168.0.1' }
 
       let(:headers) { { 'Remote-Addr' => '127.0.0.1', 'X-Forwarded-For' => http_x_header } }
 
@@ -55,9 +53,7 @@ describe Castle::IPs::Extract do
     end
 
     context 'with trust_proxy_chain option' do
-      let(:http_x_header) do
-        '6.6.6.6, 2.2.2.3, 6.6.6.5'
-      end
+      let(:http_x_header) { '6.6.6.6, 2.2.2.3, 6.6.6.5' }
 
       let(:headers) { { 'Remote-Addr' => '6.6.6.4', 'X-Forwarded-For' => http_x_header } }
 
@@ -69,9 +65,7 @@ describe Castle::IPs::Extract do
     end
 
     context 'with trusted_proxy_depth option' do
-      let(:http_x_header) do
-        '6.6.6.6, 2.2.2.3, 6.6.6.5'
-      end
+      let(:http_x_header) { '6.6.6.6, 2.2.2.3, 6.6.6.5' }
 
       let(:headers) { { 'Remote-Addr' => '6.6.6.4', 'X-Forwarded-For' => http_x_header } }
 
@@ -84,10 +78,7 @@ describe Castle::IPs::Extract do
 
     context 'when list of not trusted ips provided in X_FORWARDED_FOR' do
       let(:headers) do
-        {
-          'X-Forwarded-For' => '6.6.6.6, 2.2.2.3, 192.168.0.7',
-          'Client-Ip' => '6.6.6.6'
-        }
+        { 'X-Forwarded-For' => '6.6.6.6, 2.2.2.3, 192.168.0.7', 'Client-Ip' => '6.6.6.6' }
       end
 
       it 'does not allow to spoof ip' do

@@ -9,9 +9,7 @@ module Castle
           when ::String
             arg.encode('UTF-8', invalid: :replace, undef: :replace)
           when ::Hash
-            arg.transform_values do |v|
-              Castle::Utils::CleanInvalidChars.call(v)
-            end
+            arg.transform_values { |v| Castle::Utils::CleanInvalidChars.call(v) }
           when ::Array
             arg.map { |el| Castle::Utils::CleanInvalidChars.call(el) }
           else

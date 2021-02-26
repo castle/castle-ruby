@@ -4,9 +4,7 @@ module Castle
   class Client
     class << self
       def from_request(request, options = {})
-        new(
-          options.merge(context: Castle::Context::Prepare.call(request, options))
-        )
+        new(options.merge(context: Castle::Context::Prepare.call(request, options)))
       end
     end
 
@@ -106,7 +104,8 @@ module Castle
     def generate_do_not_track_response(user_id)
       Castle::Failover::PrepareResponse.new(
         user_id,
-        strategy: :allow, reason: 'Castle is set to do not track.'
+        strategy: :allow,
+        reason: 'Castle is set to do not track.'
       ).call
     end
 

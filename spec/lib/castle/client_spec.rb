@@ -21,9 +21,7 @@ describe Castle::Client do
   let(:client_with_no_timestamp) { described_class.new(context: request_to_context) }
 
   let(:headers) do
-    {
-      'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true
-    }
+    { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true }
   end
   let(:context) do
     {
@@ -32,7 +30,10 @@ describe Castle::Client do
       user_agent: ua,
       headers: headers,
       ip: ip,
-      library: { name: 'castle-rb', version: '2.2.0' }
+      library: {
+        name: 'castle-rb',
+        version: '2.2.0'
+      }
     }
   end
 
@@ -44,17 +45,15 @@ describe Castle::Client do
   before do
     Timecop.freeze(time_now)
     stub_const('Castle::VERSION', '2.2.0')
-    stub_request(:any, /api.castle.io/).with(
-      basic_auth: ['', 'secret']
-    ).to_return(status: 200, body: response_body, headers: {})
+    stub_request(:any, /api.castle.io/)
+      .with(basic_auth: ['', 'secret'])
+      .to_return(status: 200, body: response_body, headers: {})
   end
 
   after { Timecop.return }
 
   describe 'parses the request' do
-    before do
-      allow(Castle::API).to receive(:send_request).and_call_original
-    end
+    before { allow(Castle::API).to receive(:send_request).and_call_original }
 
     it do
       client.authenticate(event: '$login.succeeded', user_id: '1234')
@@ -65,8 +64,15 @@ describe Castle::Client do
   describe 'end impersonation' do
     let(:impersonator) { 'test@castle.io' }
     let(:request_body) do
-      { user_id: '1234', timestamp: time_auto, sent_at: time_auto,
-        properties: { impersonator: impersonator }, context: context }
+      {
+        user_id: '1234',
+        timestamp: time_auto,
+        sent_at: time_auto,
+        properties: {
+          impersonator: impersonator
+        },
+        context: context
+      }
     end
     let(:response_body) { { success: true }.to_json }
     let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
@@ -93,8 +99,15 @@ describe Castle::Client do
   describe 'start impersonation' do
     let(:impersonator) { 'test@castle.io' }
     let(:request_body) do
-      { user_id: '1234', timestamp: time_auto, sent_at: time_auto,
-        properties: { impersonator: impersonator }, context: context }
+      {
+        user_id: '1234',
+        timestamp: time_auto,
+        sent_at: time_auto,
+        properties: {
+          impersonator: impersonator
+        },
+        context: context
+      }
     end
     let(:response_body) { { success: true }.to_json }
     let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
@@ -120,8 +133,15 @@ describe Castle::Client do
 
   describe 'identify' do
     let(:request_body) do
-      { user_id: '1234', timestamp: time_auto,
-        sent_at: time_auto, context: context, user_traits: { name: 'Jo' } }
+      {
+        user_id: '1234',
+        timestamp: time_auto,
+        sent_at: time_auto,
+        context: context,
+        user_traits: {
+          name: 'Jo'
+        }
+      }
     end
 
     before { client.identify(options) }
@@ -139,8 +159,15 @@ describe Castle::Client do
         let(:client) { client_with_no_timestamp }
         let(:options) { { user_id: '1234', user_traits: { name: 'Jo' }, timestamp: time_user } }
         let(:request_body) do
-          { user_id: '1234', user_traits: { name: 'Jo' }, context: context,
-            timestamp: time_user, sent_at: time_auto }
+          {
+            user_id: '1234',
+            user_traits: {
+              name: 'Jo'
+            },
+            context: context,
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do
@@ -153,8 +180,15 @@ describe Castle::Client do
       context 'with client initialized with timestamp' do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
-          { user_id: '1234', timestamp: time_user, sent_at: time_auto,
-            context: context, user_traits: { name: 'Jo' } }
+          {
+            user_id: '1234',
+            timestamp: time_user,
+            sent_at: time_auto,
+            context: context,
+            user_traits: {
+              name: 'Jo'
+            }
+          }
         end
 
         it do
@@ -180,8 +214,13 @@ describe Castle::Client do
     let(:options) { { event: '$login.succeeded', user_id: '1234' } }
     let(:request_response) { client.authenticate(options) }
     let(:request_body) do
-      { event: '$login.succeeded', user_id: '1234', context: context,
-        timestamp: time_auto, sent_at: time_auto }
+      {
+        event: '$login.succeeded',
+        user_id: '1234',
+        context: context,
+        timestamp: time_auto,
+        sent_at: time_auto
+      }
     end
 
     context 'when used with symbol keys' do
@@ -197,8 +236,13 @@ describe Castle::Client do
         let(:client) { client_with_no_timestamp }
         let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user } }
         let(:request_body) do
-          { event: '$login.succeeded', user_id: '1234', context: context,
-            timestamp: time_user, sent_at: time_auto }
+          {
+            event: '$login.succeeded',
+            user_id: '1234',
+            context: context,
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do
@@ -211,8 +255,13 @@ describe Castle::Client do
       context 'with client initialized with timestamp' do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
-          { event: '$login.succeeded', user_id: '1234', context: context,
-            timestamp: time_user, sent_at: time_auto }
+          {
+            event: '$login.succeeded',
+            user_id: '1234',
+            context: context,
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do
@@ -306,8 +355,13 @@ describe Castle::Client do
 
   describe 'track' do
     let(:request_body) do
-      { event: '$login.succeeded', context: context, user_id: '1234',
-        timestamp: time_auto, sent_at: time_auto }
+      {
+        event: '$login.succeeded',
+        context: context,
+        user_id: '1234',
+        timestamp: time_auto,
+        sent_at: time_auto
+      }
     end
 
     before { client.track(options) }
@@ -325,8 +379,13 @@ describe Castle::Client do
         let(:client) { client_with_no_timestamp }
         let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user } }
         let(:request_body) do
-          { event: '$login.succeeded', user_id: '1234', context: context,
-            timestamp: time_user, sent_at: time_auto }
+          {
+            event: '$login.succeeded',
+            user_id: '1234',
+            context: context,
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do
@@ -339,8 +398,13 @@ describe Castle::Client do
       context 'with client initialized with timestamp' do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
-          { event: '$login.succeeded', context: context, user_id: '1234',
-            timestamp: time_user, sent_at: time_auto }
+          {
+            event: '$login.succeeded',
+            context: context,
+            user_id: '1234',
+            timestamp: time_user,
+            sent_at: time_auto
+          }
         end
 
         it do

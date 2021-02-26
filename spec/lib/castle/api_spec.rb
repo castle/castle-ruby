@@ -8,31 +8,19 @@ describe Castle::API do
   context 'when request timeouts' do
     before { stub_request(:any, /api.castle.io/).to_timeout }
 
-    it do
-      expect do
-        call
-      end.to raise_error(Castle::RequestError)
-    end
+    it { expect { call }.to raise_error(Castle::RequestError) }
   end
 
   context 'when non-OK response code' do
     before { stub_request(:any, /api.castle.io/).to_return(status: 400) }
 
-    it do
-      expect do
-        call
-      end.to raise_error(Castle::BadRequestError)
-    end
+    it { expect { call }.to raise_error(Castle::BadRequestError) }
   end
 
   context 'when no api_secret' do
     before { allow(Castle.config).to receive(:api_secret).and_return('') }
 
-    it do
-      expect do
-        call
-      end.to raise_error(Castle::ConfigurationError)
-    end
+    it { expect { call }.to raise_error(Castle::ConfigurationError) }
   end
 
   context 'when custom config' do
@@ -43,10 +31,6 @@ describe Castle::API do
       stub_request(:any, /api.castle.io/)
     end
 
-    it do
-      expect do
-        call
-      end.not_to raise_error
-    end
+    it { expect { call }.not_to raise_error }
   end
 end

@@ -9,11 +9,7 @@ module Castle
         # @return [Castle::Command]
         def build(options = {})
           Castle::Validators::Present.call(options, %i[device_token])
-          Castle::Command.new(
-            "devices/#{options[:device_token]}/report",
-            nil,
-            :put
-          )
+          Castle::Command.new("devices/#{options[:device_token]}/report", nil, :put)
         end
       end
     end

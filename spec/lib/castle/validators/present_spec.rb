@@ -8,9 +8,7 @@ describe Castle::Validators::Present do
       let(:keys) { %i[second third] }
 
       it do
-        expect do
-          call
-        end.to raise_error(Castle::InvalidParametersError, 'third is missing or empty')
+        expect { call }.to raise_error(Castle::InvalidParametersError, 'third is missing or empty')
       end
     end
 
@@ -18,9 +16,10 @@ describe Castle::Validators::Present do
       let(:keys) { %i[second invalid] }
 
       it do
-        expect do
-          call
-        end.to raise_error(Castle::InvalidParametersError, 'invalid is missing or empty')
+        expect { call }.to raise_error(
+          Castle::InvalidParametersError,
+          'invalid is missing or empty'
+        )
       end
     end
 

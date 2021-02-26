@@ -11,12 +11,7 @@ module Castle
       end
 
       def call
-        {
-          action: @strategy.to_s,
-          user_id: @user_id,
-          failover: true,
-          failover_reason: @reason
-        }
+        { action: @strategy.to_s, user_id: @user_id, failover: true, failover_reason: @reason }
       end
     end
   end

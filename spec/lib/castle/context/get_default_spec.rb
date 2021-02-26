@@ -7,11 +7,13 @@ describe Castle::Context::GetDefault do
   let(:client_id) { 'abcd' }
 
   let(:env) do
-    Rack::MockRequest.env_for('/',
-                              'HTTP_X_FORWARDED_FOR' => ip,
-                              'HTTP_ACCEPT_LANGUAGE' => 'en',
-                              'HTTP_USER_AGENT' => 'test',
-                              'HTTP_COOKIE' => "__cid=#{client_id};other=efgh")
+    Rack::MockRequest.env_for(
+      '/',
+      'HTTP_X_FORWARDED_FOR' => ip,
+      'HTTP_ACCEPT_LANGUAGE' => 'en',
+      'HTTP_USER_AGENT' => 'test',
+      'HTTP_COOKIE' => "__cid=#{client_id};other=efgh"
+    )
   end
   let(:request) { Rack::Request.new(env) }
   let(:default_context) { subject.call }
@@ -26,9 +28,7 @@ describe Castle::Context::GetDefault do
     }
   end
 
-  before do
-    stub_const('Castle::VERSION', version)
-  end
+  before { stub_const('Castle::VERSION', version) }
 
   it { expect(default_context[:active]).to be_eql(true) }
   it { expect(default_context[:headers]).to be_eql(result_headers) }

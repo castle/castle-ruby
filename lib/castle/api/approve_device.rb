@@ -12,12 +12,7 @@ module Castle
           http = options.delete(:http)
           config = options.delete(:config) || Castle.config
 
-          Castle::API.call(
-            Castle::Commands::ApproveDevice.build(options),
-            {},
-            http,
-            config
-          )
+          Castle::API.call(Castle::Commands::ApproveDevice.build(options), {}, http, config)
         end
       end
     end

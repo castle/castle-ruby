@@ -7,6 +7,7 @@ module Castle
     class Extract
       # ordered list of ip headers for ip extraction
       DEFAULT = %w[X-Forwarded-For Remote-Addr].freeze
+
       # list of header which are used with proxy depth setting
       DEPTH_RELATED = %w[X-Forwarded-For].freeze
 
