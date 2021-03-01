@@ -214,7 +214,7 @@ end
 ```ruby
 payload = ::Castle::Payload::Prepare.call(
   {
-    event: ::Castle::Events::LOGIN_SUCCEEDED,
+    event: '$login',
     user_id: user.id,
     properties: {
       key: 'value'
