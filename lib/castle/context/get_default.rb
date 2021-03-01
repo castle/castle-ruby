@@ -44,7 +44,7 @@ module Castle
 
       # @return [String]
       def fingerprint
-        Castle::ClientId::Extract.new(@pre_headers, @cookies).call
+        Castle::Fingerprint::Extract.new(@pre_headers, @cookies).call
       end
 
       # formatted and filtered headers
