@@ -20,17 +20,11 @@ module Castle
             version: Castle::VERSION
           }
         }.tap do |result|
-          result[:locale] = locale if locale
           result[:user_agent] = user_agent if user_agent
         end
       end
 
       private
-
-      # @return [String]
-      def locale
-        @pre_headers['Accept-Language']
-      end
 
       # @return [String]
       def user_agent
