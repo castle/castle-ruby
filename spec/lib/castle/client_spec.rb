@@ -56,7 +56,7 @@ describe Castle::Client do
     before { allow(Castle::API).to receive(:send_request).and_call_original }
 
     it do
-      client.authenticate(event: '$login.succeeded', user_id: '1234')
+      client.authenticate(event: '$login', user_id: '1234')
       expect(Castle::API).to have_received(:send_request)
     end
   end
@@ -211,11 +211,11 @@ describe Castle::Client do
   end
 
   describe 'authenticate' do
-    let(:options) { { event: '$login.succeeded', user_id: '1234' } }
+    let(:options) { { event: '$login', user_id: '1234' } }
     let(:request_response) { client.authenticate(options) }
     let(:request_body) do
       {
-        event: '$login.succeeded',
+        event: '$login',
         user_id: '1234',
         context: context,
         timestamp: time_auto,
@@ -234,10 +234,10 @@ describe Castle::Client do
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:client) { client_with_no_timestamp }
-        let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user } }
+        let(:options) { { event: '$login', user_id: '1234', timestamp: time_user } }
         let(:request_body) do
           {
-            event: '$login.succeeded',
+            event: '$login',
             user_id: '1234',
             context: context,
             timestamp: time_user,
@@ -256,7 +256,7 @@ describe Castle::Client do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
           {
-            event: '$login.succeeded',
+            event: '$login',
             user_id: '1234',
             context: context,
             timestamp: time_user,
@@ -273,7 +273,7 @@ describe Castle::Client do
     end
 
     context 'when used with string keys' do
-      let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
+      let(:options) { { 'event' => '$login', 'user_id' => '1234' } }
 
       before { request_response }
 
@@ -356,7 +356,7 @@ describe Castle::Client do
   describe 'track' do
     let(:request_body) do
       {
-        event: '$login.succeeded',
+        event: '$login',
         context: context,
         user_id: '1234',
         timestamp: time_auto,
@@ -367,7 +367,7 @@ describe Castle::Client do
     before { client.track(options) }
 
     context 'when used with symbol keys' do
-      let(:options) { { event: '$login.succeeded', user_id: '1234' } }
+      let(:options) { { event: '$login', user_id: '1234' } }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
@@ -377,10 +377,10 @@ describe Castle::Client do
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:client) { client_with_no_timestamp }
-        let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user } }
+        let(:options) { { event: '$login', user_id: '1234', timestamp: time_user } }
         let(:request_body) do
           {
-            event: '$login.succeeded',
+            event: '$login',
             user_id: '1234',
             context: context,
             timestamp: time_user,
@@ -399,7 +399,7 @@ describe Castle::Client do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
           {
-            event: '$login.succeeded',
+            event: '$login',
             context: context,
             user_id: '1234',
             timestamp: time_user,
@@ -416,7 +416,7 @@ describe Castle::Client do
     end
 
     context 'when used with string keys' do
-      let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
+      let(:options) { { 'event' => '$login', 'user_id' => '1234' } }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|

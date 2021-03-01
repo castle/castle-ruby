@@ -3,7 +3,7 @@
 describe Castle::API do
   subject(:call) { described_class.call(command) }
 
-  let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
+  let(:command) { Castle::Commands::Track.build(event: '$login') }
 
   context 'when request timeouts' do
     before { stub_request(:any, /api.castle.io/).to_timeout }

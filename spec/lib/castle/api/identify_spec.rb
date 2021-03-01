@@ -33,13 +33,13 @@ describe Castle::API::Identify do
 
   describe '.call' do
     let(:request_body) do
-      { event: '$login.succeeded', context: context, user_id: '1234', sent_at: time_auto }
+      { event: '$login', context: context, user_id: '1234', sent_at: time_auto }
     end
 
     before { call }
 
     context 'when used with symbol keys' do
-      let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
+      let(:options) { { event: '$login', user_id: '1234', context: context } }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
@@ -49,11 +49,11 @@ describe Castle::API::Identify do
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:options) do
-          { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context }
+          { event: '$login', user_id: '1234', timestamp: time_user, context: context }
         end
         let(:request_body) do
           {
-            event: '$login.succeeded',
+            event: '$login',
             user_id: '1234',
             context: context,
             timestamp: time_user,

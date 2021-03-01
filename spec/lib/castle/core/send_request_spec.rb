@@ -4,7 +4,7 @@ describe Castle::Core::SendRequest do
   let(:config) { Castle.config }
 
   describe '#call' do
-    let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
+    let(:command) { Castle::Commands::Track.build(event: '$login') }
     let(:headers) { {} }
     let(:request_build) { {} }
     let(:expected_headers) { { 'Content-Type' => 'application/json' } }
@@ -14,7 +14,7 @@ describe Castle::Core::SendRequest do
       subject(:call) { described_class.call(command, headers, nil, config) }
 
       let(:http) { instance_double('Net::HTTP') }
-      let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
+      let(:command) { Castle::Commands::Track.build(event: '$login') }
       let(:headers) { {} }
       let(:request_build) { {} }
       let(:expected_headers) { { 'Content-Type' => 'application/json' } }
@@ -73,8 +73,8 @@ describe Castle::Core::SendRequest do
 
     context 'when post' do
       let(:time) { Time.now.utc.iso8601(3) }
-      let(:command) { Castle::Commands::Track.build(event: '$login.succeeded', name: "\xC4") }
-      let(:expected_body) { { event: '$login.succeeded', name: '�', context: {}, sent_at: time } }
+      let(:command) { Castle::Commands::Track.build(event: '$login', name: "\xC4") }
+      let(:expected_body) { { event: '$login', name: '�', context: {}, sent_at: time } }
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 

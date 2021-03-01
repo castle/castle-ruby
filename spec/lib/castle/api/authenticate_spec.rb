@@ -30,7 +30,7 @@ describe Castle::API::Authenticate do
 
   describe '.call' do
     let(:request_body) do
-      { event: '$login.succeeded', context: context, user_id: '1234', sent_at: time_auto }
+      { event: '$login', context: context, user_id: '1234', sent_at: time_auto }
     end
 
     context 'when used with symbol keys' do
@@ -41,7 +41,7 @@ describe Castle::API::Authenticate do
         call_subject
       end
 
-      let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
+      let(:options) { { event: '$login', user_id: '1234', context: context } }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
@@ -51,11 +51,11 @@ describe Castle::API::Authenticate do
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:options) do
-          { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context }
+          { event: '$login', user_id: '1234', timestamp: time_user, context: context }
         end
         let(:request_body) do
           {
-            event: '$login.succeeded',
+            event: '$login',
             user_id: '1234',
             context: context,
             timestamp: time_user,
@@ -74,7 +74,7 @@ describe Castle::API::Authenticate do
     context 'when denied' do
       let(:failover_appendix) { { failover: false, failover_reason: nil } }
 
-      let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
+      let(:options) { { event: '$login', user_id: '1234', context: context } }
 
       context 'when denied without any risk policy' do
         let(:response_body) { deny_response_without_rp.to_json }

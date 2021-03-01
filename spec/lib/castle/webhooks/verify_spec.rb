@@ -18,7 +18,7 @@ describe Castle::Webhooks::Verify do
           id: 'test',
           device_token: 'token',
           user_id: user_id,
-          trigger: '$login.succeeded',
+          trigger: '$login',
           context: {},
           location: {},
           user_agent: {}

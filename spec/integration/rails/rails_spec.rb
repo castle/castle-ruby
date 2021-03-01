@@ -7,7 +7,7 @@ RSpec.describe HomeController, type: :request do
   context 'with index pages' do
     let(:request) do
       {
-        'event' => '$login.succeeded',
+        'event' => '$login',
         'user_id' => '123',
         'properties' => {
           'key' => 'value'
