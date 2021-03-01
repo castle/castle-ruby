@@ -18,7 +18,7 @@ RSpec.describe HomeController, type: :request do
         'timestamp' => now.utc.iso8601(3),
         'sent_at' => now.utc.iso8601(3),
         'context' => {
-          'client_id' => '',
+          'fingerprint' => '',
           'active' => true,
           'headers' => {
             'Accept' =>
