@@ -25,7 +25,7 @@ describe Castle::Client do
   end
   let(:context) do
     {
-      client_id: 'abcd',
+      fingerprint: 'abcd',
       active: true,
       user_agent: ua,
       headers: headers,

@@ -11,7 +11,7 @@ module Castle
 
       def call
         {
-          client_id: client_id,
+          fingerprint: fingerprint,
           active: true,
           headers: headers,
           ip: ip,
@@ -43,7 +43,7 @@ module Castle
       end
 
       # @return [String]
-      def client_id
+      def fingerprint
         Castle::ClientId::Extract.new(@pre_headers, @cookies).call
       end
 

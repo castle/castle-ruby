@@ -15,7 +15,7 @@ describe Castle::Context::Prepare do
   let(:request) { Rack::Request.new(env) }
   let(:context) do
     {
-      client_id: 'abcd',
+      fingerprint: 'abcd',
       active: true,
       user_agent: ua,
       headers: headers,

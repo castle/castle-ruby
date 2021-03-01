@@ -3,7 +3,7 @@
 describe Castle::Commands::EndImpersonation do
   subject(:instance) { described_class }
 
-  let(:context) { { user_agent: 'test', ip: '127.0.0.1', client_id: 'test' } }
+  let(:context) { { user_agent: 'test', ip: '127.0.0.1', fingerprint: 'test' } }
   let(:impersonator) { 'test@castle.io' }
   let(:default_payload) { { user_id: '1234', sent_at: time_auto, context: context } }
 
