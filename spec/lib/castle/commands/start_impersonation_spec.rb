@@ -3,9 +3,11 @@
 describe Castle::Commands::StartImpersonation do
   subject(:instance) { described_class }
 
-  let(:context) { { user_agent: 'test', ip: '127.0.0.1', fingerprint: 'test' } }
   let(:impersonator) { 'test@castle.io' }
-  let(:default_payload) { { user_id: '1234', sent_at: time_auto, context: context } }
+  let(:context) { {} }
+  let(:default_payload) do
+    { user_id: '1234', sent_at: time_auto, context: context, headers: { 'random' => 'header' } }
+  end
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
@@ -19,9 +21,7 @@ describe Castle::Commands::StartImpersonation do
 
     context 'with impersonator' do
       let(:payload) { default_payload.merge(properties: { impersonator: impersonator }) }
-      let(:command_data) do
-        default_payload.merge(properties: { impersonator: impersonator }, context: context)
-      end
+      let(:command_data) { default_payload.merge(properties: { impersonator: impersonator }) }
 
       it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('impersonate') }
@@ -60,7 +60,7 @@ describe Castle::Commands::StartImpersonation do
     subject(:validate!) { instance.build(payload) }
 
     context 'when user_id not present' do
-      let(:payload) { {} }
+      let(:payload) { { headers: { 'random' => 'header' } } }
 
       it do
         expect { validate! }.to raise_error(
@@ -70,8 +70,19 @@ describe Castle::Commands::StartImpersonation do
       end
     end
 
+    context 'when headers not present' do
+      let(:payload) { { user_id: 'test' } }
+
+      it do
+        expect { validate! }.to raise_error(
+          Castle::InvalidParametersError,
+          'headers is missing or empty'
+        )
+      end
+    end
+
     context 'when user_id present' do
-      let(:payload) { { user_id: '1234', context: context } }
+      let(:payload) { { user_id: 'test', headers: { 'random' => 'header' } } }
 
       it { expect { validate! }.not_to raise_error }
     end

@@ -10,16 +10,7 @@ module Castle
       end
 
       def call
-        { active: true, library: { name: 'castle-rb', version: Castle::VERSION } }.tap do |result|
-          result[:user_agent] = user_agent if user_agent
-        end
-      end
-
-      private
-
-      # @return [String]
-      def user_agent
-        @pre_headers['User-Agent']
+        { active: true, library: { name: 'castle-rb', version: Castle::VERSION } }
       end
     end
   end

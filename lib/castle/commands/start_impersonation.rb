@@ -8,10 +8,8 @@ module Castle
         # @param options [Hash]
         # @return [Castle::Command]
         def build(options = {})
-          Castle::Validators::Present.call(options, %i[user_id])
+          Castle::Validators::Present.call(options, %i[user_id headers])
           context = Castle::Context::Sanitize.call(options[:context])
-
-          Castle::Validators::Present.call(context, %i[user_agent])
 
           Castle::Command.new(
             'impersonate',
