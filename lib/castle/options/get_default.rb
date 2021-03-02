@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 module Castle
@@ -11,11 +10,7 @@ module Castle
       end
 
       def call
-        {
-          fingerprint: fingerprint,
-          headers: headers,
-          ip: ip
-        }
+        { fingerprint: fingerprint, headers: headers, ip: ip }
       end
 
       private

@@ -14,14 +14,7 @@ describe Castle::Context::Prepare do
   end
   let(:request) { Rack::Request.new(env) }
   let(:context) do
-    {
-      active: true,
-      user_agent: ua,
-      library: {
-        name: 'castle-rb',
-        version: '6.0.0'
-      }
-    }
+    { active: true, user_agent: ua, library: { name: 'castle-rb', version: '6.0.0' } }
   end
 
   let(:headers) do

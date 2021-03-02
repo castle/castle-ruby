@@ -10,13 +10,7 @@ module Castle
       end
 
       def call
-        {
-          active: true,
-          library: {
-            name: 'castle-rb',
-            version: Castle::VERSION
-          }
-        }.tap do |result|
+        { active: true, library: { name: 'castle-rb', version: Castle::VERSION } }.tap do |result|
           result[:user_agent] = user_agent if user_agent
         end
       end

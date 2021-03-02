@@ -18,14 +18,7 @@ describe Castle::Payload::Prepare do
     { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true }
   end
   let(:context) do
-    {
-      active: true,
-      user_agent: ua,
-      library: {
-        name: 'castle-rb',
-        version: '2.2.0'
-      }
-    }
+    { active: true, user_agent: ua, library: { name: 'castle-rb', version: '2.2.0' } }
   end
 
   let(:time_now) { Time.now }
