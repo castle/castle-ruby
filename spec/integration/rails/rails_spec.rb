@@ -18,19 +18,7 @@ RSpec.describe HomeController, type: :request do
         'timestamp' => now.utc.iso8601(3),
         'sent_at' => now.utc.iso8601(3),
         'context' => {
-          'fingerprint' => '',
           'active' => true,
-          'headers' => {
-            'Accept' =>
-              'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
-            'Authorization' => true,
-            'Content-Length' => '0',
-            'Cookie' => true,
-            'Host' => 'www.example.com',
-            'X-Forwarded-For' => '5.5.5.5, 1.2.3.4',
-            'Remote-Addr' => '127.0.0.1'
-          },
-          'ip' => '1.2.3.4',
           'library' => {
             'name' => 'castle-rb',
             'version' => Castle::VERSION
