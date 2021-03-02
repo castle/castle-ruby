@@ -46,7 +46,15 @@ describe Castle::Client do
     before { allow(Castle::API).to receive(:send_request).and_call_original }
 
     it do
-      client.authenticate(event: '$login', user_id: '1234')
+      client.authenticate(
+        event: '$login',
+        user_id: '1234',
+        ip: '127.0.0.1',
+        fingerprint: 'test',
+        headers: {
+          'random' => 'header'
+        }
+      )
       expect(Castle::API).to have_received(:send_request)
     end
   end
@@ -121,92 +129,28 @@ describe Castle::Client do
     end
   end
 
-  describe 'identify' do
-    let(:request_body) do
+  describe 'authenticate' do
+    let(:options) do
       {
+        event: '$login',
         user_id: '1234',
-        timestamp: time_auto,
-        sent_at: time_auto,
-        context: context,
-        user_traits: {
-          name: 'Jo'
+        ip: '127.0.0.1',
+        fingerprint: 'test',
+        headers: {
+          'random' => 'header'
         }
       }
     end
-
-    before { client.identify(options) }
-
-    context 'when used with symbol keys' do
-      let(:options) { { user_id: '1234', user_traits: { name: 'Jo' } } }
-
-      it do
-        assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
-          JSON.parse(req.body) == JSON.parse(request_body.to_json)
-        end
-      end
-
-      context 'when passed timestamp in options and no defined timestamp' do
-        let(:client) { client_with_no_timestamp }
-        let(:options) { { user_id: '1234', user_traits: { name: 'Jo' }, timestamp: time_user } }
-        let(:request_body) do
-          {
-            user_id: '1234',
-            user_traits: {
-              name: 'Jo'
-            },
-            context: context,
-            timestamp: time_user,
-            sent_at: time_auto
-          }
-        end
-
-        it do
-          assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
-            JSON.parse(req.body) == JSON.parse(request_body.to_json)
-          end
-        end
-      end
-
-      context 'with client initialized with timestamp' do
-        let(:client) { client_with_user_timestamp }
-        let(:request_body) do
-          {
-            user_id: '1234',
-            timestamp: time_user,
-            sent_at: time_auto,
-            context: context,
-            user_traits: {
-              name: 'Jo'
-            }
-          }
-        end
-
-        it do
-          assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
-            JSON.parse(req.body) == JSON.parse(request_body.to_json)
-          end
-        end
-      end
-    end
-
-    context 'when used with string keys' do
-      let(:options) { { 'user_id' => '1234', 'user_traits' => { 'name' => 'Jo' } } }
-
-      it do
-        assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
-          JSON.parse(req.body) == JSON.parse(request_body.to_json)
-        end
-      end
-    end
-  end
-
-  describe 'authenticate' do
-    let(:options) { { event: '$login', user_id: '1234' } }
     let(:request_response) { client.authenticate(options) }
     let(:request_body) do
       {
         event: '$login',
         user_id: '1234',
+        ip: '127.0.0.1',
+        fingerprint: 'test',
+        headers: {
+          'random' => 'header'
+        },
         context: context,
         timestamp: time_auto,
         sent_at: time_auto
@@ -224,20 +168,25 @@ describe Castle::Client do
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:client) { client_with_no_timestamp }
-        let(:options) { { event: '$login', user_id: '1234', timestamp: time_user } }
-        let(:request_body) do
+        let(:options) do
           {
             event: '$login',
             user_id: '1234',
+            ip: '127.0.0.1',
+            fingerprint: 'test',
+            headers: {
+              'random' => 'header'
+            },
             context: context,
             timestamp: time_user,
             sent_at: time_auto
           }
         end
+        let(:request_body_with_timestamp) { request_body.merge({ timestamp: time_user }) }
 
         it do
           assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
-            JSON.parse(req.body) == JSON.parse(request_body.to_json)
+            JSON.parse(req.body) == JSON.parse(request_body_with_timestamp.to_json)
           end
         end
       end
@@ -248,6 +197,11 @@ describe Castle::Client do
           {
             event: '$login',
             user_id: '1234',
+            ip: '127.0.0.1',
+            fingerprint: 'test',
+            headers: {
+              'random' => 'header'
+            },
             context: context,
             timestamp: time_user,
             sent_at: time_auto
@@ -263,7 +217,20 @@ describe Castle::Client do
     end
 
     context 'when used with string keys' do
-      let(:options) { { 'event' => '$login', 'user_id' => '1234' } }
+      let(:options) do
+        {
+          'event' => '$login',
+          'user_id' => '1234',
+          'ip' => '127.0.0.1',
+          'fingerprint' => 'test',
+          'headers' => {
+            'random' => 'header'
+          },
+          'context' => context,
+          'timestamp' => time_auto,
+          'sent_at' => time_auto
+        }
+      end
 
       before { request_response }
 

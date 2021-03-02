@@ -34,19 +34,6 @@ module Castle
     end
 
     # @param options [Hash]
-    def identify(options = {})
-      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
-
-      return unless tracked?
-
-      add_timestamp_if_necessary(options)
-
-      new_context = Castle::Context::Merge.call(@context, options[:context])
-
-      Castle::API::Identify.call(options.merge(context: new_context, no_symbolize: true))
-    end
-
-    # @param options [Hash]
     def track(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -79,13 +66,6 @@ module Castle
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
       Castle::API::EndImpersonation.call(options.merge(context: new_context, no_symbolize: true))
-    end
-
-    # @param options [Hash]
-    def review(options = {})
-      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
-
-      Castle::API::Review.call(options.merge(no_symbolize: true))
     end
 
     def disable_tracking

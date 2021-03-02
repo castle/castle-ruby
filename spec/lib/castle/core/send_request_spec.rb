@@ -59,18 +59,6 @@ describe Castle::Core::SendRequest do
     let(:headers) { { 'SAMPLE-HEADER' => '1' } }
     let(:api_secret) { 'secret' }
 
-    context 'when get' do
-      let(:command) { Castle::Commands::Review.build({ review_id: review_id }) }
-      let(:review_id) { SecureRandom.uuid }
-
-      it { expect(build.body).to be_nil }
-      it { expect(build.method).to eql('GET') }
-      it { expect(build.path).to eql("/v1/#{command.path}") }
-      it { expect(build.to_hash).to have_key('authorization') }
-      it { expect(build.to_hash).to have_key('sample-header') }
-      it { expect(build.to_hash['sample-header']).to eql(['1']) }
-    end
-
     context 'when post' do
       let(:time) { Time.now.utc.iso8601(3) }
       let(:command) { Castle::Commands::Track.build(event: '$login', name: "\xC4") }
