@@ -4,7 +4,9 @@ module Castle
   class Client
     class << self
       def from_request(request, options = {})
-        new(options.merge(context: Castle::Context::Prepare.call(request, options)))
+        default_options = Castle::Options::GetDefault.new(request, options[:cookies]).call
+        new_options = Castle::Options::Merge.call(options, default_options)
+        new(new_options.merge(context: Castle::Context::Prepare.call(request, options)))
       end
     end
 
@@ -26,8 +28,6 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
-      # default_options = Castle::Options::GetDefault.call(options)
-      # new_options = Castle::Options::Merge.call(options, default_options)
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
       Castle::API::Authenticate.call(options.merge(context: new_context, no_symbolize: true))
