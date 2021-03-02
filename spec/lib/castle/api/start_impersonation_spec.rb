@@ -34,7 +34,9 @@ describe Castle::API::StartImpersonation do
     let(:request_body) do
       {
         user_id: '1234',
-        headers: { 'random' => 'header' },
+        headers: {
+          'random' => 'header'
+        },
         sent_at: time_auto,
         properties: {
           impersonator: impersonator
@@ -44,7 +46,16 @@ describe Castle::API::StartImpersonation do
     end
     let(:response_body) { { success: true }.to_json }
     let(:options) do
-      { user_id: '1234', headers: { 'random' => 'header' }, properties: { impersonator: impersonator }, context: context }
+      {
+        user_id: '1234',
+        headers: {
+          'random' => 'header'
+        },
+        properties: {
+          impersonator: impersonator
+        },
+        context: context
+      }
     end
 
     context 'when used with symbol keys' do

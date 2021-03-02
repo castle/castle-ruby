@@ -23,9 +23,7 @@ describe Castle::Client do
   let(:headers) do
     { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true }
   end
-  let(:context) do
-    { active: true, user_agent: ua, library: { name: 'castle-rb', version: '2.2.0' } }
-  end
+  let(:context) { { active: true, library: { name: 'castle-rb', version: '2.2.0' } } }
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
@@ -64,6 +62,7 @@ describe Castle::Client do
     let(:request_body) do
       {
         user_id: '1234',
+        headers: headers,
         timestamp: time_auto,
         sent_at: time_auto,
         properties: {
@@ -73,7 +72,9 @@ describe Castle::Client do
       }
     end
     let(:response_body) { { success: true }.to_json }
-    let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
+    let(:options) do
+      { user_id: '1234', headers: headers, properties: { impersonator: impersonator } }
+    end
 
     context 'when used with symbol keys' do
       before { client.end_impersonation(options) }
@@ -99,6 +100,7 @@ describe Castle::Client do
     let(:request_body) do
       {
         user_id: '1234',
+        headers: headers,
         timestamp: time_auto,
         sent_at: time_auto,
         properties: {
@@ -108,7 +110,9 @@ describe Castle::Client do
       }
     end
     let(:response_body) { { success: true }.to_json }
-    let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
+    let(:options) do
+      { user_id: '1234', headers: headers, properties: { impersonator: impersonator } }
+    end
 
     context 'when used with symbol keys' do
       before { client.start_impersonation(options) }
