@@ -26,6 +26,8 @@ module Castle
 
       add_timestamp_if_necessary(options)
 
+      # default_options = Castle::Options::GetDefault.call(options)
+      # new_options = Castle::Options::Merge.call(options, default_options)
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
       Castle::API::Authenticate.call(options.merge(context: new_context, no_symbolize: true))

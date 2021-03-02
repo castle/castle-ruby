@@ -11,10 +11,7 @@ module Castle
 
       def call
         {
-          fingerprint: fingerprint,
           active: true,
-          headers: headers,
-          ip: ip,
           library: {
             name: 'castle-rb',
             version: Castle::VERSION
@@ -29,22 +26,6 @@ module Castle
       # @return [String]
       def user_agent
         @pre_headers['User-Agent']
-      end
-
-      # @return [String]
-      def ip
-        Castle::IPs::Extract.new(@pre_headers).call
-      end
-
-      # @return [String]
-      def fingerprint
-        Castle::Fingerprint::Extract.new(@pre_headers, @cookies).call
-      end
-
-      # formatted and filtered headers
-      # @return [Hash]
-      def headers
-        Castle::Headers::Extract.new(@pre_headers).call
       end
     end
   end

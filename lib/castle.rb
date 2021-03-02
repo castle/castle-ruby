@@ -30,6 +30,8 @@
   castle/commands/review
   castle/commands/start_impersonation
   castle/commands/track
+  castle/options/get_default
+  castle/options/merge
   castle/api/approve_device
   castle/api/authenticate
   castle/api/end_impersonation

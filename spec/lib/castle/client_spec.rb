@@ -25,11 +25,8 @@ describe Castle::Client do
   end
   let(:context) do
     {
-      fingerprint: 'abcd',
       active: true,
       user_agent: ua,
-      headers: headers,
-      ip: ip,
       library: {
         name: 'castle-rb',
         version: '2.2.0'

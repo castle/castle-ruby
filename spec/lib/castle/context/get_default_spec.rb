@@ -31,9 +31,6 @@ describe Castle::Context::GetDefault do
   before { stub_const('Castle::VERSION', version) }
 
   it { expect(default_context[:active]).to be_eql(true) }
-  it { expect(default_context[:headers]).to be_eql(result_headers) }
-  it { expect(default_context[:ip]).to be_eql(ip) }
-  it { expect(default_context[:fingerprint]).to be_eql(fingerprint) }
   it { expect(default_context[:library][:name]).to be_eql('castle-rb') }
   it { expect(default_context[:library][:version]).to be_eql(version) }
   it { expect(default_context[:user_agent]).to be_eql('test') }
