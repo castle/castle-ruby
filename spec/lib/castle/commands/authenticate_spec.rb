@@ -112,42 +112,7 @@ describe Castle::Commands::Authenticate do
       it { expect { validate! }.not_to raise_error }
     end
 
-    context 'with ip not present' do
-      let(:payload) { { event: '$login', fingerprint: 'test', headers: { 'random' => 'header' } } }
-
-      it do
-        expect { validate! }.to raise_error(
-          Castle::InvalidParametersError,
-          'ip is missing or empty'
-        )
-      end
-    end
-
-    context 'with headers not present' do
-      let(:payload) { { event: '$login', ip: '127.0.0.1', fingerprint: 'test' } }
-
-      it do
-        expect { validate! }.to raise_error(
-          Castle::InvalidParametersError,
-          'headers is missing or empty'
-        )
-      end
-    end
-
-    context 'with fingerprint not present' do
-      let(:payload) do
-        { event: '$login', user_id: '1234', ip: '127.0.0.1', headers: { 'random' => 'header' } }
-      end
-
-      it do
-        expect { validate! }.to raise_error(
-          Castle::InvalidParametersError,
-          'fingerprint is missing or empty'
-        )
-      end
-    end
-
-    context 'with event, ip, headers and fingerprint present' do
+    context 'with event present' do
       let(:payload) { default_payload }
 
       it { expect { validate! }.not_to raise_error }
