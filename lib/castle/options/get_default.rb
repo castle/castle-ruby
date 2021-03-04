@@ -2,6 +2,7 @@
 
 module Castle
   module Options
+    # fetches default context from the request options
     class GetDefault
       def initialize(request, cookies = nil)
         @pre_headers = Castle::Headers::Filter.new(request).call
