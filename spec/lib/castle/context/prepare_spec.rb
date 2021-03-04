@@ -13,19 +13,7 @@ describe Castle::Context::Prepare do
     )
   end
   let(:request) { Rack::Request.new(env) }
-  let(:context) do
-    {
-      client_id: 'abcd',
-      active: true,
-      user_agent: ua,
-      headers: headers,
-      ip: ip,
-      library: {
-        name: 'castle-rb',
-        version: '6.0.0'
-      }
-    }
-  end
+  let(:context) { { active: true, library: { name: 'castle-rb', version: '6.0.0' } } }
 
   let(:headers) do
     { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true }

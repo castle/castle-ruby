@@ -1,33 +1,33 @@
 # frozen_string_literal: true
 
-describe Castle::ClientId::Extract do
+describe Castle::Fingerprint::Extract do
   subject(:extractor) { described_class.new(formatted_headers, cookies) }
 
   let(:formatted_headers) { Castle::Headers::Filter.new(request).call }
-  let(:client_id_cookie) { 'abcd' }
-  let(:client_id_header) { 'abcde' }
+  let(:fingerprint_cookie) { 'abcd' }
+  let(:fingerprint_header) { 'abcde' }
   let(:cookies) { request.cookies }
   let(:request) { Rack::Request.new(env) }
   let(:env) { Rack::MockRequest.env_for('/', headers) }
 
-  context 'with client_id' do
+  context 'with fingerprint' do
     let(:headers) do
       {
         'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
-        'HTTP_COOKIE' => "__cid=#{client_id_cookie};other=efgh"
+        'HTTP_COOKIE' => "__cid=#{fingerprint_cookie};other=efgh"
       }
     end
 
-    it { expect(extractor.call).to eql(client_id_cookie) }
+    it { expect(extractor.call).to eql(fingerprint_cookie) }
   end
 
   context 'with X-Castle-Client-Id header' do
     let(:headers) do
-      { 'HTTP_X_FORWARDED_FOR' => '1.2.3.4', 'HTTP_X_CASTLE_CLIENT_ID' => client_id_header }
+      { 'HTTP_X_FORWARDED_FOR' => '1.2.3.4', 'HTTP_X_CASTLE_CLIENT_ID' => fingerprint_header }
     end
 
-    it 'appends the client_id' do
-      expect(extractor.call).to eql(client_id_header)
+    it 'appends the fingerprint' do
+      expect(extractor.call).to eql(fingerprint_header)
     end
   end
 
@@ -42,13 +42,13 @@ describe Castle::ClientId::Extract do
     let(:headers) do
       {
         'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
-        'HTTP_X_CASTLE_CLIENT_ID' => client_id_header,
-        'HTTP_COOKIE' => "__cid=#{client_id_cookie};other=efgh"
+        'HTTP_X_CASTLE_CLIENT_ID' => fingerprint_header,
+        'HTTP_COOKIE' => "__cid=#{fingerprint_cookie};other=efgh"
       }
     end
 
-    it 'appends the client_id' do
-      expect(extractor.call).to eql(client_id_header)
+    it 'appends the fingerprint' do
+      expect(extractor.call).to eql(fingerprint_header)
     end
   end
 end

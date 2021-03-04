@@ -4,7 +4,7 @@ describe Castle::Core::SendRequest do
   let(:config) { Castle.config }
 
   describe '#call' do
-    let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
+    let(:command) { Castle::Commands::Track.build(event: '$login') }
     let(:headers) { {} }
     let(:request_build) { {} }
     let(:expected_headers) { { 'Content-Type' => 'application/json' } }
@@ -14,7 +14,7 @@ describe Castle::Core::SendRequest do
       subject(:call) { described_class.call(command, headers, nil, config) }
 
       let(:http) { instance_double('Net::HTTP') }
-      let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
+      let(:command) { Castle::Commands::Track.build(event: '$login') }
       let(:headers) { {} }
       let(:request_build) { {} }
       let(:expected_headers) { { 'Content-Type' => 'application/json' } }
@@ -59,22 +59,10 @@ describe Castle::Core::SendRequest do
     let(:headers) { { 'SAMPLE-HEADER' => '1' } }
     let(:api_secret) { 'secret' }
 
-    context 'when get' do
-      let(:command) { Castle::Commands::Review.build({ review_id: review_id }) }
-      let(:review_id) { SecureRandom.uuid }
-
-      it { expect(build.body).to be_nil }
-      it { expect(build.method).to eql('GET') }
-      it { expect(build.path).to eql("/v1/#{command.path}") }
-      it { expect(build.to_hash).to have_key('authorization') }
-      it { expect(build.to_hash).to have_key('sample-header') }
-      it { expect(build.to_hash['sample-header']).to eql(['1']) }
-    end
-
     context 'when post' do
       let(:time) { Time.now.utc.iso8601(3) }
-      let(:command) { Castle::Commands::Track.build(event: '$login.succeeded', name: "\xC4") }
-      let(:expected_body) { { event: '$login.succeeded', name: '�', context: {}, sent_at: time } }
+      let(:command) { Castle::Commands::Track.build(event: '$login', name: "\xC4") }
+      let(:expected_body) { { event: '$login', name: '�', context: {}, sent_at: time } }
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 

@@ -30,7 +30,31 @@ describe Castle::API::Authenticate do
 
   describe '.call' do
     let(:request_body) do
-      { event: '$login.succeeded', context: context, user_id: '1234', sent_at: time_auto }
+      {
+        event: '$login',
+        user_id: '1234',
+        ip: '127.0.0.1',
+        fingerprint: 'test',
+        headers: {
+          'random' => 'header'
+        },
+        context: context,
+        sent_at: time_auto
+      }
+    end
+
+    let(:options) do
+      {
+        event: '$login',
+        user_id: '1234',
+        ip: '127.0.0.1',
+        fingerprint: 'test',
+        headers: {
+          'random' => 'header'
+        },
+        context: context,
+        sent_at: time_auto
+      }
     end
 
     context 'when used with symbol keys' do
@@ -41,8 +65,6 @@ describe Castle::API::Authenticate do
         call_subject
       end
 
-      let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
-
       it do
         assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
@@ -51,21 +73,24 @@ describe Castle::API::Authenticate do
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:options) do
-          { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context }
-        end
-        let(:request_body) do
           {
-            event: '$login.succeeded',
+            event: '$login',
             user_id: '1234',
+            ip: '127.0.0.1',
+            fingerprint: 'test',
+            headers: {
+              'random' => 'header'
+            },
             context: context,
-            timestamp: time_user,
-            sent_at: time_auto
+            sent_at: time_auto,
+            timestamp: time_user
           }
         end
+        let(:request_body_with_timestamp) { request_body.merge({ timestamp: time_user }) }
 
         it do
           assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
-            JSON.parse(req.body) == JSON.parse(request_body.to_json)
+            JSON.parse(req.body) == JSON.parse(request_body_with_timestamp.to_json)
           end
         end
       end
@@ -73,8 +98,6 @@ describe Castle::API::Authenticate do
 
     context 'when denied' do
       let(:failover_appendix) { { failover: false, failover_reason: nil } }
-
-      let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
 
       context 'when denied without any risk policy' do
         let(:response_body) { deny_response_without_rp.to_json }
