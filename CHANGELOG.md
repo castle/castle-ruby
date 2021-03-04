@@ -2,6 +2,17 @@
 
 ## master
 
+## 7.0.0 (2021-03-24)
+
+**BREAKING CHANGES:**
+
+- [#237](https://github.com/castle/castle-ruby/pull/237)
+  * remove `identify` and `review` commands
+  * remove `Castle::Events`
+  * add new supported top-level fields to the commands (`fingerprint`, `status`, `headers`, `ip`)
+  * remove `locale`, `user_agent`, `ip`, `headers`, `client_id` fields from context
+  * update Readme to reflect the changes
+
 ## 6.0.1 (2021-01-19)
 
 **Enhancements:**
