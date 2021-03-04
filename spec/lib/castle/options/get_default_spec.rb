@@ -17,7 +17,6 @@ describe Castle::Options::GetDefault do
   end
   let(:request) { Rack::Request.new(env) }
   let(:default_context) { subject.call }
-  let(:version) { '2.2.0' }
   let(:result_headers) do
     {
       'X-Forwarded-For' => '1.2.3.4',
