@@ -2,14 +2,14 @@
 
 describe Castle::Client do
   let(:ip) { '1.2.3.4' }
-  let(:cookie_id) { 'abcd' }
+  let(:fingerprint) { 'abcd' }
   let(:ua) { 'Chrome' }
   let(:env) do
     Rack::MockRequest.env_for(
       '/',
       'HTTP_USER_AGENT' => ua,
       'HTTP_X_FORWARDED_FOR' => ip,
-      'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh"
+      'HTTP_COOKIE' => "__cid=#{fingerprint};other=efgh"
     )
   end
   let(:request) { Rack::Request.new(env) }
@@ -48,7 +48,7 @@ describe Castle::Client do
         event: '$login',
         user_id: '1234',
         ip: '127.0.0.1',
-        fingerprint: 'test',
+        fingerprint: fingerprint,
         headers: {
           'random' => 'header'
         }
@@ -68,7 +68,9 @@ describe Castle::Client do
         properties: {
           impersonator: impersonator
         },
-        context: context
+        context: context,
+        fingerprint: fingerprint,
+        ip: ip
       }
     end
     let(:response_body) { { success: true }.to_json }
@@ -101,12 +103,13 @@ describe Castle::Client do
       {
         user_id: '1234',
         headers: headers,
-        timestamp: time_auto,
         sent_at: time_auto,
         properties: {
           impersonator: impersonator
         },
-        context: context
+        context: context,
+        fingerprint: fingerprint,
+        ip: ip
       }
     end
     let(:response_body) { { success: true }.to_json }
@@ -135,26 +138,16 @@ describe Castle::Client do
 
   describe 'authenticate' do
     let(:options) do
-      {
-        event: '$login',
-        user_id: '1234',
-        ip: '127.0.0.1',
-        fingerprint: 'test',
-        headers: {
-          'random' => 'header'
-        }
-      }
+      { event: '$login', user_id: '1234', ip: ip, fingerprint: fingerprint, headers: headers }
     end
     let(:request_response) { client.authenticate(options) }
     let(:request_body) do
       {
         event: '$login',
         user_id: '1234',
-        ip: '127.0.0.1',
-        fingerprint: 'test',
-        headers: {
-          'random' => 'header'
-        },
+        ip: ip,
+        fingerprint: fingerprint,
+        headers: headers,
         context: context,
         timestamp: time_auto,
         sent_at: time_auto
@@ -176,11 +169,9 @@ describe Castle::Client do
           {
             event: '$login',
             user_id: '1234',
-            ip: '127.0.0.1',
-            fingerprint: 'test',
-            headers: {
-              'random' => 'header'
-            },
+            ip: ip,
+            fingerprint: fingerprint,
+            headers: headers,
             context: context,
             timestamp: time_user,
             sent_at: time_auto
@@ -201,11 +192,9 @@ describe Castle::Client do
           {
             event: '$login',
             user_id: '1234',
-            ip: '127.0.0.1',
-            fingerprint: 'test',
-            headers: {
-              'random' => 'header'
-            },
+            ip: ip,
+            fingerprint: fingerprint,
+            headers: headers,
             context: context,
             timestamp: time_user,
             sent_at: time_auto
@@ -225,11 +214,9 @@ describe Castle::Client do
         {
           'event' => '$login',
           'user_id' => '1234',
-          'ip' => '127.0.0.1',
-          'fingerprint' => 'test',
-          'headers' => {
-            'random' => 'header'
-          },
+          'ip' => ip,
+          'fingerprint' => fingerprint,
+          'headers' => headers,
           'context' => context,
           'timestamp' => time_auto,
           'sent_at' => time_auto
@@ -321,14 +308,19 @@ describe Castle::Client do
         context: context,
         user_id: '1234',
         timestamp: time_auto,
-        sent_at: time_auto
+        sent_at: time_auto,
+        fingerprint: fingerprint,
+        ip: ip,
+        headers: headers
       }
     end
 
     before { client.track(options) }
 
     context 'when used with symbol keys' do
-      let(:options) { { event: '$login', user_id: '1234' } }
+      let(:options) do
+        { event: '$login', user_id: '1234', ip: ip, fingerprint: fingerprint, headers: headers }
+      end
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
@@ -364,7 +356,10 @@ describe Castle::Client do
             context: context,
             user_id: '1234',
             timestamp: time_user,
-            sent_at: time_auto
+            sent_at: time_auto,
+            ip: ip,
+            fingerprint: fingerprint,
+            headers: headers
           }
         end
 
