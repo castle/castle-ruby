@@ -15,7 +15,7 @@ describe Castle::API::StartImpersonation do
     )
   end
   let(:request) { Rack::Request.new(env) }
-  let(:context) { Castle::Context::Prepare.call(request) }
+  let(:context) { Castle::Context::Prepare.call }
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
 

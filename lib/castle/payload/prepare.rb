@@ -15,7 +15,7 @@ module Castle
           options_for_payload =
             Castle::Options::Merge.call(payload_options, options_with_default_opts)
 
-          context = Castle::Context::Prepare.call(request, options_for_payload)
+          context = Castle::Context::Prepare.call(options_for_payload)
           payload =
             Castle::Utils::DeepSymbolizeKeys
               .call(options_for_payload || {})

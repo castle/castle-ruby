@@ -14,7 +14,7 @@ describe Castle::Client do
   end
   let(:request) { Rack::Request.new(env) }
   let(:client) { described_class.from_request(request) }
-  let(:request_to_context) { Castle::Context::Prepare.call(request) }
+  let(:request_to_context) { Castle::Context::Prepare.call }
   let(:client_with_user_timestamp) do
     described_class.new(context: request_to_context, timestamp: time_user)
   end
