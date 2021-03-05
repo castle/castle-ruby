@@ -6,9 +6,7 @@ module Castle
       def from_request(request, options = {})
         default_options = Castle::Options::GetDefault.new(request, options[:cookies]).call
         options_with_default_opts = Castle::Options::Merge.call(options, default_options)
-        new(
-          options_with_default_opts.merge(context: Castle::Context::Prepare.call(request, options))
-        )
+        new(options_with_default_opts.merge(context: Castle::Context::Prepare.call(options)))
       end
     end
 
