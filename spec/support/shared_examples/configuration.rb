@@ -57,14 +57,30 @@ shared_examples 'configuration_failover_strategy' do
     it { expect(config.failover_strategy).to be_eql(Castle::Failover::Strategy::ALLOW) }
 
     context 'with setter' do
-      before { config.failover_strategy = Castle::Failover::Strategy::DENY }
+      context 'as symbol' do
+        before { config.failover_strategy = Castle::Failover::Strategy::DENY }
 
-      it { expect(config.failover_strategy).to be_eql(Castle::Failover::Strategy::DENY) }
+        it { expect(config.failover_strategy).to be_eql(Castle::Failover::Strategy::DENY) }
+      end
+
+      context 'as proc' do
+        before { config.failover_strategy = -> { Castle::Failover::Strategy::DENY } }
+
+        it { expect(config.failover_strategy).to be_eql(Castle::Failover::Strategy::DENY) }
+      end
     end
 
     context 'when broken' do
-      it do
-        expect { config.failover_strategy = :unicorn }.to raise_error(Castle::ConfigurationError)
+      context 'as symbol' do
+        it do
+          expect { config.failover_strategy = :unicorn }.to raise_error(Castle::ConfigurationError)
+        end
+      end
+
+      context 'as proc' do
+        before { config.failover_strategy = -> { :jabberwocky } }
+
+        it { expect { config.failover_strategy }.to raise_error(Castle::ConfigurationError) }
       end
     end
   end

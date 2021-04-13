@@ -53,7 +53,6 @@ module Castle
     attr_reader :api_secret,
                 :allowlisted,
                 :denylisted,
-                :failover_strategy,
                 :ip_headers,
                 :trusted_proxies,
                 :trusted_proxy_depth,
@@ -122,9 +121,22 @@ module Castle
     end
 
     def failover_strategy=(value)
-      @failover_strategy =
-        Castle::Failover::STRATEGIES.detect { |strategy| strategy == value.to_sym }
+      @failover_strategy = if value.respond_to?(:call)
+                             value
+                           else
+                             Castle::Failover::STRATEGIES.detect { |strategy| strategy == value.to_sym }
+                           end
+
       raise Castle::ConfigurationError, 'unrecognized failover strategy' if @failover_strategy.nil?
+    end
+
+    def failover_strategy
+      if @failover_strategy.respond_to?(:call)
+        Castle::Failover::STRATEGIES.detect { |strategy| strategy == @failover_strategy.call.to_sym } ||
+          raise(Castle::ConfigurationError, 'unrecognized failover strategy')
+      else
+        @failover_strategy
+      end
     end
 
     private
