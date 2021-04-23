@@ -13,17 +13,19 @@ module Castle
         # @param command [String]
         # @param headers [Hash]
         # @param http [Net::HTTP]
-        # @param config [Castle::Configuration, Castle::SingletonConfiguration]
-        def call(command, headers, http = nil, config = Castle.config)
+        # @param config [Castle::Configuration, Castle::SingletonConfiguration, nil]
+        def call(command, headers, http = nil, config = nil)
           (http || Castle::Core::GetConnection.call).request(
             build(command, headers.merge(DEFAULT_HEADERS), config)
           )
         end
 
+        private
+
         # @param command [String]
         # @param headers [Hash]
-        # @param config [Castle::Configuration, Castle::SingletonConfiguration]
-        def build(command, headers, config = Castle.config)
+        # @param config [Castle::Configuration, Castle::SingletonConfiguration, nil]
+        def build(command, headers, config)
           url = "#{config.base_url.path}/#{command.path}"
           request_obj = Net::HTTP.const_get(command.method.to_s.capitalize).new(url, headers)
 
@@ -31,7 +33,7 @@ module Castle
             request_obj.body = ::Castle::Utils::CleanInvalidChars.call(command.data).to_json
           end
 
-          Castle::Logger.call("#{url}:", request_obj.body)
+          Castle::Logger.call("#{url}:", request_obj.body, config)
 
           request_obj.basic_auth('', config.api_secret)
           request_obj

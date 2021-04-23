@@ -14,8 +14,9 @@ module Castle
       private_constant :DEFAULT
 
       # @param headers [Hash]
-      # @param config [Castle::Configuration, Castle::SingletonConfiguration]
-      def initialize(headers, config = Castle.config)
+      # @param config [Castle::Configuration, Castle::SingletonConfiguration, nil]
+      def initialize(headers, config = nil)
+        config ||= Castle.config
         @headers = headers
         @ip_headers = config.ip_headers.empty? ? DEFAULT : config.ip_headers
         @proxies = config.trusted_proxies + Castle::Configuration::TRUSTED_PROXIES
