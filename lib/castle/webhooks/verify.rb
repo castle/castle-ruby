@@ -7,9 +7,10 @@ module Castle
       class << self
         # Checks if webhook is valid
         # @param webhook [Request]
-        # @param config [Castle::Configuration, Castle::SingletonConfiguration]
-        def call(webhook, config = Castle.config)
-          expected_signature = compute_signature(webhook, config.api_secret)
+        # @param config [Castle::Configuration, Castle::SingletonConfiguration, nil]
+        def call(webhook, config = nil)
+          config ||= Castle.config
+          expected_signature = compute_signature(webhook, config)
           signature = webhook.env['HTTP_X_CASTLE_SIGNATURE']
           verify_signature(signature, expected_signature)
         end
@@ -18,13 +19,14 @@ module Castle
 
         # Computes a webhook signature using provided user_id
         # @param webhook [Request]
-        # @param api_secret [String]
-        def compute_signature(webhook, api_secret)
+        # @param config [Castle::Configuration, Castle::SingletonConfiguration]
+        # @return [String]
+        def compute_signature(webhook, config)
           Base64.encode64(
             OpenSSL::HMAC.digest(
               OpenSSL::Digest.new('sha256'),
-              api_secret,
-              Castle::Core::ProcessWebhook.call(webhook)
+              config.api_secret,
+              Castle::Core::ProcessWebhook.call(webhook, config)
             )
           ).strip
         end
