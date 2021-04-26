@@ -16,6 +16,9 @@
 - [#237](https://github.com/castle/castle-ruby/pull/237)
   * add new supported top-level fields to the commands (`fingerprint`, `status`, `headers`, `ip`)
   * update Readme to reflect the changes
+- [#242](https://github.com/castle/castle-ruby/pull/242)
+  * corrected configuration used by the logger
+  * prevent unnecessary calls to the singleton configuration
 
 ## 6.0.1 (2021-01-19)
 
