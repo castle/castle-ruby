@@ -17,7 +17,7 @@ module Castle
       def initialize(headers, config = nil)
         @headers = headers
         @config = config || Castle.config
-        @no_allowlist = config.allowlisted.empty?
+        @no_allowlist = @config.allowlisted.empty?
       end
 
       # Serialize HTTP headers

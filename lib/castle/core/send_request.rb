@@ -20,8 +20,6 @@ module Castle
           )
         end
 
-        private
-
         # @param command [String]
         # @param headers [Hash]
         # @param config [Castle::Configuration, Castle::SingletonConfiguration, nil]
