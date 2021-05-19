@@ -29,21 +29,27 @@
   castle/commands/approve_device
   castle/commands/authenticate
   castle/commands/end_impersonation
+  castle/commands/filter
   castle/commands/get_device
   castle/commands/get_devices_for_user
   castle/commands/identify
+  castle/commands/log
   castle/commands/report_device
   castle/commands/review
+  castle/commands/risk
   castle/commands/start_impersonation
   castle/commands/track
   castle/api/approve_device
   castle/api/authenticate
   castle/api/end_impersonation
+  castle/api/filter
   castle/api/get_device
   castle/api/get_devices_for_user
   castle/api/identify
+  castle/api/log
   castle/api/report_device
   castle/api/review
+  castle/api/risk
   castle/api/start_impersonation
   castle/api/track
   castle/payload/prepare
