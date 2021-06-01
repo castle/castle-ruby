@@ -75,11 +75,7 @@ RSpec.shared_examples_for 'action request' do |action|
   end
 
   context 'when used with string keys' do
-    before do
-      options.deep_stringify_keys!
-
-      request_response
-    end
+    before { request_response }
 
     it do
       assert_requested :post, "https://api.castle.io/v1/#{action}", times: 1 do |req|
