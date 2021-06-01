@@ -84,7 +84,6 @@ module Castle
       Castle::API::Log.call(options.merge(context: new_context, no_symbolize: true))
     end
 
-
     # @param options [Hash]
     def start_impersonation(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})

@@ -27,9 +27,7 @@ describe Castle::Commands::Log do
 
     context 'with properties' do
       let(:payload) { default_payload.merge(properties: { test: '1' }) }
-      let(:command_data) do
-        default_payload.merge(properties: { test: '1' }, context: context)
-      end
+      let(:command_data) { default_payload.merge(properties: { test: '1' }, context: context) }
 
       it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('log') }
@@ -38,9 +36,7 @@ describe Castle::Commands::Log do
 
     context 'with user_traits' do
       let(:payload) { default_payload.merge(user_traits: { test: '1' }) }
-      let(:command_data) do
-        default_payload.merge(user_traits: { test: '1' }, context: context)
-      end
+      let(:command_data) { default_payload.merge(user_traits: { test: '1' }, context: context) }
 
       it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('log') }
@@ -49,9 +45,7 @@ describe Castle::Commands::Log do
 
     context 'when active true' do
       let(:payload) { default_payload.merge(context: context.merge(active: true)) }
-      let(:command_data) do
-        default_payload.merge(context: context.merge(active: true))
-      end
+      let(:command_data) { default_payload.merge(context: context.merge(active: true)) }
 
       it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('log') }
@@ -60,9 +54,7 @@ describe Castle::Commands::Log do
 
     context 'when active false' do
       let(:payload) { default_payload.merge(context: context.merge(active: false)) }
-      let(:command_data) do
-        default_payload.merge(context: context.merge(active: false))
-      end
+      let(:command_data) { default_payload.merge(context: context.merge(active: false)) }
 
       it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('log') }
@@ -86,9 +78,10 @@ describe Castle::Commands::Log do
       let(:payload) { {} }
 
       it do
-        expect do
-          validate!
-        end.to raise_error(Castle::InvalidParametersError, 'event is missing or empty')
+        expect { validate! }.to raise_error(
+          Castle::InvalidParametersError,
+          'event is missing or empty'
+        )
       end
     end
 

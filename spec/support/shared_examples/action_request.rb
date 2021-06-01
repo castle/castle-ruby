@@ -137,9 +137,7 @@ RSpec.shared_examples_for 'action request' do |action|
   end
 
   context 'when request is internal server error' do
-    before do
-      allow(Castle::API).to receive(:send_request).and_raise(Castle::InternalServerError)
-    end
+    before { allow(Castle::API).to receive(:send_request).and_raise(Castle::InternalServerError) }
 
     describe 'throw strategy' do
       before { allow(Castle.config).to receive(:failover_strategy).and_return(:throw) }
