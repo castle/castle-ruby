@@ -26,7 +26,6 @@
   castle/commands/get_device
   castle/commands/get_devices_for_user
   castle/commands/report_device
-  castle/commands/review
   castle/commands/start_impersonation
   castle/commands/track
   castle/api/approve_device
@@ -35,7 +34,6 @@
   castle/api/get_device
   castle/api/get_devices_for_user
   castle/api/report_device
-  castle/api/review
   castle/api/start_impersonation
   castle/api/track
   castle/payload/prepare

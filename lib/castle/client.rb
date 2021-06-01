@@ -66,13 +66,6 @@ module Castle
       Castle::API::EndImpersonation.call(options.merge(context: new_context, no_symbolize: true))
     end
 
-    # @param options [Hash]
-    def review(options = {})
-      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
-
-      Castle::API::Review.call(options.merge(no_symbolize: true))
-    end
-
     def disable_tracking
       @do_not_track = true
     end
