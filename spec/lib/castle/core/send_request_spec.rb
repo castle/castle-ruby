@@ -27,9 +27,7 @@ describe Castle::Core::SendRequest do
       end
 
       it do
-        expect(described_class).to have_received(:build).with(
-          command, expected_headers, config
-        )
+        expect(described_class).to have_received(:build).with(command, expected_headers, config)
       end
 
       it { expect(http).to have_received(:request).with(request_build) }
@@ -48,9 +46,7 @@ describe Castle::Core::SendRequest do
       it { expect(Castle::Core::GetConnection).not_to have_received(:call) }
 
       it do
-        expect(described_class).to have_received(:build).with(
-          command, expected_headers, config
-        )
+        expect(described_class).to have_received(:build).with(command, expected_headers, config)
       end
 
       it { expect(http).to have_received(:request).with(request_build) }
@@ -63,31 +59,10 @@ describe Castle::Core::SendRequest do
     let(:headers) { { 'SAMPLE-HEADER' => '1' } }
     let(:api_secret) { 'secret' }
 
-    context 'when get' do
-      let(:command) { Castle::Commands::Review.build({ review_id: review_id }) }
-      let(:review_id) { SecureRandom.uuid }
-
-      it { expect(build.body).to be_nil }
-      it { expect(build.method).to eql('GET') }
-      it { expect(build.path).to eql("/v1/#{command.path}") }
-      it { expect(build.to_hash).to have_key('authorization') }
-      it { expect(build.to_hash).to have_key('sample-header') }
-      it { expect(build.to_hash['sample-header']).to eql(['1']) }
-    end
-
     context 'when post' do
       let(:time) { Time.now.utc.iso8601(3) }
-      let(:command) do
-        Castle::Commands::Track.build(event: '$login.succeeded', name: "\xC4")
-      end
-      let(:expected_body) do
-        {
-          event: '$login.succeeded',
-          name: '�',
-          context: {},
-          sent_at: time
-        }
-      end
+      let(:command) { Castle::Commands::Track.build(event: '$login.succeeded', name: "\xC4") }
+      let(:expected_body) { { event: '$login.succeeded', name: '�', context: {}, sent_at: time } }
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 

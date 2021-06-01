@@ -1,0 +1,6 @@
+.bundle/
+vendor/
+coverage/
+**/.*
+Gemfile.lock
+bin/

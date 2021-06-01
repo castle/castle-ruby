@@ -20,12 +20,10 @@ module Castle
       # @param command [String]
       # @param headers [Hash]
       # @param http [Net::HTTP]
-      # @param config [Castle::Configuration, Castle::SingletonConfiguration]
+      # @param config [Castle::Configuration, Castle::SingletonConfiguration, nil]
       # @return [Hash]
-      def call(command, headers = {}, http = nil, config = Castle.config)
-        Castle::Core::ProcessResponse.call(
-          send_request(command, headers, http, config)
-        )
+      def call(command, headers = {}, http = nil, config = nil)
+        Castle::Core::ProcessResponse.call(send_request(command, headers, http, config), config)
       end
 
       private
@@ -34,16 +32,13 @@ module Castle
       # @param headers [Hash]
       # @param http [Net::HTTP]
       # @param config [Castle::Configuration, Castle::SingletonConfiguration]
-      def send_request(command, headers = {}, http = nil, config = Castle.config)
+      def send_request(command, headers = {}, http = nil, config = nil)
+        config ||= Castle.config
+
         raise Castle::ConfigurationError, 'configuration is not valid' unless config.valid?
 
         begin
-          Castle::Core::SendRequest.call(
-            command,
-            headers,
-            http,
-            config
-          )
+          Castle::Core::SendRequest.call(command, headers, http, config)
         rescue *HANDLED_ERRORS => e
           # @note We need to initialize the error, as the original error is a cause for this
           # custom exception. If we would do it the default Ruby way, the original error

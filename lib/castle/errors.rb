@@ -2,7 +2,9 @@
 
 module Castle
   # general error
-  class Error < RuntimeError; end
+  class Error < RuntimeError
+  end
+
   # Raised when anything is wrong with the request (any unhappy path)
   # This error indicates that either we would wait too long for a response or something
   # else happened somewhere in the middle and we weren't able to get the results
@@ -14,30 +16,52 @@ module Castle
       @reason = reason
     end
   end
+
   # security error
-  class SecurityError < Castle::Error; end
+  class SecurityError < Castle::Error
+  end
+
   # wrong configuration error
-  class ConfigurationError < Castle::Error; end
+  class ConfigurationError < Castle::Error
+  end
+
   # error returned by api
-  class ApiError < Castle::Error; end
+  class ApiError < Castle::Error
+  end
+
   # webhook signature verification error
-  class WebhookVerificationError < Castle::Error; end
+  class WebhookVerificationError < Castle::Error
+  end
 
   # api error bad request 400
-  class BadRequestError < Castle::ApiError; end
+  class BadRequestError < Castle::ApiError
+  end
+
   # api error forbidden 403
-  class ForbiddenError < Castle::ApiError; end
+  class ForbiddenError < Castle::ApiError
+  end
+
   # api error not found 404
-  class NotFoundError < Castle::ApiError; end
+  class NotFoundError < Castle::ApiError
+  end
+
   # api error user unauthorized 419
-  class UserUnauthorizedError < Castle::ApiError; end
+  class UserUnauthorizedError < Castle::ApiError
+  end
+
   # api error invalid param 422
-  class InvalidParametersError < Castle::ApiError; end
+  class InvalidParametersError < Castle::ApiError
+  end
+
   # api error unauthorized 401
-  class UnauthorizedError < Castle::ApiError; end
+  class UnauthorizedError < Castle::ApiError
+  end
+
   # all internal server errors
-  class InternalServerError < Castle::ApiError; end
+  class InternalServerError < Castle::ApiError
+  end
 
   # impersonation command failed
-  class ImpersonationFailed < Castle::ApiError; end
+  class ImpersonationFailed < Castle::ApiError
+  end
 end

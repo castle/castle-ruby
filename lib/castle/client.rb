@@ -5,9 +5,7 @@ module Castle
   class Client
     class << self
       def from_request(request, options = {})
-        new(
-          options.merge(context: Castle::Context::Prepare.call(request, options))
-        )
+        new(options.merge(context: Castle::Context::Prepare.call(request, options)))
       end
     end
 
@@ -32,19 +30,6 @@ module Castle
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
       Castle::API::Authenticate.call(options.merge(context: new_context, no_symbolize: true))
-    end
-
-    # @param options [Hash]
-    def identify(options = {})
-      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
-
-      return unless tracked?
-
-      add_timestamp_if_necessary(options)
-
-      new_context = Castle::Context::Merge.call(@context, options[:context])
-
-      Castle::API::Identify.call(options.merge(context: new_context, no_symbolize: true))
     end
 
     # @param options [Hash]
@@ -122,13 +107,6 @@ module Castle
       Castle::API::EndImpersonation.call(options.merge(context: new_context, no_symbolize: true))
     end
 
-    # @param options [Hash]
-    def review(options = {})
-      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
-
-      Castle::API::Review.call(options.merge(no_symbolize: true))
-    end
-
     def disable_tracking
       @do_not_track = true
     end
@@ -148,7 +126,8 @@ module Castle
     def generate_do_not_track_response(user_id)
       Castle::Failover::PrepareResponse.new(
         user_id,
-        strategy: :allow, reason: 'Castle is set to do not track.'
+        strategy: :allow,
+        reason: 'Castle is set to do not track.'
       ).call
     end
 

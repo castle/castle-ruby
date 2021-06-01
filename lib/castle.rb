@@ -1,16 +1,10 @@
 # frozen_string_literal: true
 
-%w[
-  openssl
-  net/http
-  json
-  time
-].each(&method(:require))
+%w[openssl net/http json time].each(&method(:require))
 
 %w[
   castle/version
   castle/verdict
-  castle/events
   castle/errors
   castle/command
   castle/utils/deep_symbolize_keys
@@ -32,10 +26,8 @@
   castle/commands/filter
   castle/commands/get_device
   castle/commands/get_devices_for_user
-  castle/commands/identify
   castle/commands/log
   castle/commands/report_device
-  castle/commands/review
   castle/commands/risk
   castle/commands/start_impersonation
   castle/commands/track
@@ -45,10 +37,8 @@
   castle/api/filter
   castle/api/get_device
   castle/api/get_devices_for_user
-  castle/api/identify
   castle/api/log
   castle/api/report_device
-  castle/api/review
   castle/api/risk
   castle/api/start_impersonation
   castle/api/track

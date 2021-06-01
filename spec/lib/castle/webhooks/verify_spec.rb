@@ -4,12 +4,7 @@ describe Castle::Webhooks::Verify do
   describe '#call' do
     subject(:call) { described_class.call(webhook) }
 
-    let(:env) do
-      Rack::MockRequest.env_for(
-        '/',
-        'HTTP_X_CASTLE_SIGNATURE' => signature
-      )
-    end
+    let(:env) { Rack::MockRequest.env_for('/', 'HTTP_X_CASTLE_SIGNATURE' => signature) }
 
     let(:webhook) { Rack::Request.new(env) }
     let(:user_id) { '12345' }
@@ -37,32 +32,21 @@ describe Castle::Webhooks::Verify do
     context 'when success' do
       let(:signature) { '3ptx3rUOBnGEqPjMrbcJn2UUfzwTKP54dFyP5uyPY+Y=' }
 
-      before do
-        allow(Castle::Core::ProcessWebhook)
-          .to receive(:call)
-          .and_return(webhook_body)
-      end
+      before { allow(Castle::Core::ProcessWebhook).to receive(:call).and_return(webhook_body) }
 
-      it do
-        expect { call }.not_to raise_error
-      end
+      it { expect { call }.not_to raise_error }
     end
 
     context 'when signature is malformed' do
       let(:signature) { '123' }
 
-      before do
-        allow(Castle::Core::ProcessWebhook)
-          .to receive(:call)
-          .and_return(webhook_body)
-      end
+      before { allow(Castle::Core::ProcessWebhook).to receive(:call).and_return(webhook_body) }
 
       it do
-        expect { call }
-          .to raise_error(
-            Castle::WebhookVerificationError,
-            'Signature not matching the expected signature'
-          )
+        expect { call }.to raise_error(
+          Castle::WebhookVerificationError,
+          'Signature not matching the expected signature'
+        )
       end
     end
   end

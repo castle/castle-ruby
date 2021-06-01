@@ -16,81 +16,55 @@ end
 
 shared_examples 'configuration_request_timeout' do
   describe 'request_timeout' do
-    it do
-      expect(config.request_timeout).to be_eql(1000)
-    end
+    it { expect(config.request_timeout).to be_eql(1000) }
 
     context 'with setter' do
       let(:value) { 50.0 }
 
-      before do
-        config.request_timeout = value
-      end
+      before { config.request_timeout = value }
 
-      it do
-        expect(config.request_timeout).to be_eql(value)
-      end
+      it { expect(config.request_timeout).to be_eql(value) }
     end
   end
 end
 
 shared_examples 'configuration_allowlisted' do
   describe 'allowlisted' do
-    it do
-      expect(config.allowlisted.size).to be_eql(0)
-    end
+    it { expect(config.allowlisted.size).to be_eql(0) }
 
     context 'with setter' do
-      before do
-        config.allowlisted = ['header']
-      end
+      before { config.allowlisted = ['header'] }
 
-      it do
-        expect(config.allowlisted).to be_eql(['Header'])
-      end
+      it { expect(config.allowlisted).to be_eql(['Header']) }
     end
   end
 end
 
 shared_examples 'configuration_denylisted' do
   describe 'denylisted' do
-    it do
-      expect(config.denylisted.size).to be_eql(0)
-    end
+    it { expect(config.denylisted.size).to be_eql(0) }
 
     context 'with setter' do
-      before do
-        config.denylisted = ['header']
-      end
+      before { config.denylisted = ['header'] }
 
-      it do
-        expect(config.denylisted).to be_eql(['Header'])
-      end
+      it { expect(config.denylisted).to be_eql(['Header']) }
     end
   end
 end
 
 shared_examples 'configuration_failover_strategy' do
   describe 'failover_strategy' do
-    it do
-      expect(config.failover_strategy).to be_eql(Castle::Failover::Strategy::ALLOW)
-    end
+    it { expect(config.failover_strategy).to be_eql(Castle::Failover::Strategy::ALLOW) }
 
     context 'with setter' do
-      before do
-        config.failover_strategy = Castle::Failover::Strategy::DENY
-      end
+      before { config.failover_strategy = Castle::Failover::Strategy::DENY }
 
-      it do
-        expect(config.failover_strategy).to be_eql(Castle::Failover::Strategy::DENY)
-      end
+      it { expect(config.failover_strategy).to be_eql(Castle::Failover::Strategy::DENY) }
     end
 
     context 'when broken' do
       it do
-        expect do
-          config.failover_strategy = :unicorn
-        end.to raise_error(Castle::ConfigurationError)
+        expect { config.failover_strategy = :unicorn }.to raise_error(Castle::ConfigurationError)
       end
     end
   end
@@ -103,9 +77,7 @@ shared_examples 'configuration_api_secret' do
       let(:secret_key) { 'secret_key' }
 
       before do
-        allow(ENV).to receive(:fetch).with(
-          'CASTLE_API_SECRET', ''
-        ).and_return(secret_key_env)
+        allow(ENV).to receive(:fetch).with('CASTLE_API_SECRET', '').and_return(secret_key_env)
         config.reset
       end
 

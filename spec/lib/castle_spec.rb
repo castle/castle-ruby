@@ -42,11 +42,7 @@ describe Castle do
     end
 
     context 'with block and options' do
-      before do
-        castle.configure(request_timeout: timeout) do |config|
-          config.api_secret = value
-        end
-      end
+      before { castle.configure(request_timeout: timeout) { |config| config.api_secret = value } }
 
       it_behaves_like 'config_setup'
     end
@@ -56,11 +52,9 @@ describe Castle do
     let(:value) { 'new_secret' }
 
     it do
-      expect do
-        castle.configure do |config|
-          config.wrong_config = value
-        end
-      end.to raise_error(Castle::ConfigurationError)
+      expect { castle.configure { |config| config.wrong_config = value } }.to raise_error(
+        Castle::ConfigurationError
+      )
     end
   end
 end

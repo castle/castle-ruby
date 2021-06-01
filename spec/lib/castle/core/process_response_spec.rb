@@ -38,14 +38,7 @@ describe Castle::Core::ProcessResponse do
           '{"action":"deny","user_id":"1","device_token":"abc",
           "risk_policy":{"id":"123","revision_id":"abc","name":"def","type":"bot"}}'
         end
-        let(:response) do
-          OpenStruct.new(
-            {
-              body: body,
-              code: 200
-            }
-          )
-        end
+        let(:response) { OpenStruct.new({ body: body, code: 200 }) }
 
         let(:result) do
           {

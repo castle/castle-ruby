@@ -7,14 +7,16 @@ module Castle
     class Extract
       # ordered list of ip headers for ip extraction
       DEFAULT = %w[X-Forwarded-For Remote-Addr].freeze
+
       # list of header which are used with proxy depth setting
       DEPTH_RELATED = %w[X-Forwarded-For].freeze
 
       private_constant :DEFAULT
 
       # @param headers [Hash]
-      # @param config [Castle::Configuration, Castle::SingletonConfiguration]
-      def initialize(headers, config = Castle.config)
+      # @param config [Castle::Configuration, Castle::SingletonConfiguration, nil]
+      def initialize(headers, config = nil)
+        config ||= Castle.config
         @headers = headers
         @ip_headers = config.ip_headers.empty? ? DEFAULT : config.ip_headers
         @proxies = config.trusted_proxies + Castle::Configuration::TRUSTED_PROXIES

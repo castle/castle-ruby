@@ -14,10 +14,13 @@ module Castle
       }.freeze
 
       class << self
-        def call(response)
+        # @param response [Response]
+        # @param config [Castle::Configuration, Castle::SingletonConfiguration, nil]
+        # @return [Hash]
+        def call(response, config = nil)
           verify!(response)
 
-          Castle::Logger.call('response:', response.body.to_s)
+          Castle::Logger.call('response:', response.body.to_s, config)
 
           return {} if response.body.nil? || response.body.empty?
 

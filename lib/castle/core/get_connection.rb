@@ -8,7 +8,9 @@ module Castle
 
       class << self
         # @param config [Castle::Configuration, Castle::SingletonConfiguration]
-        def call(config = Castle.config)
+        # @return [Net::HTTP]
+        def call(config = nil)
+          config ||= Castle.config
           http = Net::HTTP.new(config.base_url.host, config.base_url.port)
           http.read_timeout = config.request_timeout / 1000.0
 

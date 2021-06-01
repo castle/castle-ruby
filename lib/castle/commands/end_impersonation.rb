@@ -19,7 +19,7 @@ module Castle
             :delete
           )
         end
-  end
+      end
     end
   end
 end
