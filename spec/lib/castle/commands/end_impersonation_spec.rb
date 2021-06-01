@@ -3,11 +3,9 @@
 describe Castle::Commands::EndImpersonation do
   subject(:instance) { described_class }
 
-  let(:context) { {} }
+  let(:context) { { user_agent: 'test', ip: '127.0.0.1', client_id: 'test' } }
   let(:impersonator) { 'test@castle.io' }
-  let(:default_payload) do
-    { user_id: '1234', sent_at: time_auto, context: context, headers: { 'random' => 'header' } }
-  end
+  let(:default_payload) { { user_id: '1234', sent_at: time_auto, context: context } }
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
@@ -62,7 +60,7 @@ describe Castle::Commands::EndImpersonation do
     subject(:validate!) { instance.build(payload) }
 
     context 'when user_id not present' do
-      let(:payload) { { headers: { 'random' => 'header' } } }
+      let(:payload) { {} }
 
       it do
         expect { validate! }.to raise_error(
@@ -72,19 +70,8 @@ describe Castle::Commands::EndImpersonation do
       end
     end
 
-    context 'when headers not present' do
-      let(:payload) { { user_id: 'test' } }
-
-      it do
-        expect { validate! }.to raise_error(
-          Castle::InvalidParametersError,
-          'headers is missing or empty'
-        )
-      end
-    end
-
     context 'when user_id present' do
-      let(:payload) { { user_id: 'test', headers: { 'random' => 'header' } } }
+      let(:payload) { { user_id: '1234', context: context } }
 
       it { expect { validate! }.not_to raise_error }
     end

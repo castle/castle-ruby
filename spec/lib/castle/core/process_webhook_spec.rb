@@ -14,7 +14,7 @@ describe Castle::Core::ProcessWebhook do
           id: 'test',
           device_token: 'token',
           user_id: '',
-          trigger: '$login',
+          trigger: '$login.succeeded',
           context: {},
           location: {},
           user_agent: {}

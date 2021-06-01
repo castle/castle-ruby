@@ -5,17 +5,7 @@ describe Castle::Commands::Authenticate do
 
   let(:context) { { test: { test1: '1' } } }
   let(:default_payload) do
-    {
-      event: '$login',
-      user_id: '1234',
-      ip: '127.0.0.1',
-      fingerprint: 'test',
-      headers: {
-        'random' => 'header'
-      },
-      sent_at: time_auto,
-      context: context
-    }
+    { event: '$login.authenticate', user_id: '1234', sent_at: time_auto, context: context }
   end
 
   let(:time_now) { Time.now }
@@ -78,16 +68,7 @@ describe Castle::Commands::Authenticate do
     subject(:validate!) { instance.build(payload) }
 
     context 'with event not present' do
-      let(:payload) do
-        {
-          user_id: '1234',
-          ip: '127.0.0.1',
-          fingerprint: 'test',
-          headers: {
-            'random' => 'header'
-          }
-        }
-      end
+      let(:payload) { {} }
 
       it do
         expect { validate! }.to raise_error(
@@ -98,22 +79,13 @@ describe Castle::Commands::Authenticate do
     end
 
     context 'with user_id not present' do
-      let(:payload) do
-        {
-          event: '$login',
-          ip: '127.0.0.1',
-          fingerprint: 'test',
-          headers: {
-            'random' => 'header'
-          }
-        }
-      end
+      let(:payload) { { event: '$login.track' } }
 
       it { expect { validate! }.not_to raise_error }
     end
 
-    context 'with event present' do
-      let(:payload) { default_payload }
+    context 'with event and user_id present' do
+      let(:payload) { { event: '$login.track', user_id: '1234' } }
 
       it { expect { validate! }.not_to raise_error }
     end

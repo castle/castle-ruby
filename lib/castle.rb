@@ -28,8 +28,6 @@
   castle/commands/report_device
   castle/commands/start_impersonation
   castle/commands/track
-  castle/options/get_default
-  castle/options/merge
   castle/api/approve_device
   castle/api/authenticate
   castle/api/end_impersonation
@@ -49,7 +47,7 @@
   castle/headers/format
   castle/headers/extract
   castle/secure_mode
-  castle/fingerprint/extract
+  castle/client_id/extract
   castle/ips/extract
   castle/core/get_connection
   castle/core/process_response

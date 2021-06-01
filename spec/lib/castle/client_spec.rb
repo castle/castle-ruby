@@ -2,19 +2,19 @@
 
 describe Castle::Client do
   let(:ip) { '1.2.3.4' }
-  let(:fingerprint) { 'abcd' }
+  let(:cookie_id) { 'abcd' }
   let(:ua) { 'Chrome' }
   let(:env) do
     Rack::MockRequest.env_for(
       '/',
       'HTTP_USER_AGENT' => ua,
       'HTTP_X_FORWARDED_FOR' => ip,
-      'HTTP_COOKIE' => "__cid=#{fingerprint};other=efgh"
+      'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh"
     )
   end
   let(:request) { Rack::Request.new(env) }
   let(:client) { described_class.from_request(request) }
-  let(:request_to_context) { Castle::Context::Prepare.call }
+  let(:request_to_context) { Castle::Context::Prepare.call(request) }
   let(:client_with_user_timestamp) do
     described_class.new(context: request_to_context, timestamp: time_user)
   end
@@ -23,7 +23,19 @@ describe Castle::Client do
   let(:headers) do
     { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true }
   end
-  let(:context) { { active: true, library: { name: 'castle-rb', version: '2.2.0' } } }
+  let(:context) do
+    {
+      client_id: 'abcd',
+      active: true,
+      user_agent: ua,
+      headers: headers,
+      ip: ip,
+      library: {
+        name: 'castle-rb',
+        version: '2.2.0'
+      }
+    }
+  end
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
@@ -44,15 +56,7 @@ describe Castle::Client do
     before { allow(Castle::API).to receive(:send_request).and_call_original }
 
     it do
-      client.authenticate(
-        event: '$login',
-        user_id: '1234',
-        ip: '127.0.0.1',
-        fingerprint: fingerprint,
-        headers: {
-          'random' => 'header'
-        }
-      )
+      client.authenticate(event: '$login.succeeded', user_id: '1234')
       expect(Castle::API).to have_received(:send_request)
     end
   end
@@ -62,21 +66,16 @@ describe Castle::Client do
     let(:request_body) do
       {
         user_id: '1234',
-        headers: headers,
         timestamp: time_auto,
         sent_at: time_auto,
         properties: {
           impersonator: impersonator
         },
-        context: context,
-        fingerprint: fingerprint,
-        ip: ip
+        context: context
       }
     end
     let(:response_body) { { success: true }.to_json }
-    let(:options) do
-      { user_id: '1234', headers: headers, properties: { impersonator: impersonator } }
-    end
+    let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
 
     context 'when used with symbol keys' do
       before { client.end_impersonation(options) }
@@ -102,20 +101,16 @@ describe Castle::Client do
     let(:request_body) do
       {
         user_id: '1234',
-        headers: headers,
+        timestamp: time_auto,
         sent_at: time_auto,
         properties: {
           impersonator: impersonator
         },
-        context: context,
-        fingerprint: fingerprint,
-        ip: ip
+        context: context
       }
     end
     let(:response_body) { { success: true }.to_json }
-    let(:options) do
-      { user_id: '1234', headers: headers, properties: { impersonator: impersonator } }
-    end
+    let(:options) { { user_id: '1234', properties: { impersonator: impersonator } } }
 
     context 'when used with symbol keys' do
       before { client.start_impersonation(options) }
@@ -137,17 +132,12 @@ describe Castle::Client do
   end
 
   describe 'authenticate' do
-    let(:options) do
-      { event: '$login', user_id: '1234', ip: ip, fingerprint: fingerprint, headers: headers }
-    end
+    let(:options) { { event: '$login.succeeded', user_id: '1234' } }
     let(:request_response) { client.authenticate(options) }
     let(:request_body) do
       {
-        event: '$login',
+        event: '$login.succeeded',
         user_id: '1234',
-        ip: ip,
-        fingerprint: fingerprint,
-        headers: headers,
         context: context,
         timestamp: time_auto,
         sent_at: time_auto
@@ -165,23 +155,20 @@ describe Castle::Client do
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:client) { client_with_no_timestamp }
-        let(:options) do
+        let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user } }
+        let(:request_body) do
           {
-            event: '$login',
+            event: '$login.succeeded',
             user_id: '1234',
-            ip: ip,
-            fingerprint: fingerprint,
-            headers: headers,
             context: context,
             timestamp: time_user,
             sent_at: time_auto
           }
         end
-        let(:request_body_with_timestamp) { request_body.merge({ timestamp: time_user }) }
 
         it do
           assert_requested :post, 'https://api.castle.io/v1/authenticate', times: 1 do |req|
-            JSON.parse(req.body) == JSON.parse(request_body_with_timestamp.to_json)
+            JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end
       end
@@ -190,11 +177,8 @@ describe Castle::Client do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
           {
-            event: '$login',
+            event: '$login.succeeded',
             user_id: '1234',
-            ip: ip,
-            fingerprint: fingerprint,
-            headers: headers,
             context: context,
             timestamp: time_user,
             sent_at: time_auto
@@ -210,18 +194,7 @@ describe Castle::Client do
     end
 
     context 'when used with string keys' do
-      let(:options) do
-        {
-          'event' => '$login',
-          'user_id' => '1234',
-          'ip' => ip,
-          'fingerprint' => fingerprint,
-          'headers' => headers,
-          'context' => context,
-          'timestamp' => time_auto,
-          'sent_at' => time_auto
-        }
-      end
+      let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
 
       before { request_response }
 
@@ -304,23 +277,18 @@ describe Castle::Client do
   describe 'track' do
     let(:request_body) do
       {
-        event: '$login',
+        event: '$login.succeeded',
         context: context,
         user_id: '1234',
         timestamp: time_auto,
-        sent_at: time_auto,
-        fingerprint: fingerprint,
-        ip: ip,
-        headers: headers
+        sent_at: time_auto
       }
     end
 
     before { client.track(options) }
 
     context 'when used with symbol keys' do
-      let(:options) do
-        { event: '$login', user_id: '1234', ip: ip, fingerprint: fingerprint, headers: headers }
-      end
+      let(:options) { { event: '$login.succeeded', user_id: '1234' } }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
@@ -330,10 +298,10 @@ describe Castle::Client do
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:client) { client_with_no_timestamp }
-        let(:options) { { event: '$login', user_id: '1234', timestamp: time_user } }
+        let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user } }
         let(:request_body) do
           {
-            event: '$login',
+            event: '$login.succeeded',
             user_id: '1234',
             context: context,
             timestamp: time_user,
@@ -352,14 +320,11 @@ describe Castle::Client do
         let(:client) { client_with_user_timestamp }
         let(:request_body) do
           {
-            event: '$login',
+            event: '$login.succeeded',
             context: context,
             user_id: '1234',
             timestamp: time_user,
-            sent_at: time_auto,
-            ip: ip,
-            fingerprint: fingerprint,
-            headers: headers
+            sent_at: time_auto
           }
         end
 
@@ -372,7 +337,7 @@ describe Castle::Client do
     end
 
     context 'when used with string keys' do
-      let(:options) { { 'event' => '$login', 'user_id' => '1234' } }
+      let(:options) { { 'event' => '$login.succeeded', 'user_id' => '1234' } }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|

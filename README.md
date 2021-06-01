@@ -159,8 +159,7 @@ The client will automatically configure the context for each request.
 If you need to modify the event context properties or if you desire to add additional properties such as user traits to the context, you can pass the properties along with the other data. For example:
 ```ruby
 {
-  event: '$login',
-  status: '$succeeded',
+  event: '$login.succeeded',
   user_id: user.id,
   properties: {
     key: 'value'
@@ -181,7 +180,7 @@ Here is a simple example of a track event.
 ```ruby
 begin
   castle.track(
-    event: '$login',
+    event: '$login.succeeded',
     user_id: user.id
   )
 rescue Castle::Error => e
@@ -214,7 +213,7 @@ end
 ```ruby
 payload = ::Castle::Payload::Prepare.call(
   {
-    event: '$login',
+    event: '$login.succeeded',
     user_id: user.id,
     properties: {
       key: 'value'
@@ -235,12 +234,12 @@ If you want to reuse the connection to send multiple events:
 ```ruby
 Castle::Session.call do |http|
   castle.track(
-    event: '$logout',
+    event: '$logout.succeeded',
     user_id: user2.id
     http: http
   )
   castle.track(
-    event: '$login',
+    event: '$login.succeeded',
     user_id: user1.id
     http: http
   )
@@ -249,11 +248,11 @@ end
 
 ## Events
 
-List of Recognized Events can be found in the [docs](https://docs.castle.io/api_reference/#list-of-recognized-events)
+List of Recognized Events can be found in the [docs](https://docs.castle.io/v1/reference/events/)
 
 ## Device management
 
-This SDK allows issuing requests to [Castle's Device Management Endpoints](https://docs.castle.io/device_management_tool/). Use these endpoints for admin-level management of end-user devices (i.e., for an internal dashboard).
+This SDK allows issuing requests to [Castle's Device Management Endpoints](https://docs.castle.io/v1/reference/api-reference/#devices). Use these endpoints for admin-level management of end-user devices (i.e., for an internal dashboard).
 
 Fetching device data, approving a device, reporting a device requires a valid `device_token`.
 
@@ -306,4 +305,4 @@ Castle uses webhooks to notify about `$incident.confirmed` or `$review.opened` e
 
 ## Documentation
 
-[Official Castle docs](https://castle.io/docs)
+[Official Castle docs](https://docs.castle.io/)

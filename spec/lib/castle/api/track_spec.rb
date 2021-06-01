@@ -15,7 +15,7 @@ describe Castle::API::Track do
     )
   end
   let(:request) { Rack::Request.new(env) }
-  let(:context) { Castle::Context::Prepare.call }
+  let(:context) { Castle::Context::Prepare.call(request) }
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
   let(:time_user) { (Time.now - 10_000).utc.iso8601(3) }
@@ -33,13 +33,13 @@ describe Castle::API::Track do
 
   describe 'track' do
     let(:request_body) do
-      { event: '$login', context: context, user_id: '1234', sent_at: time_auto }
+      { event: '$login.succeeded', context: context, user_id: '1234', sent_at: time_auto }
     end
 
     before { call }
 
     context 'when used with symbol keys' do
-      let(:options) { { event: '$login', user_id: '1234', context: context } }
+      let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
 
       it do
         assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
@@ -49,11 +49,11 @@ describe Castle::API::Track do
 
       context 'when passed timestamp in options and no defined timestamp' do
         let(:options) do
-          { event: '$login', user_id: '1234', timestamp: time_user, context: context }
+          { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context }
         end
         let(:request_body) do
           {
-            event: '$login',
+            event: '$login.succeeded',
             user_id: '1234',
             context: context,
             timestamp: time_user,

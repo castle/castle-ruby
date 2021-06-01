@@ -3,9 +3,9 @@
 class HomeController < ActionController::Base
   # prepare context and calling track with client example
   def index1
-    request_context = ::Castle::Context::Prepare.call
+    request_context = ::Castle::Context::Prepare.call(request)
     payload = {
-      event: '$login',
+      event: '$login.succeeded',
       user_id: '123',
       properties: {
         key: 'value'
@@ -25,7 +25,7 @@ class HomeController < ActionController::Base
     payload =
       ::Castle::Payload::Prepare.call(
         {
-          event: '$login',
+          event: '$login.succeeded',
           user_id: '123',
           properties: {
             key: 'value'
@@ -47,7 +47,7 @@ class HomeController < ActionController::Base
     payload =
       ::Castle::Payload::Prepare.call(
         {
-          event: '$login',
+          event: '$login.succeeded',
           user_id: '123',
           properties: {
             key: 'value'
