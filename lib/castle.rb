@@ -5,7 +5,6 @@
 %w[
   castle/version
   castle/verdict
-  castle/events
   castle/errors
   castle/command
   castle/utils/deep_symbolize_keys
