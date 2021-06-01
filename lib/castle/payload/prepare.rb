@@ -2,7 +2,7 @@
 
 module Castle
   module Payload
-    # this prepare payload based on the request
+    # prepares payload based on the request
     module Prepare
       class << self
         # @param payload_options [Hash]
