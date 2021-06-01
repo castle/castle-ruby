@@ -9,13 +9,10 @@
 - [#237](https://github.com/castle/castle-ruby/pull/237)
   * remove `identify` and `review` commands - they are no longer supported
   * remove `Castle::Events` - please use [recognized events](https://docs.castle.io/api_reference/#list-of-recognized-events) instead
-  * remove `locale`, `user_agent`, `ip`, `headers`, `client_id` fields from context - no action required
 
 **Enhancements:**
-
-- [#237](https://github.com/castle/castle-ruby/pull/237)
-  * add new supported top-level fields to the commands (`fingerprint`, `status`, `headers`, `ip`)
-  * update Readme to reflect the changes
+- [#243](https://github.com/castle/castle-ruby/pull/243)
+  * added risk, filter and log endpoints
 - [#242](https://github.com/castle/castle-ruby/pull/242)
   * corrected configuration used by the logger
   * prevent unnecessary calls to the singleton configuration
