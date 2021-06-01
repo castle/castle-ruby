@@ -249,7 +249,7 @@ end
 
 ## Events
 
-List of Recognized Events can be found in the [docs](https://docs.castle.io/api_reference/#list-of-recognized-events)
+List of Recognized Events can be found [here](https://github.com/castle/castle-ruby/tree/master/lib/castle/events.rb) or in the [docs](https://docs.castle.io/api_reference/#list-of-recognized-events)
 
 ## Device management
 
