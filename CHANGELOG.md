@@ -8,13 +8,13 @@
 
 - [#237](https://github.com/castle/castle-ruby/pull/237)
   * remove `identify` and `review` commands - they are no longer supported
-  * remove `Castle::Events` - please use [recognized events](https://docs.castle.io/api_reference/#list-of-recognized-events) instead
+  * remove `Castle::Events` - please use [recognized events](https://docs.castle.io/v1/reference/events/) instead
 
 **Enhancements:**
 - [#243](https://github.com/castle/castle-ruby/pull/243)
-  * added risk, filter and log endpoints
+  * add risk, filter and log endpoints
 - [#242](https://github.com/castle/castle-ruby/pull/242)
-  * corrected configuration used by the logger
+  * correct configuration used by the logger
   * prevent unnecessary calls to the singleton configuration
 
 ## 6.0.1 (2021-01-19)
