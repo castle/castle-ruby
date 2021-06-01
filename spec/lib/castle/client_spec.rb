@@ -360,4 +360,16 @@ describe Castle::Client do
       it { expect(client).to be_tracked }
     end
   end
+
+  describe 'filter' do
+    it_behaves_like 'action request', :filter
+  end
+
+  describe 'risk' do
+    it_behaves_like 'action request', :risk
+  end
+
+  describe 'log' do
+    it_behaves_like 'action request', :log
+  end
 end

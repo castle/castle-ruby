@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Castle
+  # Castle's client.
   class Client
     class << self
       def from_request(request, options = {})
@@ -45,6 +46,45 @@ module Castle
     end
 
     # @param options [Hash]
+    def filter(options = {})
+      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
+
+      return generate_do_not_track_response(options[:user][:id]) unless tracked?
+
+      add_timestamp_if_necessary(options)
+
+      new_context = Castle::Context::Merge.call(@context, options[:context])
+
+      Castle::API::Filter.call(options.merge(context: new_context, no_symbolize: true))
+    end
+
+    # @param options [Hash]
+    def risk(options = {})
+      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
+
+      return generate_do_not_track_response(options[:user][:id]) unless tracked?
+
+      add_timestamp_if_necessary(options)
+
+      new_context = Castle::Context::Merge.call(@context, options[:context])
+
+      Castle::API::Risk.call(options.merge(context: new_context, no_symbolize: true))
+    end
+
+    # @param options [Hash]
+    def log(options = {})
+      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
+
+      return generate_do_not_track_response(options[:user][:id]) unless tracked?
+
+      add_timestamp_if_necessary(options)
+
+      new_context = Castle::Context::Merge.call(@context, options[:context])
+
+      Castle::API::Log.call(options.merge(context: new_context, no_symbolize: true))
+    end
+
+    # @param options [Hash]
     def start_impersonation(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -74,13 +114,14 @@ module Castle
       @do_not_track = false
     end
 
+    # @return [Boolean]
     def tracked?
       !@do_not_track
     end
 
     private
 
-    # @param user_id [String|Boolean]
+    # @param user_id [String, Boolean]
     def generate_do_not_track_response(user_id)
       Castle::Failover::PrepareResponse.new(
         user_id,
