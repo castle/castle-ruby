@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Castle
-  module Fingerprint
+  module ClientId
     # used for extraction of cookies and headers from the request
     class Extract
       # @param headers [Hash]

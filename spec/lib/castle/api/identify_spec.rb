@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::API::Track do
+describe Castle::API::Identify do
   subject(:call) { described_class.call(options) }
 
   let(:ip) { '1.2.3.4' }
@@ -31,7 +31,7 @@ describe Castle::API::Track do
 
   after { Timecop.return }
 
-  describe 'track' do
+  describe '.call' do
     let(:request_body) do
       { event: '$login.succeeded', context: context, user_id: '1234', sent_at: time_auto }
     end
@@ -42,7 +42,7 @@ describe Castle::API::Track do
       let(:options) { { event: '$login.succeeded', user_id: '1234', context: context } }
 
       it do
-        assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+        assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
           JSON.parse(req.body) == JSON.parse(request_body.to_json)
         end
       end
@@ -62,7 +62,7 @@ describe Castle::API::Track do
         end
 
         it do
-          assert_requested :post, 'https://api.castle.io/v1/track', times: 1 do |req|
+          assert_requested :post, 'https://api.castle.io/v1/identify', times: 1 do |req|
             JSON.parse(req.body) == JSON.parse(request_body.to_json)
           end
         end

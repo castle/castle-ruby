@@ -159,8 +159,7 @@ The client will automatically configure the context for each request.
 If you need to modify the event context properties or if you desire to add additional properties such as user traits to the context, you can pass the properties along with the other data. For example:
 ```ruby
 {
-  event: '$login',
-  status: '$succeeded',
+  event: ::Castle::Events::LOGIN_SUCCEEDED,
   user_id: user.id,
   properties: {
     key: 'value'
@@ -181,7 +180,7 @@ Here is a simple example of a track event.
 ```ruby
 begin
   castle.track(
-    event: '$login',
+    event: ::Castle::Events::LOGIN_SUCCEEDED,
     user_id: user.id
   )
 rescue Castle::Error => e
@@ -214,7 +213,7 @@ end
 ```ruby
 payload = ::Castle::Payload::Prepare.call(
   {
-    event: '$login',
+    event: ::Castle::Events::LOGIN_SUCCEEDED,
     user_id: user.id,
     properties: {
       key: 'value'
@@ -235,12 +234,12 @@ If you want to reuse the connection to send multiple events:
 ```ruby
 Castle::Session.call do |http|
   castle.track(
-    event: '$logout',
+    event: ::Castle::Events::LOGOUT_SUCCEEDED,
     user_id: user2.id
     http: http
   )
   castle.track(
-    event: '$login',
+    event: ::Castle::Events::LOGIN_SUCCEEDED,
     user_id: user1.id
     http: http
   )

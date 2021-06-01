@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-describe Castle::Commands::Authenticate do
+describe Castle::Commands::Identify do
   subject(:instance) { described_class }
 
   let(:context) { { test: { test1: '1' } } }
-  let(:default_payload) do
-    { event: '$login.authenticate', user_id: '1234', sent_at: time_auto, context: context }
-  end
+  let(:default_payload) { { user_id: '1234', sent_at: time_auto, context: context } }
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
@@ -18,21 +16,12 @@ describe Castle::Commands::Authenticate do
   describe '.build' do
     subject(:command) { instance.build(payload) }
 
-    context 'with properties' do
-      let(:payload) { default_payload.merge(properties: { test: '1' }) }
-      let(:command_data) { default_payload.merge(properties: { test: '1' }, context: context) }
-
-      it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('authenticate') }
-      it { expect(command.data).to be_eql(command_data) }
-    end
-
     context 'with user_traits' do
       let(:payload) { default_payload.merge(user_traits: { test: '1' }) }
       let(:command_data) { default_payload.merge(user_traits: { test: '1' }, context: context) }
 
       it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('authenticate') }
+      it { expect(command.path).to be_eql('identify') }
       it { expect(command.data).to be_eql(command_data) }
     end
 
@@ -41,7 +30,7 @@ describe Castle::Commands::Authenticate do
       let(:command_data) { default_payload.merge(context: context.merge(active: true)) }
 
       it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('authenticate') }
+      it { expect(command.path).to be_eql('identify') }
       it { expect(command.data).to be_eql(command_data) }
     end
 
@@ -50,7 +39,7 @@ describe Castle::Commands::Authenticate do
       let(:command_data) { default_payload.merge(context: context.merge(active: false)) }
 
       it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('authenticate') }
+      it { expect(command.path).to be_eql('identify') }
       it { expect(command.data).to be_eql(command_data) }
     end
 
@@ -59,7 +48,7 @@ describe Castle::Commands::Authenticate do
       let(:command_data) { default_payload.merge(context: context) }
 
       it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('authenticate') }
+      it { expect(command.path).to be_eql('identify') }
       it { expect(command.data).to be_eql(command_data) }
     end
   end
@@ -67,25 +56,14 @@ describe Castle::Commands::Authenticate do
   describe '#validate!' do
     subject(:validate!) { instance.build(payload) }
 
-    context 'with event not present' do
-      let(:payload) { {} }
-
-      it do
-        expect { validate! }.to raise_error(
-          Castle::InvalidParametersError,
-          'event is missing or empty'
-        )
-      end
-    end
-
     context 'with user_id not present' do
-      let(:payload) { { event: '$login.track' } }
+      let(:payload) { {} }
 
       it { expect { validate! }.not_to raise_error }
     end
 
-    context 'with event and user_id present' do
-      let(:payload) { { event: '$login.track', user_id: '1234' } }
+    context 'with user_id present' do
+      let(:payload) { { user_id: '1234' } }
 
       it { expect { validate! }.not_to raise_error }
     end
