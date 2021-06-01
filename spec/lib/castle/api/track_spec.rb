@@ -15,7 +15,7 @@ describe Castle::API::Track do
     )
   end
   let(:request) { Rack::Request.new(env) }
-  let(:context) { Castle::Context::Prepare.call }
+  let(:context) { Castle::Context::Prepare.call(request) }
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
   let(:time_user) { (Time.now - 10_000).utc.iso8601(3) }
