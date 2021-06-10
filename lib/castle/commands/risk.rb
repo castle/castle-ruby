@@ -8,7 +8,6 @@ module Castle
         # @param options [Hash]
         # @return [Castle::Command]
         def build(options = {})
-          Castle::Validators::Present.call(options, %i[event])
           context = Castle::Context::Sanitize.call(options[:context])
 
           Castle::Command.new(
