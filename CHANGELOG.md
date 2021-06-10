@@ -2,7 +2,13 @@
 
 ## master
 
-## 7.0.0 (2021-03-24)
+## 7.1.0 (2021-06-09)
+
+- [#245](https://github.com/castle/castle-ruby/pull/245) 
+  * removed not needed sdk based validations
+
+
+## 7.0.0 (2021-06-03)
 
 **BREAKING CHANGES:**
 
