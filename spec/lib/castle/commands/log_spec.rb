@@ -70,31 +70,4 @@ describe Castle::Commands::Log do
       it { expect(command.data).to be_eql(command_data) }
     end
   end
-
-  describe '#validate!' do
-    subject(:validate!) { instance.build(payload) }
-
-    context 'with event not present' do
-      let(:payload) { {} }
-
-      it do
-        expect { validate! }.to raise_error(
-          Castle::InvalidParametersError,
-          'event is missing or empty'
-        )
-      end
-    end
-
-    context 'with user not present' do
-      let(:payload) { { event: '$login' } }
-
-      it { expect { validate! }.not_to raise_error }
-    end
-
-    context 'with event and user present' do
-      let(:payload) { { event: '$login', user: user } }
-
-      it { expect { validate! }.not_to raise_error }
-    end
-  end
 end
