@@ -225,6 +225,7 @@ describe Castle::Client do
       end
 
       it { assert_not_requested :post, 'https://api.castle.io/v1/authenticate' }
+      it { expect(request_response[:policy][:action]).to be_eql(Castle::Verdict::ALLOW) }
       it { expect(request_response[:action]).to be_eql(Castle::Verdict::ALLOW) }
       it { expect(request_response[:user_id]).to be_eql('1234') }
       it { expect(request_response[:failover]).to be true }
@@ -246,6 +247,7 @@ describe Castle::Client do
 
       context 'with request error and not throw on eg deny strategy' do
         it { assert_not_requested :post, 'https://:secret@api.castle.io/v1/authenticate' }
+        it { expect(request_response[:policy][:action]).to be_eql('allow') }
         it { expect(request_response[:action]).to be_eql('allow') }
         it { expect(request_response[:user_id]).to be_eql('1234') }
         it { expect(request_response[:failover]).to be true }
@@ -266,6 +268,7 @@ describe Castle::Client do
 
       describe 'not throw on eg deny strategy' do
         it { assert_not_requested :post, 'https://:secret@api.castle.io/v1/authenticate' }
+        it { expect(request_response[:policy][:action]).to be_eql('allow') }
         it { expect(request_response[:action]).to be_eql('allow') }
         it { expect(request_response[:user_id]).to be_eql('1234') }
         it { expect(request_response[:failover]).to be true }

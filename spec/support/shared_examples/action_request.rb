@@ -104,6 +104,7 @@ RSpec.shared_examples_for 'action request' do |action|
     end
 
     it { assert_not_requested :post, "https://api.castle.io/v1/#{action}" }
+    it { expect(request_response[:policy][:action]).to be_eql(Castle::Verdict::ALLOW) }
     it { expect(request_response[:action]).to be_eql(Castle::Verdict::ALLOW) }
     it { expect(request_response[:user_id]).to be_eql('1234') }
     it { expect(request_response[:failover]).to be true }
@@ -125,6 +126,7 @@ RSpec.shared_examples_for 'action request' do |action|
 
     context 'with request error and not throw on eg deny strategy' do
       it { assert_not_requested :post, "https:/:secret@api.castle.io/v1/#{action}" }
+      it { expect(request_response[:policy][:action]).to be_eql('allow') }
       it { expect(request_response[:action]).to be_eql('allow') }
       it { expect(request_response[:user_id]).to be_eql('1234') }
       it { expect(request_response[:failover]).to be true }
@@ -143,6 +145,7 @@ RSpec.shared_examples_for 'action request' do |action|
 
     describe 'not throw on eg deny strategy' do
       it { assert_not_requested :post, "https:/:secret@api.castle.io/v1/#{action}" }
+      it { expect(request_response[:policy][:action]).to be_eql('allow') }
       it { expect(request_response[:action]).to be_eql('allow') }
       it { expect(request_response[:user_id]).to be_eql('1234') }
       it { expect(request_response[:failover]).to be true }

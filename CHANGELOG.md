@@ -2,6 +2,11 @@
 
 ## master
 
+## 7.1.1 
+
+- [#246](https://github.com/castle/castle-ruby/pull/246)
+  * support failover for risk and filter
+
 ## 7.1.0 (2021-06-09)
 
 - [#245](https://github.com/castle/castle-ruby/pull/245) 

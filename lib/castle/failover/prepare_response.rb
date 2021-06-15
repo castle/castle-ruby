@@ -11,7 +11,17 @@ module Castle
       end
 
       def call
-        { action: @strategy.to_s, user_id: @user_id, failover: true, failover_reason: @reason }
+        {
+          # v1/risk v1/filter structure
+          policy: {
+            action: @strategy.to_s,
+          },
+          # v1/authenticate structure
+          action: @strategy.to_s,
+          user_id: @user_id,
+          failover: true,
+          failover_reason: @reason
+        }
       end
     end
   end
