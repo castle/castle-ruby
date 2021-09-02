@@ -2,7 +2,12 @@
 
 ## master
 
-## 7.1.1 
+## 7.1.2
+
+- [#247](https://github.com/castle/castle-ruby/pull/247)
+  * fixed issue with body as null
+
+## 7.1.1
 
 - [#246](https://github.com/castle/castle-ruby/pull/246)
   * support failover for risk and filter
