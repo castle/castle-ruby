@@ -73,5 +73,29 @@ describe Castle::Core::SendRequest do
       it { expect(build.to_hash).to have_key('sample-header') }
       it { expect(build.to_hash['sample-header']).to eql(['1']) }
     end
+
+    context 'when get' do
+      let(:time) { Time.now.utc.iso8601(3) }
+      let(:command) { Castle::Commands::GetDevice.build(device_token: '1') }
+      let(:expected_body) { {} }
+
+      before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
+
+      it { expect(build.body).to be_eql(expected_body.to_json) }
+      it { expect(build.method).to eql('GET') }
+      it { expect(build.path).to eql("/v1/#{command.path}") }
+    end
+
+    context 'when put' do
+      let(:time) { Time.now.utc.iso8601(3) }
+      let(:command) { Castle::Commands::ApproveDevice.build(device_token: '1') }
+      let(:expected_body) { {} }
+
+      before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
+
+      it { expect(build.body).to be_eql(expected_body.to_json) }
+      it { expect(build.method).to eql('PUT') }
+      it { expect(build.path).to eql("/v1/#{command.path}") }
+    end
   end
 end
