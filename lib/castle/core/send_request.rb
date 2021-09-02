@@ -27,9 +27,7 @@ module Castle
           url = "#{config.base_url.path}/#{command.path}"
           request_obj = Net::HTTP.const_get(command.method.to_s.capitalize).new(url, headers)
 
-          unless command.method == :get
-            request_obj.body = ::Castle::Utils::CleanInvalidChars.call(command.data).to_json
-          end
+          request_obj.body = ::Castle::Utils::CleanInvalidChars.call(command.data || {}).to_json
 
           Castle::Logger.call("#{url}:", request_obj.body, config)
 
