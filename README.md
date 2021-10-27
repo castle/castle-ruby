@@ -150,159 +150,18 @@ After a successful setup, you can pass the config to any API command as follows:
 ::Castle::API::GetDevice.call(device_token: device_token, config: config)
 ```
 
-## Event Context
+## Usage
 
-The client will automatically configure the context for each request.
+See [documentation](https://docs.castle.io/docs/) for how to use this SDK with the Castle APIs
 
-### Overriding Default Context Properties
-
-If you need to modify the event context properties or if you desire to add additional properties such as user traits to the context, you can pass the properties along with the other data. For example:
-```ruby
-{
-  event: '$login.succeeded',
-  user_id: user.id,
-  properties: {
-    key: 'value'
-  },
-  user_traits: {
-    key: 'value'
-  },
-  context: {
-    section: 'mobile'
-  }
-}
-```
-
-## Tracking
-
-Here is a simple example of a track event.
-
-```ruby
-begin
-  castle.track(
-    event: '$login.succeeded',
-    user_id: user.id
-  )
-rescue Castle::Error => e
-  puts e.message
-end
-```
-
-## Signature
-
-`Castle::SecureMode.signature(user_id)` will create a signed user_id.
-
-## Async tracking
-
-By default Castle sends requests synchronously. To eg. use Sidekiq to send requests in a background worker you can pass data to the worker:
-
-#### castle_tracking_worker.rb
-
-```ruby
-class CastleTrackingWorker
-  include Sidekiq::Worker
-
-  def perform(payload = {})
-    ::Castle::API::Track.call(payload)
-  end
-end
-```
-
-#### tracking_controller.rb
-
-```ruby
-payload = ::Castle::Payload::Prepare.call(
-  {
-    event: '$login.succeeded',
-    user_id: user.id,
-    properties: {
-      key: 'value'
-    },
-    user_traits: {
-      key: 'value'
-    }
-  },
-  request
-)
-CastleTrackingWorker.perform_async(payload)
-```
-
-## Connection reuse
-
-If you want to reuse the connection to send multiple events:
-
-```ruby
-Castle::Session.call do |http|
-  castle.track(
-    event: '$logout.succeeded',
-    user_id: user2.id
-    http: http
-  )
-  castle.track(
-    event: '$login.succeeded',
-    user_id: user1.id
-    http: http
-  )
-end
-```
 
 ## Events
 
-List of Recognized Events can be found in the [docs](https://docs.castle.io/v1/reference/events/)
+List of Recognized Events and statuses can be found in the [docs](https://docs.castle.io/docs/events)
 
-## Device management
-
-This SDK allows issuing requests to [Castle's Device Management Endpoints](https://docs.castle.io/v1/reference/api-reference/#devices). Use these endpoints for admin-level management of end-user devices (i.e., for an internal dashboard).
-
-Fetching device data, approving a device, reporting a device requires a valid `device_token`.
-
-```ruby
-# Get device data
-::Castle::API::GetDevice.call(device_token: device_token)
-# Approve a device
-::Castle::API::ApproveDevice.call(device_token: device_token)
-# Report a device
-::Castle::API::ReportDevice.call(device_token: device_token)
-```
-
-#### castle_device_reporting_worker.rb
-
-```ruby
-class CastleDeviceReportingWorker
-  include Sidekiq::Worker
-
-  def perform(device_token)
-    ::Castle::API::ReportDevice.call(device_token: device_token)
-  end
-end
-```
-
-Fetching available devices that belong to a given user requires a valid `user_id`.
-
-```ruby
-# Get user's devices data
-::Castle::API::GetDevicesForUser.call(user_id: user.id)
-```
-
-## Impersonation mode
-
-https://castle.io/docs/impersonation_mode
 
 ## Exceptions
 
 `Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response.
 You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
 
-## Webhooks
-
-Castle uses webhooks to notify about `$incident.confirmed` or `$review.opened` events. Each webhook has `X-Castle-Signature` header that allows verifying webhook's source.
-
-```ruby
-# Verify the webhook, passed as a Request object
-::Castle::Webhooks::Verify.call(webhook_request)
-# Castle::WebhookVerificationError is raised when the signature is not matching
-```
-
-## Documentation
-
-[Official Castle docs](https://docs.castle.io/)
