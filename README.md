@@ -154,12 +154,6 @@ After a successful setup, you can pass the config to any API command as follows:
 
 See [documentation](https://docs.castle.io/docs/) for how to use this SDK with the Castle APIs
 
-
-## Events
-
-List of Recognized Events and statuses can be found in the [docs](https://docs.castle.io/docs/events)
-
-
 ## Exceptions
 
 `Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response.
