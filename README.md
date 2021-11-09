@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/castle/castle-ruby/badge.svg?branch=coveralls)](https://coveralls.io/github/castle/castle-ruby?branch=coveralls)
 [![Gem Version](https://badge.fury.io/rb/castle-rb.svg)](https://badge.fury.io/rb/castle-rb)
 
-**[Castle](https://castle.io) analyzes device, location, and interaction patterns in your web and mobile apps and lets you stop account takeover attacks in real-time..**
+**[Castle](https://castle.io) analyzes user behavior in web and mobile apps to stop fraud before it happens.**
 
 ## Installation
 
