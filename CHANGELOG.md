@@ -2,6 +2,9 @@
 
 ## master
 
+- [#253](https://github.com/castle/castle-ruby/pull/253)
+  * added InvalidRequestTokenError
+
 ## 7.1.2
 
 - [#247](https://github.com/castle/castle-ruby/pull/247)

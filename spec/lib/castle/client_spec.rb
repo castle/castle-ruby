@@ -41,13 +41,18 @@ describe Castle::Client do
   let(:time_auto) { time_now.utc.iso8601(3) }
   let(:time_user) { (Time.now - 10_000).utc.iso8601(3) }
   let(:response_body) { {}.to_json }
+  let(:response_code) { 200 }
+
+  let(:stub_response) do
+    stub_request(:any, /api.castle.io/)
+      .with(basic_auth: ['', 'secret'])
+      .to_return(status: response_code, body: response_body, headers: {})
+  end
 
   before do
     Timecop.freeze(time_now)
     stub_const('Castle::VERSION', '2.2.0')
-    stub_request(:any, /api.castle.io/)
-      .with(basic_auth: ['', 'secret'])
-      .to_return(status: 200, body: response_body, headers: {})
+    stub_response
   end
 
   after { Timecop.return }

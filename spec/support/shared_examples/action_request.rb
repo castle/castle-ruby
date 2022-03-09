@@ -152,4 +152,34 @@ RSpec.shared_examples_for 'action request' do |action|
       it { expect(request_response[:failover_reason]).to be_eql('Castle::InternalServerError') }
     end
   end
+
+  context 'when request is 422' do
+    describe 'throw InvalidParametersError' do
+      let(:response_body) { { type: 'bad_request', message: 'wrong params' }.to_json }
+      let(:response_code) { 422 }
+
+      it do
+        expect { request_response }.to raise_error(Castle::InvalidParametersError, 'wrong params')
+      end
+    end
+
+    describe 'throw InvalidParametersError for legacy endpoints' do
+      let(:response_body) { {}.to_json }
+      let(:response_code) { 422 }
+
+      it { expect { request_response }.to raise_error(Castle::InvalidParametersError) }
+    end
+
+    describe 'throw InvalidRequestTokenError' do
+      let(:response_body) { { type: 'invalid_request_token', message: 'invalid token' }.to_json }
+      let(:response_code) { 422 }
+
+      it do
+        expect { request_response }.to raise_error(
+          Castle::InvalidRequestTokenError,
+          'invalid token'
+        )
+      end
+    end
+  end
 end
