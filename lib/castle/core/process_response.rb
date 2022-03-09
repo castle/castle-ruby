@@ -37,25 +37,29 @@ module Castle
 
           raise Castle::InternalServerError if response.code.to_i.between?(500, 599)
 
-          raise error422(response) if response.code.to_i == 422
+          raise_error422(response) if response.code.to_i == 422
 
           error = RESPONSE_ERRORS.fetch(response.code.to_i, Castle::ApiError)
 
           raise error
         end
 
-        def error422(response)
+        def raise_error422(response)
           if response.body
             begin
               parsed_body = JSON.parse(response.body, symbolize_names: true)
-              if parsed_body.is_a?(Hash) && parsed_body[:type] == INVALID_REQUEST_TOKEN
-                return Castle::InvalidRequestTokenError
+              if parsed_body.is_a?(Hash) && parsed_body.key?(:type)
+                if parsed_body[:type] == INVALID_REQUEST_TOKEN
+                  raise Castle::InvalidRequestTokenError, parsed_body[:message]
+                else
+                  raise Castle::InvalidParametersError, parsed_body[:message]
+                end
               end
             rescue JSON::ParserError
             end
           end
 
-          Castle::InvalidParametersError
+          raise Castle::InvalidParametersError
         end
       end
     end

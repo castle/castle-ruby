@@ -158,6 +158,15 @@ RSpec.shared_examples_for 'action request' do |action|
       let(:response_body) { { type: 'bad_request', message: 'wrong params' }.to_json }
       let(:response_code) { 422 }
 
+      it do
+        expect { request_response }.to raise_error(Castle::InvalidParametersError, 'wrong params')
+      end
+    end
+
+    describe 'throw InvalidParametersError for legacy endpoints' do
+      let(:response_body) { {}.to_json }
+      let(:response_code) { 422 }
+
       it { expect { request_response }.to raise_error(Castle::InvalidParametersError) }
     end
 
@@ -165,7 +174,12 @@ RSpec.shared_examples_for 'action request' do |action|
       let(:response_body) { { type: 'invalid_request_token', message: 'invalid token' }.to_json }
       let(:response_code) { 422 }
 
-      it { expect { request_response }.to raise_error(Castle::InvalidRequestTokenError) }
+      it do
+        expect { request_response }.to raise_error(
+          Castle::InvalidRequestTokenError,
+          'invalid token'
+        )
+      end
     end
   end
 end
