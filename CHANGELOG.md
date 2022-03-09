@@ -5,6 +5,9 @@
 - [#253](https://github.com/castle/castle-ruby/pull/253)
   * added InvalidRequestTokenError
 
+- [#254](https://github.com/castle/castle-ruby/pull/254)
+  * remove X-Castle-* headers from allowlist
+
 ## 7.1.2
 
 - [#247](https://github.com/castle/castle-ruby/pull/247)
