@@ -26,11 +26,11 @@ Castle.api_secret = 'YOUR_API_SECRET'
 
 A Castle client instance will be made available as `castle` in your
 
-* Rails controllers when you add `require 'castle/support/rails'`
+- Rails controllers when you add `require 'castle/support/rails'`
 
-* Padrino controllers when you add `require 'castle/support/padrino'`
+- Padrino controllers when you add `require 'castle/support/padrino'`
 
-* Sinatra app when you add `require 'castle/support/sinatra'` (and additionally explicitly add `register Sinatra::Castle` to your `Sinatra::Base` class if you have a modular application)
+- Sinatra app when you add `require 'castle/support/sinatra'` (and additionally explicitly add `register Sinatra::Castle` to your `Sinatra::Base` class if you have a modular application)
 
 ```ruby
 require 'castle/support/sinatra'
@@ -40,7 +40,7 @@ class ApplicationController < Sinatra::Base
 end
 ```
 
-* Hanami when you add `require 'castle/support/hanami'` and include `Castle::Hanami` to your Hanami application
+- Hanami when you add `require 'castle/support/hanami'` and include `Castle::Hanami` to your Hanami application
 
 ```ruby
 require 'castle/support/hanami'
@@ -119,8 +119,10 @@ Castle.configure do |config|
   # you can achieve this by listing all the proxies ip defined by string or regular expressions
   # in the trusted_proxies setting
   config.trusted_proxies = []
+
   # or by providing number of trusted proxies used in the chain
   config.trusted_proxy_depth = 0
+
   # note that you must pick one approach over the other.
 
   # If there is no possibility to define options above and there is no other header that holds the client IP,
@@ -138,10 +140,11 @@ It is also possible to define multiple configs within one application.
 
 ```ruby
 # Initialize new instance of Castle::Configuration
-config = Castle::Configuration.new.tap do |c|
-  # and set any attribute
-  c.api_secret = 'YOUR_API_SECRET'
-end
+config =
+  Castle::Configuration.new.tap do |c|
+    # and set any attribute
+    c.api_secret = 'YOUR_API_SECRET'
+  end
 ```
 
 After a successful setup, you can pass the config to any API command as follows:
@@ -158,4 +161,3 @@ See [documentation](https://docs.castle.io/docs/) for how to use this SDK with t
 
 `Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response.
 You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
-

@@ -3,38 +3,38 @@
 ## master
 
 - [#253](https://github.com/castle/castle-ruby/pull/253)
-  * added InvalidRequestTokenError
+  - added InvalidRequestTokenError
 
 ## 7.1.2
 
 - [#247](https://github.com/castle/castle-ruby/pull/247)
-  * fixed issue with body as null
+  - fixed issue with body as null
 
 ## 7.1.1
 
 - [#246](https://github.com/castle/castle-ruby/pull/246)
-  * support failover for risk and filter
+  - support failover for risk and filter
 
 ## 7.1.0 (2021-06-09)
 
-- [#245](https://github.com/castle/castle-ruby/pull/245) 
-  * removed not needed sdk based validations
-
+- [#245](https://github.com/castle/castle-ruby/pull/245)
+  - removed not needed sdk based validations
 
 ## 7.0.0 (2021-06-03)
 
 **BREAKING CHANGES:**
 
 - [#237](https://github.com/castle/castle-ruby/pull/237)
-  * remove `identify` and `review` commands - they are no longer supported
-  * remove `Castle::Events` - please use [recognized events](https://docs.castle.io/v1/reference/events/) instead
+  - remove `identify` and `review` commands - they are no longer supported
+  - remove `Castle::Events` - please use [recognized events](https://docs.castle.io/v1/reference/events/) instead
 
 **Enhancements:**
+
 - [#243](https://github.com/castle/castle-ruby/pull/243)
-  * add risk, filter and log endpoints
+  - add risk, filter and log endpoints
 - [#242](https://github.com/castle/castle-ruby/pull/242)
-  * correct configuration used by the logger
-  * prevent unnecessary calls to the singleton configuration
+  - correct configuration used by the logger
+  - prevent unnecessary calls to the singleton configuration
 
 ## 6.0.1 (2021-01-19)
 
@@ -52,6 +52,7 @@
 - [#216](https://github.com/castle/castle-ruby/pull/216) add new context and payload builders, changed DSL
 
 **Enhancements:**
+
 - [#231](https://github.com/castle/castle-ruby/pull/231) allow to instantiate the configuration
 - [#230](https://github.com/castle/castle-ruby/pull/230) add webhooks verification
 - [#223](https://github.com/castle/castle-ruby/pull/223), [#224](https://github.com/castle/castle-ruby/pull/224), [#225](https://github.com/castle/castle-ruby/pull/225), [#226](https://github.com/castle/castle-ruby/pull/226), [#227](https://github.com/castle/castle-ruby/pull/227) allow to manage the devices
@@ -84,7 +85,6 @@
 ## 4.2.0 (2020-03-31)
 
 - [#187](https://github.com/castle/castle-ruby/pull/187) dropped X-Client-Id from calculation of ip, drop appending default ip headers to the ip_header list config when config is provided (in that case default headers have to explicitly provided)
-
 
 ## 4.1.0 (2020-03-27)
 
@@ -122,7 +122,6 @@
 **Enhancements:**
 
 - [#163](https://github.com/castle/castle-ruby/pull/163) scrub headers instead of dropping them
-
 
 ## 3.5.2 (2019-01-09)
 
