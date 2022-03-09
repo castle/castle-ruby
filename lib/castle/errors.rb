@@ -53,6 +53,10 @@ module Castle
   class InvalidParametersError < Castle::ApiError
   end
 
+  # api error invalid param 422 (invalid token)
+  class InvalidRequestTokenError < Castle::ApiError
+  end
+
   # api error unauthorized 401
   class UnauthorizedError < Castle::ApiError
   end
