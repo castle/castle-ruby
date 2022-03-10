@@ -1,5 +1,4 @@
-Releasing
-=========
+# Releasing
 
 1. Create branch `X.Y.Z` from develop.
 2. Update `VERSION` in `lib/castle/version.rb` to the new version
