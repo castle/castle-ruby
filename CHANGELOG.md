@@ -2,11 +2,14 @@
 
 ## master
 
+## 7.2.0
+
 - [#253](https://github.com/castle/castle-ruby/pull/253)
+
   - added InvalidRequestTokenError
 
 - [#254](https://github.com/castle/castle-ruby/pull/254)
-  * remove X-Castle-* headers from allowlist
+  - remove X-Castle-\* headers from allowlist
 
 ## 7.1.2
 
