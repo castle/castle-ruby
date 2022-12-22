@@ -43,6 +43,9 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/EmptyExampleGroup:
   Enabled: false
 
+RSpec/Rails/InferredSpecType:
+  Enabled: false
+
 Layout/LineLength:
   Max: 120
 
