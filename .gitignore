@@ -10,3 +10,4 @@ tags
 /doc/
 /.yardoc/
 gemfiles/vendor
+/lint/
