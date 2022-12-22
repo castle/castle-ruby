@@ -21,6 +21,9 @@ aliases:
   - &rails-6
     environment:
       BUNDLE_GEMFILE: gemfiles/rails_6.gemfile
+  - &rails-7
+    environment:
+      BUNDLE_GEMFILE: gemfiles/rails_7.gemfile
   - &ruby-2_4_9
     docker:
     - image: circleci/ruby:2.4.9
@@ -79,6 +82,10 @@ jobs:
     <<: *ruby-3_0
     <<: *rails-6
     <<: *job-defaults
+  ruby-3_0-rails-7:
+    <<: *ruby-3_0
+    <<: *rails-7
+    <<: *job-defaults
 workflows:
   main:
     jobs:
@@ -91,3 +98,4 @@ workflows:
       - ruby-2_7-rails-5
       - ruby-2_7-rails-6
       - ruby-3_0-rails-6
+      - ruby-3_0-rails-7

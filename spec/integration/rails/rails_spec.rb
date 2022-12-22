@@ -3,7 +3,7 @@
 require 'spec_helper'
 require_relative 'support/all'
 
-RSpec.describe HomeController, type: :request do
+RSpec.describe HomeController do
   context 'with index pages' do
     let(:request) do
       {
