@@ -22,9 +22,12 @@ describe Castle::API::StartImpersonation do
   before do
     Timecop.freeze(time_now)
     stub_const('Castle::VERSION', '2.2.0')
-    stub_request(:any, /api.castle.io/)
-      .with(basic_auth: ['', 'secret'])
-      .to_return(status: 200, body: response_body, headers: {})
+    stub_request(:any, /api.castle.io/).with(basic_auth: ['', 'secret']).to_return(
+      status: 200,
+      body: response_body,
+      headers: {
+      }
+    )
   end
 
   after { Timecop.return }
@@ -32,19 +35,10 @@ describe Castle::API::StartImpersonation do
   describe 'call' do
     let(:impersonator) { 'test@castle.io' }
     let(:request_body) do
-      {
-        user_id: '1234',
-        sent_at: time_auto,
-        properties: {
-          impersonator: impersonator
-        },
-        context: context
-      }
+      { user_id: '1234', sent_at: time_auto, properties: { impersonator: impersonator }, context: context }
     end
     let(:response_body) { { success: true }.to_json }
-    let(:options) do
-      { user_id: '1234', properties: { impersonator: impersonator }, context: context }
-    end
+    let(:options) { { user_id: '1234', properties: { impersonator: impersonator }, context: context } }
 
     context 'when used with symbol keys' do
       before { call }

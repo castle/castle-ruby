@@ -10,11 +10,7 @@ module Castle
         def build(options = {})
           context = Castle::Context::Sanitize.call(options[:context])
 
-          Castle::Command.new(
-            'log',
-            options.merge(context: context, sent_at: Castle::Utils::GetTimestamp.call),
-            :post
-          )
+          Castle::Command.new('log', options.merge(context: context, sent_at: Castle::Utils::GetTimestamp.call), :post)
         end
       end
     end

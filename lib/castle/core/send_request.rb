@@ -15,9 +15,7 @@ module Castle
         # @param http [Net::HTTP]
         # @param config [Castle::Configuration, Castle::SingletonConfiguration, nil]
         def call(command, headers, http = nil, config = nil)
-          (http || Castle::Core::GetConnection.call).request(
-            build(command, headers.merge(DEFAULT_HEADERS), config)
-          )
+          (http || Castle::Core::GetConnection.call).request(build(command, headers.merge(DEFAULT_HEADERS), config))
         end
 
         # @param command [String]

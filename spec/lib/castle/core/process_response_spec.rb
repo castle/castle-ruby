@@ -18,17 +18,13 @@ describe Castle::Core::ProcessResponse do
       end
 
       context 'when allow with additional props' do
-        let(:response) do
-          OpenStruct.new(body: '{"action":"allow","user_id":"12345","internal":{}}', code: 200)
-        end
+        let(:response) { OpenStruct.new(body: '{"action":"allow","user_id":"12345","internal":{}}', code: 200) }
 
         it { expect(call).to eql({ action: 'allow', user_id: '12345', internal: {} }) }
       end
 
       context 'when deny without risk policy' do
-        let(:response) do
-          OpenStruct.new(body: '{"action":"deny","user_id":"1","device_token":"abc"}', code: 200)
-        end
+        let(:response) { OpenStruct.new(body: '{"action":"deny","user_id":"1","device_token":"abc"}', code: 200) }
 
         it { expect(call).to eql({ action: 'deny', user_id: '1', device_token: 'abc' }) }
       end

@@ -4,9 +4,7 @@ describe Castle::Commands::Authenticate do
   subject(:instance) { described_class }
 
   let(:context) { { test: { test1: '1' } } }
-  let(:default_payload) do
-    { event: '$login.authenticate', user_id: '1234', sent_at: time_auto, context: context }
-  end
+  let(:default_payload) { { event: '$login.authenticate', user_id: '1234', sent_at: time_auto, context: context } }
 
   let(:time_now) { Time.now }
   let(:time_auto) { time_now.utc.iso8601(3) }
@@ -70,12 +68,7 @@ describe Castle::Commands::Authenticate do
     context 'with event not present' do
       let(:payload) { {} }
 
-      it do
-        expect { validate! }.to raise_error(
-          Castle::InvalidParametersError,
-          'event is missing or empty'
-        )
-      end
+      it { expect { validate! }.to raise_error(Castle::InvalidParametersError, 'event is missing or empty') }
     end
 
     context 'with user_id not present' do

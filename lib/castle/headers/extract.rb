@@ -23,9 +23,7 @@ module Castle
       # Serialize HTTP headers
       # @return [Hash]
       def call
-        @headers.each_with_object({}) do |(name, value), acc|
-          acc[name] = header_value(name, value)
-        end
+        @headers.each_with_object({}) { |(name, value), acc| acc[name] = header_value(name, value) }
       end
 
       private

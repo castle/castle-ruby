@@ -3,7 +3,7 @@
 require 'spec_helper'
 require_relative 'support/all'
 
-RSpec.describe HomeController, type: :request do
+RSpec.describe HomeController do
   context 'with index pages' do
     let(:request) do
       {
@@ -39,9 +39,7 @@ RSpec.describe HomeController, type: :request do
       }
     end
     let(:now) { Time.now }
-    let(:headers) do
-      { 'HTTP_AUTHORIZATION' => 'Basic 123', 'HTTP_X_FORWARDED_FOR' => '5.5.5.5, 1.2.3.4' }
-    end
+    let(:headers) { { 'HTTP_AUTHORIZATION' => 'Basic 123', 'HTTP_X_FORWARDED_FOR' => '5.5.5.5, 1.2.3.4' } }
 
     before do
       Timecop.freeze(now)

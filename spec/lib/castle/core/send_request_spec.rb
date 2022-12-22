@@ -8,12 +8,12 @@ describe Castle::Core::SendRequest do
     let(:headers) { {} }
     let(:request_build) { {} }
     let(:expected_headers) { { 'Content-Type' => 'application/json' } }
-    let(:http) { instance_double('Net::HTTP') }
+    let(:http) { instance_double(Net::HTTP) }
 
     context 'without http arg provided' do
       subject(:call) { described_class.call(command, headers, nil, config) }
 
-      let(:http) { instance_double('Net::HTTP') }
+      let(:http) { instance_double(Net::HTTP) }
       let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
       let(:headers) { {} }
       let(:request_build) { {} }
@@ -26,9 +26,7 @@ describe Castle::Core::SendRequest do
         call
       end
 
-      it do
-        expect(described_class).to have_received(:build).with(command, expected_headers, config)
-      end
+      it { expect(described_class).to have_received(:build).with(command, expected_headers, config) }
 
       it { expect(http).to have_received(:request).with(request_build) }
     end
@@ -45,9 +43,7 @@ describe Castle::Core::SendRequest do
 
       it { expect(Castle::Core::GetConnection).not_to have_received(:call) }
 
-      it do
-        expect(described_class).to have_received(:build).with(command, expected_headers, config)
-      end
+      it { expect(described_class).to have_received(:build).with(command, expected_headers, config) }
 
       it { expect(http).to have_received(:request).with(request_build) }
     end

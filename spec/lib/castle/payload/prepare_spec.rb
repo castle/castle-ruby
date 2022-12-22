@@ -14,9 +14,7 @@ describe Castle::Payload::Prepare do
   end
   let(:request) { Rack::Request.new(env) }
 
-  let(:headers) do
-    { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true }
-  end
+  let(:headers) { { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, Cookie: true } }
   let(:context) do
     {
       client_id: 'abcd',
@@ -34,9 +32,7 @@ describe Castle::Payload::Prepare do
   let(:time_now) { Time.now }
   let(:time_formatted) { time_now.utc.iso8601(3) }
   let(:payload_options) { { user_id: '1234', user_traits: { name: 'Jo' } } }
-  let(:result) do
-    { user_id: '1234', user_traits: { name: 'Jo' }, timestamp: time_formatted, context: context }
-  end
+  let(:result) { { user_id: '1234', user_traits: { name: 'Jo' }, timestamp: time_formatted, context: context } }
 
   before do
     Timecop.freeze(time_now)

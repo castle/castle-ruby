@@ -3,7 +3,8 @@
 # tmp logger for testing
 class TmpLogger
   # @param _message [String]
-  def info(_message); end
+  def info(_message)
+  end
 end
 
 describe Castle::Logger do

@@ -39,11 +39,7 @@ describe Castle::Session do
 
       before do
         Castle.config.base_url = 'https://localhost'
-        stub_request(:get, 'https://localhost/test').to_return(
-          status: 200,
-          body: '{}',
-          headers: {}
-        )
+        stub_request(:get, 'https://localhost/test').to_return(status: 200, body: '{}', headers: {})
       end
 
       context 'with block' do

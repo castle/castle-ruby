@@ -4,7 +4,7 @@ describe Castle do
   subject(:castle) { described_class }
 
   describe 'config' do
-    it { expect(castle.config).to be_kind_of(Castle::Configuration) }
+    it { expect(castle.config).to be_a(Castle::Configuration) }
   end
 
   describe 'api_secret setter' do
@@ -52,9 +52,7 @@ describe Castle do
     let(:value) { 'new_secret' }
 
     it do
-      expect { castle.configure { |config| config.wrong_config = value } }.to raise_error(
-        Castle::ConfigurationError
-      )
+      expect { castle.configure { |config| config.wrong_config = value } }.to raise_error(Castle::ConfigurationError)
     end
   end
 end

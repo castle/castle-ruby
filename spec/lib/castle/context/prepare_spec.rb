@@ -27,9 +27,7 @@ describe Castle::Context::Prepare do
     }
   end
 
-  let(:headers) do
-    { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, 'Cookie': true }
-  end
+  let(:headers) { { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, Cookie: true } }
 
   before { stub_const('Castle::VERSION', '6.0.0') }
 
