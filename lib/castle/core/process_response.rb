@@ -51,9 +51,9 @@ module Castle
               if parsed_body.is_a?(Hash) && parsed_body.key?(:type)
                 if parsed_body[:type] == INVALID_REQUEST_TOKEN
                   raise Castle::InvalidRequestTokenError, parsed_body[:message]
-                else
-                  raise Castle::InvalidParametersError, parsed_body[:message]
                 end
+
+                raise Castle::InvalidParametersError, parsed_body[:message]
               end
             rescue JSON::ParserError
             end

@@ -7,20 +7,13 @@ describe Castle::Validators::Present do
     context 'when keys is not present' do
       let(:keys) { %i[second third] }
 
-      it do
-        expect { call }.to raise_error(Castle::InvalidParametersError, 'third is missing or empty')
-      end
+      it { expect { call }.to raise_error(Castle::InvalidParametersError, 'third is missing or empty') }
     end
 
     context 'when keys is empty' do
       let(:keys) { %i[second invalid] }
 
-      it do
-        expect { call }.to raise_error(
-          Castle::InvalidParametersError,
-          'invalid is missing or empty'
-        )
-      end
+      it { expect { call }.to raise_error(Castle::InvalidParametersError, 'invalid is missing or empty') }
     end
 
     context 'when key is present' do

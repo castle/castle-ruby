@@ -67,9 +67,7 @@
 module Castle
   class << self
     def configure(config_hash = nil)
-      (config_hash || {}).each do |config_name, config_value|
-        config.send("#{config_name}=", config_value)
-      end
+      (config_hash || {}).each { |config_name, config_value| config.send("#{config_name}=", config_value) }
 
       yield(config) if block_given?
     end

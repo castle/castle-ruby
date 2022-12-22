@@ -4,14 +4,7 @@ RSpec.shared_examples_for 'action request' do |action|
   subject(:request_response) { client.send(action.to_sym, options) }
 
   let(:options) do
-    {
-      request_token: request_token,
-      event: event,
-      status: status,
-      user: user,
-      context: context,
-      properties: properties
-    }
+    { request_token: request_token, event: event, status: status, user: user, context: context, properties: properties }
   end
   let(:request_token) { '7e51335b-f4bc-4bc7-875d-b713fb61eb23-bf021a3022a1a302' }
   let(:event) { '$login' }
@@ -112,11 +105,7 @@ RSpec.shared_examples_for 'action request' do |action|
   end
 
   context 'when request with fail' do
-    before do
-      allow(Castle::API).to receive(:send_request).and_raise(
-        Castle::RequestError.new(Timeout::Error)
-      )
-    end
+    before { allow(Castle::API).to receive(:send_request).and_raise(Castle::RequestError.new(Timeout::Error)) }
 
     context 'with request error and throw strategy' do
       before { allow(Castle.config).to receive(:failover_strategy).and_return(:throw) }
@@ -158,9 +147,7 @@ RSpec.shared_examples_for 'action request' do |action|
       let(:response_body) { { type: 'bad_request', message: 'wrong params' }.to_json }
       let(:response_code) { 422 }
 
-      it do
-        expect { request_response }.to raise_error(Castle::InvalidParametersError, 'wrong params')
-      end
+      it { expect { request_response }.to raise_error(Castle::InvalidParametersError, 'wrong params') }
     end
 
     describe 'throw InvalidParametersError for legacy endpoints' do
@@ -174,12 +161,7 @@ RSpec.shared_examples_for 'action request' do |action|
       let(:response_body) { { type: 'invalid_request_token', message: 'invalid token' }.to_json }
       let(:response_code) { 422 }
 
-      it do
-        expect { request_response }.to raise_error(
-          Castle::InvalidRequestTokenError,
-          'invalid token'
-        )
-      end
+      it { expect { request_response }.to raise_error(Castle::InvalidRequestTokenError, 'invalid token') }
     end
   end
 end

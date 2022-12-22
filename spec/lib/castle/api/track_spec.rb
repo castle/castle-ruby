@@ -24,17 +24,18 @@ describe Castle::API::Track do
   before do
     Timecop.freeze(time_now)
     stub_const('Castle::VERSION', '2.2.0')
-    stub_request(:any, /api.castle.io/)
-      .with(basic_auth: ['', 'secret'])
-      .to_return(status: 200, body: response_body, headers: {})
+    stub_request(:any, /api.castle.io/).with(basic_auth: ['', 'secret']).to_return(
+      status: 200,
+      body: response_body,
+      headers: {
+      }
+    )
   end
 
   after { Timecop.return }
 
   describe 'track' do
-    let(:request_body) do
-      { event: '$login.succeeded', context: context, user_id: '1234', sent_at: time_auto }
-    end
+    let(:request_body) { { event: '$login.succeeded', context: context, user_id: '1234', sent_at: time_auto } }
 
     before { call }
 
@@ -48,17 +49,9 @@ describe Castle::API::Track do
       end
 
       context 'when passed timestamp in options and no defined timestamp' do
-        let(:options) do
-          { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context }
-        end
+        let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context } }
         let(:request_body) do
-          {
-            event: '$login.succeeded',
-            user_id: '1234',
-            context: context,
-            timestamp: time_user,
-            sent_at: time_auto
-          }
+          { event: '$login.succeeded', user_id: '1234', context: context, timestamp: time_user, sent_at: time_auto }
         end
 
         it do

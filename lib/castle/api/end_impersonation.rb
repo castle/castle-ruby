@@ -7,9 +7,7 @@ module Castle
       class << self
         # @param options [Hash]
         def call(options = {})
-          unless options[:no_symbolize]
-            options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
-          end
+          options = Castle::Utils::DeepSymbolizeKeys.call(options || {}) unless options[:no_symbolize]
           options.delete(:no_symbolize)
           http = options.delete(:http)
           config = options.delete(:config) || Castle.config

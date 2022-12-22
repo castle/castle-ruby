@@ -29,15 +29,16 @@ describe Castle::API::Authenticate do
   after { Timecop.return }
 
   describe '.call' do
-    let(:request_body) do
-      { event: '$login.succeeded', context: context, user_id: '1234', sent_at: time_auto }
-    end
+    let(:request_body) { { event: '$login.succeeded', context: context, user_id: '1234', sent_at: time_auto } }
 
     context 'when used with symbol keys' do
       before do
-        stub_request(:any, /api.castle.io/)
-          .with(basic_auth: ['', 'secret'])
-          .to_return(status: 200, body: response_body, headers: {})
+        stub_request(:any, /api.castle.io/).with(basic_auth: ['', 'secret']).to_return(
+          status: 200,
+          body: response_body,
+          headers: {
+          }
+        )
         call_subject
       end
 
@@ -50,17 +51,9 @@ describe Castle::API::Authenticate do
       end
 
       context 'when passed timestamp in options and no defined timestamp' do
-        let(:options) do
-          { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context }
-        end
+        let(:options) { { event: '$login.succeeded', user_id: '1234', timestamp: time_user, context: context } }
         let(:request_body) do
-          {
-            event: '$login.succeeded',
-            user_id: '1234',
-            context: context,
-            timestamp: time_user,
-            sent_at: time_auto
-          }
+          { event: '$login.succeeded', user_id: '1234', context: context, timestamp: time_user, sent_at: time_auto }
         end
 
         it do
@@ -78,15 +71,16 @@ describe Castle::API::Authenticate do
 
       context 'when denied without any risk policy' do
         let(:response_body) { deny_response_without_rp.to_json }
-        let(:deny_response_without_rp) do
-          { action: 'deny', user_id: '12345', device_token: 'abcdefg1234' }
-        end
+        let(:deny_response_without_rp) { { action: 'deny', user_id: '12345', device_token: 'abcdefg1234' } }
         let(:deny_without_rp_failover_result) { deny_response_without_rp.merge(failover_appendix) }
 
         before do
-          stub_request(:any, /api.castle.io/)
-            .with(basic_auth: ['', 'secret'])
-            .to_return(status: 200, body: deny_response_without_rp.to_json, headers: {})
+          stub_request(:any, /api.castle.io/).with(basic_auth: ['', 'secret']).to_return(
+            status: 200,
+            body: deny_response_without_rp.to_json,
+            headers: {
+            }
+          )
           call_subject
         end
 
@@ -117,9 +111,12 @@ describe Castle::API::Authenticate do
         let(:deny_with_rp_failover_result) { deny_response_with_rp.merge(failover_appendix) }
 
         before do
-          stub_request(:any, /api.castle.io/)
-            .with(basic_auth: ['', 'secret'])
-            .to_return(status: 200, body: deny_response_with_rp.to_json, headers: {})
+          stub_request(:any, /api.castle.io/).with(basic_auth: ['', 'secret']).to_return(
+            status: 200,
+            body: deny_response_with_rp.to_json,
+            headers: {
+            }
+          )
           call_subject
         end
 

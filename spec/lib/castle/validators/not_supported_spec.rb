@@ -7,12 +7,7 @@ describe Castle::Validators::NotSupported do
     context 'when keys is present' do
       let(:keys) { %i[first second] }
 
-      it do
-        expect { call }.to raise_error(
-          Castle::InvalidParametersError,
-          'first is/are not supported'
-        )
-      end
+      it { expect { call }.to raise_error(Castle::InvalidParametersError, 'first is/are not supported') }
     end
 
     context 'when key is not present' do

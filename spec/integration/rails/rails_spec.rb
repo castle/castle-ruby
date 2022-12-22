@@ -28,7 +28,8 @@ RSpec.describe HomeController, type: :request do
             'Cookie' => true,
             'Host' => 'www.example.com',
             'X-Forwarded-For' => '5.5.5.5, 1.2.3.4',
-            'Remote-Addr' => '127.0.0.1'
+            'Remote-Addr' => '127.0.0.1',
+            'Version' => 'HTTP/1.0'
           },
           'ip' => '1.2.3.4',
           'library' => {
@@ -39,9 +40,7 @@ RSpec.describe HomeController, type: :request do
       }
     end
     let(:now) { Time.now }
-    let(:headers) do
-      { 'HTTP_AUTHORIZATION' => 'Basic 123', 'HTTP_X_FORWARDED_FOR' => '5.5.5.5, 1.2.3.4' }
-    end
+    let(:headers) { { 'HTTP_AUTHORIZATION' => 'Basic 123', 'HTTP_X_FORWARDED_FOR' => '5.5.5.5, 1.2.3.4' } }
 
     before do
       Timecop.freeze(now)

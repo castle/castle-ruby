@@ -63,9 +63,7 @@ shared_examples 'configuration_failover_strategy' do
     end
 
     context 'when broken' do
-      it do
-        expect { config.failover_strategy = :unicorn }.to raise_error(Castle::ConfigurationError)
-      end
+      it { expect { config.failover_strategy = :unicorn }.to raise_error(Castle::ConfigurationError) }
     end
   end
 end

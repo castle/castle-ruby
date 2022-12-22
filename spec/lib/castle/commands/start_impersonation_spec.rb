@@ -19,9 +19,7 @@ describe Castle::Commands::StartImpersonation do
 
     context 'with impersonator' do
       let(:payload) { default_payload.merge(properties: { impersonator: impersonator }) }
-      let(:command_data) do
-        default_payload.merge(properties: { impersonator: impersonator }, context: context)
-      end
+      let(:command_data) { default_payload.merge(properties: { impersonator: impersonator }, context: context) }
 
       it { expect(command.method).to be_eql(:post) }
       it { expect(command.path).to be_eql('impersonate') }
@@ -62,12 +60,7 @@ describe Castle::Commands::StartImpersonation do
     context 'when user_id not present' do
       let(:payload) { {} }
 
-      it do
-        expect { validate! }.to raise_error(
-          Castle::InvalidParametersError,
-          'user_id is missing or empty'
-        )
-      end
+      it { expect { validate! }.to raise_error(Castle::InvalidParametersError, 'user_id is missing or empty') }
     end
 
     context 'when user_id present' do

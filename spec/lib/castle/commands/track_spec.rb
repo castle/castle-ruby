@@ -77,12 +77,7 @@ describe Castle::Commands::Track do
     context 'when event not present' do
       let(:payload) { {} }
 
-      it do
-        expect { validate! }.to raise_error(
-          Castle::InvalidParametersError,
-          'event is missing or empty'
-        )
-      end
+      it { expect { validate! }.to raise_error(Castle::InvalidParametersError, 'event is missing or empty') }
     end
 
     context 'when event present' do

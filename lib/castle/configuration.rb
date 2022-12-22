@@ -104,9 +104,7 @@ module Castle
     # sets trusted proxies
     # @param value [Array<String,Regexp>]
     def trusted_proxies=(value)
-      unless value.is_a?(Array)
-        raise Castle::ConfigurationError, 'trusted proxies must be an Array'
-      end
+      raise Castle::ConfigurationError, 'trusted proxies must be an Array' unless value.is_a?(Array)
 
       @trusted_proxies = value
     end
@@ -121,8 +119,7 @@ module Castle
     end
 
     def failover_strategy=(value)
-      @failover_strategy =
-        Castle::Failover::STRATEGIES.detect { |strategy| strategy == value.to_sym }
+      @failover_strategy = Castle::Failover::STRATEGIES.detect { |strategy| strategy == value.to_sym }
       raise Castle::ConfigurationError, 'unrecognized failover strategy' if @failover_strategy.nil?
     end
 

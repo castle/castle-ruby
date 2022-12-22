@@ -16,9 +16,7 @@ describe Castle::IPs::Extract do
     end
 
     context 'when we need to use other ip header' do
-      let(:headers) do
-        { 'Cf-Connecting-Ip' => '1.2.3.4', 'X-Forwarded-For' => '1.1.1.1, 1.2.2.2, 1.2.3.5' }
-      end
+      let(:headers) { { 'Cf-Connecting-Ip' => '1.2.3.4', 'X-Forwarded-For' => '1.1.1.1, 1.2.2.2, 1.2.3.5' } }
 
       context 'with uppercase format' do
         before { Castle.config.ip_headers = %w[CF_CONNECTING_IP X-Forwarded-For] }
@@ -77,9 +75,7 @@ describe Castle::IPs::Extract do
     end
 
     context 'when list of not trusted ips provided in X_FORWARDED_FOR' do
-      let(:headers) do
-        { 'X-Forwarded-For' => '6.6.6.6, 2.2.2.3, 192.168.0.7', 'Client-Ip' => '6.6.6.6' }
-      end
+      let(:headers) { { 'X-Forwarded-For' => '6.6.6.6, 2.2.2.3, 192.168.0.7', 'Client-Ip' => '6.6.6.6' } }
 
       it 'does not allow to spoof ip' do
         expect(extractor.call).to eql('2.2.2.3')
