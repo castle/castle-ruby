@@ -1,37 +1,111 @@
+require:
+  - rubocop-rspec
+  - rubocop-performance
+
+inherit_gem:
+  prettier: rubocop.yml
+
 AllCops:
-  TargetRubyVersion: 2.5
+  NewCops: enable
   Exclude:
     - bin/**/*
-    - db/schema.rb
+    - .*/**/*
+    - coverage/**/*
+    - log/**/*
+    - tmp/**/*
+    - vendor/**/*
+    - spec/fixtures/**/*
+    - spec/files/**/*
+    - lint/**/*
     - .gemspec/**/*
-    - gemfiles/**/*
     - .bundle/**/*
     - vendor/**/*
-    - db/migrate/**/*
-    - '**/dummy**/*'
-    - Appraisals
-    - !ruby/regexp /old_and_unused\.rb$/
 
-Metrics/ClassLength:
-  CountComments: false
-  Max: 200
+Style/IfUnlessModifier:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: true
+  Max: 3
+
+RSpec/NestedGroups:
+  Enabled: true
+  Max: 4
+
+RSpec/ExampleLength:
+  Enabled: true
+  Max: 10
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: true
+  Max: 15
+
+RSpec/EmptyExampleGroup:
+  Enabled: false
 
 Layout/LineLength:
-  Max: 99
-  Exclude:
-    - "spec/integration/rails/rails_spec.rb"
+  Max: 120
 
 Metrics/MethodLength:
-  CountComments: false
-  Max: 20
+  Enabled: false
 
-Metrics/AbcSize:
-  Max: 25
+Metrics/ClassLength:
+  Enabled: false
 
 Metrics/BlockLength:
-  IgnoredMethods: ['describe', 'context', 'let']
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 30
+
+Metrics/CyclomaticComplexity:
+  Max: 12
 
 Naming/FileName:
   Exclude:
     - '*.gemspec'
-    - 'lib/castle-rb.rb'
+
+Style/NumericLiterals:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+
+Style/RedundantFetchBlock:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
+
+Security/YAMLLoad:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: false
+
+Performance/Sum:
+  Enabled: false
+
+Performance/StringInclude:
+  Enabled: false
+
+RSpec/Rails/HttpStatus:
+  Enabled: false
+
+RSpec/Rails/HaveHttpStatus:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  AllowedMethods: [change]

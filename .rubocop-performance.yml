@@ -1,9 +1,0 @@
-AllCops:
-  Exclude:
-    - bin/**/*
-    - db/schema.rb
-    - .gemspec/**/*
-    - .bundle/**/*
-    - vendor/**/*
-    - '**/dummy**/*'
-    - !ruby/regexp /old_and_unused\.rb$/
