@@ -31,6 +31,7 @@ class HomeController < ActionController::Base
         { event: '$login.succeeded', user_id: '123', properties: { key: 'value' }, user_traits: { key: 'value' } },
         request
       )
+
     Castle::API::Track.call(payload)
 
     render inline: 'hello'
