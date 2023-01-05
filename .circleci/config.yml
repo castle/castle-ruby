@@ -89,7 +89,9 @@ jobs:
 workflows:
   main:
     jobs:
-      - coditsu
+      - coditsu:
+          context:
+            - coditsu
       - ruby-2_4_9-rails-5
       - ruby-2_5_7-rails-5
       - ruby-2_5_7-rails-6
