@@ -3,7 +3,7 @@ version: 2.1
 aliases:
   - &coditsu
     docker:
-      - image: circleci/ruby:2.6.5
+      - image: cimg/ruby:3.2
     steps:
       - setup_remote_docker
       - checkout
@@ -15,30 +15,24 @@ aliases:
             -e CODITSU_API_SECRET \
             -e CODITSU_REPOSITORY_ID \
             --volumes-from sources coditsu/coditsu:latest
-  - &rails-5
-    environment:
-      BUNDLE_GEMFILE: gemfiles/rails_5.gemfile
   - &rails-6
     environment:
       BUNDLE_GEMFILE: gemfiles/rails_6.gemfile
   - &rails-7
     environment:
       BUNDLE_GEMFILE: gemfiles/rails_7.gemfile
-  - &ruby-2_4_9
-    docker:
-    - image: circleci/ruby:2.4.9
-  - &ruby-2_5_7
-    docker:
-    - image: circleci/ruby:2.5.7
-  - &ruby-2_6_5
-    docker:
-    - image: circleci/ruby:2.6.5
   - &ruby-2_7
     docker:
-    - image: circleci/ruby:2.7
+    - image: cimg/ruby:2.7
   - &ruby-3_0
     docker:
-    - image: circleci/ruby:3.0
+    - image: cimg/ruby:3.0
+  - &ruby-3_1
+    docker:
+      - image: cimg/ruby:3.1
+  - &ruby-3_2
+    docker:
+      - image: cimg/ruby:3.2
   - &job-defaults
     steps:
       - checkout
@@ -48,32 +42,8 @@ aliases:
 
 jobs:
   coditsu:
-    <<: *rails-5
+    <<: *rails-7
     <<: *coditsu
-  ruby-2_4_9-rails-5:
-    <<: *ruby-2_4_9
-    <<: *rails-5
-    <<: *job-defaults
-  ruby-2_5_7-rails-5:
-    <<: *ruby-2_5_7
-    <<: *rails-5
-    <<: *job-defaults
-  ruby-2_5_7-rails-6:
-    <<: *ruby-2_5_7
-    <<: *rails-6
-    <<: *job-defaults
-  ruby-2_6_5-rails-5:
-    <<: *ruby-2_6_5
-    <<: *rails-5
-    <<: *job-defaults
-  ruby-2_6_5-rails-6:
-    <<: *ruby-2_6_5
-    <<: *rails-6
-    <<: *job-defaults
-  ruby-2_7-rails-5:
-    <<: *ruby-2_7
-    <<: *rails-5
-    <<: *job-defaults
   ruby-2_7-rails-6:
     <<: *ruby-2_7
     <<: *rails-6
@@ -86,18 +56,22 @@ jobs:
     <<: *ruby-3_0
     <<: *rails-7
     <<: *job-defaults
+  ruby-3_1-rails-7:
+    <<: *ruby-3_1
+    <<: *rails-7
+    <<: *job-defaults
+  ruby-3_2-rails-7:
+    <<: *ruby-3_2
+    <<: *rails-7
+    <<: *job-defaults
 workflows:
   main:
     jobs:
       - coditsu:
           context:
             - coditsu
-      - ruby-2_4_9-rails-5
-      - ruby-2_5_7-rails-5
-      - ruby-2_5_7-rails-6
-      - ruby-2_6_5-rails-5
-      - ruby-2_6_5-rails-6
-      - ruby-2_7-rails-5
       - ruby-2_7-rails-6
       - ruby-3_0-rails-6
       - ruby-3_0-rails-7
+      - ruby-3_1-rails-7
+      - ruby-3_2-rails-7
