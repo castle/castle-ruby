@@ -2,6 +2,13 @@
 
 ## master
 
+**BREAKING CHANGES:**
+
+- [#259](https://github.com/castle/castle-ruby/pull/259)
+  - Drop support for Rubies < 2.7 and Rails < 6
+  - Add Rubies 3.1 and 3.2 to test matrix
+  - Add Rails 7 to test matrix
+
 ## 7.2.0
 
 - [#253](https://github.com/castle/castle-ruby/pull/253)
