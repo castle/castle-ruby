@@ -6,8 +6,8 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.8.1)
-      public_suffix (>= 2.0.2, < 6.0)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
     appraisal (2.5.0)
       bundler
       rake
@@ -28,7 +28,7 @@ GEM
       protocol (~> 2.0)
     protocol (2.0.0)
       ruby_parser (~> 3.0)
-    public_suffix (5.0.1)
+    public_suffix (6.0.0)
     racc (1.8.0)
     rack (3.0.11)
     rake (13.2.1)
