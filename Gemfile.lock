@@ -19,7 +19,8 @@ GEM
       term-ansicolor (~> 1.7)
       thor (~> 1.2)
       tins (~> 1.32)
-    crack (0.4.5)
+    crack (1.0.0)
+      bigdecimal
       rexml
     diff-lcs (1.5.1)
     docile (1.4.0)
@@ -67,7 +68,7 @@ GEM
     tins (1.33.0)
       bigdecimal
       sync
-    webmock (3.18.1)
+    webmock (3.23.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
