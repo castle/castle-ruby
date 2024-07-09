@@ -14,7 +14,8 @@ describe Castle::Headers::Filter do
         'HTTP_X_FORWARDED_FOR' => '1.2.3.4',
         'HTTP_USER_AGENT' => 'Mozilla 1234',
         'TEST' => '1',
-        'REMOTE_ADDR' => '1.2.3.4'
+        'REMOTE_ADDR' => '1.2.3.4',
+        'HTTP_CONTENT_LENGTH' => '0'
       )
     result[:HTTP_OK] = 'OK'
     result

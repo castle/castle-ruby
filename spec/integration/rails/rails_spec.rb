@@ -40,7 +40,7 @@ RSpec.describe HomeController, type: :request do
       }
     end
     let(:now) { Time.now }
-    let(:headers) { { 'HTTP_AUTHORIZATION' => 'Basic 123', 'HTTP_X_FORWARDED_FOR' => '5.5.5.5, 1.2.3.4' } }
+    let(:headers) { { 'HTTP_AUTHORIZATION' => 'Basic 123', 'HTTP_X_FORWARDED_FOR' => '5.5.5.5, 1.2.3.4', 'HTTP_CONTENT_LENGTH' => '0' } }
 
     before do
       Timecop.freeze(now)

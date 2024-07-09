@@ -9,7 +9,8 @@ describe Castle::Payload::Prepare do
       '/',
       'HTTP_USER_AGENT' => ua,
       'HTTP_X_FORWARDED_FOR' => ip,
-      'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh"
+      'HTTP_COOKIE' => "__cid=#{cookie_id};other=efgh",
+      'HTTP_CONTENT_LENGTH' => '0'
     )
   end
   let(:request) { Rack::Request.new(env) }
