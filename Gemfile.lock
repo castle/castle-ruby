@@ -26,7 +26,8 @@ GEM
     public_suffix (5.0.1)
     rack (3.0.11)
     rake (13.0.6)
-    rexml (3.2.5)
+    rexml (3.2.9)
+      strscan
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -46,6 +47,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
+    strscan (1.0.3)
     sync (0.5.0)
     term-ansicolor (1.7.1)
       tins (~> 1.0)
