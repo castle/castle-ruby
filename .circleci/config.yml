@@ -3,7 +3,7 @@ version: 2.1
 aliases:
   - &coditsu
     docker:
-      - image: cimg/ruby:3.2
+      - image: cimg/ruby:3.3
     steps:
       - setup_remote_docker
       - checkout
@@ -33,6 +33,9 @@ aliases:
   - &ruby-3_2
     docker:
       - image: cimg/ruby:3.2
+  - &ruby-3_3
+    docker:
+      - image: cimg/ruby:3.3
   - &job-defaults
     steps:
       - checkout
@@ -64,6 +67,10 @@ jobs:
     <<: *ruby-3_2
     <<: *rails-7
     <<: *job-defaults
+  ruby-3_3-rails-7:
+    <<: *ruby-3_3
+    <<: *rails-7
+    <<: *job-defaults
 workflows:
   main:
     jobs:
@@ -75,3 +82,4 @@ workflows:
       - ruby-3_0-rails-7
       - ruby-3_1-rails-7
       - ruby-3_2-rails-7
+      - ruby-3_3-rails-7

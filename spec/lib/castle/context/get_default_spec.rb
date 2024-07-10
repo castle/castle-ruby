@@ -12,7 +12,8 @@ describe Castle::Context::GetDefault do
       'HTTP_X_FORWARDED_FOR' => ip,
       'HTTP_ACCEPT_LANGUAGE' => 'en',
       'HTTP_USER_AGENT' => 'test',
-      'HTTP_COOKIE' => "__cid=#{client_id};other=efgh"
+      'HTTP_COOKIE' => "__cid=#{client_id};other=efgh",
+      'HTTP_CONTENT_LENGTH' => '0'
     )
   end
   let(:request) { Rack::Request.new(env) }
