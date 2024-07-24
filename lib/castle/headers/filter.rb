@@ -29,6 +29,7 @@ module Castle
           .keys
           .each_with_object({}) do |header_name, acc|
             next unless header_name.match(VALUABLE_HEADERS)
+            next unless @request_env[header_name].is_a?(String)
 
             formatted_name = @header_format.call(header_name)
             acc[formatted_name] = @request_env[header_name]

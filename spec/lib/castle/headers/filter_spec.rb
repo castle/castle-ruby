@@ -15,7 +15,8 @@ describe Castle::Headers::Filter do
         'HTTP_USER_AGENT' => 'Mozilla 1234',
         'TEST' => '1',
         'REMOTE_ADDR' => '1.2.3.4',
-        'HTTP_CONTENT_LENGTH' => '0'
+        'HTTP_CONTENT_LENGTH' => '0',
+        'http_accept_language.parser' => -> { 'noop' }
       )
     result[:HTTP_OK] = 'OK'
     result
