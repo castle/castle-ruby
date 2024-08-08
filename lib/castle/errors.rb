@@ -61,6 +61,10 @@ module Castle
   class UnauthorizedError < Castle::ApiError
   end
 
+  # api error too many requests 429
+  class TooManyRequestsError < Castle::ApiError
+  end
+
   # all internal server errors
   class InternalServerError < Castle::ApiError
   end
