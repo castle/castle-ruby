@@ -62,7 +62,7 @@ module Castle
   end
 
   # api error too many requests 429
-  class TooManyRequestsError < Castle::ApiError
+  class RateLimitError < Castle::ApiError
   end
 
   # all internal server errors

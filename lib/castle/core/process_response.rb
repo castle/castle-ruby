@@ -10,7 +10,7 @@ module Castle
         403 => Castle::ForbiddenError,
         404 => Castle::NotFoundError,
         419 => Castle::UserUnauthorizedError,
-        429 => Castle::TooManyRequestsError
+        429 => Castle::RateLimitError
       }.freeze
 
       INVALID_REQUEST_TOKEN = 'invalid_request_token'
