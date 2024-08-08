@@ -62,7 +62,7 @@ describe Castle::Core::SendRequest do
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 
-      it { expect(build.body).to be_eql(expected_body.to_json) }
+      it { expect(build.body).to eql(expected_body.to_json) }
       it { expect(build.method).to eql('POST') }
       it { expect(build.path).to eql("/v1/#{command.path}") }
       it { expect(build.to_hash).to have_key('authorization') }
@@ -77,7 +77,7 @@ describe Castle::Core::SendRequest do
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 
-      it { expect(build.body).to be_eql(expected_body.to_json) }
+      it { expect(build.body).to eql(expected_body.to_json) }
       it { expect(build.method).to eql('GET') }
       it { expect(build.path).to eql("/v1/#{command.path}") }
     end
@@ -89,7 +89,7 @@ describe Castle::Core::SendRequest do
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 
-      it { expect(build.body).to be_eql(expected_body.to_json) }
+      it { expect(build.body).to eql(expected_body.to_json) }
       it { expect(build.method).to eql('PUT') }
       it { expect(build.path).to eql("/v1/#{command.path}") }
     end

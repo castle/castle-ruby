@@ -16,8 +16,8 @@ describe Castle::Commands::GetDevice do
     end
 
     context 'with device_token' do
-      it { expect(command.method).to be_eql(:get) }
-      it { expect(command.path).to be_eql("devices/#{device_token}") }
+      it { expect(command.method).to be(:get) }
+      it { expect(command.path).to eql("devices/#{device_token}") }
       it { expect(command.data).to be_nil }
     end
   end

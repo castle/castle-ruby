@@ -29,45 +29,45 @@ describe Castle::Commands::Risk do
       let(:payload) { default_payload.merge(properties: { test: '1' }) }
       let(:command_data) { default_payload.merge(properties: { test: '1' }, context: context) }
 
-      it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('risk') }
-      it { expect(command.data).to be_eql(command_data) }
+      it { expect(command.method).to be(:post) }
+      it { expect(command.path).to eql('risk') }
+      it { expect(command.data).to eql(command_data) }
     end
 
     context 'with user_traits' do
       let(:payload) { default_payload.merge(user_traits: { test: '1' }) }
       let(:command_data) { default_payload.merge(user_traits: { test: '1' }, context: context) }
 
-      it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('risk') }
-      it { expect(command.data).to be_eql(command_data) }
+      it { expect(command.method).to be(:post) }
+      it { expect(command.path).to eql('risk') }
+      it { expect(command.data).to eql(command_data) }
     end
 
     context 'when active true' do
       let(:payload) { default_payload.merge(context: context.merge(active: true)) }
       let(:command_data) { default_payload.merge(context: context.merge(active: true)) }
 
-      it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('risk') }
-      it { expect(command.data).to be_eql(command_data) }
+      it { expect(command.method).to be(:post) }
+      it { expect(command.path).to eql('risk') }
+      it { expect(command.data).to eql(command_data) }
     end
 
     context 'when active false' do
       let(:payload) { default_payload.merge(context: context.merge(active: false)) }
       let(:command_data) { default_payload.merge(context: context.merge(active: false)) }
 
-      it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('risk') }
-      it { expect(command.data).to be_eql(command_data) }
+      it { expect(command.method).to be(:post) }
+      it { expect(command.path).to eql('risk') }
+      it { expect(command.data).to eql(command_data) }
     end
 
     context 'when active string' do
       let(:payload) { default_payload.merge(context: context.merge(active: 'string')) }
       let(:command_data) { default_payload.merge(context: context) }
 
-      it { expect(command.method).to be_eql(:post) }
-      it { expect(command.path).to be_eql('risk') }
-      it { expect(command.data).to be_eql(command_data) }
+      it { expect(command.method).to be(:post) }
+      it { expect(command.path).to eql('risk') }
+      it { expect(command.data).to eql(command_data) }
     end
   end
 end

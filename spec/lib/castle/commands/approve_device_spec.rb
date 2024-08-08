@@ -16,8 +16,8 @@ describe Castle::Commands::ApproveDevice do
     end
 
     context 'with device_token' do
-      it { expect(command.method).to be_eql(:put) }
-      it { expect(command.path).to be_eql("devices/#{device_token}/approve") }
+      it { expect(command.method).to be(:put) }
+      it { expect(command.path).to eql("devices/#{device_token}/approve") }
       it { expect(command.data).to be_nil }
     end
   end

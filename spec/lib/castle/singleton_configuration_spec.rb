@@ -10,5 +10,5 @@ describe Castle::SingletonConfiguration do
   it_behaves_like 'configuration_failover_strategy'
   it_behaves_like 'configuration_api_secret'
 
-  it { expect(config.api_secret).to be_eql('secret') }
+  it { expect(config.api_secret).to eql('secret') }
 end
