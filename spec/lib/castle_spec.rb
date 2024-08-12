@@ -12,7 +12,7 @@ describe Castle do
 
     before { castle.api_secret = value }
 
-    it { expect(castle.config.api_secret).to be_eql(value) }
+    it { expect(castle.config.api_secret).to eql(value) }
   end
 
   describe 'configure' do
@@ -20,8 +20,8 @@ describe Castle do
     let(:timeout) { 60 }
 
     shared_examples 'config_setup' do
-      it { expect(castle.config.api_secret).to be_eql(value) }
-      it { expect(castle.config.request_timeout).to be_eql(timeout) }
+      it { expect(castle.config.api_secret).to eql(value) }
+      it { expect(castle.config.request_timeout).to eql(timeout) }
     end
 
     context 'with block' do

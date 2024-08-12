@@ -1,11 +1,13 @@
 require:
   - rubocop-rspec
   - rubocop-performance
+  - rubocop-rspec_rails
 
 inherit_gem:
   prettier: rubocop.yml
 
 AllCops:
+  TargetRubyVersion: 2.7
   NewCops: enable
   Exclude:
     - bin/**/*
@@ -43,7 +45,7 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/EmptyExampleGroup:
   Enabled: false
 
-RSpec/Rails/InferredSpecType:
+RSpecRails/InferredSpecType:
   Enabled: false
 
 Layout/LineLength:
@@ -104,10 +106,10 @@ Performance/Sum:
 Performance/StringInclude:
   Enabled: false
 
-RSpec/Rails/HttpStatus:
+RSpecRails/HttpStatus:
   Enabled: false
 
-RSpec/Rails/HaveHttpStatus:
+RSpecRails/HaveHttpStatus:
   Enabled: false
 
 Lint/AmbiguousBlockAssociation:

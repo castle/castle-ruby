@@ -8,6 +8,6 @@ describe Castle::Utils::Merge do
     let(:second) { { test2: '2', test: { 'test1' => { d: '5' }, :test2 => '6', :a => nil, :b => '3' } } }
     let(:result) { { test2: '2', test: { test1: { c: '4', d: '5' }, test2: '6', b: '3' } } }
 
-    it { expect(merge.call(first, second)).to be_eql(result) }
+    it { expect(merge.call(first, second)).to eql(result) }
   end
 end

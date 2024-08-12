@@ -13,7 +13,7 @@ describe Castle::Utils::Clone do
 
     it do
       nested[:test] = 'sample'
-      expect(cloned).to be_eql(result)
+      expect(cloned).to eql(result)
     end
   end
 end
