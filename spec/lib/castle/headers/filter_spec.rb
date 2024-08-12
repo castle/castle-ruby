@@ -31,7 +31,7 @@ describe Castle::Headers::Filter do
       'User-Agent' => 'Mozilla 1234',
       'Remote-Addr' => '1.2.3.4',
       'X-Forwarded-For' => '1.2.3.4',
-      'Accept-Language.parser' => start_with("#<Proc")
+      'Accept-Language.parser' => start_with('#<Proc')
     }
   end
   let(:request) { Rack::Request.new(env) }
