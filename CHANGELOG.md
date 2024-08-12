@@ -1,9 +1,6 @@
 # Changelog
 
-## 8.0.0
-
-- [#267](https://github.com/castle/castle-ruby/pull/267)
-  - filter out non-string header values
+## master
 
 **BREAKING CHANGES:**
 
