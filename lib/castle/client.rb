@@ -3,6 +3,9 @@
 module Castle
   # Castle's client.
   class Client
+    include Castle::ClientActions::ListItem
+    include Castle::ClientActions::List
+
     class << self
       def from_request(request, options = {})
         new(options.merge(context: Castle::Context::Prepare.call(request, options)))

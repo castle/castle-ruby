@@ -74,6 +74,8 @@
   castle/logger
   castle/failover/prepare_response
   castle/failover/strategy
+  castle/client_actions/list
+  castle/client_actions/list_item
   castle/client
   castle/headers/filter
   castle/headers/format
