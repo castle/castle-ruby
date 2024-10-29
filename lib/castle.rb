@@ -55,6 +55,19 @@
   castle/api/risk
   castle/api/start_impersonation
   castle/api/track
+  castle/api/list/all
+  castle/api/list/create
+  castle/api/list/delete
+  castle/api/list/get
+  castle/api/list/query
+  castle/api/list/update
+  castle/api/list_item/archive
+  castle/api/list_item/create
+  castle/api/list_item/count
+  castle/api/list_item/get
+  castle/api/list_item/query
+  castle/api/list_item/unarchive
+  castle/api/list_item/update
   castle/payload/prepare
   castle/configuration
   castle/singleton_configuration
