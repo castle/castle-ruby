@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 describe Castle::Commands::List::Get do
   describe '.build' do
     subject(:command) { described_class.build(options) }

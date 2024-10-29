@@ -31,13 +31,15 @@
   castle/commands/risk
   castle/commands/start_impersonation
   castle/commands/track
+  castle/commands/list/all
   castle/commands/list/create
   castle/commands/list/delete
   castle/commands/list/get
   castle/commands/list/query
   castle/commands/list/update
-  castle/commands/list_item/create
   castle/commands/list_item/archive
+  castle/commands/list_item/create
+  castle/commands/list_item/count
   castle/commands/list_item/get
   castle/commands/list_item/query
   castle/commands/list_item/unarchive
