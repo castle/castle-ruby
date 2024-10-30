@@ -31,7 +31,7 @@
   castle/commands/risk
   castle/commands/start_impersonation
   castle/commands/track
-  castle/commands/lists/all
+  castle/commands/lists/get_all
   castle/commands/lists/create
   castle/commands/lists/delete
   castle/commands/lists/get
@@ -55,7 +55,7 @@
   castle/api/risk
   castle/api/start_impersonation
   castle/api/track
-  castle/api/lists/all
+  castle/api/lists/get_all
   castle/api/lists/create
   castle/api/lists/delete
   castle/api/lists/get

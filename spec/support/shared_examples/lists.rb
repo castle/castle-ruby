@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 RSpec.shared_examples 'it has list actions' do
-  describe 'all_lists' do
-    it do
-      client.all_lists
-      assert_requested :get, 'https://api.castle.io/v1/lists', times: 1
-    end
-  end
-
   describe 'create_list' do
     it do
       client.create_list(name: 'list name', color: '$green', primary_field: 'user.email')
@@ -18,6 +11,13 @@ RSpec.shared_examples 'it has list actions' do
     it do
       client.delete_list(list_id: 'list_id')
       assert_requested :delete, 'https://api.castle.io/v1/lists/list_id', times: 1
+    end
+  end
+
+  describe 'get_all_lists' do
+    it do
+      client.get_all_lists
+      assert_requested :get, 'https://api.castle.io/v1/lists', times: 1
     end
   end
 

@@ -3,7 +3,7 @@
 module Castle
   module API
     module Lists
-      module All
+      module GetAll
         class << self
           # @param options [Hash]
           # return [Hash]
@@ -12,7 +12,7 @@ module Castle
             http = options.delete(:http)
             config = options.delete(:config) || Castle.config
 
-            Castle::API.call(Castle::Commands::Lists::All.build, {}, http, config)
+            Castle::API.call(Castle::Commands::Lists::GetAll.build, {}, http, config)
           end
         end
       end

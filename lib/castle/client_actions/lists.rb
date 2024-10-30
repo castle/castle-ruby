@@ -2,16 +2,16 @@
 module Castle
   module ClientActions
     module Lists
-      def all_lists
-        Castle::API::Lists::All.call
-      end
-
       def create_list(options)
         Castle::API::Lists::Create.call(options)
       end
 
       def delete_list(options)
         Castle::API::Lists::Delete.call(options)
+      end
+
+      def get_all_lists
+        Castle::API::Lists::GetAll.call
       end
 
       def get_list(options)

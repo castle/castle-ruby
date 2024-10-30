@@ -3,7 +3,7 @@
 module Castle
   module Commands
     module Lists
-      class All
+      class GetAll
         class << self
           # @return [Castle::Command]
           def build
