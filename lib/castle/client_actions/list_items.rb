@@ -2,7 +2,7 @@
 module Castle
   module ClientActions
     module ListItems
-      def archive_list_item(options)
+      def archive_list_item(options = {})
         Castle::API::ListItems::Archive.call(options)
       end
 
