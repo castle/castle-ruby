@@ -334,4 +334,9 @@ describe Castle::Client do
   describe 'log' do
     it_behaves_like 'action request', :log
   end
+
+  describe 'client action mixins' do
+    it_behaves_like 'it has list actions'
+    it_behaves_like 'it has list item actions'
+  end
 end
