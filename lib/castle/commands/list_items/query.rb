@@ -3,6 +3,7 @@
 module Castle
   module Commands
     module ListItems
+      # Builds the command to query list items
       class Query
         class << self
           # @param options [Hash]

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Configuration do
+RSpec.describe Castle::Configuration do
   subject(:config) { described_class.new }
 
   it_behaves_like 'configuration_host'

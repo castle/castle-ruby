@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Validators::Present do
+RSpec.describe Castle::Validators::Present do
   describe '#call' do
     subject(:call) { described_class.call({ first: 1, second: '2', invalid: '' }, keys) }
 

@@ -2,7 +2,9 @@
 
 module Castle
   module Commands
+    # Commands for list items endpoints
     module ListItems
+      # Generates the payload for the DELETE /lists/:list_id/items/:item_id/archive request
       class Archive
         class << self
           # @param options [Hash]

@@ -3,6 +3,7 @@
 module Castle
   module Commands
     module ListItems
+      # Generates the payload for the POST /lists/:list_id/items/count request
       class Count
         class << self
           # @param options [Hash]

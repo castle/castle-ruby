@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Core::SendRequest do
+RSpec.describe Castle::Core::SendRequest do
   let(:config) { Castle.config }
 
   describe '#call' do

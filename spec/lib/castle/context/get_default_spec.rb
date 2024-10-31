@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Context::GetDefault do
+RSpec.describe Castle::Context::GetDefault do
   subject { described_class.new(request, nil) }
 
   let(:ip) { '1.2.3.4' }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Core::ProcessWebhook do
+RSpec.describe Castle::Core::ProcessWebhook do
   describe '#call' do
     subject(:call) { described_class.call(webhook) }
 

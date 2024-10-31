@@ -3,6 +3,7 @@
 module Castle
   module Commands
     module Lists
+      # Builds the command to get a list
       class Get
         class << self
           # @param options [Hash]

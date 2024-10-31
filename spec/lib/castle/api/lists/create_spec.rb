@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::API::Lists::Create do
+RSpec.describe Castle::API::Lists::Create do
   before do
     stub_request(:any, /api.castle.io/).with(basic_auth: ['', 'secret']).to_return(status: 200, body: '{}', headers: {})
   end
@@ -9,7 +9,6 @@ describe Castle::API::Lists::Create do
     subject(:all) { described_class.call(options) }
 
     let(:options) { { name: 'name', color: '$red', primary_field: 'user.email' } }
-
 
     before { all }
 

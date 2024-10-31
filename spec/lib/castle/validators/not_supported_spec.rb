@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Validators::NotSupported do
+RSpec.describe Castle::Validators::NotSupported do
   describe '#call' do
     subject(:call) { described_class.call({ first: 1 }, keys) }
 

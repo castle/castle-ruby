@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Utils::DeepSymbolizeKeys do
+RSpec.describe Castle::Utils::DeepSymbolizeKeys do
   let(:nested_strings) { { 'a' => { 'b' => { 'c' => 3 } } } }
   let(:nested_symbols) { { a: { b: { c: 3 } } } }
   let(:nested_mixed) { { 'a' => { b: { 'c' => 3 } } } }

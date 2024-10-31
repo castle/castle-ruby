@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Commands::Lists::Delete do
+RSpec.describe Castle::Commands::Lists::Delete do
   describe '.build' do
     subject(:command) { described_class.build(options) }
 

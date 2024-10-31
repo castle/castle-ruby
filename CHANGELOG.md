@@ -2,6 +2,9 @@
 
 ## master
 
+- [#272](https://github.com/castle/castle-ruby/pull/272)
+  - Add support for Lists API
+
 ## 8.0.0
 
 - [#267](https://github.com/castle/castle-ruby/pull/267)

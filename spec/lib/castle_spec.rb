@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle do
+RSpec.describe Castle do
   subject(:castle) { described_class }
 
   describe 'config' do

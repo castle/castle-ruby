@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Command do
+RSpec.describe Castle::Command do
   subject(:command) { described_class.new('go', { id: '1' }, :post) }
 
   it { expect(command.path).to eql('go') }

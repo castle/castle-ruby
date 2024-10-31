@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Commands::EndImpersonation do
+RSpec.describe Castle::Commands::EndImpersonation do
   subject(:instance) { described_class }
 
   let(:context) { { user_agent: 'test', ip: '127.0.0.1', client_id: 'test' } }

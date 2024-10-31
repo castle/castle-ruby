@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Verdict do
+RSpec.describe Castle::Verdict do
   subject(:verdict) { described_class }
 
   it { expect(verdict::ALLOW).to eql('allow') }

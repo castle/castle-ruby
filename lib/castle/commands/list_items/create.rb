@@ -3,6 +3,7 @@
 module Castle
   module Commands
     module ListItems
+      # Builds the command to create a list item
       class Create
         class << self
           # @param options [Hash]

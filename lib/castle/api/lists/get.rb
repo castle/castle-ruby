@@ -3,10 +3,11 @@
 module Castle
   module API
     module Lists
+      # Sends GET /lists/:list_id request
       module Get
         class << self
           # @param options [Hash]
-          # return [Hash]
+          # @return [Hash]
           def call(options = {})
             options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
             http = options.delete(:http)
