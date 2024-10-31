@@ -3,6 +3,7 @@
 module Castle
   module Commands
     module ListItems
+      # Builds the command to unarchive a list item
       class Unarchive
         class << self
           # @param options [Hash]

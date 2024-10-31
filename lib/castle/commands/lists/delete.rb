@@ -3,6 +3,7 @@
 module Castle
   module Commands
     module Lists
+      # Builds the command to delete a list
       class Delete
         class << self
           # @param options [Hash]

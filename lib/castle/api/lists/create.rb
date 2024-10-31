@@ -2,11 +2,13 @@
 
 module Castle
   module API
+    # Namespace for the lists API ednpoints
     module Lists
+      # Sends POST /lists request
       module Create
         class << self
           # @param options [Hash]
-          # return [Hash]
+          # @return [Hash]
           def call(options = {})
             options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
             http = options.delete(:http)

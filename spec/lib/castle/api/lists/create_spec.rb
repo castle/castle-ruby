@@ -10,7 +10,6 @@ describe Castle::API::Lists::Create do
 
     let(:options) { { name: 'name', color: '$red', primary_field: 'user.email' } }
 
-
     before { all }
 
     it do

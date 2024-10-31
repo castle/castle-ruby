@@ -10,7 +10,6 @@ describe Castle::API::Lists::Query do
 
     let(:options) { { filters: [{ field: 'test', op: '$eq', value: 'test' }] } }
 
-
     before { all }
 
     it do

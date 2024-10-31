@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.shared_examples 'it has list actions' do
   describe 'create_list' do
     it do

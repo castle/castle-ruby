@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.shared_examples 'it has list item actions' do
   describe 'archive_list_item' do
     it do

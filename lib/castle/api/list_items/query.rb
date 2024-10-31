@@ -3,10 +3,11 @@
 module Castle
   module API
     module ListItems
+      # Sends POST /lists/:list_id/items/query request
       module Query
         class << self
           # @param options [Hash]
-          # return [Hash]
+          # @return [Hash]
           def call(options = {})
             options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
             http = options.delete(:http)

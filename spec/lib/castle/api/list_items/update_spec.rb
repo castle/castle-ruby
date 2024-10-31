@@ -6,9 +6,10 @@ describe Castle::API::ListItems::Update do
   end
 
   describe '.call' do
+    subject(:all) { described_class.call(options) }
+
     let(:url) { "https://api.castle.io/v1/lists/#{options[:list_id]}/items/#{options[:list_item_id]}" }
     let(:options) { { list_id: '123', list_item_id: '456', comment: 'updating comment!' } }
-    subject(:all) { described_class.call(options) }
 
     before { all }
 

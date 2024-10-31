@@ -3,6 +3,7 @@
 module Castle
   module Commands
     module Lists
+      # Builds the command to query lists
       class Query
         class << self
           # @param options [Hash]
@@ -11,7 +12,7 @@ module Castle
             options[:filters]&.each { |f| Castle::Validators::Present.call(f, %i[field op value]) }
             Castle::Validators::Present.call(options[:sort], %i[field order]) if options[:sort]
 
-            Castle::Command.new("lists/query", options, :post)
+            Castle::Command.new('lists/query', options, :post)
           end
         end
       end

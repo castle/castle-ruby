@@ -3,6 +3,7 @@
 module Castle
   module Commands
     module ListItems
+      # Builds the command to update a list item
       class Update
         class << self
           # @param options [Hash]

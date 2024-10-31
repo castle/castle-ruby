@@ -10,7 +10,6 @@ describe Castle::API::Lists::Update do
 
     let(:options) { { list_id: '123', name: 'name', color: '$red' } }
 
-
     before { all }
 
     it do

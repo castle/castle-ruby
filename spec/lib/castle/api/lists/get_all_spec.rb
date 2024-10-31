@@ -10,7 +10,6 @@ describe Castle::API::Lists::GetAll do
 
     let(:options) { { } }
 
-
     before { all }
 
     it { assert_requested :get, "https://api.castle.io/v1/lists", times: 1 }

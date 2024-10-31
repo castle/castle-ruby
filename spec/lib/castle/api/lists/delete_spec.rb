@@ -10,7 +10,6 @@ describe Castle::API::Lists::Delete do
 
     let(:options) { { list_id: '123' } }
 
-
     before { all }
 
     it { assert_requested :delete, "https://api.castle.io/v1/lists/#{options[:list_id]}", times: 1 }
