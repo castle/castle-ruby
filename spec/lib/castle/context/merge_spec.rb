@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Context::Merge do
+RSpec.describe Castle::Context::Merge do
   let(:first) { { test: { test1: { c: '4' } } } }
 
   describe '#call' do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Core::GetConnection do
+RSpec.describe Castle::Core::GetConnection do
   describe '.call' do
     subject(:class_call) { described_class.call }
 

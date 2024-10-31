@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::API::Track do
+RSpec.describe Castle::API::Track do
   subject(:call) { described_class.call(options) }
 
   let(:ip) { '1.2.3.4' }

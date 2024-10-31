@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Payload::Prepare do
+RSpec.describe Castle::Payload::Prepare do
   let(:ip) { '1.2.3.4' }
   let(:cookie_id) { 'abcd' }
   let(:ua) { 'Chrome' }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Commands::ApproveDevice do
+RSpec.describe Castle::Commands::ApproveDevice do
   subject(:instance) { described_class }
 
   let(:context) { {} }

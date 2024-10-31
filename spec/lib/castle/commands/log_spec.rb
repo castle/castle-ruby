@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Commands::Log do
+RSpec.describe Castle::Commands::Log do
   subject(:instance) { described_class }
 
   let(:context) { { test: { test1: '1' } } }

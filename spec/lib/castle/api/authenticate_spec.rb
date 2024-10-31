@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::API::Authenticate do
+RSpec.describe Castle::API::Authenticate do
   subject(:call_subject) { described_class.call(options) }
 
   let(:ip) { '1.2.3.4' }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Utils::Merge do
+RSpec.describe Castle::Utils::Merge do
   subject(:merge) { described_class }
 
   describe 'call' do

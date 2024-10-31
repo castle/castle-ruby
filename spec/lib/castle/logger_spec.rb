@@ -7,7 +7,7 @@ class TmpLogger
   end
 end
 
-describe Castle::Logger do
+RSpec.describe Castle::Logger do
   subject(:log) { described_class.call(message, data) }
 
   let(:message) { 'https://localhost/test:' }

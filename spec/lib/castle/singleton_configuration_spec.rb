@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::SingletonConfiguration do
+RSpec.describe Castle::SingletonConfiguration do
   subject(:config) { described_class.instance }
 
   it_behaves_like 'configuration_host'

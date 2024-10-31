@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Utils::Clone do
+RSpec.describe Castle::Utils::Clone do
   subject(:clone) { described_class }
 
   describe 'call' do

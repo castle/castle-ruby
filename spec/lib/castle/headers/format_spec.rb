@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Headers::Format do
+RSpec.describe Castle::Headers::Format do
   subject(:format) { described_class }
 
   it 'removes HTTP_' do

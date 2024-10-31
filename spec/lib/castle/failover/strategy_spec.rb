@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Failover::Strategy do
+RSpec.describe Castle::Failover::Strategy do
   subject(:strategy) { described_class }
 
   it { expect(strategy::ALLOW).to be(:allow) }

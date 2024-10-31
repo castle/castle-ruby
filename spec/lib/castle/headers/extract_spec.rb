@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Castle::Headers::Extract do
+RSpec.describe Castle::Headers::Extract do
   subject(:extract_call) { described_class.new(formatted_headers).call }
 
   let(:formatted_headers) do

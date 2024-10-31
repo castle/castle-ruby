@@ -21,4 +21,6 @@ RSpec.configure do |config|
     Castle.config.reset
     Castle.configure { |cfg| cfg.api_secret = 'secret' }
   end
+
+  config.disable_monkey_patching!
 end
