@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    castle-rb (8.0.0)
+    castle-rb (8.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -26,7 +26,7 @@ GEM
     docile (1.4.1)
     hashdiff (1.1.1)
     public_suffix (6.0.1)
-    rack (3.1.8)
+    rack (3.1.12)
     rake (13.2.1)
     rexml (3.3.9)
     rspec (3.13.0)
