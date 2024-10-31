@@ -31,6 +31,19 @@
   castle/commands/risk
   castle/commands/start_impersonation
   castle/commands/track
+  castle/commands/lists/get_all
+  castle/commands/lists/create
+  castle/commands/lists/delete
+  castle/commands/lists/get
+  castle/commands/lists/query
+  castle/commands/lists/update
+  castle/commands/list_items/archive
+  castle/commands/list_items/create
+  castle/commands/list_items/count
+  castle/commands/list_items/get
+  castle/commands/list_items/query
+  castle/commands/list_items/unarchive
+  castle/commands/list_items/update
   castle/api/approve_device
   castle/api/authenticate
   castle/api/end_impersonation
@@ -42,12 +55,27 @@
   castle/api/risk
   castle/api/start_impersonation
   castle/api/track
+  castle/api/lists/get_all
+  castle/api/lists/create
+  castle/api/lists/delete
+  castle/api/lists/get
+  castle/api/lists/query
+  castle/api/lists/update
+  castle/api/list_items/archive
+  castle/api/list_items/create
+  castle/api/list_items/count
+  castle/api/list_items/get
+  castle/api/list_items/query
+  castle/api/list_items/unarchive
+  castle/api/list_items/update
   castle/payload/prepare
   castle/configuration
   castle/singleton_configuration
   castle/logger
   castle/failover/prepare_response
   castle/failover/strategy
+  castle/client_actions/lists
+  castle/client_actions/list_items
   castle/client
   castle/headers/filter
   castle/headers/format
