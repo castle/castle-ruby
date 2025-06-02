@@ -28,7 +28,6 @@ package-lock.json
 /script
 /profile
 /.circleci
-/.coditsu
 /.git
 /.github
 **/*.erb

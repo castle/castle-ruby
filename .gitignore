@@ -6,7 +6,6 @@
 tags
 /gemfiles/*.lock
 .byebug_history
-.coditsu/local.yml
 /doc/
 /.yardoc/
 gemfiles/vendor
