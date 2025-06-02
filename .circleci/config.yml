@@ -7,6 +7,9 @@ aliases:
   - &rails-7
     environment:
       BUNDLE_GEMFILE: gemfiles/rails_7.gemfile
+  - &rails-8
+    environment:
+      BUNDLE_GEMFILE: gemfiles/rails_8.gemfile
   - &ruby-2_7
     docker:
     - image: cimg/ruby:2.7
@@ -61,6 +64,18 @@ jobs:
     <<: *ruby-3_4
     <<: *rails-7
     <<: *job-defaults
+  ruby-3_2-rails-8:
+    <<: *ruby-3_2
+    <<: *rails-8
+    <<: *job-defaults
+  ruby-3_3-rails-8:
+    <<: *ruby-3_3
+    <<: *rails-8
+    <<: *job-defaults
+  ruby-3_4-rails-8:
+    <<: *ruby-3_4
+    <<: *rails-8
+    <<: *job-defaults
 workflows:
   main:
     jobs:
@@ -71,3 +86,6 @@ workflows:
       - ruby-3_2-rails-7
       - ruby-3_3-rails-7
       - ruby-3_4-rails-7
+      - ruby-3_2-rails-8
+      - ruby-3_3-rails-8
+      - ruby-3_4-rails-8
