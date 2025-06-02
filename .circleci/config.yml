@@ -22,6 +22,9 @@ aliases:
   - &ruby-3_3
     docker:
       - image: cimg/ruby:3.3
+  - &ruby-3_4
+    docker:
+      - image: cimg/ruby:3.4      
   - &job-defaults
     steps:
       - checkout
@@ -54,6 +57,10 @@ jobs:
     <<: *ruby-3_3
     <<: *rails-7
     <<: *job-defaults
+  ruby-3_4-rails-7:
+    <<: *ruby-3_4
+    <<: *rails-7
+    <<: *job-defaults
 workflows:
   main:
     jobs:
@@ -63,3 +70,4 @@ workflows:
       - ruby-3_1-rails-7
       - ruby-3_2-rails-7
       - ruby-3_3-rails-7
+      - ruby-3_4-rails-7
