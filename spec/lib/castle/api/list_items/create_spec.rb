@@ -9,7 +9,7 @@ RSpec.describe Castle::API::ListItems::Create do
     subject(:all) { described_class.call(options) }
 
     let(:author) { { type: '$other', identifier: 'test identifier' } }
-    let(:options) { { list_id: '123', primary_value: 'test value', author: author,  } }
+    let(:options) { { list_id: '123', primary_value: 'test value', author: author } }
 
     before { all }
 

@@ -13,7 +13,7 @@ RSpec.describe Castle::API::Lists::Query do
     before { all }
 
     it do
-      assert_requested :post, "https://api.castle.io/v1/lists/query", times: 1 do |req|
+      assert_requested :post, 'https://api.castle.io/v1/lists/query', times: 1 do |req|
         expect(JSON.parse(req.body, symbolize_names: true)).to eq(options)
       end
     end
