@@ -8,10 +8,10 @@ RSpec.describe Castle::API::Lists::GetAll do
   describe '.call' do
     subject(:all) { described_class.call(options) }
 
-    let(:options) { { } }
+    let(:options) { {} }
 
     before { all }
 
-    it { assert_requested :get, "https://api.castle.io/v1/lists", times: 1 }
+    it { assert_requested :get, 'https://api.castle.io/v1/lists', times: 1 }
   end
 end
