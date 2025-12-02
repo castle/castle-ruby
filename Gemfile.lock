@@ -26,7 +26,7 @@ GEM
     docile (1.4.1)
     hashdiff (1.2.0)
     public_suffix (6.0.2)
-    rack (3.1.15)
+    rack (3.1.19)
     rake (13.3.0)
     rexml (3.4.1)
     rspec (3.13.1)
