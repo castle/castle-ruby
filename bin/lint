@@ -18,13 +18,12 @@ fi
 
 echo "---  LINTER for / ---"
 
-# 1. RuboCop (autocorrect Ruby style + lint)
+# 1. RuboCop autocorrect (Ruby style + lint)
 bundle exec rubocop -A
 
-# 2. Prettier (extra formatting on top of RuboCop's rules — currently a no-op
-#    for *.rb files because @prettier/plugin-ruby is dormant, but kept here so
-#    we pick up future updates and so it formats anything Prettier *does*
-#    handle — JSON, MD, YAML, etc., per .prettierignore.)
+# 2. Prettier — formats Ruby (via @prettier/plugin-ruby, which spawns the
+#    asdf-managed Ruby parser sourced above) plus everything else not
+#    covered by .prettierignore (JSON, MD, YAML, etc.).
 ./node_modules/.bin/prettier --write .
 
 echo "---  LINTER DONE ---"
