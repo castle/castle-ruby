@@ -27,7 +27,7 @@ module Castle
     def filter(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
-      return generate_do_not_track_response(options[:user][:id]) unless tracked?
+      return generate_do_not_track_response(failover_user_id(options)) unless tracked?
 
       add_timestamp_if_necessary(options)
 
@@ -40,7 +40,7 @@ module Castle
     def risk(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
-      return generate_do_not_track_response(options[:user][:id]) unless tracked?
+      return generate_do_not_track_response(failover_user_id(options)) unless tracked?
 
       add_timestamp_if_necessary(options)
 
@@ -53,7 +53,7 @@ module Castle
     def log(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
-      return generate_do_not_track_response(options[:user][:id]) unless tracked?
+      return generate_do_not_track_response(failover_user_id(options)) unless tracked?
 
       add_timestamp_if_necessary(options)
 
@@ -77,9 +77,16 @@ module Castle
 
     private
 
-    # @param user_id [String, Boolean]
+    # @param user_id [String, Boolean, nil]
     def generate_do_not_track_response(user_id)
       Castle::Failover::PrepareResponse.new(user_id, strategy: :allow, reason: 'Castle is set to do not track.').call
+    end
+
+    # Safely pull the user identifier for a failover/do-not-track response.
+    # `user` is optional on /v1/filter (#279) and may be omitted entirely on
+    # /v1/log; fall back to `matching_user_id` then nil.
+    def failover_user_id(options)
+      options.dig(:user, :id) || options[:matching_user_id]
     end
 
     # @param options [Hash]

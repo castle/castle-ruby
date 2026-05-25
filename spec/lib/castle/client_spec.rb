@@ -96,4 +96,22 @@ RSpec.describe Castle::Client do
     it_behaves_like 'it has list item actions'
     it_behaves_like 'it has privacy actions'
   end
+
+  describe 'do-not-track responses with missing :user (regression: #279)' do
+    before { client.disable_tracking }
+
+    %i[filter risk log].each do |action|
+      it "returns a synthetic allow response from ##{action} without raising" do
+        expect { client.public_send(action, type: '$registration') }.not_to raise_error
+        response = client.public_send(action, type: '$registration')
+        expect(response[:failover]).to be true
+        expect(response[:user_id]).to be_nil
+      end
+    end
+
+    it 'falls back to matching_user_id on filter when user.id is absent' do
+      response = client.filter(type: '$registration', matching_user_id: 'mu-9')
+      expect(response[:user_id]).to eq('mu-9')
+    end
+  end
 end

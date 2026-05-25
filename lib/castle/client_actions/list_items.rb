@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Castle
-  # Namesapce for client actions
+  # Namespace for client actions
   module ClientActions
     # Client actions for list items
     module ListItems
@@ -36,7 +36,7 @@ module Castle
       end
 
       # @param options [Hash]
-      def unarchive_list_item(options)
+      def unarchive_list_item(options = {})
         Castle::API::ListItems::Unarchive.call(options)
       end
 

@@ -325,11 +325,11 @@ Bug reports and pull requests are welcome on [GitHub](https://github.com/castle/
 
 ```sh
 bundle install
-bundle exec rspec
-bundle exec rubocop
+bundle exec rspec   # run the test suite
+bin/lint            # run RuboCop and Prettier
 ```
 
-To test against a specific Rails version:
+To test against a specific Rails version, set `BUNDLE_GEMFILE` to one of the files in [`gemfiles/`](gemfiles):
 
 ```sh
 BUNDLE_GEMFILE=gemfiles/rails_8.1.gemfile bundle install

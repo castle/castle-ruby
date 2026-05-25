@@ -20,7 +20,7 @@
 
 - Add `Castle::API::ListItems::CreateBatch` (`POST /v1/lists/{list_id}/items/batch`) and `Castle::Client#create_batch_list_items`
 - Add `Castle::API::Privacy::RequestData` and `Castle::API::Privacy::DeleteData` (current `POST` / `DELETE /v1/privacy/users`) plus matching `Castle::Client#request_user_data` / `#delete_user_data` — closes [#261](https://github.com/castle/castle-ruby/issues/261). The deprecated path-based variants are intentionally not exposed.
-- Add support for Ruby 3.4 and Rails 8.0 / 8.1 (CI matrix: Ruby 3.2/3.3/3.4 × Rails 7.0/7.1/7.2/8.0/8.1)
+- Add support for Ruby 3.4 and Rails 8.0 / 8.1. CI matrix runs nine representative Ruby × Rails combinations across Ruby 3.2/3.3/3.4 and Rails 7.0–8.1; see [`.github/workflows/specs.yml`](.github/workflows/specs.yml) for the exact list
 - Migrate CI from CircleCI to GitHub Actions (`specs.yml` and `lint.yml`); the dormant CircleCI integration and stale checkout key are removed
 - Replace `appraisal` with hand-maintained `gemfiles/*.gemfile` (Rails 7.0, 7.1, 7.2, 8.0, 8.1)
 - Switch from RVM-style `.ruby-gemset` to asdf-style `.tool-versions`
@@ -33,6 +33,9 @@
 **Bug fixes:**
 
 - Failover handlers in `Castle::API::Risk` / `Filter` / `Log` no longer crash with `NoMethodError` when `options[:user]` is missing — closes [#279](https://github.com/castle/castle-ruby/issues/279). `Filter` additionally falls back to `matching_user_id`.
+- The same hardening is applied to the `Castle::Client#filter` / `#risk` / `#log` do-not-track path, which previously crashed with the same shape when tracking was disabled and the payload had no `:user` block.
+- A per-call `Castle::Configuration` passed via `Castle::API::Risk.call(payload.merge(config: …))` now correctly drives the underlying HTTP connection (host, port, timeouts, SSL) — previously only the request body honored it while the connection was always built from the global singleton.
+- `Castle::Core::GetConnection` now sets both `open_timeout` and `read_timeout` from `request_timeout`, so slow TCP/TLS handshakes hit the configured budget instead of falling back to Net::HTTP's 60 s default.
 
 ## 8.1.0
 
