@@ -7,12 +7,13 @@ require 'castle/version'
 Gem::Specification.new do |s|
   s.name = 'castle-rb'
   s.version = Castle::VERSION
-  s.summary = 'Official Ruby SDK for the Castle fraud-prevention API'
+  s.summary = 'Official Ruby SDK for the Castle fraud and account-abuse prevention platform'
   s.description = <<~DESC.strip
-    Thin Ruby wrapper around the Castle HTTP API (https://reference.castle.io).
-    Exposes Risk, Filter, and Log decisioning, full Lists / List Items CRUD,
-    Privacy (GDPR) endpoints, and webhook signature verification, with helpers
-    for Rails and Sinatra.
+    Castle protects web and mobile applications from account takeovers,
+    fake accounts, bots, and other forms of account abuse. This gem is
+    the official server-side Ruby SDK: it sends user events, retrieves
+    real-time risk decisions, manages trust and block lists, and
+    verifies webhook signatures.
   DESC
   s.authors = ['Johan Brissmyr']
   s.email = 'team@castle.io'
