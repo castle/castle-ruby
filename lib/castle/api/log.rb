@@ -18,7 +18,7 @@ module Castle
         rescue Castle::RequestError, Castle::InternalServerError => e
           unless config.failover_strategy == :throw
             strategy = (config || Castle.config).failover_strategy
-            return(Castle::Failover::PrepareResponse.new(options[:user][:id], reason: e.to_s, strategy: strategy).call)
+            return (Castle::Failover::PrepareResponse.new(options[:user][:id], reason: e.to_s, strategy: strategy).call)
           end
 
           raise e

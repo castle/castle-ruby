@@ -26,4 +26,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.required_ruby_version = '>= 3.2'
+
+  # Default gems that move to bundled gems in Ruby 3.5+
+  s.add_dependency 'base64', '~> 0.2'
 end

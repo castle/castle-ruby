@@ -12,7 +12,7 @@ module Castle
     attr_reader :reason
 
     # @param reason [Exception] the core exception that causes this error
-    def initialize(reason)
+    def initialize(reason) # rubocop:disable Lint/MissingSuper -- preserves legacy `to_s` (returns class name)
       @reason = reason
     end
   end

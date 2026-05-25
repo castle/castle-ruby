@@ -11,7 +11,7 @@ module Castle
         # @return [String]
         def call(webhook, config = nil)
           webhook.body.read.tap do |result|
-            raise Castle::ApiError, 'Invalid webhook from Castle API' if result.blank?
+            raise Castle::ApiError, 'Invalid webhook from Castle API' if result.nil? || result.empty?
 
             Castle::Logger.call('webhook:', result.to_s, config)
           end

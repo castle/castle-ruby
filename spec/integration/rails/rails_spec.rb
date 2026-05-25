@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+
+begin
+  require 'rails'
+rescue LoadError
+  return
+end
+
 require_relative 'support/all'
 
 RSpec.describe HomeController, type: :request do
