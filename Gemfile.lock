@@ -119,14 +119,14 @@ DEPENDENCIES
   debug
   rack
   rake
-  rspec (~> 3.13)
+  rspec
   rubocop
   rubocop-performance
   rubocop-rake
   rubocop-rspec
   simplecov
   timecop
-  webmock (~> 3.26)
+  webmock
 
 BUNDLED WITH
    2.6.9

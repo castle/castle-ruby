@@ -19,8 +19,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'rspec', '~> 3.13'
+  gem 'rspec'
   gem 'simplecov', require: false
   gem 'timecop'
-  gem 'webmock', '~> 3.26'
+  gem 'webmock'
 end
