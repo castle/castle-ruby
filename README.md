@@ -1,6 +1,7 @@
 # Castle Ruby SDK
 
-[![Build Status](https://circleci.com/gh/castle/castle-ruby.svg?style=shield&branch=master)](https://circleci.com/gh/castle/castle-ruby)
+[![Specs](https://github.com/castle/castle-ruby/actions/workflows/specs.yml/badge.svg)](https://github.com/castle/castle-ruby/actions/workflows/specs.yml)
+[![Lint](https://github.com/castle/castle-ruby/actions/workflows/lint.yml/badge.svg)](https://github.com/castle/castle-ruby/actions/workflows/lint.yml)
 [![Gem Version](https://badge.fury.io/rb/castle-rb.svg)](https://badge.fury.io/rb/castle-rb)
 
 The official Ruby SDK for [Castle](https://castle.io). Castle analyzes user behavior in web and mobile apps to stop fraud before it happens.

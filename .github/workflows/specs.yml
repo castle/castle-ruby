@@ -1,0 +1,46 @@
+name: Specs
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+
+jobs:
+  specs:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ruby: '3.2'
+            rails: '7.0'
+          - ruby: '3.2'
+            rails: '7.1'
+          - ruby: '3.2'
+            rails: '7.2'
+          - ruby: '3.3'
+            rails: '7.1'
+          - ruby: '3.3'
+            rails: '7.2'
+          - ruby: '3.3'
+            rails: '8.0'
+          - ruby: '3.4'
+            rails: '8.0'
+          - ruby: '3.4'
+            rails: '8.1'
+
+    env:
+      BUNDLE_GEMFILE: gemfiles/rails_${{ matrix.rails }}.gemfile
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - name: Run specs
+        run: bundle exec rspec
