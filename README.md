@@ -190,11 +190,17 @@ Drop-in helpers expose a request-scoped `castle` client:
 ```ruby
 require 'castle/support/rails'    # `castle` available in controllers
 require 'castle/support/sinatra'  # `register Sinatra::Castle` for modular apps
-require 'castle/support/padrino'  # `castle` available in helpers
-require 'castle/support/hanami'   # `include Castle::Hanami`
 ```
 
-Each helper builds `Castle::Client.from_request(request)` lazily on first access.
+Each helper memoizes `Castle::Client.from_request(request)` on first access.
+
+For any other framework you can wire it up yourself in one line:
+
+```ruby
+def castle
+  @castle ||= Castle::Client.from_request(request)
+end
+```
 
 ## Advanced configuration
 

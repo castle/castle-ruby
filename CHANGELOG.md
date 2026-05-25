@@ -14,6 +14,7 @@
   - Impersonation endpoints: `Castle::API::StartImpersonation`, `Castle::API::EndImpersonation`, `Castle::Client#start_impersonation`, `Castle::Client#end_impersonation`
   - Removed `Castle::ImpersonationFailed` error class
 - Use `Castle::API::Risk`, `Castle::API::Filter`, `Castle::API::Log` (and the matching `Castle::Client#risk` / `#filter` / `#log` methods) instead.
+- Drop `castle/support/hanami` (only ever supported the long-EOL Hanami 1.x architecture) and `castle/support/padrino` (negligible adoption). The 3-line replacement is documented in the README.
 
 **Enhancements:**
 
