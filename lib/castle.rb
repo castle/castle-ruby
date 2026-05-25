@@ -31,11 +31,14 @@
   castle/commands/lists/update
   castle/commands/list_items/archive
   castle/commands/list_items/create
+  castle/commands/list_items/create_batch
   castle/commands/list_items/count
   castle/commands/list_items/get
   castle/commands/list_items/query
   castle/commands/list_items/unarchive
   castle/commands/list_items/update
+  castle/commands/privacy/request_data
+  castle/commands/privacy/delete_data
   castle/api/filter
   castle/api/log
   castle/api/risk
@@ -47,11 +50,14 @@
   castle/api/lists/update
   castle/api/list_items/archive
   castle/api/list_items/create
+  castle/api/list_items/create_batch
   castle/api/list_items/count
   castle/api/list_items/get
   castle/api/list_items/query
   castle/api/list_items/unarchive
   castle/api/list_items/update
+  castle/api/privacy/request_data
+  castle/api/privacy/delete_data
   castle/payload/prepare
   castle/configuration
   castle/singleton_configuration
@@ -60,6 +66,7 @@
   castle/failover/strategy
   castle/client_actions/lists
   castle/client_actions/list_items
+  castle/client_actions/privacy
   castle/client
   castle/headers/filter
   castle/headers/format

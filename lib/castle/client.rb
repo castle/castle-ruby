@@ -5,6 +5,7 @@ module Castle
   class Client
     include Castle::ClientActions::ListItems
     include Castle::ClientActions::Lists
+    include Castle::ClientActions::Privacy
 
     class << self
       def from_request(request, options = {})

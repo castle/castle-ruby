@@ -18,6 +18,8 @@
 
 **Enhancements:**
 
+- Add `Castle::API::ListItems::CreateBatch` (`POST /v1/lists/{list_id}/items/batch`) and `Castle::Client#create_batch_list_items`
+- Add `Castle::API::Privacy::RequestData` and `Castle::API::Privacy::DeleteData` (current `POST` / `DELETE /v1/privacy/users`) plus matching `Castle::Client#request_user_data` / `#delete_user_data` — closes [#261](https://github.com/castle/castle-ruby/issues/261). The deprecated path-based variants are intentionally not exposed.
 - Add support for Ruby 3.4 and Rails 8.0 / 8.1 (CI matrix: Ruby 3.2/3.3/3.4 × Rails 7.0/7.1/7.2/8.0/8.1)
 - Replace `appraisal` with hand-maintained `gemfiles/*.gemfile` (Rails 7.0, 7.1, 7.2, 8.0, 8.1)
 - Switch from RVM-style `.ruby-gemset` to asdf-style `.tool-versions`
@@ -25,6 +27,11 @@
 - Drop deprecated `coveralls_reborn`; rely on `simplecov` directly
 - Drop `byebug` dev dependency in favor of stdlib `debug`
 - Add gem metadata (`source_code_uri`, `changelog_uri`, `bug_tracker_uri`, `rubygems_mfa_required`)
+- Drop the dormant Coditsu CI integration
+
+**Bug fixes:**
+
+- Failover handlers in `Castle::API::Risk` / `Filter` / `Log` no longer crash with `NoMethodError` when `options[:user]` is missing — closes [#279](https://github.com/castle/castle-ruby/issues/279). `Filter` additionally falls back to `matching_user_id`.
 
 ## 8.1.0
 

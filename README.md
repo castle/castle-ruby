@@ -9,7 +9,8 @@ This gem is a thin, dependency-light wrapper around the [Castle HTTP API](https:
 
 - **Risk Assessment** — `POST /v1/risk`, `POST /v1/filter`
 - **Event logging** — `POST /v1/log` (fire-and-forget, no verdict)
-- **Lists & List Items** — full CRUD + search
+- **Lists & List Items** — full CRUD + search + batch
+- **Privacy / GDPR** — `POST` and `DELETE /v1/privacy/users` (Article 15 & 17)
 - **Webhook signature verification**
 
 A full list of supported events and the JSON shape of every payload is documented at <https://reference.castle.io>.
@@ -168,7 +169,40 @@ Castle::API::ListItems::Query.call(
 Available namespaces:
 
 - `Castle::API::Lists::{Create, GetAll, Get, Update, Delete, Query}`
-- `Castle::API::ListItems::{Create, Get, Query, Count, Update, Archive, Unarchive}`
+- `Castle::API::ListItems::{Create, CreateBatch, Get, Query, Count, Update, Archive, Unarchive}`
+
+`CreateBatch` accepts up to ~1000 items per call and returns processing counts:
+
+```ruby
+Castle::API::ListItems::CreateBatch.call(
+  list_id: list[:id],
+  items: [
+    { primary_value: '1.2.3.4', author: { type: '$other', identifier: 'me' } },
+    { primary_value: '5.6.7.8', author: { type: '$other', identifier: 'me' } }
+  ]
+)
+# => { total_received: 2, total_processed: 2, created: 2, ... }
+```
+
+### Privacy (GDPR)
+
+To support GDPR Articles 15 (right of access) and 17 (right to be forgotten), the SDK exposes the current `/v1/privacy/users` endpoints. Both take a JSON body with `identifier` and `identifier_type` (`$id` or `$email`):
+
+```ruby
+Castle::API::Privacy::RequestData.call(
+  identifier: 'rhea@example.org',
+  identifier_type: '$email'
+)
+
+Castle::API::Privacy::DeleteData.call(
+  identifier: 'user_42',
+  identifier_type: '$id'
+)
+```
+
+For the request flow, Castle compiles the user's data and emails a download link to the privacy address configured in the dashboard. Configure that address before calling `RequestData` for the first time.
+
+> The deprecated path-based variants (`POST/DELETE /v1/privacy/users/{id}`) are intentionally not exposed by the SDK.
 
 ### Webhook signature verification
 
@@ -275,6 +309,12 @@ The full list lives in [`lib/castle/errors.rb`](lib/castle/errors.rb).
 | `Castle::API::ApproveDevice` / `GetDevice` / `GetDevicesForUser` / `ReportDevice` | No direct replacement — contact support |
 | `Castle::API::StartImpersonation` / `EndImpersonation`                   | No direct replacement — contact support  |
 | `Castle::ImpersonationFailed`                                            | Removed                                  |
+
+New in 9.0:
+
+- `Castle::API::ListItems::CreateBatch` (`POST /v1/lists/{id}/items/batch`)
+- `Castle::API::Privacy::{RequestData, DeleteData}` (`POST` / `DELETE /v1/privacy/users`) — closes [#261](https://github.com/castle/castle-ruby/issues/261)
+- Failover handlers in `Risk`, `Filter`, and `Log` no longer crash when `options[:user]` is missing — closes [#279](https://github.com/castle/castle-ruby/issues/279)
 
 Minimum supported Ruby is now `3.2`. See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 

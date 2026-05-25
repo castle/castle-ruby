@@ -21,6 +21,11 @@ module Castle
       end
 
       # @param options [Hash]
+      def create_batch_list_items(options = {})
+        Castle::API::ListItems::CreateBatch.call(options)
+      end
+
+      # @param options [Hash]
       def get_list_item(options = {})
         Castle::API::ListItems::Get.call(options)
       end
