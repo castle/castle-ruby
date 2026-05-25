@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
+end
+
 require 'rubygems'
 require 'bundler/setup'
 require 'rack'
 require 'webmock/rspec'
-require 'byebug'
 require 'timecop'
-
-require 'coveralls'
-Coveralls.wear!
 
 require 'castle'
 

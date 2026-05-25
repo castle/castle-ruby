@@ -2,6 +2,29 @@
 
 ## master
 
+## 9.0.0
+
+**BREAKING CHANGES:**
+
+- Drop support for Ruby < 3.2
+- Drop legacy API endpoints and the matching DSL on `Castle::Client`:
+  - `Castle::API::Track`, `Castle::Client#track`
+  - `Castle::API::Authenticate`, `Castle::Client#authenticate`
+  - Device endpoints: `Castle::API::ApproveDevice`, `Castle::API::GetDevice`, `Castle::API::GetDevicesForUser`, `Castle::API::ReportDevice`
+  - Impersonation endpoints: `Castle::API::StartImpersonation`, `Castle::API::EndImpersonation`, `Castle::Client#start_impersonation`, `Castle::Client#end_impersonation`
+  - Removed `Castle::ImpersonationFailed` error class
+- Use `Castle::API::Risk`, `Castle::API::Filter`, `Castle::API::Log` (and the matching `Castle::Client#risk` / `#filter` / `#log` methods) instead.
+
+**Enhancements:**
+
+- Add support for Ruby 3.4 and Rails 8.0 / 8.1 (CI matrix: Ruby 3.2/3.3/3.4 × Rails 7.0/7.1/7.2/8.0/8.1)
+- Replace `appraisal` with hand-maintained `gemfiles/*.gemfile` (Rails 7.0, 7.1, 7.2, 8.0, 8.1)
+- Switch from RVM-style `.ruby-gemset` to asdf-style `.tool-versions`
+- Modernize `.rubocop.yml`: drop deprecated `prettier` inherit, target Ruby 3.2, add `rubocop-rake`
+- Drop deprecated `coveralls_reborn`; rely on `simplecov` directly
+- Drop `byebug` dev dependency in favor of stdlib `debug`
+- Add gem metadata (`source_code_uri`, `changelog_uri`, `bug_tracker_uri`, `rubygems_mfa_required`)
+
 ## 8.1.0
 
 - [#272](https://github.com/castle/castle-ruby/pull/272)

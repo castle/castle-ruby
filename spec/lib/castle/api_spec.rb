@@ -3,7 +3,7 @@
 RSpec.describe Castle::API do
   subject(:call) { described_class.call(command) }
 
-  let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
+  let(:command) { Castle::Commands::Risk.build(event: '$login.succeeded', user: { id: '1234' }) }
 
   context 'when request timeouts' do
     before { stub_request(:any, /api.castle.io/).to_timeout }

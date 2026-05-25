@@ -59,7 +59,7 @@ Castle.configure do |config|
   # Same as setting it through Castle.api_secret
   config.api_secret = 'secret'
 
-  # For authenticate method you can set failover strategies: allow(default), deny, challenge, throw
+  # For risk method you can set failover strategies: allow(default), deny, challenge, throw
   config.failover_strategy = :deny
 
   # Castle::RequestError is raised when timing out in milliseconds (default: 1000 milliseconds)
@@ -150,14 +150,30 @@ config =
 After a successful setup, you can pass the config to any API command as follows:
 
 ```ruby
-::Castle::API::GetDevice.call(device_token: device_token, config: config)
+::Castle::API::Risk.call(event: '$login', status: '$succeeded', user: { id: '1234' }, config: config)
 ```
 
 ## Usage
 
-See [documentation](https://docs.castle.io/docs/) for how to use this SDK with the Castle APIs
+See [documentation](https://docs.castle.io/docs/) for how to use this SDK with the Castle APIs.
+
+The supported endpoints are:
+
+- `Castle::API::Risk`  – `POST /v1/risk`
+- `Castle::API::Filter` – `POST /v1/filter`
+- `Castle::API::Log`    – `POST /v1/log`
+- `Castle::API::Lists`, `Castle::API::ListItems` – Lists and List Items management
 
 ## Exceptions
 
 `Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response.
 You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
+
+## Upgrading to 9.0
+
+The `9.0` release drops a number of legacy endpoints. If you were on 8.x:
+
+- Replace `Castle::API::Track` / `Castle::Client#track` with `Castle::API::Log` (or `Castle::API::Risk` if you need a verdict back).
+- Replace `Castle::API::Authenticate` / `Castle::Client#authenticate` with `Castle::API::Risk`.
+- The Device API (`approve_device`, `get_device`, `get_devices_for_user`, `report_device`) and the Impersonation API (`start_impersonation`, `end_impersonation`) have been removed without a direct replacement; reach out to support if you still rely on them.
+- Minimum supported Ruby is now `3.2`.

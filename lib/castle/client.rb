@@ -23,32 +23,6 @@ module Castle
     end
 
     # @param options [Hash]
-    def authenticate(options = {})
-      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
-
-      return generate_do_not_track_response(options[:user_id]) unless tracked?
-
-      add_timestamp_if_necessary(options)
-
-      new_context = Castle::Context::Merge.call(@context, options[:context])
-
-      Castle::API::Authenticate.call(options.merge(context: new_context, no_symbolize: true))
-    end
-
-    # @param options [Hash]
-    def track(options = {})
-      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
-
-      return unless tracked?
-
-      add_timestamp_if_necessary(options)
-
-      new_context = Castle::Context::Merge.call(@context, options[:context])
-
-      Castle::API::Track.call(options.merge(context: new_context, no_symbolize: true))
-    end
-
-    # @param options [Hash]
     def filter(options = {})
       options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
 
@@ -85,28 +59,6 @@ module Castle
       new_context = Castle::Context::Merge.call(@context, options[:context])
 
       Castle::API::Log.call(options.merge(context: new_context, no_symbolize: true))
-    end
-
-    # @param options [Hash]
-    def start_impersonation(options = {})
-      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
-
-      add_timestamp_if_necessary(options)
-
-      new_context = Castle::Context::Merge.call(@context, options[:context])
-
-      Castle::API::StartImpersonation.call(options.merge(context: new_context, no_symbolize: true))
-    end
-
-    # @param options [Hash]
-    def end_impersonation(options = {})
-      options = Castle::Utils::DeepSymbolizeKeys.call(options || {})
-
-      add_timestamp_if_necessary(options)
-
-      new_context = Castle::Context::Merge.call(@context, options[:context])
-
-      Castle::API::EndImpersonation.call(options.merge(context: new_context, no_symbolize: true))
     end
 
     def disable_tracking

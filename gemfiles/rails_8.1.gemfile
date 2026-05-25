@@ -2,17 +2,9 @@
 
 source 'https://rubygems.org'
 
-gemspec
-
 gem 'rack'
+gem 'rails', '~> 8.1.0'
 gem 'rake'
-
-group :development do
-  gem 'rubocop', require: false
-  gem 'rubocop-performance', require: false
-  gem 'rubocop-rake', require: false
-  gem 'rubocop-rspec', require: false
-end
 
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
@@ -20,7 +12,10 @@ end
 
 group :test do
   gem 'rspec', '~> 3.13'
+  gem 'rspec-rails'
   gem 'simplecov', require: false
   gem 'timecop'
   gem 'webmock', '~> 3.26'
 end
+
+gemspec path: '../'

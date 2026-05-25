@@ -1,14 +1,12 @@
 require:
-  - rubocop-rspec
   - rubocop-performance
-  - rubocop-rspec_rails
-
-inherit_gem:
-  prettier: rubocop.yml
+  - rubocop-rake
+  - rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.2
   NewCops: enable
+  SuggestExtensions: false
   Exclude:
     - bin/**/*
     - .*/**/*
@@ -21,35 +19,37 @@ AllCops:
     - lint/**/*
     - .gemspec/**/*
     - .bundle/**/*
-    - vendor/**/*
+    - gemfiles/**/*
 
 Style/IfUnlessModifier:
   Enabled: false
 
-RSpec/MultipleExpectations:
-  Enabled: true
-  Max: 3
-
-RSpec/NestedGroups:
-  Enabled: true
-  Max: 4
-
-RSpec/ExampleLength:
-  Enabled: true
-  Max: 10
-
-RSpec/MultipleMemoizedHelpers:
-  Enabled: true
-  Max: 15
-
-RSpec/EmptyExampleGroup:
+Style/RedundantFetchBlock:
   Enabled: false
 
-RSpecRails/InferredSpecType:
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/HashEachMethods:
   Enabled: false
 
 Layout/LineLength:
   Max: 120
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
 
 Metrics/MethodLength:
   Enabled: false
@@ -70,35 +70,8 @@ Naming/FileName:
   Exclude:
     - '*.gemspec'
 
-Style/NumericLiterals:
-  Enabled: false
-
-Layout/MultilineMethodCallIndentation:
-  EnforcedStyle: indented_relative_to_receiver
-
-Style/RedundantFetchBlock:
-  Enabled: false
-
-Style/StringLiterals:
-  EnforcedStyle: single_quotes
-  SupportedStyles:
-    - single_quotes
-    - double_quotes
-
-Security/YAMLLoad:
-  Enabled: false
-
-Style/FormatStringToken:
-  Enabled: false
-
-Style/DoubleNegation:
-  Enabled: false
-
-Style/RedundantParentheses:
-  Enabled: false
-
-Style/HashEachMethods:
-  Enabled: false
+Lint/AmbiguousBlockAssociation:
+  AllowedMethods: [change]
 
 Performance/Sum:
   Enabled: false
@@ -106,11 +79,20 @@ Performance/Sum:
 Performance/StringInclude:
   Enabled: false
 
-RSpecRails/HttpStatus:
+Security/YAMLLoad:
   Enabled: false
 
-RSpecRails/HaveHttpStatus:
-  Enabled: false
+RSpec/MultipleExpectations:
+  Max: 3
 
-Lint/AmbiguousBlockAssociation:
-  AllowedMethods: [change]
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/ExampleLength:
+  Max: 10
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 15
+
+RSpec/EmptyExampleGroup:
+  Enabled: false

@@ -10,15 +10,20 @@ Gem::Specification.new do |s|
   s.summary = 'Castle'
   s.description = 'Castle protects your users from account compromise'
   s.authors = ['Johan Brissmyr']
-  s.email = 'johan@castle.io'
+  s.email = 'team@castle.io'
   s.homepage = 'https://castle.io'
   s.license = 'MIT'
 
-  s.files = Dir['{lib}/**/*'] + ['README.md']
-  s.test_files = Dir['spec/**/*']
+  s.metadata = {
+    'homepage_uri' => s.homepage,
+    'source_code_uri' => 'https://github.com/castle/castle-ruby',
+    'changelog_uri' => 'https://github.com/castle/castle-ruby/blob/master/CHANGELOG.md',
+    'bug_tracker_uri' => 'https://github.com/castle/castle-ruby/issues',
+    'rubygems_mfa_required' => 'true'
+  }
+
+  s.files = Dir['{lib}/**/*'] + ['README.md', 'LICENSE', 'CHANGELOG.md']
   s.require_paths = ['lib']
 
-  s.required_ruby_version = '>= 2.7'
-
-  s.add_development_dependency 'appraisal'
+  s.required_ruby_version = '>= 3.2'
 end
