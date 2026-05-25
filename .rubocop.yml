@@ -21,6 +21,7 @@ AllCops:
     - .gemspec/**/*
     - .bundle/**/*
     - gemfiles/**/*
+    - node_modules/**/*
 
 Layout/LineLength:
   Max: 120

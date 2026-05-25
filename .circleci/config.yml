@@ -1,20 +1,6 @@
 version: 2.1
 
 aliases:
-  - &coditsu
-    docker:
-      - image: cimg/ruby:3.4
-    steps:
-      - setup_remote_docker
-      - checkout
-      - run: |
-          docker create -v /sources --name sources alpine:3.4 /bin/true
-          docker cp ./ sources:/sources
-          docker run \
-            -e CODITSU_API_KEY \
-            -e CODITSU_API_SECRET \
-            -e CODITSU_REPOSITORY_ID \
-            --volumes-from sources coditsu/coditsu:latest
   - &ruby-3_2
     docker:
       - image: cimg/ruby:3.2
@@ -53,9 +39,6 @@ aliases:
       - run: bundle exec rubocop
 
 jobs:
-  coditsu:
-    <<: *rails-8_1
-    <<: *coditsu
   rubocop:
     <<: *ruby-3_4
     <<: *lint-defaults
@@ -95,9 +78,6 @@ jobs:
 workflows:
   main:
     jobs:
-      - coditsu:
-          context:
-            - coditsu
       - rubocop
       - ruby-3_2-rails-7_0
       - ruby-3_2-rails-7_1
