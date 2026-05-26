@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'ostruct'
+
 RSpec.describe Castle::Core::ProcessWebhook do
   describe '#call' do
     subject(:call) { described_class.call(webhook) }
@@ -15,19 +17,13 @@ RSpec.describe Castle::Core::ProcessWebhook do
           device_token: 'token',
           user_id: '',
           trigger: '$login.succeeded',
-          context: {
-          },
-          location: {
-          },
-          user_agent: {
-          }
+          context: {},
+          location: {},
+          user_agent: {}
         },
-        user_traits: {
-        },
-        properties: {
-        },
-        policy: {
-        }
+        user_traits: {},
+        properties: {},
+        policy: {}
       }.to_json
     end
 

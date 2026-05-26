@@ -4,7 +4,7 @@ RSpec.describe Castle::Core::SendRequest do
   let(:config) { Castle.config }
 
   describe '#call' do
-    let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
+    let(:command) { Castle::Commands::Risk.build(event: '$login.succeeded', user: { id: '1' }) }
     let(:headers) { {} }
     let(:request_build) { {} }
     let(:expected_headers) { { 'Content-Type' => 'application/json' } }
@@ -14,7 +14,7 @@ RSpec.describe Castle::Core::SendRequest do
       subject(:call) { described_class.call(command, headers, nil, config) }
 
       let(:http) { instance_double(Net::HTTP) }
-      let(:command) { Castle::Commands::Track.build(event: '$login.succeeded') }
+      let(:command) { Castle::Commands::Risk.build(event: '$login.succeeded', user: { id: '1' }) }
       let(:headers) { {} }
       let(:request_build) { {} }
       let(:expected_headers) { { 'Content-Type' => 'application/json' } }
@@ -57,8 +57,12 @@ RSpec.describe Castle::Core::SendRequest do
 
     context 'when post' do
       let(:time) { Time.now.utc.iso8601(3) }
-      let(:command) { Castle::Commands::Track.build(event: '$login.succeeded', name: "\xC4") }
-      let(:expected_body) { { event: '$login.succeeded', name: '�', context: {}, sent_at: time } }
+      let(:command) do
+        Castle::Commands::Risk.build(event: '$login.succeeded', user: { id: '1' }, name: "\xC4")
+      end
+      let(:expected_body) do
+        { event: '$login.succeeded', user: { id: '1' }, name: '�', context: {}, sent_at: time }
+      end
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 
@@ -72,7 +76,7 @@ RSpec.describe Castle::Core::SendRequest do
 
     context 'when get' do
       let(:time) { Time.now.utc.iso8601(3) }
-      let(:command) { Castle::Commands::GetDevice.build(device_token: '1') }
+      let(:command) { Castle::Commands::Lists::Get.build(list_id: '1') }
       let(:expected_body) { {} }
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
@@ -84,8 +88,8 @@ RSpec.describe Castle::Core::SendRequest do
 
     context 'when put' do
       let(:time) { Time.now.utc.iso8601(3) }
-      let(:command) { Castle::Commands::ApproveDevice.build(device_token: '1') }
-      let(:expected_body) { {} }
+      let(:command) { Castle::Commands::Lists::Update.build(list_id: '1', name: 'foo') }
+      let(:expected_body) { { name: 'foo' } }
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 

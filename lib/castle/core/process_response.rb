@@ -57,6 +57,7 @@ module Castle
                 raise Castle::InvalidParametersError, parsed_body[:message]
               end
             rescue JSON::ParserError
+              # body wasn't valid JSON; fall through to the generic 422 error below
             end
           end
 

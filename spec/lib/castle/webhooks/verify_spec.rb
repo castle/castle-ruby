@@ -19,19 +19,13 @@ RSpec.describe Castle::Webhooks::Verify do
           device_token: 'token',
           user_id: user_id,
           trigger: '$login.succeeded',
-          context: {
-          },
-          location: {
-          },
-          user_agent: {
-          }
+          context: {},
+          location: {},
+          user_agent: {}
         },
-        user_traits: {
-        },
-        properties: {
-        },
-        policy: {
-        }
+        user_traits: {},
+        properties: {},
+        policy: {}
       }.to_json
     end
 

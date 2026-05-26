@@ -1,5 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
+cd "$(dirname "$0")/.."
 
+# asdf-managed Ruby must win the PATH race because plugin-ruby spawns a Ruby
+# parser as a child process; otherwise macOS system Ruby 2.6 wins and crashes
+# trying to parse a Bundler 2.5 lockfile.
+if command -v brew >/dev/null && [ -f "$(brew --prefix asdf)/libexec/asdf.sh" ]; then
+  # shellcheck disable=SC1091
+  . "$(brew --prefix asdf)/libexec/asdf.sh"
+fi
+
+if [ ! -d node_modules ]; then
+  echo "node_modules missing — installing via yarn"
+  yarn install --frozen-lockfile --silent
+fi
+
+echo "---  LINTER for / ---"
+
+# 1. RuboCop autocorrect (Ruby style + lint)
 bundle exec rubocop -A
-bundle exec rbprettier -w ./
+
+# 2. Prettier — formats Ruby (via @prettier/plugin-ruby, which spawns the
+#    asdf-managed Ruby parser sourced above) plus everything else not
+#    covered by .prettierignore (JSON, MD, YAML, etc.).
+./node_modules/.bin/prettier --write .
+
+echo "---  LINTER DONE ---"

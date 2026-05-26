@@ -12,7 +12,7 @@ module Castle
       HTTP(?:_|-).*|
         CONTENT(?:_|-)LENGTH|
       REMOTE(?:_|-)ADDR
-      $/xi.freeze
+      $/xi
 
       private_constant :VALUABLE_HEADERS
 

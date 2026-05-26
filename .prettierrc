@@ -1,5 +1,6 @@
 {
   "printWidth": 120,
-  "rubyPlugins": "plugin/single_quotes",
-  "singleQuote": true
+  "singleQuote": true,
+  "rubySingleQuote": true,
+  "plugins": ["@prettier/plugin-ruby"]
 }
