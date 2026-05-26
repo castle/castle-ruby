@@ -3,12 +3,7 @@
 RSpec.describe Castle::API::Log do
   describe '.call' do
     let(:options) do
-      {
-        type: '$profile_update',
-        status: '$succeeded',
-        user: { id: 'u-42' },
-        context: { ip: '1.2.3.4' }
-      }
+      { type: '$profile_update', status: '$succeeded', user: { id: 'u-42' }, context: { ip: '1.2.3.4' } }
     end
 
     context 'when the request succeeds' do
@@ -16,7 +11,9 @@ RSpec.describe Castle::API::Log do
         stub_request(:post, 'https://api.castle.io/v1/log').to_return(
           status: 201,
           body: '{}',
-          headers: { 'Content-Type' => 'application/json' }
+          headers: {
+            'Content-Type' => 'application/json'
+          }
         )
       end
 

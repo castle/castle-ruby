@@ -57,12 +57,8 @@ RSpec.describe Castle::Core::SendRequest do
 
     context 'when post' do
       let(:time) { Time.now.utc.iso8601(3) }
-      let(:command) do
-        Castle::Commands::Risk.build(event: '$login.succeeded', user: { id: '1' }, name: "\xC4")
-      end
-      let(:expected_body) do
-        { event: '$login.succeeded', user: { id: '1' }, name: '�', context: {}, sent_at: time }
-      end
+      let(:command) { Castle::Commands::Risk.build(event: '$login.succeeded', user: { id: '1' }, name: "\xC4") }
+      let(:expected_body) { { event: '$login.succeeded', user: { id: '1' }, name: '�', context: {}, sent_at: time } }
 
       before { allow(Castle::Utils::GetTimestamp).to receive(:call).and_return(time) }
 
