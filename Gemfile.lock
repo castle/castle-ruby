@@ -45,7 +45,7 @@ GEM
       stringio
     public_suffix (7.0.5)
     racc (1.8.1)
-    rack (3.1.19)
+    rack (3.1.21)
     rainbow (3.1.1)
     rake (13.2.1)
     rdoc (7.2.0)
