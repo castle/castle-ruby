@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
     'rubygems_mfa_required' => 'true'
   }
 
-  s.files = Dir['{lib}/**/*'] + ['README.md', 'LICENSE', 'CHANGELOG.md']
+  s.files = Dir['{lib}/**/*'] + %w[README.md LICENSE CHANGELOG.md]
   s.require_paths = ['lib']
 
   s.required_ruby_version = '>= 3.2'

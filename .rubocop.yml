@@ -29,6 +29,11 @@ Layout/LineLength:
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented_relative_to_receiver
 
+# Hash brace spacing is handled by prettier-ruby (@prettier/plugin-ruby), which
+# breaks empty hashes onto two lines and would otherwise conflict with rubocop.
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: false
+
 Lint/AmbiguousBlockAssociation:
   AllowedMethods: [change]
 
@@ -94,6 +99,11 @@ Style/Documentation:
   Enabled: false
 
 Style/DoubleNegation:
+  Enabled: false
+
+# prettier-ruby always expands empty methods to `def foo\nend`. Disable
+# rubocop's preference for `def foo; end` so the two stay aligned.
+Style/EmptyMethod:
   Enabled: false
 
 Style/FormatStringToken:

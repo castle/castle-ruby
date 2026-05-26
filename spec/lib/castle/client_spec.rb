@@ -44,7 +44,8 @@ RSpec.describe Castle::Client do
     stub_request(:any, /api.castle.io/).with(basic_auth: ['', 'secret']).to_return(
       status: response_code,
       body: response_body,
-      headers: {}
+      headers: {
+      }
     )
   end
 

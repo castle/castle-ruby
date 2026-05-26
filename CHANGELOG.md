@@ -2,6 +2,11 @@
 
 ## master
 
+- Bump dependencies (rack 3.1.19 → 3.2.6, rake, rspec-\*, timecop, simplecov-html, diff-lcs)
+- Bump Ruby to 3.4.9 (zlib CVE-2026-27820)
+- Bump Node.js to 24.16.0 in `.tool-versions`
+- Repair `yarn format:check`: add `syntax_tree` to the dev group (required by `@prettier/plugin-ruby` 4.x), reformat 11 spec files, and disable rubocop cops that conflict with prettier-ruby (`Layout/SpaceInsideHashLiteralBraces`, `Style/EmptyMethod`)
+
 ## 9.0.0
 
 **BREAKING CHANGES:**
