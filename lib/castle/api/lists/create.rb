@@ -2,7 +2,7 @@
 
 module Castle
   module API
-    # Namespace for the lists API ednpoints
+    # Namespace for the lists API endpoints
     module Lists
       # Sends POST /lists request
       module Create

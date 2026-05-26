@@ -1,20 +1,22 @@
 # frozen_string_literal: true
 
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
+end
+
 require 'rubygems'
 require 'bundler/setup'
+require 'ostruct' # no longer autoloaded on Ruby 3.5
 require 'rack'
 require 'webmock/rspec'
-require 'byebug'
 require 'timecop'
-
-require 'coveralls'
-Coveralls.wear!
 
 require 'castle'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
-Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
+Dir['./spec/support/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |config|
   config.before do

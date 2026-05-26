@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+gem 'rack'
+gem 'rails', '~> 8.1.0'
+gem 'rake'
+
+group :development, :test do
+  gem 'debug', platforms: %i[mri mingw x64_mingw]
+end
+
+group :test do
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'simplecov', require: false
+  gem 'timecop'
+  gem 'webmock'
+end
+
+gemspec path: '../'

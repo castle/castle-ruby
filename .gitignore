@@ -5,8 +5,11 @@
 /tmp/
 tags
 /gemfiles/*.lock
+gemfiles/vendor
 .byebug_history
 /doc/
 /.yardoc/
-gemfiles/vendor
 /lint/
+/node_modules/
+yarn-error.log
+.rspec_status

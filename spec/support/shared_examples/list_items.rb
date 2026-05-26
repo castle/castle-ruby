@@ -22,6 +22,13 @@ RSpec.shared_examples 'it has list item actions' do
     end
   end
 
+  describe 'create_batch_list_items' do
+    it do
+      client.create_batch_list_items(list_id: '1234', items: [{ primary_value: 'a' }])
+      assert_requested :post, 'https://api.castle.io/v1/lists/1234/items/batch', times: 1
+    end
+  end
+
   describe 'get_list_item' do
     it do
       client.get_list_item(list_id: '1234', list_item_id: '5678')

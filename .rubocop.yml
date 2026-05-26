@@ -1,14 +1,13 @@
-require:
-  - rubocop-rspec
+plugins:
   - rubocop-performance
-  - rubocop-rspec_rails
-
-inherit_gem:
-  prettier: rubocop.yml
+  - rubocop-rake
+  - rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.2
   NewCops: enable
+  SuggestExtensions: false
+  DisplayCopNames: true
   Exclude:
     - bin/**/*
     - .*/**/*
@@ -21,35 +20,21 @@ AllCops:
     - lint/**/*
     - .gemspec/**/*
     - .bundle/**/*
-    - vendor/**/*
-
-Style/IfUnlessModifier:
-  Enabled: false
-
-RSpec/MultipleExpectations:
-  Enabled: true
-  Max: 3
-
-RSpec/NestedGroups:
-  Enabled: true
-  Max: 4
-
-RSpec/ExampleLength:
-  Enabled: true
-  Max: 10
-
-RSpec/MultipleMemoizedHelpers:
-  Enabled: true
-  Max: 15
-
-RSpec/EmptyExampleGroup:
-  Enabled: false
-
-RSpecRails/InferredSpecType:
-  Enabled: false
+    - gemfiles/**/*
+    - node_modules/**/*
 
 Layout/LineLength:
   Max: 120
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+
+Lint/AmbiguousBlockAssociation:
+  AllowedMethods: [change]
+
+Lint/StructNewOverride:
+  Exclude:
+    - lib/castle/command.rb # public Struct member name kept for backward compat
 
 Metrics/MethodLength:
   Enabled: false
@@ -69,48 +54,69 @@ Metrics/CyclomaticComplexity:
 Naming/FileName:
   Exclude:
     - '*.gemspec'
+    - lib/castle-rb.rb # canonical gem-name require shim
 
-Style/NumericLiterals:
-  Enabled: false
+Performance/MethodObjectAsBlock:
+  Exclude:
+    - lib/castle.rb # historical pattern in the require manifest
 
-Layout/MultilineMethodCallIndentation:
-  EnforcedStyle: indented_relative_to_receiver
-
-Style/RedundantFetchBlock:
-  Enabled: false
-
-Style/StringLiterals:
-  EnforcedStyle: single_quotes
-  SupportedStyles:
-    - single_quotes
-    - double_quotes
-
-Security/YAMLLoad:
-  Enabled: false
-
-Style/FormatStringToken:
-  Enabled: false
-
-Style/DoubleNegation:
-  Enabled: false
-
-Style/RedundantParentheses:
-  Enabled: false
-
-Style/HashEachMethods:
+Performance/StringInclude:
   Enabled: false
 
 Performance/Sum:
   Enabled: false
 
-Performance/StringInclude:
+RSpec/EmptyExampleGroup:
   Enabled: false
 
-RSpecRails/HttpStatus:
+RSpec/ExampleLength:
+  Max: 10
+
+RSpec/MultipleExpectations:
+  Max: 3
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 17
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/PendingWithoutReason:
   Enabled: false
 
-RSpecRails/HaveHttpStatus:
+RSpec/SpecFilePathFormat:
   Enabled: false
 
-Lint/AmbiguousBlockAssociation:
-  AllowedMethods: [change]
+Security/YAMLLoad:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/OpenStructUse:
+  Exclude:
+    - spec/**/* # OpenStruct is fine inside test doubles
+
+Style/RedundantFetchBlock:
+  Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes

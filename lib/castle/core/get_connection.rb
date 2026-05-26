@@ -12,7 +12,11 @@ module Castle
         def call(config = nil)
           config ||= Castle.config
           http = Net::HTTP.new(config.base_url.host, config.base_url.port)
-          http.read_timeout = config.request_timeout / 1000.0
+          # `request_timeout` is in milliseconds for historical reasons; both
+          # Net::HTTP timeouts take seconds.
+          timeout_seconds = config.request_timeout / 1000.0
+          http.open_timeout = timeout_seconds
+          http.read_timeout = timeout_seconds
 
           if config.base_url.scheme == HTTPS_SCHEME
             http.use_ssl = true

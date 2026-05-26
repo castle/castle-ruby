@@ -1,163 +1,341 @@
-# Ruby SDK for Castle
+# Castle Ruby SDK
 
-[![Build Status](https://circleci.com/gh/castle/castle-ruby.svg?style=shield&branch=master)](https://circleci.com/gh/castle/castle-ruby)
-[![Coverage Status](https://coveralls.io/repos/github/castle/castle-ruby/badge.svg?branch=coveralls)](https://coveralls.io/github/castle/castle-ruby?branch=coveralls)
+[![Specs](https://github.com/castle/castle-ruby/actions/workflows/specs.yml/badge.svg)](https://github.com/castle/castle-ruby/actions/workflows/specs.yml)
+[![Lint](https://github.com/castle/castle-ruby/actions/workflows/lint.yml/badge.svg)](https://github.com/castle/castle-ruby/actions/workflows/lint.yml)
 [![Gem Version](https://badge.fury.io/rb/castle-rb.svg)](https://badge.fury.io/rb/castle-rb)
 
-**[Castle](https://castle.io) analyzes user behavior in web and mobile apps to stop fraud before it happens.**
+The official Ruby SDK for [Castle](https://castle.io). Castle analyzes user behavior in web and mobile apps to stop fraud before it happens.
+
+This gem is a thin, dependency-light wrapper around the [Castle HTTP API](https://reference.castle.io). It exposes:
+
+- **Risk Assessment** — `POST /v1/risk`, `POST /v1/filter`
+- **Event logging** — `POST /v1/log` (fire-and-forget, no verdict)
+- **Lists & List Items** — full CRUD + search + batch
+- **Privacy / GDPR** — `POST` and `DELETE /v1/privacy/users` (Article 15 & 17)
+- **Webhook signature verification**
+
+A full list of supported events and the JSON shape of every payload is documented at <https://reference.castle.io>.
+
+## Requirements
+
+- Ruby `>= 3.2`
+- A [Castle](https://dashboard.castle.io) API secret
 
 ## Installation
 
-Add the `castle-rb` gem to your `Gemfile`
+Add the gem to your `Gemfile`:
 
 ```ruby
 gem 'castle-rb'
 ```
 
+Then:
+
+```sh
+bundle install
+```
+
+## Quick start
+
+```ruby
+require 'castle'
+
+Castle.api_secret = ENV.fetch('CASTLE_API_SECRET')
+
+verdict = Castle::API::Risk.call(
+  type: '$login',
+  status: '$succeeded',
+  request_token: params[:castle_request_token],
+  user: { id: '12345', email: 'user@example.com' },
+  context: Castle::Context::Prepare.call(request)
+)
+
+case verdict[:policy][:action]
+when 'deny'      then # block the user
+when 'challenge' then # send 2FA / additional verification
+else                  # allow
+end
+```
+
+`Castle::Context::Prepare.call(request)` extracts the IP and the headers Castle needs from a Rack-compatible `request` object. See [Advanced configuration](#advanced-configuration) for how header allow/deny lists and proxy chains are resolved.
+
 ## Configuration
 
-### Framework configuration
-
-Load and configure the library with your Castle API secret in an initializer or similar.
-
-```ruby
-Castle.api_secret = 'YOUR_API_SECRET'
-```
-
-A Castle client instance will be made available as `castle` in your
-
-- Rails controllers when you add `require 'castle/support/rails'`
-
-- Padrino controllers when you add `require 'castle/support/padrino'`
-
-- Sinatra app when you add `require 'castle/support/sinatra'` (and additionally explicitly add `register Sinatra::Castle` to your `Sinatra::Base` class if you have a modular application)
-
-```ruby
-require 'castle/support/sinatra'
-
-class ApplicationController < Sinatra::Base
-  register Sinatra::Castle
-end
-```
-
-- Hanami when you add `require 'castle/support/hanami'` and include `Castle::Hanami` to your Hanami application
-
-```ruby
-require 'castle/support/hanami'
-
-module Web
-  class Application < Hanami::Application
-    include Castle::Hanami
-  end
-end
-```
-
-### Client configuration
+The minimal, recommended setup:
 
 ```ruby
 Castle.configure do |config|
-  # Same as setting it through Castle.api_secret
-  config.api_secret = 'secret'
+  # Same as `Castle.api_secret = ...`
+  config.api_secret = ENV.fetch('CASTLE_API_SECRET')
 
-  # For authenticate method you can set failover strategies: allow(default), deny, challenge, throw
-  config.failover_strategy = :deny
+  # Behavior when Castle's API is unreachable or returns a 5xx.
+  # One of: :allow (default), :deny, :challenge, :throw
+  config.failover_strategy = :allow
 
-  # Castle::RequestError is raised when timing out in milliseconds (default: 1000 milliseconds)
-  config.request_timeout = 1500
-
-  # Base Castle API url
-  # config.base_url = "https://api.castle.io/v1"
-
-  # Logger (need to respond to info method) - logs Castle API requests and responses
-  # config.logger = Logger.new(STDOUT)
-
-  # Allowlisted and Denylisted headers are case insensitive and allow to use _ and - as a separator, http prefixes are removed
-  # Allowlisted headers
-  # By default, the SDK sends all HTTP headers, except for Cookie and Authorization.
-  # If you decide to use a allowlist, the SDK will:
-  # - always send the User-Agent header
-  # - send scrubbed values of non-allowlisted headers
-  # - send proper values of allowlisted headers.
-  # @example
-  #   config.allowlisted = ['X_HEADER']
-  #   # will send { 'User-Agent' => 'Chrome', 'X_HEADER' => 'proper value', 'Any-Other-Header' => true }
-  #
-  # We highly suggest using denylist instead of allowlist, so that Castle can use as many data points
-  # as possible to secure your users. If you want to use the allowlist, this is the minimal
-  # amount of headers we recommend:
-  config.allowlisted = Castle::Configuration::DEFAULT_ALLOWLIST
-
-  # Denylisted headers take precedence over allowlisted elements
-  # We always denylist Cookie and Authentication headers. If you use any other headers that
-  # might contain sensitive information, you should denylist them.
-  config.denylisted = ['HTTP-X-header']
-
-  # Castle needs the original IP of the client, not the IP of your proxy or load balancer.
-  # The SDK will only trust the proxy chain as defined in the configuration.
-  # We try to fetch the client IP based on X-Forwarded-For or Remote-Addr headers in that order,
-  # but sometimes the client IP may be stored in a different header or order.
-  # The SDK can be configured to look for the client IP address in headers that you specify.
-
-  # Sometimes, Cloud providers do not use consistent IP addresses to proxy requests.
-  # In this case, the client IP is usually preserved in a custom header. Example:
-  # Cloudflare preserves the client request in the 'Cf-Connecting-Ip' header.
-  # It would be used like so: config.ip_headers=['Cf-Connecting-Ip']
-  config.ip_headers = []
-
-  # If the specified header or X-Forwarded-For default contains a proxy chain with public IP addresses,
-  # then you must choose only one of the following (but not both):
-  # 1. The trusted_proxies value must match the known proxy IPs. This option is preferable if the IP is static.
-  # 2. The trusted_proxy_depth value must be set to the number of known trusted proxies in the chain (see below).
-  # This option is preferable if the IPs are ephemeral, but the depth is consistent.
-
-  # Additionally to make X-Forwarded-For and other headers work better discovering client ip address,
-  # and not the address of a reverse proxy server, you can define trusted proxies
-  # which will help to fetch proper ip from those headers
-
-  # In order to extract the client IP of the X-Forwarded-For header
-  # and not the address of a reverse proxy server, you must define all trusted public proxies
-  # you can achieve this by listing all the proxies ip defined by string or regular expressions
-  # in the trusted_proxies setting
-  config.trusted_proxies = []
-
-  # or by providing number of trusted proxies used in the chain
-  config.trusted_proxy_depth = 0
-
-  # note that you must pick one approach over the other.
-
-  # If there is no possibility to define options above and there is no other header that holds the client IP,
-  # then you may set trust_proxy_chain = true to trust all of the proxy IPs in X-Forwarded-For
-  config.trust_proxy_chain = false
-  # *Warning*: this mode is highly promiscuous and could lead to wrongly trusting a spoofed IP if the request passes through a malicious proxy
-
-  # *Note: the default list of proxies that are always marked as "trusted" can be found in: Castle::Configuration::TRUSTED_PROXIES
+  # Request timeout in milliseconds (default: 1000).
+  # `Castle::RequestError` is raised on timeout.
+  config.request_timeout = 1000
 end
 ```
 
-### Multi-environment configuration
-
-It is also possible to define multiple configs within one application.
+### Logging
 
 ```ruby
-# Initialize new instance of Castle::Configuration
-config =
-  Castle::Configuration.new.tap do |c|
-    # and set any attribute
-    c.api_secret = 'YOUR_API_SECRET'
-  end
+Castle.configure do |config|
+  config.logger = Logger.new($stdout)
+end
 ```
 
-After a successful setup, you can pass the config to any API command as follows:
+The logger only needs to respond to `#info`. Each request and response (with sensitive values stripped) will be logged.
+
+### Multi-environment / multi-tenant
+
+Most apps only need one global config, but you can also build standalone `Castle::Configuration` objects and pass them per call:
 
 ```ruby
-::Castle::API::GetDevice.call(device_token: device_token, config: config)
+config = Castle::Configuration.new.tap do |c|
+  c.api_secret = ENV.fetch('CASTLE_API_SECRET_TENANT_A')
+end
+
+Castle::API::Risk.call(payload.merge(config: config))
 ```
 
 ## Usage
 
-See [documentation](https://docs.castle.io/docs/) for how to use this SDK with the Castle APIs
+All endpoints are exposed as `Castle::API::<Endpoint>.call(payload)` and return a parsed `Hash`. The same payloads can be sent through `Castle::Client` (created from a Rack request), which automatically attaches request context and a do-not-track flag.
 
-## Exceptions
+### Risk
 
-`Castle::Error` will be thrown if the Castle API returns a 400 or a 500 level HTTP response.
-You can also choose to catch a more [finegrained error](https://github.com/castle/castle-ruby/blob/master/lib/castle/errors.rb).
+Used for evaluating high-risk events such as logins, registrations, password resets, and transactions. Returns a verdict (`policy[:action]`) plus risk scores and signals.
+
+```ruby
+Castle::API::Risk.call(
+  type: '$login',
+  status: '$succeeded',
+  request_token: params[:castle_request_token],
+  user: { id: '12345', email: 'user@example.com' },
+  context: Castle::Context::Prepare.call(request)
+)
+```
+
+### Filter
+
+Used to block bots and bad traffic early in the chain (typically registration). Same response shape as Risk.
+
+```ruby
+Castle::API::Filter.call(
+  type: '$registration',
+  status: '$attempted',
+  request_token: params[:castle_request_token],
+  params: { email: 'user@example.com' },
+  context: Castle::Context::Prepare.call(request)
+)
+```
+
+### Log
+
+Fire-and-forget event logging; no verdict is returned. Useful for events that should be visible in the Castle dashboard but don't need a real-time decision.
+
+```ruby
+Castle::API::Log.call(
+  type: '$profile_update',
+  status: '$succeeded',
+  user: { id: '12345' },
+  context: Castle::Context::Prepare.call(request)
+)
+```
+
+### Lists & List Items
+
+Lists let you organize users, IPs, transactions, or any custom property and use them in policies as allow/deny lists. The SDK mirrors the [Lists API](https://reference.castle.io#tag/Lists):
+
+```ruby
+list = Castle::API::Lists::Create.call(
+  name: 'Trusted IPs',
+  color: 'green',
+  primary_field: 'ip.address'
+)
+
+Castle::API::ListItems::Create.call(
+  list_id: list[:id],
+  primary_value: '1.2.3.4'
+)
+
+Castle::API::ListItems::Query.call(
+  list_id: list[:id],
+  filters: { primary_value: '1.2.3.4' }
+)
+```
+
+Available namespaces:
+
+- `Castle::API::Lists::{Create, GetAll, Get, Update, Delete, Query}`
+- `Castle::API::ListItems::{Create, CreateBatch, Get, Query, Count, Update, Archive, Unarchive}`
+
+`CreateBatch` accepts up to ~1000 items per call and returns processing counts:
+
+```ruby
+Castle::API::ListItems::CreateBatch.call(
+  list_id: list[:id],
+  items: [
+    { primary_value: '1.2.3.4', author: { type: '$other', identifier: 'me' } },
+    { primary_value: '5.6.7.8', author: { type: '$other', identifier: 'me' } }
+  ]
+)
+# => { total_received: 2, total_processed: 2, created: 2, ... }
+```
+
+### Privacy (GDPR)
+
+To support GDPR Articles 15 (right of access) and 17 (right to be forgotten), the SDK exposes the current `/v1/privacy/users` endpoints. Both take a JSON body with `identifier` and `identifier_type` (`$id` or `$email`):
+
+```ruby
+Castle::API::Privacy::RequestData.call(
+  identifier: 'rhea@example.org',
+  identifier_type: '$email'
+)
+
+Castle::API::Privacy::DeleteData.call(
+  identifier: 'user_42',
+  identifier_type: '$id'
+)
+```
+
+For the request flow, Castle compiles the user's data and emails a download link to the privacy address configured in the dashboard. Configure that address before calling `RequestData` for the first time.
+
+> The deprecated path-based variants (`POST/DELETE /v1/privacy/users/{id}`) are intentionally not exposed by the SDK.
+
+### Webhook signature verification
+
+Castle signs every webhook with `X-Castle-Signature`. Verify it before trusting the payload:
+
+```ruby
+post '/castle/webhooks' do
+  Castle::Webhooks::Verify.call(request)
+  # signature is valid; proceed
+rescue Castle::WebhookVerificationError
+  halt 400
+end
+```
+
+### Framework helpers
+
+Drop-in helpers expose a request-scoped `castle` client:
+
+```ruby
+require 'castle/support/rails'    # `castle` available in controllers
+require 'castle/support/sinatra'  # `register Sinatra::Castle` for modular apps
+```
+
+Each helper memoizes `Castle::Client.from_request(request)` on first access.
+
+For any other framework you can wire it up yourself in one line:
+
+```ruby
+def castle
+  @castle ||= Castle::Client.from_request(request)
+end
+```
+
+## Advanced configuration
+
+The defaults are good for most deployments. The options below only matter if you have a non-trivial proxy chain or strict header policies.
+
+### Header allow/deny lists
+
+By default the SDK sends every HTTP header except `Cookie` and `Authorization`. Castle uses these headers to fingerprint the request, so the broader the better.
+
+```ruby
+Castle.configure do |config|
+  # Always-blocked headers (in addition to Cookie/Authorization).
+  config.denylisted = ['HTTP-X-Internal-Header']
+
+  # Strict allow-list mode. Headers outside the list are sent with
+  # scrubbed values, except for User-Agent which is always preserved.
+  # We recommend the curated default if you have to use an allow list:
+  config.allowlisted = Castle::Configuration::DEFAULT_ALLOWLIST
+end
+```
+
+Header names are case-insensitive and accept both `_` and `-` as separators. A leading `HTTP_` prefix is stripped automatically.
+
+### Client IP detection
+
+Castle needs the original client IP, not the IP of your proxy or load balancer. The SDK reads `X-Forwarded-For` and `Remote-Addr` by default; pick **one** of the strategies below depending on your infrastructure:
+
+```ruby
+Castle.configure do |config|
+  # 1. Custom header (e.g. Cloudflare's Cf-Connecting-Ip).
+  config.ip_headers = ['Cf-Connecting-Ip']
+
+  # 2. Static, known proxy IPs (strings or regexes).
+  config.trusted_proxies = ['10.0.0.1', /\A192\.168\./]
+
+  # 3. Ephemeral proxies but known chain depth.
+  config.trusted_proxy_depth = 2
+
+  # 4. Last resort: trust the entire X-Forwarded-For chain.
+  # Warning: vulnerable to header spoofing if a malicious proxy is in path.
+  config.trust_proxy_chain = false
+end
+```
+
+Pick **either** `trusted_proxies` **or** `trusted_proxy_depth`, never both. Private/loopback ranges in `Castle::Configuration::TRUSTED_PROXIES` are always considered trusted.
+
+## Errors
+
+All exceptions inherit from `Castle::Error`. The most useful ones:
+
+| Class                              | Raised when                                                   |
+| ---------------------------------- | ------------------------------------------------------------- |
+| `Castle::ConfigurationError`       | The SDK is misconfigured (missing API secret, bad URL, etc.). |
+| `Castle::RequestError`             | Network failure or timeout reaching Castle.                   |
+| `Castle::InvalidRequestTokenError` | The `request_token` is missing or invalid.                    |
+| `Castle::InvalidParametersError`   | 422 response with validation details.                         |
+| `Castle::RateLimitError`           | 429 response — back off and retry.                            |
+| `Castle::UnauthorizedError`        | 401 — bad API secret.                                         |
+| `Castle::InternalServerError`      | 5xx response from Castle.                                     |
+| `Castle::WebhookVerificationError` | Webhook signature did not match.                              |
+
+The full list lives in [`lib/castle/errors.rb`](lib/castle/errors.rb).
+
+## Upgrading to 9.0
+
+`9.0` removes a number of legacy endpoints and DSL methods. If you're upgrading from 8.x:
+
+| Removed                                                                  | Replacement                              |
+| ------------------------------------------------------------------------ | ---------------------------------------- |
+| `Castle::API::Track` / `Castle::Client#track`                            | `Castle::API::Log` or `Castle::API::Risk` |
+| `Castle::API::Authenticate` / `Castle::Client#authenticate`              | `Castle::API::Risk`                       |
+| `Castle::API::ApproveDevice` / `GetDevice` / `GetDevicesForUser` / `ReportDevice` | No direct replacement — contact support |
+| `Castle::API::StartImpersonation` / `EndImpersonation`                   | No direct replacement — contact support  |
+| `Castle::ImpersonationFailed`                                            | Removed                                  |
+
+New in 9.0:
+
+- `Castle::API::ListItems::CreateBatch` (`POST /v1/lists/{id}/items/batch`)
+- `Castle::API::Privacy::{RequestData, DeleteData}` (`POST` / `DELETE /v1/privacy/users`) — closes [#261](https://github.com/castle/castle-ruby/issues/261)
+- Failover handlers in `Risk`, `Filter`, and `Log` no longer crash when `options[:user]` is missing — closes [#279](https://github.com/castle/castle-ruby/issues/279)
+
+Minimum supported Ruby is now `3.2`. See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
+
+## Contributing
+
+Bug reports and pull requests are welcome on [GitHub](https://github.com/castle/castle-ruby).
+
+```sh
+bundle install
+bundle exec rspec   # run the test suite
+bin/lint            # run RuboCop and Prettier
+```
+
+To test against a specific Rails version, set `BUNDLE_GEMFILE` to one of the files in [`gemfiles/`](gemfiles):
+
+```sh
+BUNDLE_GEMFILE=gemfiles/rails_8.1.gemfile bundle install
+BUNDLE_GEMFILE=gemfiles/rails_8.1.gemfile bundle exec rspec
+```
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](LICENSE).
