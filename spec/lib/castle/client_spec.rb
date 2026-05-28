@@ -93,6 +93,7 @@ RSpec.describe Castle::Client do
   end
 
   describe 'client action mixins' do
+    it_behaves_like 'it has event actions'
     it_behaves_like 'it has list actions'
     it_behaves_like 'it has list item actions'
     it_behaves_like 'it has privacy actions'
