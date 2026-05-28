@@ -8,7 +8,7 @@ module Castle
         class << self
           # @param options [Hash]
           # @return [Castle::Command]
-          def build(options = {})
+          def build(_options = {})
             Castle::Command.new('events/schema', nil, :get)
           end
         end
