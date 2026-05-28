@@ -1,5 +1,22 @@
 # Changelog
 
+## 9.1.0
+
+**Enhancements:**
+
+- Add Events API support (enterprise) — three new client methods for querying event data:
+  - `events_schema` — `GET /v1/events/schema`
+  - `query_events` — `POST /v1/events/query`
+  - `group_events` — `POST /v1/events/group`
+
+**Housekeeping:**
+
+- Remove unused `Castle::Validators::NotSupported` (dead code)
+- Remove unused `Session::HTTPS_SCHEME` constant; inline the comparison in `GetConnection`
+- Replace deprecated `:mingw, :x64_mingw` Bundler platforms with `:windows`
+- Bump Bundler 2.6.9 → 2.7.2
+- Bump json 2.19.5 → 2.19.7
+
 ## master
 
 - Bump dependencies (rack 3.1.19 → 3.2.6, rake, rspec-\*, timecop, simplecov-html, diff-lcs)
