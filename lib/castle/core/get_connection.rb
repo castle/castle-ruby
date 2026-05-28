@@ -4,8 +4,6 @@ module Castle
   module Core
     # this module returns a new configured Net::HTTP object
     module GetConnection
-      HTTPS_SCHEME = 'https'
-
       class << self
         # @param config [Castle::Configuration, Castle::SingletonConfiguration]
         # @return [Net::HTTP]
@@ -18,7 +16,7 @@ module Castle
           http.open_timeout = timeout_seconds
           http.read_timeout = timeout_seconds
 
-          if config.base_url.scheme == HTTPS_SCHEME
+          if config.base_url.scheme == 'https'
             http.use_ssl = true
             http.verify_mode = OpenSSL::SSL::VERIFY_PEER
           end

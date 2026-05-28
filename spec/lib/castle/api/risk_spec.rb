@@ -3,13 +3,7 @@
 RSpec.describe Castle::API::Risk do
   describe '.call' do
     let(:options) do
-      {
-        type: '$login',
-        status: '$succeeded',
-        request_token: 'token',
-        user: { id: 'u-42' },
-        context: { ip: '1.2.3.4' }
-      }
+      { type: '$login', status: '$succeeded', request_token: 'token', user: { id: 'u-42' }, context: { ip: '1.2.3.4' } }
     end
 
     context 'when the request succeeds' do
@@ -17,7 +11,9 @@ RSpec.describe Castle::API::Risk do
         stub_request(:post, 'https://api.castle.io/v1/risk').to_return(
           status: 201,
           body: { policy: { action: 'allow' } }.to_json,
-          headers: { 'Content-Type' => 'application/json' }
+          headers: {
+            'Content-Type' => 'application/json'
+          }
         )
       end
 

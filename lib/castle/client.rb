@@ -3,6 +3,7 @@
 module Castle
   # Castle's client.
   class Client
+    include Castle::ClientActions::Events
     include Castle::ClientActions::ListItems
     include Castle::ClientActions::Lists
     include Castle::ClientActions::Privacy

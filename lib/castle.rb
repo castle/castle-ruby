@@ -14,7 +14,6 @@
   castle/utils/get_timestamp
   castle/utils/secure_compare
   castle/validators/present
-  castle/validators/not_supported
   castle/webhooks/verify
   castle/context/merge
   castle/context/sanitize
@@ -37,6 +36,9 @@
   castle/commands/list_items/query
   castle/commands/list_items/unarchive
   castle/commands/list_items/update
+  castle/commands/events/schema
+  castle/commands/events/query
+  castle/commands/events/group
   castle/commands/privacy/request_data
   castle/commands/privacy/delete_data
   castle/api/filter
@@ -56,6 +58,9 @@
   castle/api/list_items/query
   castle/api/list_items/unarchive
   castle/api/list_items/update
+  castle/api/events/schema
+  castle/api/events/query
+  castle/api/events/group
   castle/api/privacy/request_data
   castle/api/privacy/delete_data
   castle/payload/prepare
@@ -64,6 +69,7 @@
   castle/logger
   castle/failover/prepare_response
   castle/failover/strategy
+  castle/client_actions/events
   castle/client_actions/lists
   castle/client_actions/list_items
   castle/client_actions/privacy

@@ -2,14 +2,7 @@
 
 RSpec.describe Castle::API::Filter do
   describe '.call' do
-    let(:options) do
-      {
-        type: '$login',
-        status: '$attempted',
-        request_token: 'token',
-        params: { email: 'foo@bar.com' }
-      }
-    end
+    let(:options) { { type: '$login', status: '$attempted', request_token: 'token', params: { email: 'foo@bar.com' } } }
 
     context 'when the request fails and the failover strategy is not :throw' do
       before do

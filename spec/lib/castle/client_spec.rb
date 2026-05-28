@@ -44,7 +44,8 @@ RSpec.describe Castle::Client do
     stub_request(:any, /api.castle.io/).with(basic_auth: ['', 'secret']).to_return(
       status: response_code,
       body: response_body,
-      headers: {}
+      headers: {
+      }
     )
   end
 
@@ -92,6 +93,7 @@ RSpec.describe Castle::Client do
   end
 
   describe 'client action mixins' do
+    it_behaves_like 'it has event actions'
     it_behaves_like 'it has list actions'
     it_behaves_like 'it has list item actions'
     it_behaves_like 'it has privacy actions'
