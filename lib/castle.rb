@@ -14,7 +14,6 @@
   castle/utils/get_timestamp
   castle/utils/secure_compare
   castle/validators/present
-  castle/validators/not_supported
   castle/webhooks/verify
   castle/context/merge
   castle/context/sanitize
