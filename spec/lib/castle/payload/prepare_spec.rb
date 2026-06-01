@@ -16,19 +16,7 @@ RSpec.describe Castle::Payload::Prepare do
   let(:request) { Rack::Request.new(env) }
 
   let(:headers) { { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, Cookie: true } }
-  let(:context) do
-    {
-      client_id: 'abcd',
-      active: true,
-      user_agent: ua,
-      headers: headers,
-      ip: ip,
-      library: {
-        name: 'castle-rb',
-        version: '2.2.0'
-      }
-    }
-  end
+  let(:context) { { headers: headers, ip: ip, library: { name: 'castle-rb', version: '2.2.0' } } }
 
   let(:time_now) { Time.now }
   let(:time_formatted) { time_now.utc.iso8601(3) }
@@ -45,8 +33,6 @@ RSpec.describe Castle::Payload::Prepare do
   describe '#call' do
     subject(:generated) { described_class.call(payload_options, request) }
 
-    context 'when active true' do
-      it { is_expected.to eql(result) }
-    end
+    it { is_expected.to eql(result) }
   end
 end

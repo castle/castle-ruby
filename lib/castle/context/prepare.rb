@@ -9,7 +9,7 @@ module Castle
         # @param options [Hash]
         # @return [Hash]
         def call(request, options = {})
-          default_context = Castle::Context::GetDefault.new(request, options[:cookies]).call
+          default_context = Castle::Context::GetDefault.new(request).call
           Castle::Context::Merge.call(default_context, options[:context])
         end
       end
