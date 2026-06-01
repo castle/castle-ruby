@@ -2,10 +2,10 @@
 
 ## 9.1.1
 
-**Breaking changes:**
+**Housekeeping:**
 
-- Slim down the default request context to `headers`, `ip` and `library`. The `client_id`, `active`, `user_agent` and `locale` fields are no longer emitted from `Castle::Context::GetDefault` (the underlying data is already available via `headers`).
-- Remove the `Castle::ClientId::Extract` service and the now-unused `cookies` plumbing in `Castle::Context::GetDefault`.
+- Slim down the default request context to `headers`, `ip` and `library`; the remaining data is already available via `headers`.
+- Remove the internal `Castle::ClientId::Extract` service and the now-unused `cookies` plumbing in `Castle::Context::GetDefault`.
 
 ## 9.1.0
 
