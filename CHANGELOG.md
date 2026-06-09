@@ -1,11 +1,12 @@
 # Changelog
 
-## 9.1.1
+## 9.2.0
 
-**Housekeeping:**
+**Changes:**
 
 - Slim down the default request context to `headers`, `ip` and `library`; the remaining data is already available via `headers`.
 - Remove the internal `Castle::ClientId::Extract` service and the now-unused `cookies` plumbing in `Castle::Context::GetDefault`.
+- No longer read the API secret from the `CASTLE_API_SECRET` environment variable automatically; set `Castle.api_secret` explicitly (for example `Castle.api_secret = ENV.fetch('CASTLE_API_SECRET')`).
 
 ## 9.1.0
 

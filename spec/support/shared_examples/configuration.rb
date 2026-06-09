@@ -70,22 +70,10 @@ end
 
 shared_examples 'configuration_api_secret' do
   describe 'api_secret' do
-    context 'with env' do
-      let(:secret_key_env) { 'secret_key_env' }
-      let(:secret_key) { 'secret_key' }
+    context 'with default' do
+      before { config.reset }
 
-      before do
-        allow(ENV).to receive(:fetch).with('CASTLE_API_SECRET', '').and_return(secret_key_env)
-        config.reset
-      end
-
-      it { expect(config.api_secret).to eql(secret_key_env) }
-
-      context 'when key is overwritten' do
-        before { config.api_secret = secret_key }
-
-        it { expect(config.api_secret).to eql(secret_key) }
-      end
+      it { expect(config.api_secret).to eql('') }
     end
 
     context 'with setter' do
