@@ -14,19 +14,7 @@ RSpec.describe Castle::Context::Prepare do
     )
   end
   let(:request) { Rack::Request.new(env) }
-  let(:context) do
-    {
-      client_id: 'abcd',
-      active: true,
-      user_agent: ua,
-      headers: headers,
-      ip: ip,
-      library: {
-        name: 'castle-rb',
-        version: '6.0.0'
-      }
-    }
-  end
+  let(:context) { { headers: headers, ip: ip, library: { name: 'castle-rb', version: '6.0.0' } } }
 
   let(:headers) { { 'Content-Length': '0', 'User-Agent': ua, 'X-Forwarded-For': ip.to_s, Cookie: true } }
 
@@ -35,8 +23,6 @@ RSpec.describe Castle::Context::Prepare do
   describe '#call' do
     subject(:generated) { described_class.call(request) }
 
-    context 'when active true' do
-      it { is_expected.to eql(context) }
-    end
+    it { is_expected.to eql(context) }
   end
 end
