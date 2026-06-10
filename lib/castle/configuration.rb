@@ -69,7 +69,7 @@ module Castle
       self.base_url = BASE_URL
       self.allowlisted = [].freeze
       self.denylisted = [].freeze
-      self.api_secret = ENV.fetch('CASTLE_API_SECRET', '')
+      self.api_secret = ''
       self.ip_headers = [].freeze
       self.trusted_proxies = [].freeze
       self.trust_proxy_chain = false

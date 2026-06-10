@@ -78,7 +78,6 @@
   castle/headers/format
   castle/headers/extract
   castle/secure_mode
-  castle/client_id/extract
   castle/ips/extract
   castle/core/get_connection
   castle/core/process_response
