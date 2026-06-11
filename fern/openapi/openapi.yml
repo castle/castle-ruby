@@ -1,0 +1,240 @@
+openapi: 3.0.3
+info:
+  title: Castle API
+  version: "1.0.0"
+  description: >
+    Server-side Castle API covering the scoring endpoints (risk, filter, log),
+    the Lists and Privacy management endpoints, and the Events API. This
+    specification is the input for Fern SDK generation.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://api.castle.io/v1
+security:
+  - apiSecret: []
+tags:
+  - name: Scoring
+  - name: Lists
+  - name: Privacy
+  - name: Events
+paths:
+  /risk:
+    post:
+      operationId: risk
+      tags: [Scoring]
+      summary: Evaluate the risk of an authenticated event.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScoringRequest"
+      responses:
+        "200":
+          description: Verdict for the evaluated event.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Verdict"
+  /filter:
+    post:
+      operationId: filter
+      tags: [Scoring]
+      summary: Evaluate the risk of an unauthenticated event.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScoringRequest"
+      responses:
+        "200":
+          description: Verdict for the evaluated event.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Verdict"
+  /log:
+    post:
+      operationId: log
+      tags: [Scoring]
+      summary: Log an event without scoring it.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScoringRequest"
+      responses:
+        "200":
+          description: The logged event was accepted.
+          content:
+            application/json:
+              schema:
+                type: object
+  /lists:
+    get:
+      operationId: listAllLists
+      tags: [Lists]
+      summary: Return all lists.
+      responses:
+        "200":
+          description: The available lists.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/List"
+    post:
+      operationId: createList
+      tags: [Lists]
+      summary: Create a list.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListRequest"
+      responses:
+        "201":
+          description: The created list.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/List"
+  /privacy/users:
+    post:
+      operationId: requestUserData
+      tags: [Privacy]
+      summary: Request a data export for a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivacyRequest"
+      responses:
+        "200":
+          description: The privacy request was accepted.
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      operationId: deleteUserData
+      tags: [Privacy]
+      summary: Request deletion of a user's data.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivacyRequest"
+      responses:
+        "200":
+          description: The deletion request was accepted.
+          content:
+            application/json:
+              schema:
+                type: object
+  /events/schema:
+    get:
+      operationId: eventsSchema
+      tags: [Events]
+      summary: Return the event schema for the account.
+      responses:
+        "200":
+          description: The event schema.
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  securitySchemes:
+    apiSecret:
+      type: http
+      scheme: basic
+      description: HTTP Basic auth with the API secret as the username and an empty password.
+  schemas:
+    ScoringRequest:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          example: "$login"
+        status:
+          type: string
+          example: "$succeeded"
+        request_token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+        properties:
+          type: object
+          additionalProperties: true
+        context:
+          type: object
+          additionalProperties: true
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        traits:
+          type: object
+          additionalProperties: true
+    Verdict:
+      type: object
+      properties:
+        risk:
+          type: number
+          format: double
+        policy:
+          $ref: "#/components/schemas/Policy"
+        signals:
+          type: object
+          additionalProperties: true
+        failover:
+          type: boolean
+        failover_reason:
+          type: string
+    Policy:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [allow, challenge, deny]
+        name:
+          type: string
+        id:
+          type: string
+    List:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        color:
+          type: string
+    ListRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+    PrivacyRequest:
+      type: object
+      required: [user_id]
+      properties:
+        user_id:
+          type: string

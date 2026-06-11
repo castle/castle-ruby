@@ -1,0 +1,13 @@
+api:
+  specs:
+    - openapi: ./openapi/openapi.yml
+groups:
+  ruby-sdk:
+    generators:
+      - name: fernapi/fern-ruby-sdk
+        version: 1.13.1
+        output:
+          location: local-file-system
+          path: ../generated/ruby
+        github:
+          repository: castle/castle-ruby
