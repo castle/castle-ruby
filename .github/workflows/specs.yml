@@ -13,6 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - ruby: '3.1'
+            rails: '7.0'
           - ruby: '3.2'
             rails: '7.0'
           - ruby: '3.2'
