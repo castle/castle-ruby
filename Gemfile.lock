@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    castle-rb (9.2.0)
+    castle-rb (9.2.1)
       base64 (~> 0.2)
 
 GEM
