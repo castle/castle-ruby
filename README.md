@@ -293,6 +293,7 @@ All exceptions inherit from `Castle::Error`. The most useful ones:
 | `Castle::InvalidRequestTokenError` | The `request_token` is missing or invalid.                    |
 | `Castle::InvalidParametersError`   | 422 response with validation details.                         |
 | `Castle::RateLimitError`           | 429 response — back off and retry.                            |
+| `Castle::PaymentRequiredError`     | 402 response.                                                 |
 | `Castle::UnauthorizedError`        | 401 — bad API secret.                                         |
 | `Castle::InternalServerError`      | 5xx response from Castle.                                     |
 | `Castle::WebhookVerificationError` | Webhook signature did not match.                              |
