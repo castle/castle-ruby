@@ -10,8 +10,6 @@ RSpec.describe Castle::API::Events::Schema do
 
     before { call }
 
-    it do
-      assert_requested :get, 'https://api.castle.io/v1/events/schema', times: 1
-    end
+    it { assert_requested :get, 'https://api.castle.io/v1/events/schema', times: 1 }
   end
 end

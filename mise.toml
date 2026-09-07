@@ -1,0 +1,16 @@
+# Runtime versions stay in `.tool-versions` (mise reads that natively).
+
+[tasks.install]
+description = "Install Ruby gems and JS packages"
+run = """
+bundle install
+yarn install
+"""
+
+[tasks.test]
+description = "Run the RSpec suite"
+run = "bundle exec rspec"
+
+[tasks.lint]
+description = "Run RuboCop and Prettier"
+run = "bin/lint"
