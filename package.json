@@ -3,7 +3,7 @@
   "packageManager": "yarn@1.22.22",
   "devDependencies": {
     "@prettier/plugin-ruby": "4.0.4",
-    "prettier": "3.8.3"
+    "prettier": "3.9.6"
   },
   "scripts": {
     "format": "prettier --write .",
