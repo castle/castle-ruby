@@ -29,7 +29,7 @@
 - Bump Bundler 2.6.9 → 2.7.2
 - Bump json 2.19.5 → 2.19.7
 
-## master
+## Unreleased
 
 - Bump dependencies (rack 3.1.19 → 3.2.6, rake, rspec-\*, timecop, simplecov-html, diff-lcs)
 - Bump Ruby to 3.4.9 (zlib CVE-2026-27820)
