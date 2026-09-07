@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 9.2.1
 
 - Add `Castle::PaymentRequiredError` for HTTP 402 responses.
 
