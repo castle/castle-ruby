@@ -65,6 +65,9 @@ module Castle
   class RateLimitError < Castle::ApiError
   end
 
+  class PaymentRequiredError < Castle::ApiError
+  end
+
   # all internal server errors
   class InternalServerError < Castle::ApiError
   end

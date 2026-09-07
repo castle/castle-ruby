@@ -92,6 +92,7 @@ RSpec.describe Castle::Core::ProcessResponse do
 
     it_behaves_like 'response_failed', '400', Castle::BadRequestError
     it_behaves_like 'response_failed', '401', Castle::UnauthorizedError
+    it_behaves_like 'response_failed', '402', Castle::PaymentRequiredError
     it_behaves_like 'response_failed', '403', Castle::ForbiddenError
     it_behaves_like 'response_failed', '404', Castle::NotFoundError
     it_behaves_like 'response_failed', '419', Castle::UserUnauthorizedError

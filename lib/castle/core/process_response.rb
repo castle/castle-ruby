@@ -7,6 +7,7 @@ module Castle
       RESPONSE_ERRORS = {
         400 => Castle::BadRequestError,
         401 => Castle::UnauthorizedError,
+        402 => Castle::PaymentRequiredError,
         403 => Castle::ForbiddenError,
         404 => Castle::NotFoundError,
         419 => Castle::UserUnauthorizedError,
